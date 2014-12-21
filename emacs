@@ -383,8 +383,12 @@
 \\end{align*}" ""))))
  '(outshine-preserve-delimiter-whitespace t)
  '(outshine-use-speed-commands t)
+ '(safe-local-variable-values
+   (quote
+    ((eval org-overview))))
  '(session-use-package t nil (session))
- '(show-paren-mode t))
+ '(show-paren-mode t)
+ '(vc-follow-symlinks nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -394,3 +398,10 @@
  '(font-lock-doc-face ((t (:foreground "#75715E" :slant italic))))
  '(font-lock-type-face ((t (:foreground "#66D9EF" :slant normal))))
  '(haskell-constructor-face ((t (:inherit font-lock-type-face :slant normal)))))
+
+
+;;; File Local Variables
+;; Local Variables:
+;; mode: emacs-lisp
+;; eval: (org-overview)
+;; End:
