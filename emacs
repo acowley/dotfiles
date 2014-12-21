@@ -111,6 +111,16 @@
 
 
 ;;;; Spell checking
+
+;; brew install hunspell
+
+;; Download the OpenOffice dictionary for the language you want. The
+;; `.oxt' file is a zip archive. Put the `.aff' and `.dic' files from
+;; that archive in `~/Library/Spelling/'. Then create symlinks from,
+;; for example, `en_US.aff' to `default.aff' in that directory, and
+;; likewise for the `.dic' file. Try running `hunspell -D' to see what
+;; dictionaries hunspell is using. The "personal dictionary" is just a
+;; word list.
 (setq ispell-program-name "hunspell")
 (setq ispell-local-dictionary "en_US")
 (setq ispell-personal-dictionary "~/.hunspell_en_US")
