@@ -150,8 +150,8 @@
 ;; (require 'outshine)
 ;; (require 'outorg)
 
-(add-to-list 'load-path "~/Documents/Projects/outorg/")
-(add-to-list 'load-path "~/Documents/Projects/outshine/")
+;; (add-to-list 'load-path "~/Documents/Projects/outorg/")
+;; (add-to-list 'load-path "~/Documents/Projects/outshine/")
 (add-hook 'outline-minor-mode-hook (lambda ()
                                      (require 'outshine)
                                      (outshine-hook-function)))
@@ -387,8 +387,7 @@
    (quote
     ((eval org-overview))))
  '(session-use-package t nil (session))
- '(show-paren-mode t)
- '(vc-follow-symlinks nil))
+ '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
