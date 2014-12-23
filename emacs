@@ -12,8 +12,8 @@
                     ghc haskell-mode
                     company company-ghc helm helm-ag
 		    helm-company
-                    ;outorg
-                    ;outshine
+                    outorg
+                    outshine
                     htmlize
                     auctex
                     powerline smart-mode-line smart-mode-line-powerline-theme
