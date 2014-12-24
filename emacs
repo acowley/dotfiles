@@ -122,6 +122,10 @@
 ;; dictionaries hunspell is using. The "personal dictionary" is just a
 ;; word list.
 (setq ispell-program-name "hunspell")
+(setq ispell-local-dictionary-alist
+      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil
+         ("-d" "en_US"))
+        nil utf-8))
 (setq ispell-local-dictionary "en_US")
 (setq ispell-personal-dictionary "~/.hunspell_en_US")
 
