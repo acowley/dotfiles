@@ -15,6 +15,7 @@
                     outorg
                     outshine
                     htmlize
+                    impatient-mode
                     auctex
                     powerline smart-mode-line smart-mode-line-powerline-theme
                     monokai-theme markdown-mode
@@ -133,7 +134,7 @@
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'text-mode-hook 'flyspell-mode)
 
-;;;; Miscellaneous Helper Functions
+;;;; impatient-mode
 
 ;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
 ;; markdown buffer, and supplying `markdown-html' as the argument.
@@ -141,6 +142,19 @@
   (princ (with-current-buffer buffer
            (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
          (current-buffer)))
+
+(defun impatient-markdown ()
+  "Serve markdown text as formatted HTML.
+
+   Start up the simple HTTP server if it isn't running, enable
+   `impatient-mode', and set the user filter to embed buffer
+   contents in an HTML skeleton that invokes a Markdown processor
+   on the text."
+  (interactive)
+  (unless (get-buffer "*httpd*") (httpd-start))
+  (impatient-mode)
+  (imp-set-user-filter #'markdown-html))
+  
 
 ;;; Org-mode
 
