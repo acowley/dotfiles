@@ -134,7 +134,7 @@
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'text-mode-hook 'flyspell-mode)
 
-;;;; impatient-mode
+;;; impatient-mode
 
 ;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
 ;; markdown buffer, and supplying `markdown-html' as the argument.
@@ -184,6 +184,30 @@
                                      (require 'outshine)
                                      (outshine-hook-function)))
 (add-hook 'prog-mode-hook 'outline-minor-mode)
+
+;;;; Project Task Capture
+
+;; I use a convention where projects have a ProjectName-notes.org file
+;; in the project root directory. This file is used for design notes
+;; and task lists. It can be good to setq `org-agenda-files' to
+;; include all your active projects so that the tasks show up in the
+;; org agenda view. I set this value in the
+;; [[%3B%3B%3B%20Private%20Configuration][Private Configuration]]
+;; section of this file.
+
+;; With the given configuration "C-c c p" adds a TODO item to the
+;; current project's notes file.
+
+(defun find-project-notes ()
+  "A project's notes file is defined as ProjectName-notes.org in
+  the project root directory."
+  (concat (projectile-project-root) "/" (projectile-project-name) "-notes.org"))
+
+(setq org-capture-templates
+      '(("t" "Task" entry (file+headline org-default-notes-file "Tasks")
+         "* TODO %?\n  %i\n  %a")
+        ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
+         "* TODO %?\n  %i\n  %a")))
 
 ;;; Helm
 
