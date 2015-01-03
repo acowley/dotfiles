@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>org.gnupg.gpg-agent</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/usr/local/bin/gpg-agent</string>
+      <string>--daemon</string>
+      <string>--write-env-file</string>
+      <string>/Users/acowley/.gpg-agent-info</string>
+    </array>
+    <key>StandardErrorPath</key>
+    <string>/dev/null</string>
+    <key>StandardOutputPath</key>
+    <string>/dev/null</string>
+    <key>RunAtLoad</key>
+    <true/>
+  </dict>
+</plist>
