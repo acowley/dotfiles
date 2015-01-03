@@ -368,7 +368,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(company-begin-commands t)
+ '(company-begin-commands
+   (quote
+    (self-insert-command org-self-insert-command outshine-self-insert-command)))
  '(company-ghc-autoscan t)
  '(company-ghc-show-info t)
  '(custom-safe-themes
