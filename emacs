@@ -47,7 +47,7 @@
 
 ;; Use the exec-path-from-shell package to set the PATH
 (when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
+  (add-hook 'after-init-hook 'exec-path-from-shell-initialize))
 
 ;; Move point to farthest possible position when scrolling the window
 ;; has reached the beginning or end of the buffer
@@ -376,6 +376,7 @@
  '(custom-safe-themes
    (quote
     ("64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+ '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(haskell-tags-on-save t)
  '(magit-use-overlays nil)
  '(org-default-notes-file "~/org/home.org")
@@ -441,9 +442,7 @@
 \\end{align*}" ""))))
  '(outshine-preserve-delimiter-whitespace t)
  '(outshine-use-speed-commands t)
- '(safe-local-variable-values
-   (quote
-    ((eval org-overview))))
+ '(safe-local-variable-values (quote ((eval org-overview))))
  '(session-use-package t nil (session))
  '(show-paren-mode t))
 (custom-set-faces
