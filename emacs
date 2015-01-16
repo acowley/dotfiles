@@ -21,6 +21,7 @@
                     monokai-theme markdown-mode
                     session
                     projectile helm-projectile ag
+                    nix-mode
                     git-commit-mode git-rebase-mode magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     zenburn-theme buffer-move multiple-cursors))
@@ -196,14 +197,11 @@ of code to whatever theme I'm using's background"
 
 ;;;; Outshine
 
-;; outshine mode extensions to the outline minor mode
-;; Doesn't work with haskell-mode + ghc-mod
-
 ;; (require 'outshine)
 ;; (require 'outorg)
 
-(add-to-list 'load-path "~/Documents/Projects/outorg/")
-(add-to-list 'load-path "~/Documents/Projects/outshine/")
+; (add-to-list 'load-path "~/Documents/Projects/outorg/")
+; (add-to-list 'load-path "~/Documents/Projects/outshine/")
 (add-hook 'outline-minor-mode-hook (lambda ()
                                      (require 'outshine)
                                      (outshine-hook-function)))
