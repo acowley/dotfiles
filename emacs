@@ -269,6 +269,53 @@ of code to whatever theme I'm using's background"
 
 (projectile-global-mode)
 
+;;; Email
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
+(setq mu4e-maildir "~/.mail")
+(setq mu4e-html2text-command  "/usr/local/bin/w3m -T text/html")
+(setq mu4e-mu-binary "/usr/local/bin/mu")
+;; allow for updating mail using 'U' in the main view:
+(setq mu4e-get-mail-command "/usr/local/bin/mbsync -a")
+(setq mu4e-drafts-folder "/gmail/drafts")
+(setq mu4e-sent-folder   "/gmail/sent")
+(setq mu4e-trash-folder  "/gmail/trash")
+(setq mu4e-headers-skip-duplicates t)
+
+;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+(setq mu4e-sent-messages-behavior 'delete)
+
+;; setup some handy shortcuts
+;; you can quickly switch to your Inbox -- press ``ji''
+;; then, when you want archive some messages, move them to
+;; the 'All Mail' folder by pressing ``ma''.
+
+(setq mu4e-maildir-shortcuts
+    '( ("/gmail/Inbox"   . ?i)
+       ("/gmail/sent"    . ?s)
+       ("/gmail/trash"   . ?t)
+       ("/gmail/archive" . ?a)))
+
+;; something about ourselves
+(setq
+   user-mail-address "acowley@gmail.com"
+   user-full-name  "Anthony Cowley"
+   mu4e-compose-signature-auto-include nil
+   mu4e-compose-signature nil)
+
+;; alternatively, for emacs-24 you can use:
+(setq message-send-mail-function 'smtpmail-send-it
+    smtpmail-stream-type 'starttls
+    smtpmail-default-smtp-server "smtp.gmail.com"
+    smtpmail-smtp-server "smtp.gmail.com"
+    smtpmail-smtp-service 587)
+
+;; don't keep message buffers around
+(setq message-kill-buffer-on-exit t)
+
+;; Auto-complete contact email addresses
+(add-hook 'mu4e-compose-mode-hook 'company-mode)
+
 ;;; smart-mode-line (powerline)
 
 (setq sml/no-confirm-load-theme t)
@@ -374,6 +421,11 @@ of code to whatever theme I'm using's background"
                                 (company-ghc-turn-on-autoscan)
                                 (setq company-ghc-show-info t)))
 
+;;; gpg
+(defun pinentry-emacs (desc prompt ok error)
+  "Interface for entering a password into gpg-agent."
+  (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
+    str))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
@@ -400,6 +452,7 @@ of code to whatever theme I'm using's background"
  '(debug-on-error t)
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(fci-rule-color "#49483E")
+ '(haskell-indent-offset 2)
  '(haskell-tags-on-save t)
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
  '(highlight-tail-colors
@@ -413,6 +466,7 @@ of code to whatever theme I'm using's background"
     ("#49483E" . 100)))
  '(magit-diff-use-overlays nil)
  '(magit-use-overlays nil)
+ '(mu4e-view-mode-hook (quote (turn-on-visual-line-mode)))
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-src-preserve-indentation t)
