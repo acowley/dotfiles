@@ -316,6 +316,10 @@ of code to whatever theme I'm using's background"
 ;; Auto-complete contact email addresses
 (add-hook 'mu4e-compose-mode-hook 'company-mode)
 
+;; Add a view in browser action. Trigger with "aV"
+(add-to-list 'mu4e-view-actions
+  '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
 ;;; smart-mode-line (powerline)
 
 (setq sml/no-confirm-load-theme t)
