@@ -24,7 +24,8 @@
                     nix-mode
                     git-commit-mode git-rebase-mode magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
-                    zenburn-theme buffer-move multiple-cursors))
+                    zenburn-theme buffer-move multiple-cursors
+                    tuareg flycheck-ocaml))
 
 ; If we run package-initialize, then add-to-list melpa, the
 ; package-install invocation will fail. We need the package-archives
@@ -87,6 +88,9 @@
 
 ;; Turn auto-fill-mode on by default in text modes
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;; Turn off electric-indent-mode everywhere
+(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
 (put 'downcase-region 'disabled nil)
 
@@ -319,6 +323,12 @@ of code to whatever theme I'm using's background"
 ;; Add a view in browser action. Trigger with "aV"
 (add-to-list 'mu4e-view-actions
   '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+;; NOTE: deleting a message in Gmail is accomplished by moving to the
+;; trash folder. "Marking for deletion" actually archives the message.
+(fset 'my-move-to-trash "mt")
+(define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
+(define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
 
 ;;; smart-mode-line (powerline)
 
