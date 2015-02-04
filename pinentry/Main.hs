@@ -17,8 +17,7 @@ data PinEntry = PinEntry { desc      :: Maybe String
 -- codes.
 clean :: String -> String
 clean [] = []
-clean ('%':'2':'5':xs) = '%' : clean xs
-clean ('%':_:_:xs) = ' ' : clean xs
+clean ('%':x:y:xs) = toEnum (read ("0x"++[x,y])::Int) : clean xs
 clean ('"':xs) = "\\\"" ++ clean xs
 clean (x:xs) = x : clean xs
 
