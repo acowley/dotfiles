@@ -1,0 +1,66 @@
+Sync All
+Expunge Both
+
+IMAPAccount gmail
+# Address to connect to
+Host imap.gmail.com
+User acowley@gmail.com
+PassCmd "gpg -q --for-your-eyes-only -d ~/.mailpass.gpg"
+# Use SSL
+UseIMAPS yes
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+# The trailing "/" is important
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/Inbox
+
+Channel gmail-trash
+Master ":gmail-remote:[Gmail]/Trash"
+Slave ":gmail-local:trash"
+Create Both
+SyncState *
+MaxMessages 20
+ExpireUnread yes
+
+Channel gmail-inbox
+Master ":gmail-remote:INBOX"
+Slave ":gmail-local:INBOX"
+Create Both
+SyncState *
+
+Channel gmail-archive
+Master ":gmail-remote:[Gmail]/All Mail"
+Slave ":gmail-local:archive"
+Create Both
+SyncState *
+MaxMessages 100
+
+Channel gmail-drafts
+Master ":gmail-remote:[Gmail]/Drafts"
+Slave ":gmail-local:drafts"
+Create Both
+SyncState *
+
+Channel gmail-sent
+Master ":gmail-remote:[Gmail]/Sent Mail"
+Slave ":gmail-local:sent"
+Create Both
+SyncState *
+MaxMessages 100
+
+Channel gmail-flagged
+Master ":gmail-remote:[Gmail]/Starred"
+Slave ":gmail-local:flagged"
+Create Both
+SyncState *
+
+Group gmail
+Channel gmail-trash
+Channel gmail-inbox
+Channel gmail-drafts
+Channel gmail-sent
+Channel gmail-flagged
+Channel gmail-archive

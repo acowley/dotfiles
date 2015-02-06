@@ -8,3 +8,4 @@ else
   echo "${HOME}/.gnupg doesn't exist. Have you setup GPG yet?"
 fi
 ln -s ${DIR}/org.gnupg.gpg-agent.plist ${HOME}/Library/LaunchAgents/org.gnupg.gpg-agent.plist
+ln -s ${DIR}/.mbsyncrc ${HOME}/.mbsyncrc
