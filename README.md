@@ -29,7 +29,12 @@ configured correctly.
 You will also need to make sure the `use-agent` line is uncommented in
 `~/.gnupg/gpg.conf`.
 
-When you try to use `gpg` at the terminal, a full-window PIN entry UI
-opens up. This doesn't work from within emacs, so you need to do it at
-the terminal, then do whatever you were going to do in emacs, and you
+The agent is configured to use a custom pinentry program that invokes
+`emacsclient` for password entry. Compile the program, `ghc Main.hs -o
+hpinentry`, in the `pinentry` directory for this to work.
+
+The reason for the custom pinentry program is that, normally, when you
+try to use `gpg` at the terminal, a full-window PIN entry UI opens
+up. This doesn't work from within emacs, so you need to do it at the
+terminal, then do whatever you were going to do in emacs, and you
 won't need to supply your password thanks to the agent.
