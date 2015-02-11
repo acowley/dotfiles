@@ -107,6 +107,14 @@
 ;; (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
 ;; (recentf-mode 1)
 
+;; John Wiegley's ANSI colors hook for compiler output
+(defun compilation-ansi-color-process-output ()
+  (ansi-color-process-output nil)
+  (set (make-local-variable 'comint-last-output-start)
+       (point-marker)))
+ 
+(add-hook 'compilation-filter-hook #'compilation-ansi-color-process-output)
+
 ;;;; Ignored extensions
 (add-to-list 'completion-ignored-extensions ".hi")
 (add-to-list 'completion-ignored-extensions ".o")
