@@ -25,6 +25,10 @@
                     git-commit-mode git-rebase-mode magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     zenburn-theme buffer-move multiple-cursors
+
+                    ;; Use the terminal-notifier program on OS X
+                    erc-terminal-notifier 
+
                     tuareg flycheck-ocaml))
 
 ; If we run package-initialize, then add-to-list melpa, the
