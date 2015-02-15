@@ -25,18 +25,18 @@ SyncState *
 MaxMessages 20
 ExpireUnread yes
 
-Channel gmail-inbox
-Master ":gmail-remote:INBOX"
-Slave ":gmail-local:INBOX"
-Create Both
-SyncState *
-
 Channel gmail-archive
 Master ":gmail-remote:[Gmail]/All Mail"
 Slave ":gmail-local:archive"
 Create Both
 SyncState *
 MaxMessages 100
+
+Channel gmail-inbox
+Master ":gmail-remote:INBOX"
+Slave ":gmail-local:INBOX"
+Create Both
+SyncState *
 
 Channel gmail-drafts
 Master ":gmail-remote:[Gmail]/Drafts"
