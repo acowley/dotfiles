@@ -25,6 +25,7 @@
                     git-commit-mode git-rebase-mode magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     zenburn-theme buffer-move multiple-cursors
+                    ace-window
 
                     ;; Use the terminal-notifier program on OS X
                     erc-terminal-notifier 
@@ -118,6 +119,12 @@
        (point-marker)))
  
 (add-hook 'compilation-filter-hook #'compilation-ansi-color-process-output)
+
+;; Use erc-terminal-notifier with erc
+(add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier)))
+
+;; Use M-p for ace-window
+(define-key global-map "\C-xo" 'ace-window)
 
 ;;;; Ignored extensions
 (add-to-list 'completion-ignored-extensions ".hi")
