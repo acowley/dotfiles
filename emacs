@@ -410,6 +410,7 @@ of code to whatever theme I'm using's background"
             (custom-set-variables '(haskell-tags-on-save t))
             (turn-on-haskell-indent)))
 
+(add-to-list 'load-path "~/.emacs.d/misc")
 (add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . haskell-latex-mode))
 (autoload 'haskell-latex-mode "haskell-latex")
 
