@@ -25,7 +25,6 @@
                     git-commit-mode git-rebase-mode magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     zenburn-theme buffer-move multiple-cursors
-                    ace-window
 
                     ;; Use the terminal-notifier program on OS X
                     erc-terminal-notifier 
@@ -63,6 +62,11 @@
 ;; Support Cmd-up/down for top/bottom of buffer
 (global-set-key (kbd "<s-up>") 'beginning-of-buffer)
 (global-set-key (kbd "<s-down>") 'end-of-buffer)
+
+;; Use Shift+ArrowKey to move the cursor between windows.
+;; This means you lose shift select.
+(windmove-default-keybindings)
+(setq windmove-wrap-around t)
 
 ;; Highlight matching parentheses
 (show-paren-mode 1)
@@ -122,9 +126,6 @@
 
 ;; Use erc-terminal-notifier with erc
 (add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier)))
-
-;; Use M-p for ace-window
-(define-key global-map "\C-xo" 'ace-window)
 
 ;;;; Ignored extensions
 (add-to-list 'completion-ignored-extensions ".hi")
