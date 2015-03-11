@@ -11,7 +11,7 @@
 (setq my-packages '(exec-path-from-shell 
                     ghc haskell-mode
                     company company-ghc helm helm-ag
-		    helm-company
+		    helm-company helm-swoop
                     outorg
                     outshine
                     htmlize
@@ -87,6 +87,11 @@
 ;; Keyboard shortcut for aligning a region on a regexp
 (global-set-key (kbd "C-x a r") 'align-regexp)
 
+;; helm-swoop keybindings
+(global-set-key (kbd "M-i") 'helm-swoop)
+(global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
+
+;; Start the emacs server if possible
 (when (fboundp 'server-mode) (funcall 'server-mode 1))
 
 ;; Revert buffers whose files have changed on disk
