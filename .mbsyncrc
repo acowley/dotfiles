@@ -1,4 +1,5 @@
-Sync All
+#Sync All
+Sync PullNew Push
 Expunge Both
 
 IMAPAccount gmail
