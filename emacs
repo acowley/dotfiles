@@ -358,6 +358,47 @@ of code to whatever theme I'm using's background"
 (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
 (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
 
+(setq mu4e-view-show-images t)
+(when (fboundp 'imagemagick-register-types) (imagemagick-register-types))
+;(setq mu4e-view-prefer-html t)
+;(setq mu4e-html2text-command "html2text -utf8 -width 72")
+
+;;;; Additional SMTP Accounts
+;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
+(defvar my-mu4e-account-alist
+  '(("gmail"
+     (user-mail-address "acowley@gmail.com")
+     (smtpmail-default-smtp-server "smtp.gmail.com")
+     (smtpmail-smtp-server "smtp.gmail.com")
+     (smtpmail-smtp-service 587)
+     (smtpmail-stream-type 'starttls)
+     (smtpmail-auth-supported '(cram-md5 plain login)))
+    ("upenn"
+     (user-mail-address "acowley@seas.upenn.edu")
+     (smtpmail-default-smtp-server "smtp.seas.upenn.edu")
+     (smtpmail-smtp-server "smtp.seas.upenn.edu")
+     ;(smtpmail-smtp-service 578)
+     (smtpmail-smtp-service 465)
+     (smtpmail-stream-type 'ssl)
+     (smtpmail-auth-supported '(login)))))
+
+(defun my-mu4e-set-account ()
+  "Set the account for sending a message"
+  (let* 
+    ((account
+       (completing-read
+        (format "Compose with account: (%s) "
+                (mapconcat #'(lambda (var) (car var)) 
+                           my-mu4e-account-alist "/"))
+        (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+        nil t nil nil (caar my-mu4e-account-alist)))
+     (account-vars (cdr (assoc account my-mu4e-account-alist))))
+    (if account-vars
+        (mapc #'(lambda (var) (set (car var) (cadr var))) account-vars)
+      (error "No email account found"))))
+
+(add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+
 ;;; smart-mode-line (powerline)
 
 (setq sml/no-confirm-load-theme t)
