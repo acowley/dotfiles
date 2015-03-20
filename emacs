@@ -622,6 +622,9 @@ of code to whatever theme I'm using's background"
  '(safe-local-variable-values (quote ((eval org-overview))))
  '(session-use-package t nil (session))
  '(show-paren-mode t)
+ '(tramp-shell-prompt-pattern
+   "\\(?:^\\|\\)[^]#$%>
+]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
