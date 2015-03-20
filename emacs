@@ -270,11 +270,12 @@ of code to whatever theme I'm using's background"
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
 (define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions
 (setq
- helm-candidate-number-limit 25
+ helm-candidate-number-limit 100
  helm-quick-update t
  helm-M-x-requires-pattern 3 ; Require at least one character
  helm-ff-file-name-history-use-recentf t
  helm-ff-skip-boring-files t
+
  ; helm-idle-delay 0.0
  ; helm-input-idle-delay 0.01
 
