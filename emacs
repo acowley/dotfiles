@@ -19,6 +19,7 @@
                     auctex
                     powerline smart-mode-line smart-mode-line-powerline-theme
                     monokai-theme markdown-mode
+                    darktooth-theme
                     session
                     projectile helm-projectile ag
                     nix-mode
@@ -111,6 +112,7 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 (load-theme 'monokai t)
+;(load-theme 'darktooth t)
 
 ;; This is an attempt to prevent recentf (that keeps track of recent
 ;; files) from stat'ing remote files.
