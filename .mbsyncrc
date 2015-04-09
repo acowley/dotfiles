@@ -23,7 +23,6 @@ Master ":gmail-remote:[Gmail]/Trash"
 Slave ":gmail-local:trash"
 Create Both
 SyncState *
-MaxMessages 20
 ExpireUnread yes
 
 Channel gmail-archive
