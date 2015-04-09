@@ -337,7 +337,8 @@ of code to whatever theme I'm using's background"
    user-mail-address "acowley@gmail.com"
    user-full-name  "Anthony Cowley"
    mu4e-compose-signature-auto-include nil
-   mu4e-compose-signature nil)
+   mu4e-compose-signature nil
+   mu4e-change-filenames-when-moving t)
 
 ;; alternatively, for emacs-24 you can use:
 (setq message-send-mail-function 'smtpmail-send-it
@@ -350,7 +351,12 @@ of code to whatever theme I'm using's background"
 (setq message-kill-buffer-on-exit t)
 
 ;; Auto-complete contact email addresses
-(add-hook 'mu4e-compose-mode-hook 'company-mode)
+;; We don't want line breaks added to emails we compose
+(add-hook 'mu4e-compose-mode-hook
+          (lambda ()
+            (company-mode)
+            (turn-off-auto-fill)
+            (visual-line-mode)))
 
 ;; Add a view in browser action. Trigger with "aV"
 (add-to-list 'mu4e-view-actions
@@ -375,16 +381,17 @@ of code to whatever theme I'm using's background"
      (smtpmail-default-smtp-server "smtp.gmail.com")
      (smtpmail-smtp-server "smtp.gmail.com")
      (smtpmail-smtp-service 587)
-     (smtpmail-stream-type 'starttls)
-     (smtpmail-auth-supported '(cram-md5 plain login)))
+     (smtpmail-stream-type starttls)
+     (smtpmail-auth-supported (login)))
+     ;(smtpmail-auth-supported '(cram-md5 plain login)))
     ("upenn"
      (user-mail-address "acowley@seas.upenn.edu")
      (smtpmail-default-smtp-server "smtp.seas.upenn.edu")
      (smtpmail-smtp-server "smtp.seas.upenn.edu")
      ;(smtpmail-smtp-service 578)
      (smtpmail-smtp-service 465)
-     (smtpmail-stream-type 'ssl)
-     (smtpmail-auth-supported '(login)))))
+     (smtpmail-stream-type ssl)
+     (smtpmail-auth-supported (login)))))
 
 (defun my-mu4e-set-account ()
   "Set the account for sending a message"
