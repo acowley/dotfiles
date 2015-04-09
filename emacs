@@ -468,6 +468,8 @@ of code to whatever theme I'm using's background"
             (electric-indent-local-mode -1)
             (ghc-init) ;;; ghc-mod
             (company-mode)
+            (add-to-list 'company-backends
+                         '(company-ghc :with company-dabbrev-code))
             (custom-set-variables '(haskell-tags-on-save t))
             (turn-on-haskell-indent)))
 
@@ -475,6 +477,10 @@ of code to whatever theme I'm using's background"
 (add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . haskell-latex-mode))
 (autoload 'haskell-latex-mode "haskell-latex")
 
+;;; C++
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (setq company-backends (delete 'company-semantic company-backends))))
 ;;; File mode associtions
 (autoload 'glsl-mode "glsl-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
@@ -504,9 +510,6 @@ of code to whatever theme I'm using's background"
 ;;; company-mode
 (add-hook 'company-mode-hook
           (lambda ()
-            (add-to-list 'company-backends
-                         '(company-ghc :with company-dabbrev-code))
-           
             ;(custom-set-variables '(company-idle-delay 0.0)) ; Always complete immediately
             (define-key company-mode-map (kbd "C-:") 'helm-company)
             (define-key company-active-map (kbd "C-:") 'helm-company)
@@ -515,6 +518,8 @@ of code to whatever theme I'm using's background"
 (eval-after-load 'company-ghc (lambda ()
                                 (company-ghc-turn-on-autoscan)
                                 (setq company-ghc-show-info t)))
+
+(add-hook 'prog-mode-hook 'company-mode)
 
 ;;; gpg
 (defun pinentry-emacs (desc prompt ok error)
