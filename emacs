@@ -570,6 +570,8 @@ of code to whatever theme I'm using's background"
  '(mu4e-view-mode-hook (quote (turn-on-visual-line-mode)))
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+ '(org-image-actual-width nil)
+ '(org-latex-create-formula-image-program (quote imagemagick))
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
    (quote
