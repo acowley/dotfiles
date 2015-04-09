@@ -111,7 +111,7 @@
 
 (put 'dired-find-alternate-file 'disabled nil)
 
-(load-theme 'monokai t)
+;(load-theme 'monokai t)
 ;(load-theme 'darktooth t)
 
 ;; This is an attempt to prevent recentf (that keeps track of recent
@@ -225,6 +225,10 @@ of code to whatever theme I'm using's background"
                 my-pre-bg my-pre-fg))))))
 
 (add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
+
+;; For leuven-theme
+;; Fontify the whole line for headings (with a background color).
+(setq org-fontify-whole-heading-line t)
 
 ;;;; Outshine
 
