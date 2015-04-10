@@ -375,6 +375,13 @@ of code to whatever theme I'm using's background"
 ;(setq mu4e-view-prefer-html t)
 ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
 
+;; Automatically update every 10 minutes and pop up a notification if
+;; the index changed.
+(setq mu4e-update-interval 600)
+(add-hook 'mu4e-index-updated-hook
+          (lambda ()
+            (shell-command "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message \"Mail Index Updated\"")))
+
 ;;;; Additional SMTP Accounts
 ;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
 (defvar my-mu4e-account-alist
