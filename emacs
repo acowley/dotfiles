@@ -17,6 +17,7 @@
                     htmlize
                     impatient-mode
                     auctex
+                    irony company-irony
                     powerline smart-mode-line smart-mode-line-powerline-theme
                     monokai-theme markdown-mode
                     darktooth-theme
@@ -37,6 +38,7 @@
 ; list setup before calling package-initialize.
 (setq package-archives '(;("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("org" . "http://orgmode.org/elpa/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 
@@ -518,6 +520,14 @@ of code to whatever theme I'm using's background"
 (eval-after-load 'company-ghc (lambda ()
                                 (company-ghc-turn-on-autoscan)
                                 (setq company-ghc-show-info t)))
+
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+
+;; (optional) adds CC special commands to `company-begin-commands' in order to
+;; trigger completion at interesting places, such as after scope operator
+;;     std::|
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 
 (add-hook 'prog-mode-hook 'company-mode)
 
