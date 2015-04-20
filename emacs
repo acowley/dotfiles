@@ -377,10 +377,27 @@ of code to whatever theme I'm using's background"
 
 ;; Automatically update every 10 minutes and pop up a notification if
 ;; the index changed.
+(defun take (n lst)
+  (loop repeat n for x in lst collect x))
+
+(defun newest-subject ()
+  (let* ((mu-res (concat "(list "
+                         (shell-command-to-string "mu find maildir:'/gmail/Inbox' flag:unread --format=sexp")
+                         ")"))
+         (msgs (last (car (read-from-string mu-res)))))
+    (mapconcat (lambda (msg)
+                 (concat (caar (plist-get msg :from))
+                         ": "
+                         (plist-get msg :subject)))
+               msgs
+               "\n")))
+
 (setq mu4e-update-interval 600)
 (add-hook 'mu4e-index-updated-hook
           (lambda ()
-            (shell-command "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message \"Mail Index Updated\"")))
+            (let ((msg (newest-subject)))
+              (unless (string-equal ": " msg)
+                (shell-command (concat "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message \"" msg "\""))))))
 
 ;;;; Additional SMTP Accounts
 ;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
@@ -567,6 +584,7 @@ of code to whatever theme I'm using's background"
    (quote
     ("c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(debug-on-error t)
+ '(default-input-method "TeX")
  '(dired-dwim-target t)
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(fci-rule-color "#49483E")
@@ -653,7 +671,7 @@ of code to whatever theme I'm using's background"
  '(outshine-use-speed-commands t)
  '(projectile-globally-ignored-directories
    (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox")))
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages")))
  '(projectile-ignored-projects (quote ("~/")))
  '(safe-local-variable-values (quote ((eval org-overview))))
  '(session-use-package t nil (session))
