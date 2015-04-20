@@ -711,7 +711,7 @@ of code to whatever theme I'm using's background"
  '(font-lock-comment-face ((t (:foreground "#75715E" :slant italic))))
  '(font-lock-doc-face ((t (:foreground "#75715E" :slant italic))))
  '(font-lock-type-face ((t (:foreground "#66D9EF" :slant normal))))
- '(haskell-constructor-face ((t (:inherit font-lock-type-face :slant normal)))))
+ '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green")))))
 
 
 ;;; File Local Variables
