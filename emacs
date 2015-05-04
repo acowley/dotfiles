@@ -77,6 +77,9 @@
 ;; Preserve history between sessions
 (add-hook 'after-init-hook 'session-initialize)
 
+;; Don't interfere with helm-show-kill-ring
+(setq session-save-print-spec '(t nil 40000))
+
 ; yank will replace the active region's contents
 (delete-selection-mode 1)
 
@@ -135,6 +138,19 @@
 
 ;; Use erc-terminal-notifier with erc
 (add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier)))
+
+(defun sort-words ()
+  (interactive)
+  (sort-regexp-fields nil "\\w+" "\\&" (region-beginning) (region-end)))
+
+;;;; variable-pitch-mode
+(add-hook 'mu4e-view-mode-hook
+          (lambda ()
+            (turn-on-visual-line-mode)
+            (variable-pitch-mode)
+            (setq buffer-face-mode-face '(:family "Avenir Next"))
+            (buffer-face-mode)
+            (text-scale-adjust 1)))
 
 ;;;; Ignored extensions
 (add-to-list 'completion-ignored-extensions ".hi")
@@ -358,7 +374,11 @@ of code to whatever theme I'm using's background"
           (lambda ()
             (company-mode)
             (turn-off-auto-fill)
-            (visual-line-mode)))
+            (variable-pitch-mode)
+            (turn-on-visual-line-mode)
+            (setq buffer-face-mode-face '(:family "Avenir Next"))
+            (buffer-face-mode)
+            (text-scale-adjust 1)))
 
 ;; Add a view in browser action. Trigger with "aV"
 (add-to-list 'mu4e-view-actions
@@ -602,7 +622,6 @@ of code to whatever theme I'm using's background"
     ("#49483E" . 100)))
  '(magit-diff-use-overlays nil)
  '(magit-use-overlays nil)
- '(mu4e-view-mode-hook (quote (turn-on-visual-line-mode)))
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-image-actual-width nil)
