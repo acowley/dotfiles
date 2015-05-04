@@ -20,13 +20,12 @@
                     irony company-irony
                     powerline smart-mode-line smart-mode-line-powerline-theme
                     monokai-theme markdown-mode
-                    darktooth-theme
                     session
                     projectile helm-projectile ag
                     nix-mode
                     git-commit-mode git-rebase-mode magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
-                    zenburn-theme buffer-move multiple-cursors
+                    buffer-move multiple-cursors
 
                     ;; Use the terminal-notifier program on OS X
                     erc-terminal-notifier 
