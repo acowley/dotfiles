@@ -151,6 +151,15 @@
             (buffer-face-mode)
             (text-scale-adjust 1)))
 
+(add-hook 'text-mode-hook
+          (lambda ()
+            (turn-on-visual-line-mode)
+            (variable-pitch-mode)
+            (setq buffer-face-mode-face '(:family "Avenir Next"))
+            (buffer-face-mode)
+            (text-scale-adjust 1)))
+
+
 ;;;; Ignored extensions
 (add-to-list 'completion-ignored-extensions ".hi")
 (add-to-list 'completion-ignored-extensions ".o")
@@ -246,6 +255,30 @@ of code to whatever theme I'm using's background"
 ;; For leuven-theme
 ;; Fontify the whole line for headings (with a background color).
 (setq org-fontify-whole-heading-line t)
+
+;; Use fixed-width fonts where appropriate
+;; From: https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/
+(defun adjoin-to-list-or-symbol (element list-or-symbol)
+  (require 'cl)
+  (adjoin element (if (not (listp list-or-symbol))
+                      (list list-or-symbol)
+                      list-or-symbol)))
+
+(eval-after-load "org"
+  '(mapc (lambda (face)
+           (set-face-attribute face nil
+                               :inherit (adjoin-to-list-or-symbol
+                                          'fixed-pitch
+                                          (face-attribute face :inherit))))
+         (list 'org-code 'org-block 'org-table 'org-block-background)))
+
+(eval-after-load "LaTeX"
+  '(mapc (lambda (face)
+           (set-face-attribute face nil
+                               :inherit (adjoin-to-list-or-symbol
+                                          'fixed-pitch
+                                          (face-attribute face :inherit))))
+         (list 'font-latex-math-face 'font-latex-verbatim-face)))
 
 ;;;; Outshine
 
