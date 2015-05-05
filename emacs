@@ -272,13 +272,14 @@ of code to whatever theme I'm using's background"
                                           (face-attribute face :inherit))))
          (list 'org-code 'org-block 'org-table 'org-block-background)))
 
-(eval-after-load "LaTeX"
+(eval-after-load "font-latex"
   '(mapc (lambda (face)
            (set-face-attribute face nil
                                :inherit (adjoin-to-list-or-symbol
                                           'fixed-pitch
                                           (face-attribute face :inherit))))
-         (list 'font-latex-math-face 'font-latex-verbatim-face)))
+         (list 'font-latex-math-face 'font-latex-verbatim-face
+               'font-lock-keyword-face)))
 
 ;;;; Outshine
 
