@@ -26,7 +26,7 @@
                     git-commit-mode git-rebase-mode magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     buffer-move multiple-cursors
-
+                    corral
                     ;; Use the terminal-notifier program on OS X
                     erc-hl-nicks erc-terminal-notifier 
 
@@ -620,6 +620,22 @@ of code to whatever theme I'm using's background"
   "Interface for entering a password into gpg-agent."
   (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
     str))
+;;; twittering-mode
+(add-hook 'twittering-mode-hook
+          (lambda ()
+            (variable-pitch-mode)
+            (turn-on-visual-line-mode)
+            (setq buffer-face-mode-face '(:family "Avenir Next"))
+            (buffer-face-mode)
+            (text-scale-adjust 1)))
+(add-hook 'twittering-edit-mode-hook 'flyspell-mode)
+          
+(set-variable 'twittering-use-master-password t)
+
+;;; corral
+(global-set-key (kbd "M-9") 'corral-parentheses-backward)
+(global-set-key (kbd "M-0") 'corral-parentheses-forward)
+(global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
