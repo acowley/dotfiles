@@ -28,7 +28,7 @@
                     buffer-move multiple-cursors
 
                     ;; Use the terminal-notifier program on OS X
-                    erc-terminal-notifier 
+                    erc-hl-nicks erc-terminal-notifier 
 
                     tuareg flycheck-ocaml))
 
