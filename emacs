@@ -227,20 +227,19 @@
                        (org-babel-do-load-languages
                         'org-babel-load-languages
                         '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
-                          (C . t) (js . t))))))
+                          (C . t) (js . t)))
+                       ;; Don't fight the bindings that use
+                       ;; shift-arrow to move focus between windows.
+                       (define-key org-mode-map (kbd "S-<left>") nil)
+                       (define-key org-mode-map (kbd "S-<right>") nil)
+                       (define-key org-mode-map (kbd "S-<up>") nil)
+                       (define-key org-mode-map (kbd "S-<down>") nil))))
 
 (setq org-directory "~/org")
 
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cc" 'org-capture)
-
-;; Don't fight the bindings that use shift-arrow to move focus between
-;; windows.
-(define-key org-mode-map (kbd "S-<left>") nil)
-(define-key org-mode-map (kbd "S-<right>") nil)
-(define-key org-mode-map (kbd "S-<up>") nil)
-(define-key org-mode-map (kbd "S-<down>") nil)
 
 ;; Adapted from
 ;; http://emacs.stackexchange.com/questions/3374/set-the-background-of-org-exported-code-blocks-according-to-theme
