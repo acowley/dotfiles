@@ -27,6 +27,7 @@
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     buffer-move multiple-cursors
                     corral
+                    visual-fill-column
                     ;; Use the terminal-notifier program on OS X
                     erc-hl-nicks erc-terminal-notifier 
 
@@ -663,6 +664,7 @@ of code to whatever theme I'm using's background"
  '(dired-dwim-target t)
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(fci-rule-color "#49483E")
+ '(global-visual-fill-column-mode t)
  '(haskell-indent-offset 2)
  '(haskell-tags-on-save t)
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
