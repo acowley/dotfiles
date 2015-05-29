@@ -636,6 +636,8 @@ of code to whatever theme I'm using's background"
 (global-set-key (kbd "M-9") 'corral-parentheses-backward)
 (global-set-key (kbd "M-0") 'corral-parentheses-forward)
 (global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
+(global-set-key (kbd "M-{") 'corral-braces-backward)
+(global-set-key (kbd "M-}") 'corral-braces-forward)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
