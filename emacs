@@ -366,15 +366,21 @@ of code to whatever theme I'm using's background"
 ;;; Email
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 (require 'mu4e)
-(setq mu4e-maildir "~/.mail")
-(setq mu4e-html2text-command  "/usr/local/bin/w3m -T text/html")
-(setq mu4e-mu-binary "/usr/local/bin/mu")
-;; allow for updating mail using 'U' in the main view:
-(setq mu4e-get-mail-command "/usr/local/bin/mbsync -a")
-(setq mu4e-drafts-folder "/gmail/drafts")
-(setq mu4e-sent-folder   "/gmail/sent")
-(setq mu4e-trash-folder  "/gmail/trash")
-(setq mu4e-headers-skip-duplicates t)
+(setq 
+  mu4e-maildir "~/.mail"
+  mu4e-html2text-command  "/usr/local/bin/w3m -T text/html"
+  mu4e-mu-binary "/usr/local/bin/mu"
+
+  ;; allow for updating mail using 'U' in the main view:
+  mu4e-get-mail-command "/usr/local/bin/mbsync -a"
+
+  ;; gmail folder setup
+  mu4e-drafts-folder "/gmail/drafts"
+  mu4e-sent-folder   "/gmail/sent"
+  mu4e-trash-folder  "/gmail/trash"
+
+  mu4e-headers-skip-duplicates t
+  mu4e-compose-dont-reply-to-self t)
 
 ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
 (setq mu4e-sent-messages-behavior 'delete)
@@ -592,6 +598,7 @@ of code to whatever theme I'm using's background"
 ;;; git
 (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
 (add-hook 'magit-log-edit-mode-hook 'turn-on-auto-fill)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;;; company-mode
 (add-hook 'company-mode-hook
