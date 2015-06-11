@@ -502,6 +502,10 @@ of code to whatever theme I'm using's background"
 
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
+(setq mu4e-user-mail-address-list
+      (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
+              my-mu4e-account-alist))
+
 ;;; smart-mode-line (powerline)
 
 (setq sml/no-confirm-load-theme t)
