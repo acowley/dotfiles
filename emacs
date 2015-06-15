@@ -229,6 +229,10 @@
                         'org-babel-load-languages
                         '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
                           (C . t) (js . t)))
+
+                       ;; Disable variable-pitch-mode in tables
+                       (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+
                        ;; Don't fight the bindings that use
                        ;; shift-arrow to move focus between windows.
                        (define-key org-mode-map (kbd "S-<left>") nil)
