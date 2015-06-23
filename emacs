@@ -328,6 +328,14 @@ of code to whatever theme I'm using's background"
         ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
          "* TODO %?\n  %i\n  %a")))
 
+;;;; Encryption
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+;; GPG key to use for encryption
+;; Either the Key ID or set to nil to use symmetric encryption.
+(setq org-crypt-key "D50A574B")
+
 ;;; Helm
 
 (add-hook 'helm-mode-hook
