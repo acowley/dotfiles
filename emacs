@@ -563,15 +563,16 @@ of code to whatever theme I'm using's background"
     (define-key haskell-mode-map (kbd "C-c M-.") nil)
     (define-key haskell-mode-map (kbd "C-c C-d") nil)))
 
-(add-hook 'haskell-mode-hook 
-          (lambda ()
-            (electric-indent-local-mode -1)
-            (ghc-init) ;;; ghc-mod
-            (company-mode)
-            (add-to-list 'company-backends
-                         '(company-ghc :with company-dabbrev-code))
-            (custom-set-variables '(haskell-tags-on-save t))
-            (turn-on-haskell-indent)))
+(defun ac/haskell-mode-hook ()
+  (electric-indent-local-mode -1)
+  (ghc-init) ;;; ghc-mod
+  (company-mode)
+  (add-to-list 'company-backends
+               '(company-ghc :with company-dabbrev-code))
+  ;(custom-set-variables '(haskell-tags-on-save t))
+  (turn-on-haskell-indent))
+
+(add-hook 'haskell-mode-hook #'ac/haskell-mode-hook)
 
 (add-to-list 'load-path "~/.emacs.d/misc")
 (add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . haskell-latex-mode))
