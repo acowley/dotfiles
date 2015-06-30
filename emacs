@@ -374,6 +374,7 @@ of code to whatever theme I'm using's background"
 (global-set-key (kbd "C-c h") 'helm-mini)
 
 (projectile-global-mode)
+(setq projectile-enable-caching t)
 
 ;;; Email
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
