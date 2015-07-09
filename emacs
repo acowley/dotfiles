@@ -9,7 +9,8 @@
 
 ;; Make sure the packages I use are installed
 (setq my-packages '(exec-path-from-shell 
-                    ghc haskell-mode
+                    ; ghc
+                    haskell-mode
                     company company-ghc helm helm-ag
 		    helm-company helm-swoop
                     outorg
@@ -23,14 +24,15 @@
                     session
                     projectile helm-projectile ag
                     nix-mode
-                    git-commit-mode git-rebase-mode magit
+		    ;git-commit-mode git-rebase-mode magit
+		    magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     buffer-move multiple-cursors
                     corral
                     visual-fill-column
                     ;; Use the terminal-notifier program on OS X
                     erc-hl-nicks erc-terminal-notifier 
-
+                    jonprl-mode
                     tuareg flycheck-ocaml))
 
 ; If we run package-initialize, then add-to-list melpa, the
@@ -537,6 +539,11 @@ of code to whatever theme I'm using's background"
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+(defun ac/insert-numbers1 ()
+  "Insert a number at each cursor counting up from 1."
+  (interactive)
+  (mc/insert-numbers 1))
+
 ;;; Buffer-move
 
 ;; buffer-move setup
@@ -547,6 +554,9 @@ of code to whatever theme I'm using's background"
 (global-set-key (kbd "<C-S-down>") 'buf-move-down)
 
 ;;; haskell
+
+;; Using a source checkout of ghc-mod
+(add-to-list 'load-path "~/src/ghc-mod/elisp/")
 
 ; Prevent ghci from looking for a cabal projection definition when
 ; loading a file
@@ -573,6 +583,7 @@ of code to whatever theme I'm using's background"
     (define-key haskell-mode-map (kbd "C-c C-d") nil)))
 
 (defun ac/haskell-mode-hook ()
+  (require 'ghc)
   (electric-indent-local-mode -1)
   (ghc-init) ;;; ghc-mod
   (company-mode)
@@ -663,6 +674,10 @@ of code to whatever theme I'm using's background"
 (global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
 (global-set-key (kbd "M-{") 'corral-braces-backward)
 (global-set-key (kbd "M-}") 'corral-braces-forward)
+;;; JonPRL
+(defun ac/jonprl-hook ()
+  (setq jonprl-path "~/Documents/Projects/JonPRL/bin/jonprl"))
+(add-hook 'jonprl-mode #'ac/jonprl-hook)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
@@ -693,7 +708,6 @@ of code to whatever theme I'm using's background"
  '(fci-rule-color "#49483E")
  '(global-visual-fill-column-mode t)
  '(haskell-indent-offset 2)
- '(haskell-tags-on-save t)
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
  '(highlight-tail-colors
    (("#49483E" . 0)
@@ -705,6 +719,7 @@ of code to whatever theme I'm using's background"
     ("#A41F99" . 85)
     ("#49483E" . 100)))
  '(magit-diff-use-overlays nil)
+ '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
@@ -822,3 +837,4 @@ of code to whatever theme I'm using's background"
 ;; mode: emacs-lisp
 ;; eval: (org-overview)
 ;; End:
+
