@@ -677,7 +677,7 @@ of code to whatever theme I'm using's background"
 ;;; JonPRL
 (defun ac/jonprl-hook ()
   (setq jonprl-path "~/Documents/Projects/JonPRL/bin/jonprl"))
-(add-hook 'jonprl-mode #'ac/jonprl-hook)
+(add-hook 'jonprl-mode-hook #'ac/jonprl-hook)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
