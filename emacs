@@ -390,7 +390,8 @@ of code to whatever theme I'm using's background"
   mu4e-get-mail-command "/usr/local/bin/mbsync -a"
 
   ;; gmail folder setup
-  mu4e-drafts-folder "/gmail/drafts"
+  ;mu4e-drafts-folder "/gmail/drafts"
+  mu4e-drafts-folder "/mu4e/drafts"
   mu4e-sent-folder   "/gmail/sent"
   mu4e-trash-folder  "/gmail/trash"
 

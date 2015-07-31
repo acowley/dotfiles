@@ -38,11 +38,11 @@ Slave ":gmail-local:INBOX"
 Create Both
 SyncState *
 
-Channel gmail-drafts
-Master ":gmail-remote:[Gmail]/Drafts"
-Slave ":gmail-local:drafts"
-Create Both
-SyncState *
+# Channel gmail-drafts
+# Master ":gmail-remote:[Gmail]/Drafts"
+# Slave ":gmail-local:drafts"
+# Create Both
+# SyncState *
 
 Channel gmail-sent
 Master ":gmail-remote:[Gmail]/Sent Mail"
@@ -60,7 +60,7 @@ SyncState *
 Group gmail
 Channel gmail-trash
 Channel gmail-inbox
-Channel gmail-drafts
+# Channel gmail-drafts
 Channel gmail-sent
 Channel gmail-flagged
 Channel gmail-archive
