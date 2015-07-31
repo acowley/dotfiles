@@ -5,6 +5,10 @@
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
 
+;; Using a source checkout of ghc-mod
+(add-to-list 'load-path "/Users/acowley/src/ghc-mod/elisp/")
+(require 'ghc)
+
 ;;; Package setup
 
 ;; Make sure the packages I use are installed
@@ -557,7 +561,7 @@ of code to whatever theme I'm using's background"
 ;;; haskell
 
 ;; Using a source checkout of ghc-mod
-(add-to-list 'load-path "~/src/ghc-mod/elisp/")
+; (add-to-list 'load-path "~/src/ghc-mod/elisp/")
 
 ; Prevent ghci from looking for a cabal projection definition when
 ; loading a file
