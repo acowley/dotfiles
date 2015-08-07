@@ -287,7 +287,8 @@ of code to whatever theme I'm using's background"
                                :inherit (adjoin-to-list-or-symbol
                                           'fixed-pitch
                                           (face-attribute face :inherit))))
-         (list 'org-code 'org-block 'org-table 'org-block-background)))
+         ;(list 'org-code 'org-block 'org-table 'org-block-background)))
+         (list 'org-code 'org-block 'org-table)))
 
 (eval-after-load "font-latex"
   '(mapc (lambda (face)
@@ -797,7 +798,13 @@ of code to whatever theme I'm using's background"
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages")))
  '(projectile-ignored-projects (quote ("~/")))
- '(safe-local-variable-values (quote ((eval org-overview))))
+ '(safe-local-variable-values
+   (quote
+    ((org-confirm-babel-evaluate lambda
+                                 (lang body)
+                                 (not
+                                  (string= lang "emacs-lisp")))
+     (eval org-overview))))
  '(session-use-package t nil (session))
  '(show-paren-mode t)
  '(tramp-shell-prompt-pattern
@@ -835,7 +842,8 @@ of code to whatever theme I'm using's background"
  '(font-lock-comment-face ((t (:foreground "#75715E" :slant italic))))
  '(font-lock-doc-face ((t (:foreground "#75715E" :slant italic))))
  '(font-lock-type-face ((t (:foreground "#66D9EF" :slant normal))))
- '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green")))))
+ '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
+ '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "light green" :weight bold)))))
 
 
 ;;; File Local Variables
