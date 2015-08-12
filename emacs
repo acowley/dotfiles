@@ -16,7 +16,7 @@
                     ; ghc
                     haskell-mode
                     company company-ghc helm helm-ag
-		    helm-company helm-swoop
+		    helm-company helm-swoop helm-dash
                     outorg
                     outshine
                     htmlize
@@ -382,6 +382,17 @@ of code to whatever theme I'm using's background"
 
 (projectile-global-mode)
 (setq projectile-enable-caching t)
+
+(defun projectile-helm-dash ()
+  "Set the helm-dash docsets path to the 'docsets' directory
+under the current project's root directory."
+  (interactive)
+  (require 'helm-dash)
+  (require 'projectile)
+  (setq helm-dash-browser-func 'eww)
+  (setq helm-dash-docsets-path (concat (projectile-project-root) "docsets"))
+  (message (format "Loaded docsets for %s" (projectile-project-name))))
+
 
 ;;; Email
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
