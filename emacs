@@ -149,6 +149,17 @@
   (interactive)
   (sort-regexp-fields nil "\\w+" "\\&" (region-beginning) (region-end)))
 
+(defun browse-url-safari (uri &args)
+"Open a URI in Safari using AppleScript. This preserves anchors."
+  (let ((script (format "
+tell application \"Safari\"
+  open location \"%s\"
+  activate
+end tell" uri)))
+    (do-applescript script)))
+
+(setq browse-url-browser-function #'browse-url-safari)
+
 ;;;; variable-pitch-mode
 (add-hook 'mu4e-view-mode-hook
           (lambda ()
