@@ -8,7 +8,9 @@ Host imap.gmail.com
 User acowley@gmail.com
 PassCmd "gpg -q --for-your-eyes-only -d ~/.mailpass.gpg"
 # Use SSL
-UseIMAPS yes
+# UseIMAPS yes
+SSLType IMAPS
+AuthMechs LOGIN
 
 IMAPStore gmail-remote
 Account gmail
