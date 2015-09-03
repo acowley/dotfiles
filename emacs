@@ -37,6 +37,7 @@
                     ;; Use the terminal-notifier program on OS X
                     erc-hl-nicks erc-terminal-notifier 
                     jonprl-mode
+                    god-mode
                     tuareg flycheck-ocaml))
 
 ; If we run package-initialize, then add-to-list melpa, the
@@ -404,6 +405,27 @@ under the current project's root directory."
   (setq helm-dash-docsets-path (concat (projectile-project-root) "docsets"))
   (message (format "Loaded docsets for %s" (projectile-project-name))))
 
+
+;;; god-mode
+
+(require 'god-mode)
+
+;; On OS X, set "caps lock" to no action in system preferences, then
+;; use the Seil app to rebind "caps lock" to f9.
+(global-set-key (kbd "<f9>") 'god-mode)
+(define-key god-local-mode-map (kbd ".") 'repeat)
+
+(defun ac/god-mode-toggle ()
+  "Set the mode line to a white background when god-mode is
+active; black when inactive."
+  (if god-local-mode
+      (progn
+        (set-face-background 'mode-line "white")
+        (set-face-background 'mode-line-inactive "white"))
+      (set-face-background 'mode-line "black")
+      (set-face-background 'mode-line-inactive "black")))
+(add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
+(add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
 
 ;;; Email
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
