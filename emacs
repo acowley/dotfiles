@@ -410,10 +410,17 @@ under the current project's root directory."
 
 (require 'god-mode)
 
+(setq god-exempt-major-modes nil)
+(setq god-exempt-predicates nil)
+
 ;; On OS X, set "caps lock" to no action in system preferences, then
 ;; use the Seil app to rebind "caps lock" to f9.
-(global-set-key (kbd "<f9>") 'god-mode)
+(global-set-key (kbd "<f9>") 'god-mode-all)
 (define-key god-local-mode-map (kbd ".") 'repeat)
+
+;; Easier to use with god-mode
+(global-set-key (kbd "C-x C-o") 'other-window)
+(global-set-key (kbd "C-s") #'helm-swoop) ; instead of isearch-forward
 
 (defun ac/god-mode-toggle ()
   "Set the mode line to a white background when god-mode is
