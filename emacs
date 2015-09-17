@@ -422,6 +422,11 @@ under the current project's root directory."
 (global-set-key (kbd "C-x C-o") 'other-window)
 (global-set-key (kbd "C-s") #'helm-swoop) ; instead of isearch-forward
 
+;; I swap these becuase I use switch-to-buffer much more frequently
+;; and prefer it to have the simpler binding.
+(global-set-key (kbd "C-x b") #'list-buffers)
+(global-set-key (kbd "C-x C-b") #'switch-to-buffer)
+
 (defun ac/god-mode-toggle ()
   "Set the mode line to a white background when god-mode is
 active; black when inactive."
