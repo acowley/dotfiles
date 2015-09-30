@@ -433,9 +433,12 @@ active; black when inactive."
   (if god-local-mode
       (progn
         (set-face-background 'mode-line "white")
-        (set-face-background 'mode-line-inactive "white"))
+        (set-face-background 'mode-line-inactive "white")
+        (hl-line-mode 1))
       (set-face-background 'mode-line "black")
-      (set-face-background 'mode-line-inactive "black")))
+      (set-face-background 'mode-line-inactive "black")
+      (unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))))
+
 (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
 (add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
 
