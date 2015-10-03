@@ -161,6 +161,19 @@ end tell" uri)))
 
 (setq browse-url-browser-function #'browse-url-safari)
 
+;; From http://emacsredux.com/blog/2013/06/21/eval-and-replace/
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(global-set-key (kbd "C-c e") 'eval-and-replace)
+
 ;;;; variable-pitch-mode
 (add-hook 'mu4e-view-mode-hook
           (lambda ()
