@@ -788,6 +788,7 @@ predicate returns true."
 (set-variable 'twittering-use-master-password t)
 
 ;;; corral
+(setq corral-preserve-point t)
 (global-set-key (kbd "M-9") 'corral-parentheses-backward)
 (global-set-key (kbd "M-0") 'corral-parentheses-forward)
 (global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
