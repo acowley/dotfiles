@@ -578,17 +578,57 @@ active; black when inactive."
      (smtpmail-stream-type ssl)
      (smtpmail-auth-supported (login)))))
 
+(defun my-ensure-list (x)
+  "If the given value is a list, leave it alone. If it isn't,
+cons it to nil."
+  (if (listp x) x (cons x nil)))
+
+(defun my-first (f xs)
+  "Returns the first element of the list for which the given
+predicate returns true."
+  (cond
+   ((null xs) nil)
+   ((funcall f (car xs)) (car xs))
+   (t (my-first f (cdr xs)))))
+
+(defun my-mem-string (x xs)
+  "memq using 'string-equal' for equality."
+  (cond
+   ((null xs) nil)
+   ((string-equal x (car xs)) xs)
+   (t (my-mem-string x (cdr xs)))))
+
 (defun my-mu4e-set-account ()
   "Set the account for sending a message"
-  (let* 
-    ((account
+  (let*
+    ((recip-account
+      (when mu4e-compose-parent-message
+          (let*
+              ((my-addresses (mapcar #'(lambda (account)
+                                         (cons (car account)
+                                               (cadr (assoc 'user-mail-address
+                                                            (cdr account)))))
+                                     my-mu4e-account-alist))
+               (recipients (append (my-ensure-list
+                                    (plist-get mu4e-compose-parent-message :to))
+                                   (plist-get mu4e-compose-parent-message :cc)))
+               (all-addresses (mapcar #'(lambda (var)
+                                          (if (consp var) (cdr var) var))
+                                      recipients))
+               (my-address (my-first #'(lambda (x)
+                                         (my-mem-string (cdr x) all-addresses))
+                                     my-addresses)))
+            (when my-address (car my-address)))))
+    (account
+     (if recip-account
+         recip-account
        (completing-read
         (format "Compose with account: (%s) "
                 (mapconcat #'(lambda (var) (car var)) 
                            my-mu4e-account-alist "/"))
         (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
-        nil t nil nil (caar my-mu4e-account-alist)))
-     (account-vars (cdr (assoc account my-mu4e-account-alist))))
+        nil t nil nil (caar my-mu4e-account-alist))))
+    (account-vars (cdr (assoc account my-mu4e-account-alist))))
     (if account-vars
         (mapc #'(lambda (var) (set (car var) (cadr var))) account-vars)
       (error "No email account found"))))
