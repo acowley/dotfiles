@@ -462,6 +462,14 @@ active; black when inactive."
 (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
 (add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
 
+(defun ac/god-toggle-on-overwrite ()
+  "Toggle god-mode on overwrite-mode."
+  (if (bound-and-true-p overwrite-mode)
+      (god-local-mode-pause)
+    (god-local-mode-resume)))
+
+(add-hook 'overwrite-mode-hook #'ac/god-toggle-on-overwrite)
+
 ;;; Email
 (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 (require 'mu4e)
