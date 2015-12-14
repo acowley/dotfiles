@@ -768,7 +768,9 @@ predicate returns true."
                                 (setq company-ghc-show-info t)))
 
 (eval-after-load 'company
-  '(add-to-list 'company-backends 'company-irony))
+  (lambda ()
+    (add-to-list 'company-backends 'company-irony)
+    (add-to-list 'company-backends 'company-ispell)))
 
 ;; (optional) adds CC special commands to `company-begin-commands' in order to
 ;; trigger completion at interesting places, such as after scope operator
