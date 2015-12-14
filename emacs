@@ -471,7 +471,8 @@ active; black when inactive."
   mu4e-mu-binary "/usr/local/bin/mu"
 
   ;; allow for updating mail using 'U' in the main view:
-  mu4e-get-mail-command "/usr/local/bin/mbsync -a"
+  ; mu4e-get-mail-command "/usr/local/bin/mbsync -a"
+  mu4e-get-mail-command "~/.nix-profile/bin/mbsync -a"
 
   ;; gmail folder setup
   ;mu4e-drafts-folder "/gmail/drafts"
