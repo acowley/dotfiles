@@ -228,6 +228,12 @@ end tell" uri)))
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'text-mode-hook 'flyspell-mode)
 
+;;;; Copy and comment
+(defun copy-and-comment ()
+  (interactive)
+  (kill-ring-save (region-beginning) (region-end))
+  (comment-dwim nil))
+
 ;;; impatient-mode
 
 ;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
