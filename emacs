@@ -114,7 +114,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; Turn auto-fill-mode on by default in text modes
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+; (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Turn off electric-indent-mode everywhere
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
