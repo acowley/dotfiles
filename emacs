@@ -267,10 +267,15 @@ end tell" uri)))
                        (org-babel-do-load-languages
                         'org-babel-load-languages
                         '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
-                          (C . t) (js . t)))
+                          (C . t) (js . t) (ipython . t)))
 
                        ;; Disable variable-pitch-mode in tables
                        (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+
+                       ;; display/update images in the buffer after I evaluate
+                       (add-hook 'org-babel-after-execute-hook
+                                 'org-display-inline-images
+                                 'append)
 
                        ;; Don't fight the bindings that use
                        ;; shift-arrow to move focus between windows.
