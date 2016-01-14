@@ -783,10 +783,13 @@ predicate returns true."
                                 (company-ghc-turn-on-autoscan)
                                 (setq company-ghc-show-info t)))
 
+(defun ac/company-text-mode ()
+  (add-to-list 'company-backends 'company-ispell))
+
 (eval-after-load 'company
   (lambda ()
     (add-to-list 'company-backends 'company-irony)
-    (add-to-list 'company-backends 'company-ispell)))
+    (add-hook 'text-mode-hook #'ac/company-text-mode)))
 
 ;; (optional) adds CC special commands to `company-begin-commands' in order to
 ;; trigger completion at interesting places, such as after scope operator
