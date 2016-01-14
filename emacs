@@ -174,6 +174,8 @@ end tell" uri)))
 
 (global-set-key (kbd "C-c e") 'eval-and-replace)
 
+(setq visual-line-fringe-indicators '(left-curly-arrow nil))
+
 ;;;; variable-pitch-mode
 (add-hook 'mu4e-view-mode-hook
           (lambda ()
