@@ -744,6 +744,12 @@ predicate returns true."
 (add-hook 'c++-mode-hook
           (lambda ()
             (setq company-backends (delete 'company-semantic company-backends))))
+;;; python
+(defun ac/python-hook ()
+  (setq python-indent-offset 2))
+
+(add-hook 'python-mode-hook #'ac/python-hook)
+
 ;;; File mode associtions
 (autoload 'glsl-mode "glsl-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
