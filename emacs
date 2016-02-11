@@ -271,28 +271,35 @@ end tell" uri)))
 ;;; Org-mode
 
 (add-hook 'org-mode-hook
-          (lambda () (progn
-                       (setq org-src-fontify-natively t)
-                       (setq org-use-speed-commands t)
-                       (org-babel-do-load-languages
-                        'org-babel-load-languages
-                        '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
-                          (C . t) (js . t) (ipython . t)))
+          (lambda ()
+            (progn
+              ;; Let emphasized strings be bordered by quotes
+              (setcar (nthcdr 2 org-emphasis-regexp-components) "\t\r\n, ")
+              (org-set-emph-re 'org-emphasis-regexp-components
+                               org-emphasis-regexp-components)
+              (setq org-src-fontify-natively t)
+              (setq org-use-speed-commands t)
+              (org-babel-do-load-languages
+               'org-babel-load-languages
+               '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
+                 (C . t) (js . t) (ipython . t)))
 
-                       ;; Disable variable-pitch-mode in tables
-                       (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+              ;; Disable variable-pitch-mode in tables
+              (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+              (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+              (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
 
-                       ;; display/update images in the buffer after I evaluate
-                       (add-hook 'org-babel-after-execute-hook
-                                 'org-display-inline-images
-                                 'append)
+              ;; display/update images in the buffer after I evaluate
+              (add-hook 'org-babel-after-execute-hook
+                        'org-display-inline-images
+                        'append)
 
-                       ;; Don't fight the bindings that use
-                       ;; shift-arrow to move focus between windows.
-                       (define-key org-mode-map (kbd "S-<left>") nil)
-                       (define-key org-mode-map (kbd "S-<right>") nil)
-                       (define-key org-mode-map (kbd "S-<up>") nil)
-                       (define-key org-mode-map (kbd "S-<down>") nil))))
+              ;; Don't fight the bindings that use
+              ;; shift-arrow to move focus between windows.
+              (define-key org-mode-map (kbd "S-<left>") nil)
+              (define-key org-mode-map (kbd "S-<right>") nil)
+              (define-key org-mode-map (kbd "S-<up>") nil)
+              (define-key org-mode-map (kbd "S-<down>") nil))))
 
 (setq org-directory "~/org")
 
@@ -800,8 +807,8 @@ predicate returns true."
                                 (company-ghc-turn-on-autoscan)
                                 (setq company-ghc-show-info t)))
 
-(defun ac/company-text-mode ()
-  (add-to-list 'company-backends 'company-ispell))
+(defun ac/company-text-mode () )
+;  (add-to-list 'company-backends 'company-ispell))
 
 (eval-after-load 'company
   (lambda ()
@@ -893,6 +900,10 @@ predicate returns true."
  '(magit-use-overlays nil)
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+ '(org-format-latex-options
+   (quote
+    (:foreground default :background default :scale 1.4 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+                 ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-image-actual-width nil)
  '(org-latex-create-formula-image-program (quote imagemagick))
  '(org-src-preserve-indentation t)
@@ -957,6 +968,7 @@ predicate returns true."
 \\end{align*}" ""))))
  '(outshine-preserve-delimiter-whitespace t)
  '(outshine-use-speed-commands t)
+ '(pop-up-windows nil)
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages")))
@@ -964,9 +976,11 @@ predicate returns true."
  '(projectile-project-root-files
    (quote
     ("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal")))
+ '(python-shell-interpreter "python3")
  '(safe-local-variable-values
    (quote
-    ((org-confirm-babel-evaluate lambda
+    ((org-confirm-babel-evaluate)
+     (org-confirm-babel-evaluate lambda
                                  (lang body)
                                  (not
                                   (string= lang "emacs-lisp")))
