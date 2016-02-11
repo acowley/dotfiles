@@ -496,15 +496,21 @@ active; black when inactive."
 (add-hook 'overwrite-mode-hook #'ac/god-toggle-on-overwrite)
 
 ;;; Email
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+(add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
 (require 'mu4e)
 (setq 
   mu4e-maildir "~/.mail"
   mu4e-html2text-command  "/usr/local/bin/w3m -T text/html"
-  mu4e-mu-binary "/usr/local/bin/mu"
+  ;mu4e-mu-binary "/usr/local/bin/mu"
 
   ;; allow for updating mail using 'U' in the main view:
   ; mu4e-get-mail-command "/usr/local/bin/mbsync -a"
+  ;; mu4e-get-mail-command
+  ;;   (concat
+  ;;    (replace-regexp-in-string
+  ;;     "\n\\'" "" (shell-command-to-string "readlink $(which mbsync)"))
+  ;;    " -a")
   mu4e-get-mail-command "~/.nix-profile/bin/mbsync -a"
 
   ;; gmail folder setup
