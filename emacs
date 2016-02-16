@@ -63,7 +63,7 @@
 
 ;; Use the exec-path-from-shell package to set the PATH
 (when (memq window-system '(mac ns))
-  (add-hook 'after-init-hook 'exec-path-from-shell-initialize))
+  (add-hook 'after-init-hook #'exec-path-from-shell-initialize))
 
 ;; Move point to farthest possible position when scrolling the window
 ;; has reached the beginning or end of the buffer
@@ -174,7 +174,7 @@ end tell" uri)))
 
 (global-set-key (kbd "C-c e") 'eval-and-replace)
 
-(setq visual-line-fringe-indicators '(left-curly-arrow nil))
+;(setq visual-line-fringe-indicators '(left-curly-arrow nil))
 
 ;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
 (defun unfill-paragraph (&optional region)
@@ -198,7 +198,7 @@ end tell" uri)))
 (add-hook 'text-mode-hook
           (lambda ()
             (turn-on-visual-line-mode)
-            (variable-pitch-mode)
+            ;(variable-pitch-mode)
             (setq buffer-face-mode-face '(:family "Avenir Next"))
             (buffer-face-mode)
             (text-scale-adjust 1)))
@@ -284,7 +284,9 @@ end tell" uri)))
                '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
                  (C . t) (js . t) (ipython . t)))
 
-              ;; Disable variable-pitch-mode in tables
+              ;; Disable variable-pitch-mode in tables. We used to be
+              ;; able to disable this in src blocks, but this no
+              ;; longer works.
               (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
               (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
               (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
@@ -293,6 +295,13 @@ end tell" uri)))
               (add-hook 'org-babel-after-execute-hook
                         'org-display-inline-images
                         'append)
+
+              ;; (setq org-agenda-prefix-format
+              ;;       '((agenda . " %i %-12:c%?-12t% s")
+              ;;         (timeline . "  % s")
+              ;;         (todo . " %i %b%-12:c")
+              ;;         (tags . " %i %-12:c")
+              ;;         (search . " %i %-12:c")))
 
               ;; Don't fight the bindings that use
               ;; shift-arrow to move focus between windows.
@@ -749,6 +758,7 @@ predicate returns true."
 
 (defun ac/haskell-mode-hook ()
   (require 'ghc)
+  (setq ghc-debug 't)
   (electric-indent-local-mode -1)
   (ghc-init) ;;; ghc-mod
   (company-mode)
@@ -869,6 +879,8 @@ predicate returns true."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
  '(ansi-color-names-vector
    ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
  '(column-number-mode t)
@@ -880,7 +892,7 @@ predicate returns true."
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+    ("b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(debug-on-error t)
  '(default-input-method "TeX")
  '(dired-dwim-target t)
@@ -889,6 +901,7 @@ predicate returns true."
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(fci-rule-color "#49483E")
  '(ghc-doc-browser-function (quote ghc-browse-url-safari))
+ '(ghc-use-nix-shell (quote (quote t)))
  '(global-visual-fill-column-mode t)
  '(haskell-indent-offset 2)
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
@@ -908,10 +921,12 @@ predicate returns true."
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-format-latex-options
    (quote
-    (:foreground default :background default :scale 1.4 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+    (:foreground default :background default :scale 1.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-image-actual-width nil)
+ '(org-imenu-depth 3)
  '(org-latex-create-formula-image-program (quote imagemagick))
+ '(org-reveal-root "file:///Users/acowley/src/reveal.js")
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
    (quote
@@ -985,7 +1000,8 @@ predicate returns true."
  '(python-shell-interpreter "python3")
  '(safe-local-variable-values
    (quote
-    ((org-confirm-babel-evaluate)
+    ((org-image-actual-width . 500)
+     (org-confirm-babel-evaluate)
      (org-confirm-babel-evaluate lambda
                                  (lang body)
                                  (not
