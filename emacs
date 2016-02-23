@@ -926,6 +926,9 @@ predicate returns true."
  '(org-image-actual-width nil)
  '(org-imenu-depth 3)
  '(org-latex-create-formula-image-program (quote imagemagick))
+ '(org-latex-pdf-process
+   (quote
+    ("xelatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "xelatex -interaction nonstopmode -output-directory %o %f" "xelatex -interaction nonstopmode -output-directory %o %f")))
  '(org-reveal-root "file:///Users/acowley/src/reveal.js")
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
