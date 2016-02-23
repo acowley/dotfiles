@@ -15,7 +15,9 @@
 (setq my-packages '(exec-path-from-shell 
                     ; ghc
                     haskell-mode
-                    company company-ghc helm helm-ag
+                    company company-ghc
+                    ; helm helm-ag
+                    company-coq company-shell company-math
 		    helm-company helm-swoop helm-dash
                     outorg
                     outshine
@@ -43,11 +45,23 @@
 ; If we run package-initialize, then add-to-list melpa, the
 ; package-install invocation will fail. We need the package-archives
 ; list setup before calling package-initialize.
-(setq package-archives '(;("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+(setq package-archives '(("org" . "http://orgmode.org/elpa/")
+                         ;("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
 			 ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
+
+(add-to-list 'load-path "~/src/ob-ipython")
+(require 'ob-ipython)
+
+;; (add-to-list 'load-path "~/src/org-mode")
+;; (require 'org)
+
+(add-to-list 'load-path "/Users/acowley/src/helm/")
+(require 'helm-config)
+(require 'helm)
+
+(add-to-list 'load-path "~/Documents/Projets/ox-reveal")
 
 ; Fetch the list of available packages
 (unless package-archive-contents (package-refresh-contents))
