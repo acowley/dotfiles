@@ -20,6 +20,7 @@ MaildirStore gmail-local
 # The trailing "/" is important
 Path ~/.mail/gmail/
 Inbox ~/.mail/gmail/Inbox
+MaxSize 1M
 
 Channel gmail-trash
 Master ":gmail-remote:[Gmail]/Trash"
@@ -33,7 +34,7 @@ Master ":gmail-remote:[Gmail]/All Mail"
 Slave ":gmail-local:archive"
 Create Both
 SyncState *
-MaxMessages 100
+# MaxMessages 100
 ExpireUnread no
 
 Channel gmail-inbox
@@ -53,11 +54,18 @@ Master ":gmail-remote:[Gmail]/Sent Mail"
 Slave ":gmail-local:sent"
 Create Both
 SyncState *
-MaxMessages 100
+# MaxMessages 100
 
 Channel gmail-flagged
 Master ":gmail-remote:[Gmail]/Starred"
 Slave ":gmail-local:flagged"
+Create Both
+SyncState *
+
+Channel gmail-folders
+Master ":gmail-remote:"
+Slave ":gmail-local:"
+Patterns * ![Gmail]* !trash !archive !drafts !flagged !Inbox !sent
 Create Both
 SyncState *
 
