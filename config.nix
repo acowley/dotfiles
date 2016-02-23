@@ -27,7 +27,7 @@
     myHaskellPackages = with pkgs.haskell.lib;
       (pkgs.haskell.packages.ghc7103.override {
         packageSetConfig = self: super:
-          pkgs.callPackage (<nixpkgs> + /pkgs/development/haskell-modules/configuration-lts-5.1.nix) { } self (super // rec {
+          pkgs.callPackage (<nixpkgs> + /pkgs/development/haskell-modules/configuration-lts-5.0.nix) { } self (super // rec {
             hpp = pkgs.callPackage ~/Documents/Projects/hpp {
               inherit stdenv;
               inherit (super) mkDerivation base directory filepath time
@@ -50,6 +50,29 @@
               diagrams-postscript diagrams-rasterific diagrams-svg directory
               filepath JuicyPixels lens lucid-svg
             ];
+          });
+          OpenGLRaw = overrideCabal super.OpenGLRaw (drv: {
+            librarySystemDepends =
+              pkgs.lib.optionals pkgs.stdenv.isDarwin
+                [pkgs.darwin.apple_sdk.frameworks.OpenGL];
+            buildDepends = with pkgs;
+              lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenGL];
+          });
+          GLURaw = overrideCabal super.GLURaw (drv: {
+            librarySystemDepends = with pkgs;
+              if stdenv.isDarwin
+              then []
+              else super.GLURaw.librarySystemDepends;
+            buildDepends = with pkgs;
+              lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenGL];
+          });
+          OpenCL = overrideCabal super.OpenCL (drv: {
+            librarySystemDepends = (with pkgs;
+              if stdenv.isDarwin
+              then [darwin.apple_sdk.frameworks.OpenCL]
+              else super.OpenCL.librarySystemDepends);
+            buildDepends = with pkgs;
+               lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenCL];
           });
         };
       });
