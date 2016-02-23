@@ -260,6 +260,20 @@ end tell" uri)))
   (kill-ring-save (region-beginning) (region-end))
   (comment-dwim nil))
 
+;;;; Tramp with sudo
+
+;; We hardly ever want to actually ssh into a host as root. Instead,
+;; we want to ssh into the host using your account name, and then
+;; switches to root on the host. This lets us use paths like
+;; `/sudo:remotehost:/etc/hdparm.conf`. Remember that there has been a
+;; history of projectile-global-mode interfering with such file
+;; operations, so you may need to disable that temporarly.
+;; See the manual: https://www.gnu.org/software/tramp/#Multi_002dhops
+(add-to-list 'tramp-default-proxies-alist
+             '(nil "\\`root\\'" "/ssh:%h:"))
+(add-to-list 'tramp-default-proxies-alist
+             '((regexp-quote (system-name)) nil nil))
+
 ;;; impatient-mode
 
 ;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
