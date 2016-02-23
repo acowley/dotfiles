@@ -5,6 +5,24 @@
     pass = with pkgs;
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
     emacs = pkgs.emacs24Macport;
+    mygnused = pkgs.stdenv.mkDerivation {
+      name = "mygnused";
+      buildInputs = [pkgs.gnused];
+      gnused = pkgs.gnused;
+      builder = builtins.toFile "builder.sh" ''
+        source $stdenv/setup
+        mkdir -p $out/bin
+        ln -s $gnused/bin/sed $out/bin/gnused
+      '';
+      meta = {
+        description = "GNU sed symlinked to bin/gnused"
+        longDescription = ''
+          OS X ships with an older version of sed. Rather than shadow
+          it in your PATH, this package simply symlinks the gnused
+          executable from nixpkgs to the name "gnused".
+        '';
+      };
+    };
 
     myHaskellPackages = with pkgs.haskell.lib;
       (pkgs.haskell.packages.ghc7103.override {
