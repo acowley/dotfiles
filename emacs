@@ -904,6 +904,7 @@ predicate returns true."
  '(ghc-use-nix-shell (quote (quote t)))
  '(global-visual-fill-column-mode t)
  '(haskell-indent-offset 2)
+ '(helm-mu-gnu-sed-program "gnused")
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
  '(highlight-tail-colors
    (("#49483E" . 0)
