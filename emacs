@@ -269,10 +269,10 @@ end tell" uri)))
 ;; history of projectile-global-mode interfering with such file
 ;; operations, so you may need to disable that temporarly.
 ;; See the manual: https://www.gnu.org/software/tramp/#Multi_002dhops
-(add-to-list 'tramp-default-proxies-alist
-             '(nil "\\`root\\'" "/ssh:%h:"))
-(add-to-list 'tramp-default-proxies-alist
-             '((regexp-quote (system-name)) nil nil))
+;; (add-to-list 'tramp-default-proxies-alist
+;;              '(nil "\\`root\\'" "/ssh:%h:"))
+;; (add-to-list 'tramp-default-proxies-alist
+;;              '((regexp-quote (system-name)) nil nil))
 
 ;;; impatient-mode
 
@@ -548,7 +548,8 @@ active; black when inactive."
   ;;    (replace-regexp-in-string
   ;;     "\n\\'" "" (shell-command-to-string "readlink $(which mbsync)"))
   ;;    " -a")
-  mu4e-get-mail-command "~/.nix-profile/bin/mbsync -a"
+  ;mu4e-get-mail-command "~/.nix-profile/bin/mbsync -a"
+  mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
 
   ;; gmail folder setup
   ;mu4e-drafts-folder "/gmail/drafts"
@@ -958,6 +959,7 @@ predicate returns true."
  '(org-latex-pdf-process
    (quote
     ("xelatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "xelatex -interaction nonstopmode -output-directory %o %f" "xelatex -interaction nonstopmode -output-directory %o %f")))
+ '(org-mobile-files (quote ("~/org/home.org")))
  '(org-reveal-root "file:///Users/acowley/src/reveal.js")
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
