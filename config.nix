@@ -15,7 +15,7 @@
         ln -s $gnused/bin/sed $out/bin/gnused
       '';
       meta = {
-        description = "GNU sed symlinked to bin/gnused"
+        description = "GNU sed symlinked to bin/gnused";
         longDescription = ''
           OS X ships with an older version of sed. Rather than shadow
           it in your PATH, this package simply symlinks the gnused
@@ -24,12 +24,14 @@
       };
     };
 
-    myHaskellPackages = with pkgs.haskell.lib;
-      (pkgs.haskell.packages.ghc7103.override {
-        packageSetConfig = self: super:
-          pkgs.callPackage (<nixpkgs> + /pkgs/development/haskell-modules/configuration-lts-5.0.nix) { } self (super // rec {
+    myHaskellPackages =
+      with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
+        inherit pkgs;
+      };
+      pkgs.haskell.packages.lts-5_1.override {
+        overrides = self: super: {
             hpp = pkgs.callPackage ~/Documents/Projects/hpp {
-              inherit stdenv;
+              inherit (pkgs) stdenv;
               inherit (super) mkDerivation base directory filepath time
                               transformers;
             };
@@ -38,11 +40,10 @@
               inherit (super) mkDerivation array base bytestring containers
                               directory filepath JuicyPixels linear
                               OpenGL OpenGLRaw transformers vector;
-              inherit hpp;
+              inherit (self) hpp;
               frameworks = pkgs.darwin.apple_sdk.frameworks;
             };
-          });
-        overrides = self: super: {
+
           diagrams-builder = overrideCabal super.diagrams-builder (drv: {
             configureFlags = [ "-fps" "-frasterific" "-fogs" ];
             executableHaskellDepends = with super; [
@@ -53,8 +54,9 @@
           });
           OpenGLRaw = overrideCabal super.OpenGLRaw (drv: {
             librarySystemDepends =
-              pkgs.lib.optionals pkgs.stdenv.isDarwin
-                [pkgs.darwin.apple_sdk.frameworks.OpenGL];
+              if pkgs.stdenv.isDarwin
+              then [pkgs.darwin.apple_sdk.frameworks.OpenGL]
+              else super.OpenGLRaw.librarySystemDepends;
             buildDepends = with pkgs;
               lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenGL];
           });
@@ -75,24 +77,29 @@
                lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenCL];
           });
         };
-      });
+      };
 
-    #myHaskellEnv = pkgs.haskell.packages.lts-5_1.ghcWithHoogle
     myHaskellEnv = myHaskellPackages.ghcWithHoogle
       (haskellPackages: with haskellPackages; [
         cabal-install stack cabal2nix ghc-mod
         tasty tasty-hunit doctest
-        lens linear vector containers criterion hmatrix
-        OpenGL GLUtil # GLFW-b
+        lens linear vector containers criterion hmatrix foldl
+        # OpenGL GLUtil # GLFW-b
         OpenCL
         JuicyPixels Rasterific
         diagrams diagrams-rasterific diagrams-builder
         Chart Chart-diagrams
-        ihaskell ihaskell-charts ihaskell-diagrams
+        ihaskell ihaskell-charts ihaskell-diagrams ihaskell-blaze
       ]);
+
     myPythonEnv = pkgs.python3.buildEnv.override {
       extraLibs = with pkgs.python3Packages; [
         numpy scipy matplotlib networkx jupyter_console notebook
       ];};
+
+    myREnv = pkgs.rWrapper.override {
+      packages = with pkgs.rPackages;
+        [ ggplot2 reshape2 ];
+    };
   };
 }
