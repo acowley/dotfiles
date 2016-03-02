@@ -57,11 +57,11 @@
 ;; (add-to-list 'load-path "~/src/org-mode")
 ;; (require 'org)
 
-(add-to-list 'load-path "/Users/acowley/src/helm/")
-(require 'helm-config)
-(require 'helm)
+;; (add-to-list 'load-path "/Users/acowley/src/helm/")
+;; (require 'helm-config)
+;; (require 'helm)
 
-(add-to-list 'load-path "~/Documents/Projets/ox-reveal")
+;; (add-to-list 'load-path "~/Documents/Projets/ox-reveal")
 
 ; Fetch the list of available packages
 (unless package-archive-contents (package-refresh-contents))
