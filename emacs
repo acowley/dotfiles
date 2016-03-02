@@ -423,7 +423,7 @@ of code to whatever theme I'm using's background"
 
 (setq org-capture-templates
       '(("t" "Task" entry (file+headline org-default-notes-file "Tasks")
-         "* TODO %?\n  %i\n")
+         "* TODO %?\n  SCHEDULED: %t\n%i\n")
         ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
          "* TODO %?\n  %i\n  %a")))
 
