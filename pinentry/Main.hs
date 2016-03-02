@@ -40,7 +40,7 @@ pinEntry pe = getLine >>= uncurry aux . second (drop 1) . break isSpace
                                (fromMaybe "PROMPT" (prompt pe))
                                (fromMaybe "OK" (ok pe))
                                (fromMaybe "ERROR" (errorMsg pe))
-             r <- readProcess "/usr/local/bin/emacsclient"
+             r <- readProcess "/Users/acowley/.nix-profile/bin/emacsclient"
                           [ "-e", sexp]
                           []
              putStrLn $ "D " ++ takeWhile (/= '"') (dropWhile (== '"') r)
