@@ -443,6 +443,15 @@ of code to whatever theme I'm using's background"
 ;; Either the Key ID or set to nil to use symmetric encryption.
 (setq org-crypt-key "D50A574B")
 
+;;;; IHaskell Cleanup
+(defun kill-ihaskell ()
+  "IHaskell dies after a few evaluations of a big notebook due to
+keeping too many files open. This cleans things up so evaluation
+may begin anew."
+  (interactive)
+  (mapc #'kill-buffer '("*Python*" "*ob-ipython-client-driver*"
+                        "*ob-ipython-kernel-default*")))
+
 ;;; Helm
 
 (add-hook 'helm-mode-hook
