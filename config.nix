@@ -39,6 +39,10 @@
       inherit (pkgs.python27Packages) buildPythonPackage pyserial;
     };
 
+    julia = pkgs.julia.override {
+      doCheck = false;
+    };
+
 
     myHaskellPackages =
       with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
