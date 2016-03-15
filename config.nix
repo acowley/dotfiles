@@ -5,6 +5,7 @@
     pass = with pkgs;
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
     emacs = pkgs.emacs24Macport;
+    emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
     mygnused = pkgs.stdenv.mkDerivation {
       name = "mygnused";
       buildInputs = [pkgs.gnused];
