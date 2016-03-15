@@ -43,6 +43,40 @@
       doCheck = false;
     };
 
+    ffmpeg-full = with pkgs;
+    callPackage (<nixpkgs> + /pkgs/development/libraries/ffmpeg-full) {
+      libXv = null;
+      libXfixes = null;
+      openglExtlib = false;
+      ffplayProgram = false;
+      SDL = null;
+      nonfreeLicensing = true;
+
+      faacExtlib = false;
+      faac = null;
+      ladspaH = null;
+      celt = null;
+      gsm = null;
+      openjpeg_1 = null;
+
+      # The following need to be fixed on Darwin
+      frei0r = if stdenv.isDarwin then null else frei0r;
+      game-music-emu = if stdenv.isDarwin then null else game-music-emu;
+      libjack2 = if stdenv.isDarwin then null else libjack2;
+      libmodplug = if stdenv.isDarwin then null else libmodplug;
+      libvpx = if stdenv.isDarwin then null else libvpx;
+      openal = if stdenv.isDarwin then null else openal;
+      libpulseaudio = if stdenv.isDarwin then null else libpulseaudio;
+      samba = if stdenv.isDarwin then null else samba;
+      vid-stab = if stdenv.isDarwin then null else vid-stab;
+      x265 = if stdenv.isDarwin then null else x265;
+      xavs = if stdenv.isDarwin then null else xavs;
+      inherit (darwin) libobjc cf-private;
+      inherit (darwin.apple_sdk.frameworks) Cocoa CoreServices
+              CoreMediaIO CoreGraphics AVFoundation Foundation
+              CoreMedia MediaToolbox CoreVideo VideoToolbox
+              VideoDecodeAcceleration;
+    };
 
     myHaskellPackages =
       with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
