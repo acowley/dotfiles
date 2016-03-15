@@ -129,5 +129,8 @@
       packages = with pkgs.rPackages;
         [ ggplot2 reshape2 ];
     };
+
+    myNodeEnv = with pkgs;
+      [ nodejs npm2nix ] ++ (with nodePackages; [ grunt-cli ]);
   };
 }
