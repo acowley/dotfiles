@@ -304,6 +304,7 @@ end tell" uri)))
 
 ;;; Org-mode
 
+;;;; General Org Configuration
 (add-hook 'org-mode-hook
           (lambda ()
             (progn
@@ -313,10 +314,11 @@ end tell" uri)))
                                org-emphasis-regexp-components)
               (setq org-src-fontify-natively t)
               (setq org-use-speed-commands t)
+              (setq org-html-doctype "html5")
               (org-babel-do-load-languages
                'org-babel-load-languages
                '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
-                 (C . t) (js . t) (ipython . t)))
+                 (C . t) (js . t) (ipython . t) (maxima . t) (julia .t )))
 
               ;; Disable variable-pitch-mode in tables. We used to be
               ;; able to disable this in src blocks, but this no
@@ -959,14 +961,15 @@ predicate returns true."
    (quote
     (:foreground default :background default :scale 1.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\["))))
+ '(org-html-validation-link "")
  '(org-image-actual-width nil)
  '(org-imenu-depth 3)
  '(org-latex-create-formula-image-program (quote imagemagick))
  '(org-latex-pdf-process
    (quote
-    ("xelatex -interaction nonstopmode -output-directory %o %f" "bibtex %b" "xelatex -interaction nonstopmode -output-directory %o %f" "xelatex -interaction nonstopmode -output-directory %o %f")))
+    ("xelatex -interaction nonstopmode -output-directory %o %f" "xelatex -interaction nonstopmode -output-directory %o %f")))
  '(org-mobile-files (quote ("~/org/home.org")))
- '(org-reveal-root "file:///Users/acowley/src/reveal.js")
+ '(org-reveal-root "reveal.js")
  '(org-src-preserve-indentation t)
  '(org-structure-template-alist
    (quote
