@@ -24,6 +24,21 @@
         '';
       };
     };
+    luatool = pkgs.callPackage ~/Documents/Projects/BabyTimer/luatool {
+      inherit (pkgs) fetchgit licenses;
+      inherit (pkgs.python27Packages) buildPythonPackage pyserial;
+    };
+
+    nodemcu-uploader = pkgs.callPackage ~/Documents/Projects/BabyTimer/nodemcu-uploader {
+      inherit (pkgs) fetchgit licenses;
+      inherit (pkgs.python27Packages) buildPythonPackage pyserial;
+    };
+
+    esptool = pkgs.callPackage ~/Documents/Projects/BabyTimer/esptool {
+      inherit (pkgs) fetchgit licenses;
+      inherit (pkgs.python27Packages) buildPythonPackage pyserial;
+    };
+
 
     myHaskellPackages =
       with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
