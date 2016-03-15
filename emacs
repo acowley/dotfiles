@@ -1029,7 +1029,10 @@ predicate returns true."
 \\end{equation}" "")
      ("al" "\\begin{align*}
 ?
-\\end{align*}" ""))))
+\\end{align*}" "")
+     ("n" "#+BEGIN_NOTES
+?
+#+END_NOTES" ""))))
  '(outshine-preserve-delimiter-whitespace t)
  '(outshine-use-speed-commands t)
  '(pop-up-windows nil)
