@@ -29,7 +29,7 @@
       with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
         inherit pkgs;
       };
-      pkgs.haskell.packages.lts-5_1.override {
+      pkgs.haskell.packages.lts-5_5.override {
         overrides = self: super: {
             hpp = pkgs.callPackage ~/Documents/Projects/hpp {
               inherit (pkgs) stdenv;
@@ -45,6 +45,31 @@
               frameworks = pkgs.darwin.apple_sdk.frameworks;
             };
 
+            ipython-kernel = pkgs.callPackage ~/src/IHaskell/ipython-kernel {
+              inherit (pkgs) stdenv;
+              inherit (self) mkDerivation aeson base bytestring cereal containers
+                directory filepath mtl parsec process SHA temporary
+                text transformers unordered-containers uuid zeromq4-haskell;
+            };
+
+            ihaskell = pkgs.callPackage ~/src/IHaskell {
+              inherit (pkgs) stdenv;
+              inherit (self) mkDerivation aeson base base64-bytestring bin-package-db
+                 bytestring cereal cmdargs containers directory filepath ghc
+                 ghc-parser ghc-paths haskeline haskell-src-exts hlint hspec
+                 http-client http-client-tls HUnit ipython-kernel mtl parsec
+                 process random setenv shelly split stm strict
+                 system-argv0 text transformers unix unordered-containers
+                 utf8-string uuid vector;
+            };
+
+            ihaskell-diagrams = pkgs.callPackage ~/src/IHaskell/ihaskell-display/ihaskell-diagrams {
+              inherit (pkgs) stdenv;
+              inherit (self) mkDerivation active base bytestring diagrams
+                             diagrams-cairo diagrams-lib directory ihaskell
+                             text;
+            };
+
           diagrams-builder = overrideCabal super.diagrams-builder (drv: {
             configureFlags = [ "-fps" "-frasterific" "-fogs" ];
             executableHaskellDepends = with super; [
@@ -53,6 +78,7 @@
               filepath JuicyPixels lens lucid-svg
             ];
           });
+          Chart-diagrams = super.Chart-diagrams_1_5_4;
           OpenGLRaw = overrideCabal super.OpenGLRaw (drv: {
             librarySystemDepends =
               if pkgs.stdenv.isDarwin
@@ -84,7 +110,8 @@
       (haskellPackages: with haskellPackages; [
         cabal-install stack cabal2nix ghc-mod
         tasty tasty-hunit doctest
-        lens linear vector containers criterion hmatrix foldl
+        lens linear vector containers criterion foldl
+        hmatrix
         # OpenGL GLUtil # GLFW-b
         OpenCL
         JuicyPixels Rasterific
