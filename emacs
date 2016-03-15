@@ -452,6 +452,53 @@ may begin anew."
   (mapc #'kill-buffer '("*Python*" "*ob-ipython-client-driver*"
                         "*ob-ipython-kernel-default*")))
 
+;;;; Blog Publishing
+(setq org-publish-project-alist
+      '(("blog-content"
+         :base-directory "~/Documents/Projects/Blog/articles/"
+         :publishing-directory "~/Documents/Projects/Blog/blog/"
+         :publishing-function org-html-publish-to-html
+         :export-babel-evaluate nil
+         :recursive t
+         ;; :auto-sitemap t
+         ;; :sitemap-filename "index.html"
+         ;; :sitemap-title "Arcadian Visions Blog"
+         ;; :makeindex t
+         :htmlized-source t
+         :with-creator nil
+         :with-date nil
+         :with-email nil
+         :with-timestamps nil
+         :with-toc nil
+         :section-numbers nil
+         :html-head-include-default-style nil
+         :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../core-style.css\" />"
+         :html-postamble "")
+        ("blog-rss"
+         :base-directory "~/Documents/Projects/Blog/articles/"
+         :publishing-directory "~/Documents/Projects/Blog/blog"
+         :publishing-function (org-rss-publish-to-rss)
+         :html-link-home "http://www.arcadianvisions.com/blog/"
+         :completion-function
+           (lambda ()
+             (shell-command "mv ~/Documents/Projects/Blog/blog/index.xml ~/Documents/Projects/Blog/blog/rss.xml"))
+         :html-link-use-abs-url t
+         :exclude ".*"
+         :include ("index.org")
+         :with-toc nil
+         :section-numbers nil)
+        ("blog-assets"
+         ;; Static content like images and CSS
+         :base-directory "~/Documents/Projects/Blog/assets"
+         :base-extension any
+         :include ("basedir/.htaccess")
+         :recursive t
+         :publishing-directory "~/Documents/Projects/Blog/blog/assets"
+         :publishing-function org-publish-attachment
+         :completion-function
+           (lambda()
+             (shell-command "rsync -a ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog")))
+        ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
 ;;; Helm
 
 (add-hook 'helm-mode-hook
