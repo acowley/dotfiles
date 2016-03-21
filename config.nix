@@ -59,6 +59,8 @@
       gsm = null;
       openjpeg_1 = null;
 
+      libiconv = darwin.libiconv;
+
       # The following need to be fixed on Darwin
       frei0r = if stdenv.isDarwin then null else frei0r;
       game-music-emu = if stdenv.isDarwin then null else game-music-emu;
@@ -71,11 +73,9 @@
       vid-stab = if stdenv.isDarwin then null else vid-stab;
       x265 = if stdenv.isDarwin then null else x265;
       xavs = if stdenv.isDarwin then null else xavs;
-      inherit (darwin) libobjc cf-private;
-      inherit (darwin.apple_sdk.frameworks) Cocoa CoreServices
-              CoreMediaIO CoreGraphics AVFoundation Foundation
-              CoreMedia MediaToolbox CoreVideo VideoToolbox
-              VideoDecodeAcceleration;
+      inherit (darwin) CF;
+      inherit (darwin.apple_sdk.frameworks)
+        Cocoa CoreServices AVFoundation MediaToolbox VideoDecodeAcceleration;
     };
 
     myHaskellPackages =
