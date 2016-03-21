@@ -573,16 +573,26 @@ under the current project's root directory."
 (global-set-key (kbd "C-x b") #'list-buffers)
 (global-set-key (kbd "C-x C-b") #'switch-to-buffer)
 
+(set-face-italic 'mode-line-inactive t)
+(set-face-attribute 'mode-line nil :overline nil :underline nil)
+(set-face-attribute 'mode-line nil :box t)
+
 (defun ac/god-mode-toggle ()
   "Set the mode line to a white background when god-mode is
 active; black when inactive."
   (if god-local-mode
       (progn
-        (set-face-background 'mode-line "white")
-        (set-face-background 'mode-line-inactive "white")
+        ;; (set-face-background 'mode-line "white")
+        ;; (set-face-background 'mode-line-inactive "white")
+        ;(set-face-background 'sml/position-percentage "white")
+        (set-face-background 'sml/line-number "white")
+        (set-face-foreground 'sml/line-number "black")
         (hl-line-mode 1))
-      (set-face-background 'mode-line "black")
-      (set-face-background 'mode-line-inactive "black")
+      ;; (set-face-background 'mode-line "black")
+      ;; (set-face-background 'mode-line-inactive "black")
+      ;(set-face-background 'sml/position-percentage "black")
+      (set-face-background 'sml/line-number "black")
+      (set-face-foreground 'sml/line-number "white")
       (unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))))
 
 (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
@@ -795,7 +805,15 @@ predicate returns true."
 
 ;; Replace ":Doc:Projects/Foo/blah.hs" with ":Foo:blah.hs"
 (add-to-list 'sml/replacer-regexp-list '("^:Doc:Projects/\\([^/]*\\)/" ":\\1:") t)
-(sml/apply-theme 'smart-mode-line-powerline)
+;(sml/apply-theme 'smart-mode-line-powerline)
+(sml/apply-theme 'dark)
+
+;; Don't show common minor modes
+(setq rm-blacklist (mapconcat 'identity '(" Fly" " company" " God" " Helm" " Outl" " ARev" " BufFace" " Wrap" "+1" "Projectile.*") "\\|"))
+;(setq sml/mode-width "full")
+;; (setq sml/mode-width 0)
+;; (setq sml/shorten-modes nil)
+(setq sml/name-width '(0 . 44))
 
 ;;; Multiple-cursors
 
@@ -991,6 +1009,7 @@ predicate returns true."
  '(dired-dwim-target t)
  '(doc-view-resolution 200)
  '(doc-view-scale-internally nil)
+ '(erc-hide-list (quote ("JOIN" "PART" "QUIT")))
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(fci-rule-color "#49483E")
  '(ghc-doc-browser-function (quote ghc-browse-url-safari))
@@ -1092,6 +1111,7 @@ predicate returns true."
  '(outshine-preserve-delimiter-whitespace t)
  '(outshine-use-speed-commands t)
  '(pop-up-windows nil)
+ '(projectile-global-mode t)
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages")))
@@ -1111,6 +1131,74 @@ predicate returns true."
      (eval org-overview))))
  '(session-use-package t nil (session))
  '(show-paren-mode t)
+ ;; '(sml/mode-width
+ ;;   (if
+ ;;       (eq
+ ;;        (powerline-current-separator)
+ ;;        (quote arrow))
+ ;;       (quote right)
+ ;;     (quote full)))
+ ;; '(sml/pos-id-separator
+ ;;   (quote
+ ;;    (""
+ ;;     (:propertize " " face powerline-active1)
+ ;;     (:eval
+ ;;      (propertize " "
+ ;;                  (quote display)
+ ;;                  (funcall
+ ;;                   (intern
+ ;;                    (format "powerline-%s-%s"
+ ;;                            (powerline-current-separator)
+ ;;                            (car powerline-default-separator-dir)))
+ ;;                   (quote powerline-active1)
+ ;;                   (quote powerline-active2))))
+ ;;     (:propertize " " face powerline-active2))))
+ ;; '(sml/pos-minor-modes-separator
+ ;;   (quote
+ ;;    (""
+ ;;     (:propertize " " face powerline-active1)
+ ;;     (:eval
+ ;;      (propertize " "
+ ;;                  (quote display)
+ ;;                  (funcall
+ ;;                   (intern
+ ;;                    (format "powerline-%s-%s"
+ ;;                            (powerline-current-separator)
+ ;;                            (cdr powerline-default-separator-dir)))
+ ;;                   (quote powerline-active1)
+ ;;                   nil)))
+ ;;     (:propertize " " face sml/global))))
+ ;; '(sml/pre-id-separator
+ ;;   (quote
+ ;;    (""
+ ;;     (:propertize " " face sml/global)
+ ;;     (:eval
+ ;;      (propertize " "
+ ;;                  (quote display)
+ ;;                  (funcall
+ ;;                   (intern
+ ;;                    (format "powerline-%s-%s"
+ ;;                            (powerline-current-separator)
+ ;;                            (car powerline-default-separator-dir)))
+ ;;                   nil
+ ;;                   (quote powerline-active1))))
+ ;;     (:propertize " " face powerline-active1))))
+ ;; '(sml/pre-minor-modes-separator
+ ;;   (quote
+ ;;    (""
+ ;;     (:propertize " " face powerline-active2)
+ ;;     (:eval
+ ;;      (propertize " "
+ ;;                  (quote display)
+ ;;                  (funcall
+ ;;                   (intern
+ ;;                    (format "powerline-%s-%s"
+ ;;                            (powerline-current-separator)
+ ;;                            (cdr powerline-default-separator-dir)))
+ ;;                   (quote powerline-active2)
+ ;;                   (quote powerline-active1))))
+ ;;     (:propertize " " face powerline-active1))))
+ '(sml/pre-modes-separator (propertize " " (quote face) (quote sml/modes)))
  '(tramp-shell-prompt-pattern
    "\\(?:^\\|\\)[^]#$%>
 ]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
