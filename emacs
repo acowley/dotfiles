@@ -318,7 +318,7 @@ end tell" uri)))
               (org-babel-do-load-languages
                'org-babel-load-languages
                '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
-                 (C . t) (js . t) (ipython . t) (maxima . t) (julia .t )))
+                 (C . t) (js . t) (ipython . t) (maxima . t)))
 
               ;; Disable variable-pitch-mode in tables. We used to be
               ;; able to disable this in src blocks, but this no
