@@ -39,9 +39,9 @@
       inherit (pkgs.python27Packages) buildPythonPackage pyserial;
     };
 
-    julia = pkgs.julia.override {
+    julia = pkgs.julia.overrideDerivation (_: {
       doCheck = false;
-    };
+    });
 
     ffmpeg-full = with pkgs;
     callPackage (<nixpkgs> + /pkgs/development/libraries/ffmpeg-full) {
