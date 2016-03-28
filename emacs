@@ -573,9 +573,9 @@ under the current project's root directory."
 (global-set-key (kbd "C-x b") #'list-buffers)
 (global-set-key (kbd "C-x C-b") #'switch-to-buffer)
 
-(set-face-italic 'mode-line-inactive t)
-(set-face-attribute 'mode-line nil :overline nil :underline nil)
-(set-face-attribute 'mode-line nil :box t)
+;; (set-face-italic 'mode-line-inactive t)
+;; (set-face-attribute 'mode-line nil :overline nil :underline nil)
+;; (set-face-attribute 'mode-line nil :box t)
 
 (defun ac/god-mode-toggle ()
   "Set the mode line to a white background when god-mode is
@@ -585,14 +585,16 @@ active; black when inactive."
         ;; (set-face-background 'mode-line "white")
         ;; (set-face-background 'mode-line-inactive "white")
         ;(set-face-background 'sml/position-percentage "white")
-        (set-face-background 'sml/line-number "white")
+        (set-face-background 'sml/line-number "orange")
         (set-face-foreground 'sml/line-number "black")
+        (set-face-attribute 'mode-line nil :box "orange")
         (hl-line-mode 1))
       ;; (set-face-background 'mode-line "black")
       ;; (set-face-background 'mode-line-inactive "black")
       ;(set-face-background 'sml/position-percentage "black")
       (set-face-background 'sml/line-number "black")
       (set-face-foreground 'sml/line-number "white")
+      (set-face-attribute 'mode-line nil :box nil)
       (unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))))
 
 (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
@@ -1003,7 +1005,7 @@ predicate returns true."
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+    ("e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" "70b9c3d480948a3d007978b29e31d6ab9d7e259105d558c41f8b9532c13219aa" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(debug-on-error t)
  '(default-input-method "TeX")
  '(dired-dwim-target t)
@@ -1027,6 +1029,7 @@ predicate returns true."
     ("#A45E0A" . 70)
     ("#A41F99" . 85)
     ("#49483E" . 100)))
+ '(hl-sexp-background-color "#efebe9")
  '(magit-diff-use-overlays nil)
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
@@ -1040,12 +1043,11 @@ predicate returns true."
  '(org-image-actual-width nil)
  '(org-imenu-depth 3)
  '(org-latex-create-formula-image-program (quote imagemagick))
- '(org-latex-pdf-process
-   (quote
-    ("xelatex -interaction nonstopmode -output-directory %o %f" "xelatex -interaction nonstopmode -output-directory %o %f")))
+ '(org-latex-pdf-process (quote ("latexmk -g -pdf %f")))
  '(org-mobile-files (quote ("~/org/home.org")))
  '(org-reveal-root "reveal.js")
  '(org-src-preserve-indentation t)
+ '(org-src-window-setup (quote other-window))
  '(org-structure-template-alist
    (quote
     (("s" "#+BEGIN_SRC ?
@@ -1111,6 +1113,8 @@ predicate returns true."
  '(outshine-preserve-delimiter-whitespace t)
  '(outshine-use-speed-commands t)
  '(pop-up-windows nil)
+ '(pos-tip-background-color "#A6E22E")
+ '(pos-tip-foreground-color "#272822")
  '(projectile-global-mode t)
  '(projectile-globally-ignored-directories
    (quote
@@ -1122,7 +1126,8 @@ predicate returns true."
  '(python-shell-interpreter "python3")
  '(safe-local-variable-values
    (quote
-    ((org-image-actual-width . 500)
+    ((org-export-babel-evaluate . t)
+     (org-image-actual-width . 500)
      (org-confirm-babel-evaluate)
      (org-confirm-babel-evaluate lambda
                                  (lang body)
@@ -1131,73 +1136,6 @@ predicate returns true."
      (eval org-overview))))
  '(session-use-package t nil (session))
  '(show-paren-mode t)
- ;; '(sml/mode-width
- ;;   (if
- ;;       (eq
- ;;        (powerline-current-separator)
- ;;        (quote arrow))
- ;;       (quote right)
- ;;     (quote full)))
- ;; '(sml/pos-id-separator
- ;;   (quote
- ;;    (""
- ;;     (:propertize " " face powerline-active1)
- ;;     (:eval
- ;;      (propertize " "
- ;;                  (quote display)
- ;;                  (funcall
- ;;                   (intern
- ;;                    (format "powerline-%s-%s"
- ;;                            (powerline-current-separator)
- ;;                            (car powerline-default-separator-dir)))
- ;;                   (quote powerline-active1)
- ;;                   (quote powerline-active2))))
- ;;     (:propertize " " face powerline-active2))))
- ;; '(sml/pos-minor-modes-separator
- ;;   (quote
- ;;    (""
- ;;     (:propertize " " face powerline-active1)
- ;;     (:eval
- ;;      (propertize " "
- ;;                  (quote display)
- ;;                  (funcall
- ;;                   (intern
- ;;                    (format "powerline-%s-%s"
- ;;                            (powerline-current-separator)
- ;;                            (cdr powerline-default-separator-dir)))
- ;;                   (quote powerline-active1)
- ;;                   nil)))
- ;;     (:propertize " " face sml/global))))
- ;; '(sml/pre-id-separator
- ;;   (quote
- ;;    (""
- ;;     (:propertize " " face sml/global)
- ;;     (:eval
- ;;      (propertize " "
- ;;                  (quote display)
- ;;                  (funcall
- ;;                   (intern
- ;;                    (format "powerline-%s-%s"
- ;;                            (powerline-current-separator)
- ;;                            (car powerline-default-separator-dir)))
- ;;                   nil
- ;;                   (quote powerline-active1))))
- ;;     (:propertize " " face powerline-active1))))
- ;; '(sml/pre-minor-modes-separator
- ;;   (quote
- ;;    (""
- ;;     (:propertize " " face powerline-active2)
- ;;     (:eval
- ;;      (propertize " "
- ;;                  (quote display)
- ;;                  (funcall
- ;;                   (intern
- ;;                    (format "powerline-%s-%s"
- ;;                            (powerline-current-separator)
- ;;                            (cdr powerline-default-separator-dir)))
- ;;                   (quote powerline-active2)
- ;;                   (quote powerline-active1))))
- ;;     (:propertize " " face powerline-active1))))
  '(sml/pre-modes-separator (propertize " " (quote face) (quote sml/modes)))
  '(tramp-shell-prompt-pattern
    "\\(?:^\\|\\)[^]#$%>
@@ -1233,7 +1171,7 @@ predicate returns true."
  ;; If there is more than one, they won't work right.
  '(font-lock-comment-face ((t (:foreground "#75715E" :slant italic))))
  '(font-lock-doc-face ((t (:foreground "#75715E" :slant italic))))
- '(font-lock-type-face ((t (:foreground "#66D9EF" :slant normal))))
+ '(font-lock-type-face ((t (:foreground "dodger blue" :slant normal :weight bold))))
  '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
  '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "light green" :weight bold)))))
 
