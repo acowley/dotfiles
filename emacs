@@ -5,6 +5,7 @@
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
 
+(add-to-list 'load-path "/Users/acowley/src/irony-mode")
 (add-to-list 'load-path "/Users/acowley/.nix-profile/share/emacs/site-lisp")
 
 ;; Using a source checkout of ghc-mod
@@ -1009,6 +1010,7 @@ predicate returns true."
  '(debug-on-error t)
  '(default-input-method "TeX")
  '(dired-dwim-target t)
+ '(dired-recursive-deletes (quote always))
  '(doc-view-resolution 200)
  '(doc-view-scale-internally nil)
  '(erc-hide-list (quote ("JOIN" "PART" "QUIT")))
@@ -1030,6 +1032,8 @@ predicate returns true."
     ("#A41F99" . 85)
     ("#49483E" . 100)))
  '(hl-sexp-background-color "#efebe9")
+ '(irony-server-source-dir
+   "/Users/acowley/.nix-profile/share/emacs/site-lisp/elpa/irony-0.1.2/server")
  '(magit-diff-use-overlays nil)
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
