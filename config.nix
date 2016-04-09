@@ -136,24 +136,26 @@
         NIX_CFLAGS_COMPILE="-DDEPLOYMENT_TARGET_MACOSX";
       });
 
+    ros = (pkgs.callPackage ~/Documents/Projects/Nix/Ros).indigo.perception;
+
     myHaskellPackages =
       with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
         inherit pkgs;
       };
-      pkgs.haskell.packages.lts-5_9.override {
+      pkgs.haskell.packages.lts-5_11.override {
         overrides = self: super: {
             hpp = pkgs.callPackage ~/Documents/Projects/hpp {
               inherit (pkgs) stdenv;
-              inherit (super) mkDerivation base directory filepath time
-                              transformers;
+              inherit (self) mkDerivation base directory filepath time
+                             transformers;
             };
             GLUtil = pkgs.callPackage ~/Documents/Projects/GLUtil {
               inherit (pkgs) stdenv;
-              inherit (super) mkDerivation array base bytestring containers
-                              directory filepath JuicyPixels linear
-                              OpenGL OpenGLRaw transformers vector;
+              inherit (self) mkDerivation array base bytestring containers
+                             directory filepath JuicyPixels linear
+                             OpenGL OpenGLRaw transformers vector;
               inherit (self) hpp;
-              frameworks = pkgs.darwin.apple_sdk.frameworks;
+              # frameworks = pkgs.darwin.apple_sdk.frameworks;
             };
 
             ipython-kernel = pkgs.callPackage ~/src/IHaskell/ipython-kernel {
@@ -195,13 +197,17 @@
             doCheck = false;
           });
 
-          OpenGLRaw = overrideCabal super.OpenGLRaw (drv: {
+          OpenGLRaw = (overrideCabal super.OpenGLRaw (drv: {
             librarySystemDepends =
               if pkgs.stdenv.isDarwin
               then [pkgs.darwin.apple_sdk.frameworks.OpenGL]
               else super.OpenGLRaw.librarySystemDepends;
-            buildDepends = with pkgs;
-              lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenGL];
+          })).overrideDerivation (_: {
+            preConfigure = ''
+              frameworkPaths=($(for i in $nativeBuildInputs; do if [ -d "$i"/Library/Frameworks ]; then echo "-F$i/Library/Frameworks"; fi done))
+              frameworkPaths=$(IFS=, ; echo "''${frameworkPaths[@]}")
+              configureFlags+=$(if [ -n "$frameworkPaths" ]; then echo -n "--ghc-options=-optl=$frameworkPaths"; fi)
+            '';
           });
           GLURaw = overrideCabal super.GLURaw (drv: {
             librarySystemDepends = with pkgs;
@@ -211,6 +217,16 @@
             buildDepends = with pkgs;
               lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenGL];
           });
+          bindings-GLFW = overrideCabal super.bindings-GLFW (drv: {
+            librarySystemDepends =
+              if pkgs.stdenv.isDarwin
+              then []
+              else drv.librarySystemDepends;
+            buildDepends = with pkgs; lib.optionals stdenv.isDarwin
+              (with darwin.apple_sdk.frameworks;
+               [ AGL Cocoa OpenGL IOKit pkgs.darwin.CF Kernel CoreVideo ]);
+          });
+
           OpenCL = overrideCabal super.OpenCL (drv: {
             librarySystemDepends = (with pkgs;
               if stdenv.isDarwin
@@ -218,6 +234,15 @@
               else super.OpenCL.librarySystemDepends);
             buildDepends = with pkgs;
                lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenCL];
+          });
+          ffmpeg-light = self.callPackage /Users/acowley/Documents/Projects/ffmpeg-light {
+            inherit (pkgs) stdenv;
+            inherit (self) mkDerivation base either exceptions JuicyPixels mtl
+                           transformers vector Rasterific time;
+            inherit ffmpeg-full;
+          };
+          c2hs = overrideCabal super.c2hs (drv: {
+            doCheck = false;
           });
         };
       };
@@ -227,13 +252,14 @@
         cabal-install stack cabal2nix ghc-mod
         tasty tasty-hunit doctest
         lens linear vector containers criterion foldl
-        hmatrix freer pipes
-        # OpenGL GLUtil # GLFW-b
-        OpenCL
+        hmatrix pipes
+        OpenGL GLUtil GLFW-b
+        OpenCL ffmpeg-light
         JuicyPixels Rasterific
         diagrams diagrams-rasterific diagrams-builder
         Chart Chart-diagrams
         ihaskell ihaskell-charts ihaskell-diagrams ihaskell-blaze
+        vinyl Frames
       ]);
 
     myPythonEnv = pkgs.python3.buildEnv.override {
