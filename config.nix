@@ -25,18 +25,34 @@
         '';
       };
     };
+
+    # ncurses = pkgs.ncurses.overrideDerivation (oldAttrs: {
+    #   configureFlags = oldAttrs.configureFlags ++ [ "--enable-ext-colors" ];
+    # });
+
+    pcl = pkgs.pcl.override { vtk=pkgs.vtkWithQt4; libXt=null; };
+
+    qt4 = pkgs.qt4.override {
+      mesaSupported = false;
+      mesa = null;
+      mesa_glu = null;
+    };
+
     luatool = pkgs.callPackage ~/Documents/Projects/BabyTimer/luatool {
-      inherit (pkgs) fetchgit licenses;
+      inherit (pkgs) fetchgit;
+      inherit (pkgs.lib) licenses;
       inherit (pkgs.python27Packages) buildPythonPackage pyserial;
     };
 
     nodemcu-uploader = pkgs.callPackage ~/Documents/Projects/BabyTimer/nodemcu-uploader {
-      inherit (pkgs) fetchgit licenses;
+      inherit (pkgs) fetchgit;
+      inherit (pkgs.lib) licenses;
       inherit (pkgs.python27Packages) buildPythonPackage pyserial;
     };
 
     esptool = pkgs.callPackage ~/Documents/Projects/BabyTimer/esptool {
-      inherit (pkgs) fetchgit licenses;
+      inherit (pkgs) fetchgit;
+      inherit (pkgs.lib) licenses;
       inherit (pkgs.python27Packages) buildPythonPackage pyserial;
     };
 
@@ -44,44 +60,11 @@
       doCheck = false;
     });
 
-    ffmpeg-full = with pkgs;
-    callPackage (<nixpkgs> + /pkgs/development/libraries/ffmpeg-full) {
-      libXv = null;
-      libXfixes = null;
-      openglExtlib = false;
+    ffmpeg-full = pkgs.ffmpeg-full.override {
       ffplayProgram = false;
+      openglExtlib = false;
       SDL = null;
-      nonfreeLicensing = true;
-
-      faacExtlib = false;
-      faac = null;
-      ladspaH = null;
-      celt = null;
-      gsm = null;
-      openjpeg_1 = null;
-
-      libiconv = darwin.libiconv;
-
-      # The following need to be fixed on Darwin
-      frei0r = if stdenv.isDarwin then null else frei0r;
-      game-music-emu = if stdenv.isDarwin then null else game-music-emu;
-      libjack2 = if stdenv.isDarwin then null else libjack2;
-      libmodplug = if stdenv.isDarwin then null else libmodplug;
-      libvpx = if stdenv.isDarwin then null else libvpx;
-      openal = if stdenv.isDarwin then null else openal;
-      libpulseaudio = if stdenv.isDarwin then null else libpulseaudio;
-      samba = if stdenv.isDarwin then null else samba;
-      vid-stab = if stdenv.isDarwin then null else vid-stab;
-      x265 = if stdenv.isDarwin then null else x265;
-      xavs = if stdenv.isDarwin then null else xavs;
-      inherit (darwin) CF;
-      inherit (darwin.apple_sdk.frameworks)
-        Cocoa CoreServices AVFoundation MediaToolbox VideoDecodeAcceleration;
     };
-
-    # doxygen = pkgs.doxygen.overrideDerivation (oldAttrs: {
-    #   NIX_CFLAGS_COMPILE=pkgs.lib.optional pkgs.stdenv.isDarwin "-mmacosx-version-min=10.9";
-    # });
 
     busybox = null;
 
@@ -136,13 +119,13 @@
         NIX_CFLAGS_COMPILE="-DDEPLOYMENT_TARGET_MACOSX";
       });
 
-    ros = (pkgs.callPackage ~/Documents/Projects/Nix/Ros).indigo.perception;
+    # ros = (pkgs.callPackage ~/Documents/Projects/Nix/Ros).indigo.perception;
 
     myHaskellPackages =
       with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
         inherit pkgs;
       };
-      pkgs.haskell.packages.lts-5_11.override {
+      pkgs.haskell.packages.lts-5_15.override {
         overrides = self: super: {
             hpp = pkgs.callPackage ~/Documents/Projects/hpp {
               inherit (pkgs) stdenv;
@@ -197,53 +180,16 @@
             doCheck = false;
           });
 
-          OpenGLRaw = (overrideCabal super.OpenGLRaw (drv: {
-            librarySystemDepends =
-              if pkgs.stdenv.isDarwin
-              then [pkgs.darwin.apple_sdk.frameworks.OpenGL]
-              else super.OpenGLRaw.librarySystemDepends;
-          })).overrideDerivation (_: {
-            preConfigure = ''
-              frameworkPaths=($(for i in $nativeBuildInputs; do if [ -d "$i"/Library/Frameworks ]; then echo "-F$i/Library/Frameworks"; fi done))
-              frameworkPaths=$(IFS=, ; echo "''${frameworkPaths[@]}")
-              configureFlags+=$(if [ -n "$frameworkPaths" ]; then echo -n "--ghc-options=-optl=$frameworkPaths"; fi)
-            '';
-          });
-          GLURaw = overrideCabal super.GLURaw (drv: {
-            librarySystemDepends = with pkgs;
-              if stdenv.isDarwin
-              then []
-              else super.GLURaw.librarySystemDepends;
-            buildDepends = with pkgs;
-              lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenGL];
-          });
-          bindings-GLFW = overrideCabal super.bindings-GLFW (drv: {
-            librarySystemDepends =
-              if pkgs.stdenv.isDarwin
-              then []
-              else drv.librarySystemDepends;
-            buildDepends = with pkgs; lib.optionals stdenv.isDarwin
-              (with darwin.apple_sdk.frameworks;
-               [ AGL Cocoa OpenGL IOKit pkgs.darwin.CF Kernel CoreVideo ]);
+          tar = overrideCabal super.tar (_: {
+            doCheck = false;
           });
 
-          OpenCL = overrideCabal super.OpenCL (drv: {
-            librarySystemDepends = (with pkgs;
-              if stdenv.isDarwin
-              then [darwin.apple_sdk.frameworks.OpenCL]
-              else super.OpenCL.librarySystemDepends);
-            buildDepends = with pkgs;
-               lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.OpenCL];
-          });
           ffmpeg-light = self.callPackage /Users/acowley/Documents/Projects/ffmpeg-light {
             inherit (pkgs) stdenv;
             inherit (self) mkDerivation base either exceptions JuicyPixels mtl
                            transformers vector Rasterific time;
             inherit ffmpeg-full;
           };
-          c2hs = overrideCabal super.c2hs (drv: {
-            doCheck = false;
-          });
         };
       };
 
