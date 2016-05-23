@@ -34,6 +34,7 @@
                     irony company-irony
                     powerline smart-mode-line smart-mode-line-powerline-theme
                     monokai-theme markdown-mode
+                    darkokai-theme
                     session
                     projectile helm-projectile ag
                     nix-mode
