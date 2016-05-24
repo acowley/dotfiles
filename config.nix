@@ -195,7 +195,7 @@
 
     myHaskellEnv = myHaskellPackages.ghcWithHoogle
       (haskellPackages: with haskellPackages; [
-        cabal-install stack cabal2nix ghc-mod
+        cabal-install stack cabal2nix ghc-mod structured-haskell-mode
         tasty tasty-hunit doctest
         lens linear vector containers criterion foldl
         hmatrix pipes
