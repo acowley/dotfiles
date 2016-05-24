@@ -21,6 +21,7 @@
 ;; Make sure the packages I use are installed
 (setq my-packages '(exec-path-from-shell 
                     ; ghc
+                    use-package
                     haskell-mode
                     company company-ghc
                     ; helm helm-ag
@@ -209,14 +210,6 @@ end tell" uri)))
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
 ;;;; variable-pitch-mode
-(add-hook 'mu4e-view-mode-hook
-          (lambda ()
-            (turn-on-visual-line-mode)
-            (variable-pitch-mode)
-            (setq buffer-face-mode-face '(:family "Avenir Next"))
-            (buffer-face-mode)
-            (text-scale-adjust 1)))
-
 (add-hook 'text-mode-hook
           (lambda ()
             (turn-on-visual-line-mode)
@@ -557,251 +550,259 @@ under the current project's root directory."
 
 ;;; god-mode
 
-(require 'god-mode)
+(use-package god-mode
+  :config
+  (setq god-exempt-major-modes nil
+        god-exempt-predicates nil)
 
-(setq god-exempt-major-modes nil)
-(setq god-exempt-predicates nil)
-
-;; On OS X, set "caps lock" to no action in system preferences, then
-;; use the Seil app to rebind "caps lock" to f9.
-(global-set-key (kbd "<f9>") 'god-mode-all)
-(define-key god-local-mode-map (kbd ".") 'repeat)
-
-;; Easier to use with god-mode
-(global-set-key (kbd "C-x C-o") 'other-window)
-(global-set-key (kbd "C-s") #'helm-swoop) ; instead of isearch-forward
-
-;; I swap these becuase I use switch-to-buffer much more frequently
-;; and prefer it to have the simpler binding.
-(global-set-key (kbd "C-x b") #'list-buffers)
-(global-set-key (kbd "C-x C-b") #'switch-to-buffer)
-
-;; (set-face-italic 'mode-line-inactive t)
-;; (set-face-attribute 'mode-line nil :overline nil :underline nil)
-;; (set-face-attribute 'mode-line nil :box t)
-
-(defun ac/god-mode-toggle ()
-  "Set the mode line to a white background when god-mode is
+  (defun ac/god-mode-toggle ()
+    "Set the mode line to a white background when god-mode is
 active; black when inactive."
-  (if god-local-mode
-      (progn
-        ;; (set-face-background 'mode-line "white")
-        ;; (set-face-background 'mode-line-inactive "white")
-        ;(set-face-background 'sml/position-percentage "white")
-        (set-face-background 'sml/line-number "orange")
-        (set-face-foreground 'sml/line-number "black")
-        (set-face-attribute 'mode-line nil :box "orange")
-        (hl-line-mode 1))
+    (if god-local-mode
+        (progn
+          ;; (set-face-background 'mode-line "white")
+          ;; (set-face-background 'mode-line-inactive "white")
+                                        ;(set-face-background 'sml/position-percentage "white")
+          (set-face-background 'sml/line-number "orange")
+          (set-face-foreground 'sml/line-number "black")
+          (set-face-attribute 'mode-line nil :box "orange")
+          (hl-line-mode 1))
       ;; (set-face-background 'mode-line "black")
       ;; (set-face-background 'mode-line-inactive "black")
-      ;(set-face-background 'sml/position-percentage "black")
+                                        ;(set-face-background 'sml/position-percentage "black")
       (set-face-background 'sml/line-number "black")
       (set-face-foreground 'sml/line-number "white")
       (set-face-attribute 'mode-line nil :box nil)
       (unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))))
 
-(add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
-(add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
+  (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
+  (add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
 
-(defun ac/god-toggle-on-overwrite ()
-  "Toggle god-mode on overwrite-mode."
-  (if (bound-and-true-p overwrite-mode)
-      (god-local-mode-pause)
-    (god-local-mode-resume)))
+  (defun ac/god-toggle-on-overwrite ()
+    "Toggle god-mode on overwrite-mode."
+    (if (bound-and-true-p overwrite-mode)
+        (god-local-mode-pause)
+      (god-local-mode-resume)))
 
-(add-hook 'overwrite-mode-hook #'ac/god-toggle-on-overwrite)
+  (add-hook 'overwrite-mode-hook #'ac/god-toggle-on-overwrite)
 
-;;; Email
+  ;; On OS X, set "caps lock" to no action in system preferences, then
+  ;; use the Seil app to rebind "caps lock" to f9.
+
+  :bind (("<f9>" . god-mode-all)
+         ("C-x C-o" . other-window) ;; Easier to use with god-mode
+         ("C-s" . helm-swoop)       ;; instead of isearch-forward
+
+         ;; I swap these becuase I use switch-to-buffer much more frequently
+         ;; and prefer it to have the simpler binding.
+         ("C-x b" . list-buffers)
+         ("C-x C-b" . switch-to-buffer)
+         :map god-local-mode-map
+         ("." . repeat)))
+
+;; (global-set-key (kbd "<f9>") 'god-mode-all)
+;; (define-key god-local-mode-map (kbd ".") 'repeat)
+;; (global-set-key (kbd "C-x C-o") 'other-window)
+;; (global-set-key (kbd "C-s") #'helm-swoop) ; instead of isearch-forward
+;; (global-set-key (kbd "C-x b") #'list-buffers)
+;; (global-set-key (kbd "C-x C-b") #'switch-to-buffer)
+
+
+;;; Email (mu4e)
 ;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 (add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
-(require 'mu4e)
-(setq 
-  mu4e-maildir "~/.mail"
-  mu4e-html2text-command  "/usr/local/bin/w3m -T text/html"
-  ;mu4e-mu-binary "/usr/local/bin/mu"
+;(require 'mu4e)
 
-  ;; allow for updating mail using 'U' in the main view:
-  ; mu4e-get-mail-command "/usr/local/bin/mbsync -a"
-  ;; mu4e-get-mail-command
-  ;;   (concat
-  ;;    (replace-regexp-in-string
-  ;;     "\n\\'" "" (shell-command-to-string "readlink $(which mbsync)"))
-  ;;    " -a")
-  ;mu4e-get-mail-command "~/.nix-profile/bin/mbsync -a"
-  mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
+(use-package mu4e
+  :config
+  (setq 
+   mu4e-maildir "~/.mail"
+   mu4e-html2text-command  "/usr/local/bin/w3m -T text/html"
+                                        ;mu4e-mu-binary "/usr/local/bin/mu"
 
-  ;; gmail folder setup
-  ;mu4e-drafts-folder "/gmail/drafts"
-  mu4e-drafts-folder "/mu4e/drafts"
-  mu4e-sent-folder   "/gmail/sent"
-  mu4e-trash-folder  "/gmail/trash"
+   ;; allow for updating mail using 'U' in the main view:
+                                        ; mu4e-get-mail-command "/usr/local/bin/mbsync -a"
+   ;; mu4e-get-mail-command
+   ;;   (concat
+   ;;    (replace-regexp-in-string
+   ;;     "\n\\'" "" (shell-command-to-string "readlink $(which mbsync)"))
+   ;;    " -a")
+   ;mu4e-get-mail-command "~/.nix-profile/bin/mbsync -a"
+   mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
 
-  mu4e-headers-skip-duplicates t
-  mu4e-compose-dont-reply-to-self t)
+   ;; gmail folder setup
+   ;mu4e-drafts-folder "/gmail/drafts"
+   mu4e-drafts-folder "/mu4e/drafts"
+   mu4e-sent-folder   "/gmail/sent"
+   mu4e-trash-folder  "/gmail/trash"
 
-;; don't save message to Sent Messages, Gmail/IMAP takes care of this
-(setq mu4e-sent-messages-behavior 'delete)
+   mu4e-headers-skip-duplicates t
+   mu4e-compose-dont-reply-to-self t
+   mu4e-view-show-images t
+   mu4e-update-interval 600
 
-;; setup some handy shortcuts
-;; you can quickly switch to your Inbox -- press ``ji''
-;; then, when you want archive some messages, move them to
-;; the 'All Mail' folder by pressing ``ma''.
+   ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+   mu4e-sent-messages-behavior 'delete
 
-(setq mu4e-maildir-shortcuts
-    '( ("/gmail/Inbox"   . ?i)
-       ("/gmail/sent"    . ?s)
-       ("/gmail/trash"   . ?t)
-       ("/gmail/archive" . ?a)))
+   ;; setup some handy shortcuts
+   ;; you can quickly switch to your Inbox -- press ``ji''
+   ;; then, when you want archive some messages, move them to
+   ;; the 'All Mail' folder by pressing ``ma''.
+   mu4e-maildir-shortcuts '( ("/gmail/Inbox"   . ?i)
+                             ("/gmail/sent"    . ?s)
+                             ("/gmail/trash"   . ?t)
+                             ("/gmail/archive" . ?a))
 
-;; something about ourselves
-(setq
+   ;; something about ourselves
    user-mail-address "acowley@gmail.com"
    user-full-name  "Anthony Cowley"
    mu4e-compose-signature-auto-include nil
    mu4e-compose-signature nil
-   mu4e-change-filenames-when-moving t)
+   mu4e-change-filenames-when-moving t
 
-;; alternatively, for emacs-24 you can use:
-(setq message-send-mail-function 'smtpmail-send-it
-    smtpmail-stream-type 'starttls
-    smtpmail-default-smtp-server "smtp.gmail.com"
-    smtpmail-smtp-server "smtp.gmail.com"
-    smtpmail-smtp-service 587)
+   ;; alternatively, for emacs-24 you can use:
+   message-send-mail-function 'smtpmail-send-it
+   smtpmail-stream-type 'starttls
+   smtpmail-default-smtp-server "smtp.gmail.com"
+   smtpmail-smtp-server "smtp.gmail.com"
+   smtpmail-smtp-service 587
 
-;; don't keep message buffers around
-(setq message-kill-buffer-on-exit t)
+   ;; don't keep message buffers around
+   message-kill-buffer-on-exit t)
 
-;; Auto-complete contact email addresses
-;; We don't want line breaks added to emails we compose
-(add-hook 'mu4e-compose-mode-hook
-          (lambda ()
-            (company-mode)
-            (turn-off-auto-fill)
-            (variable-pitch-mode)
-            (turn-on-visual-line-mode)
-            (setq buffer-face-mode-face '(:family "Avenir Next"))
-            (buffer-face-mode)
-            (text-scale-adjust 1)))
+  ;; Auto-complete contact email addresses
+  ;; We don't want line breaks added to emails we compose
+  (add-hook 'mu4e-compose-mode-hook
+            (lambda ()
+              (company-mode)
+              (turn-off-auto-fill)
+              (variable-pitch-mode)
+              (turn-on-visual-line-mode)
+              (setq buffer-face-mode-face '(:family "Avenir Next"))
+              (buffer-face-mode)
+              (text-scale-adjust 1)))
 
-;; Add a view in browser action. Trigger with "aV"
-(add-to-list 'mu4e-view-actions
-  '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+  ;; Add a view in browser action. Trigger with "aV"
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
-;; NOTE: deleting a message in Gmail is accomplished by moving to the
-;; trash folder. "Marking for deletion" actually archives the message.
-(fset 'my-move-to-trash "mt")
-(define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
-(define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
+  ;; NOTE: deleting a message in Gmail is accomplished by moving to the
+  ;; trash folder. "Marking for deletion" actually archives the message.
+  (fset 'my-move-to-trash "mt")
+  (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
+  (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
+  (when (fboundp 'imagemagick-register-types) (imagemagick-register-types))
+  ;(setq mu4e-view-prefer-html t)
+  ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
 
-(setq mu4e-view-show-images t)
-(when (fboundp 'imagemagick-register-types) (imagemagick-register-types))
-;(setq mu4e-view-prefer-html t)
-;(setq mu4e-html2text-command "html2text -utf8 -width 72")
+  (add-hook 'mu4e-view-mode-hook
+            (lambda ()
+              (turn-on-visual-line-mode)
+              (variable-pitch-mode)
+              (setq buffer-face-mode-face '(:family "Avenir Next"))
+              (buffer-face-mode)
+              (text-scale-adjust 1)))
+  
+  ;; Automatically update every 10 minutes and pop up a notification if
+  ;; the index changed.
+  (defun newest-subject ()
+    (let* ((mu-res (concat "(list "
+                           (shell-command-to-string "mu find maildir:'/gmail/Inbox' flag:unread --format=sexp")
+                           ")"))
+           (msgs (last (car (read-from-string mu-res)))))
+      (mapconcat (lambda (msg)
+                   (concat (caar (plist-get msg :from))
+                           ": "
+                           (plist-get msg :subject)))
+                 msgs
+                 "\n")))
 
-;; Automatically update every 10 minutes and pop up a notification if
-;; the index changed.
-(defun take (n lst)
-  (loop repeat n for x in lst collect x))
-
-(defun newest-subject ()
-  (let* ((mu-res (concat "(list "
-                         (shell-command-to-string "mu find maildir:'/gmail/Inbox' flag:unread --format=sexp")
-                         ")"))
-         (msgs (last (car (read-from-string mu-res)))))
-    (mapconcat (lambda (msg)
-                 (concat (caar (plist-get msg :from))
-                         ": "
-                         (plist-get msg :subject)))
-               msgs
-               "\n")))
-
-(setq mu4e-update-interval 600)
-(add-hook 'mu4e-index-updated-hook
-          (lambda ()
-            (let ((msg (newest-subject)))
-              (unless (string-equal ": " msg)
-                (shell-command (concat "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message \"" msg "\""))))))
+  (add-hook 'mu4e-index-updated-hook
+            (lambda ()
+              (let ((msg (newest-subject)))
+                (unless (string-equal ": " msg)
+                  (shell-command (concat "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message \"" msg "\""))))))
 
 ;;;; Additional SMTP Accounts
-;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
-(defvar my-mu4e-account-alist
-  '(("gmail"
-     (user-mail-address "acowley@gmail.com")
-     (smtpmail-default-smtp-server "smtp.gmail.com")
-     (smtpmail-smtp-server "smtp.gmail.com")
-     (smtpmail-smtp-service 587)
-     (smtpmail-stream-type starttls)
-     (smtpmail-auth-supported (login)))
-     ;(smtpmail-auth-supported '(cram-md5 plain login)))
-    ("upenn"
-     (user-mail-address "acowley@seas.upenn.edu")
-     (smtpmail-default-smtp-server "smtp.seas.upenn.edu")
-     (smtpmail-smtp-server "smtp.seas.upenn.edu")
-     ;(smtpmail-smtp-service 578)
-     (smtpmail-smtp-service 465)
-     (smtpmail-stream-type ssl)
-     (smtpmail-auth-supported (login)))))
+  ;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
+  (defvar my-mu4e-account-alist
+    '(("gmail"
+       (user-mail-address "acowley@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-service 587)
+       (smtpmail-stream-type starttls)
+       (smtpmail-auth-supported (login)))
+                                        ;(smtpmail-auth-supported '(cram-md5 plain login)))
+      ("upenn"
+       (user-mail-address "acowley@seas.upenn.edu")
+       (smtpmail-default-smtp-server "smtp.seas.upenn.edu")
+       (smtpmail-smtp-server "smtp.seas.upenn.edu")
+                                        ;(smtpmail-smtp-service 578)
+       (smtpmail-smtp-service 465)
+       (smtpmail-stream-type ssl)
+       (smtpmail-auth-supported (login)))))
 
-(defun my-ensure-list (x)
-  "If the given value is a list, leave it alone. If it isn't,
+  (defun my-ensure-list (x)
+    "If the given value is a list, leave it alone. If it isn't,
 cons it to nil."
-  (if (listp x) x (cons x nil)))
+    (if (listp x) x (cons x nil)))
 
-(defun my-first (f xs)
-  "Returns the first element of the list for which the given
+  (defun my-first (f xs)
+    "Returns the first element of the list for which the given
 predicate returns true."
-  (cond
-   ((null xs) nil)
-   ((funcall f (car xs)) (car xs))
-   (t (my-first f (cdr xs)))))
+    (cond
+     ((null xs) nil)
+     ((funcall f (car xs)) (car xs))
+     (t (my-first f (cdr xs)))))
 
-(defun my-mem-string (x xs)
-  "memq using 'string-equal' for equality."
-  (cond
-   ((null xs) nil)
-   ((string-equal x (car xs)) xs)
-   (t (my-mem-string x (cdr xs)))))
+  (defun my-mem-string (x xs)
+    "memq using 'string-equal' for equality."
+    (cond
+     ((null xs) nil)
+     ((string-equal x (car xs)) xs)
+     (t (my-mem-string x (cdr xs)))))
 
-(defun my-mu4e-set-account ()
-  "Set the account for sending a message"
-  (let*
-    ((recip-account
-      (when mu4e-compose-parent-message
-          (let*
-              ((my-addresses (mapcar #'(lambda (account)
-                                         (cons (car account)
-                                               (cadr (assoc 'user-mail-address
-                                                            (cdr account)))))
-                                     my-mu4e-account-alist))
-               (recipients (append (my-ensure-list
-                                    (plist-get mu4e-compose-parent-message :to))
-                                   (plist-get mu4e-compose-parent-message :cc)))
-               (all-addresses (mapcar #'(lambda (var)
-                                          (if (consp var) (cdr var) var))
-                                      recipients))
-               (my-address (my-first #'(lambda (x)
-                                         (my-mem-string (cdr x) all-addresses))
-                                     my-addresses)))
-            (when my-address (car my-address)))))
-    (account
-     (if recip-account
-         recip-account
-       (completing-read
-        (format "Compose with account: (%s) "
-                (mapconcat #'(lambda (var) (car var)) 
-                           my-mu4e-account-alist "/"))
-        (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
-        nil t nil nil (caar my-mu4e-account-alist))))
-    (account-vars (cdr (assoc account my-mu4e-account-alist))))
-    (if account-vars
-        (mapc #'(lambda (var) (set (car var) (cadr var))) account-vars)
-      (error "No email account found"))))
+  (defun my-mu4e-set-account ()
+    "Set the account for sending a message"
+    (let*
+        ((recip-account
+          (when mu4e-compose-parent-message
+            (let*
+                ((my-addresses (mapcar #'(lambda (account)
+                                           (cons (car account)
+                                                 (cadr (assoc 'user-mail-address
+                                                              (cdr account)))))
+                                       my-mu4e-account-alist))
+                 (recipients (append (my-ensure-list
+                                      (plist-get mu4e-compose-parent-message :to))
+                                     (plist-get mu4e-compose-parent-message :cc)))
+                 (all-addresses (mapcar #'(lambda (var)
+                                            (if (consp var) (cdr var) var))
+                                        recipients))
+                 (my-address (my-first #'(lambda (x)
+                                           (my-mem-string (cdr x) all-addresses))
+                                       my-addresses)))
+              (when my-address (car my-address)))))
+         (account
+          (if recip-account
+              recip-account
+            (completing-read
+             (format "Compose with account: (%s) "
+                     (mapconcat #'(lambda (var) (car var)) 
+                                my-mu4e-account-alist "/"))
+             (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
+             nil t nil nil (caar my-mu4e-account-alist))))
+         (account-vars (cdr (assoc account my-mu4e-account-alist))))
+      (if account-vars
+          (mapc #'(lambda (var) (set (car var) (cadr var))) account-vars)
+        (error "No email account found"))))
 
-(add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+  (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
-(setq mu4e-user-mail-address-list
-      (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
-              my-mu4e-account-alist))
+  (setq mu4e-user-mail-address-list
+        (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
+                my-mu4e-account-alist)))
 
 ;;; smart-mode-line (powerline)
 
@@ -836,12 +837,17 @@ predicate returns true."
 
 ;;; Buffer-move
 
-;; buffer-move setup
-(require 'buffer-move)
-(global-set-key (kbd "<C-S-left>") 'buf-move-left)
-(global-set-key (kbd "<C-S-right>") 'buf-move-right)
-(global-set-key (kbd "<C-S-up>") 'buf-move-up)
-(global-set-key (kbd "<C-S-down>") 'buf-move-down)
+(use-package buffer-move
+  :bind (("<C-S-left>" . buf-move-left)
+         ("<C-S-right>" . buf-move-right)
+         ("<C-S-up>" . buf-move-up)
+         ("<C-S-down>" . buf-move-down)))
+
+;; (require 'buffer-move)
+;; (global-set-key (kbd "<C-S-left>") 'buf-move-left)
+;; (global-set-key (kbd "<C-S-right>") 'buf-move-right)
+;; (global-set-key (kbd "<C-S-up>") 'buf-move-up)
+;; (global-set-key (kbd "<C-S-down>") 'buf-move-down)
 
 ;;; haskell
 
