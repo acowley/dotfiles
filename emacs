@@ -59,8 +59,8 @@
 			 ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 
-(add-to-list 'load-path "~/src/ob-ipython")
-(require 'ob-ipython)
+;; (add-to-list 'load-path "~/src/ob-ipython")
+;; (require 'ob-ipython)
 
 ;; (add-to-list 'load-path "~/src/org-mode")
 ;; (require 'org)
