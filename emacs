@@ -317,6 +317,7 @@ end tell" uri)))
               (setq org-src-fontify-natively t)
               (setq org-use-speed-commands t)
               (setq org-html-doctype "html5")
+              (org-bullets-mode 1)
               (org-babel-do-load-languages
                'org-babel-load-languages
                '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
