@@ -961,6 +961,19 @@ predicate returns true."
   "Interface for entering a password into gpg-agent."
   (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
     str))
+;;; znc
+
+(eval-after-load "znc"
+  '(let ((password
+          (let ((auth (auth-source-search :host "chat.nixmag.net")))
+            (cond
+             ((null auth) (error "Couldn't find nixmag authinfo"))
+             (t (funcall (plist-get (car auth) :secret)))))))
+     (set-variable
+      'znc-servers
+      `(("chat.nixmag.net" 1234 t
+         ((nixmag\.net "acowley/freenode" ,password)))))))
+
 ;;; twittering-mode
 (add-hook 'twittering-mode-hook
           (lambda ()
