@@ -560,16 +560,11 @@ under the current project's root directory."
 active; black when inactive."
     (if god-local-mode
         (progn
-          ;; (set-face-background 'mode-line "white")
-          ;; (set-face-background 'mode-line-inactive "white")
-                                        ;(set-face-background 'sml/position-percentage "white")
           (set-face-background 'sml/line-number "orange")
           (set-face-foreground 'sml/line-number "black")
           (set-face-attribute 'mode-line nil :box "orange")
           (hl-line-mode 1))
-      ;; (set-face-background 'mode-line "black")
-      ;; (set-face-background 'mode-line-inactive "black")
-                                        ;(set-face-background 'sml/position-percentage "black")
+
       (set-face-background 'sml/line-number "black")
       (set-face-foreground 'sml/line-number "white")
       (set-face-attribute 'mode-line nil :box nil)
