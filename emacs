@@ -340,7 +340,9 @@ end tell" uri)))
               (define-key org-mode-map (kbd "S-<left>") nil)
               (define-key org-mode-map (kbd "S-<right>") nil)
               (define-key org-mode-map (kbd "S-<up>") nil)
-              (define-key org-mode-map (kbd "S-<down>") nil))))
+              (define-key org-mode-map (kbd "S-<down>") nil)
+              (require 'ox-extra)
+              (ox-extras-activate '(ignore-headlines)))))
 
 (setq org-directory "~/org")
 
