@@ -130,6 +130,13 @@
       };
       pkgs.haskell.packages.lts-5_15.override {
         overrides = self: super: {
+            intero = pkgs.callPackage ~/src/intero {
+              inherit (pkgs) stdenv;
+              inherit (self) mkDerivation array base bytestring containers
+                             directory filepath ghc ghc-paths haskeline hspec
+                             process regex-compat syb temporary time
+                             transformers unix;
+            };
             hpp = pkgs.callPackage ~/Documents/Projects/hpp {
               inherit (pkgs) stdenv;
               inherit (self) mkDerivation base directory filepath time
