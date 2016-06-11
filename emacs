@@ -451,6 +451,7 @@ may begin anew."
                         "*ob-ipython-kernel-default*")))
 
 ;;;; Blog Publishing
+(setq org-rss-use-entry-url-as-guid nil)
 (setq org-publish-project-alist
       '(("blog-content"
          :base-directory "~/Documents/Projects/Blog/articles/"
@@ -565,7 +566,8 @@ active; black when inactive."
           (set-face-background 'sml/line-number "orange")
           (set-face-foreground 'sml/line-number "black")
           (set-face-attribute 'mode-line nil :box "orange")
-          (hl-line-mode 1))
+          ;; (hl-line-mode 1)
+          )
 
       (set-face-background 'sml/line-number "black")
       (set-face-foreground 'sml/line-number "white")
