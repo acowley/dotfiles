@@ -2,6 +2,9 @@
   allowUnfree = true;
   allowBroken = true;
   packageOverrides = pkgs: rec {
+    darwin = pkgs.darwin // {
+      osx_sdk = pkgs.callPackage <nixpkgs/pkgs/os-specific/darwin/osx-sdk/10.11.nix> {};
+    };
     gnupg = pkgs.gnupg.override { x11Support = false; };
     pass = with pkgs;
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
