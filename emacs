@@ -1010,8 +1010,10 @@ predicate returns true."
              (t (funcall (plist-get (car auth) :secret)))))))
      (set-variable
       'znc-servers
-      `(("chat.nixmag.net" 1234 t
-         ((nixmag\.net "acowley/freenode" ,password)))))))
+      `(("hiya.nerdpol.ovh" 1234 t ((hiya "acowley/freenode" ,password))))
+      ;; `(("chat.nixmag.net" 1234 t
+      ;;    ((nixmag\.net "acowley/freenode" ,password))))
+)))
 
 ;;; twittering-mode
 (add-hook 'twittering-mode-hook
