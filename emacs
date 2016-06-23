@@ -874,13 +874,15 @@ predicate returns true."
   :config
   (electric-indent-local-mode -1)
   (company-mode)
-  (use-package structured-haskell-mode)
+  (use-package structured-haskell-mode
+    :bind (("M-A" . shm/goto-parent-end)))
   (use-package intero-mode
    :bind (("M-n" . flycheck-next-error)
           ("M-p" . flycheck-previous-error)
           ("M-?" . flycheck-display-error-at-point)))
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
+    (add-hook 'before-save-hook #'whitespace-cleanup)
     (intero-mode t))
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook))
 
