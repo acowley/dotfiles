@@ -1074,6 +1074,10 @@ predicate returns true."
  '(erc-server-auto-reconnect nil)
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(fci-rule-color "#49483E")
+ '(flycheck-ghc-args (quote ("-Wall")))
+ '(flycheck-swift-sdk-path
+   "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
+ '(flycheck-swift-target "x86_64-macosx10.11")
  '(ghc-doc-browser-function (quote ghc-browse-url-safari))
  '(ghc-use-nix-shell (quote (quote t)))
  '(global-visual-fill-column-mode t)
@@ -1223,6 +1227,7 @@ predicate returns true."
  '(session-use-package t nil (session))
  '(show-paren-mode t)
  '(sml/pre-modes-separator (propertize " " (quote face) (quote sml/modes)))
+ '(swift-repl-executable "xcrun swift -target x86_64-macosx10.11")
  '(tramp-shell-prompt-pattern
    "\\(?:^\\|\\)[^]#$%>
 ]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
