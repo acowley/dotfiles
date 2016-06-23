@@ -613,6 +613,8 @@ active; black when inactive."
 ;(require 'mu4e)
 
 (use-package mu4e
+  :defer t
+  :commands (mu4e)
   :config
   (setq 
    mu4e-maildir "~/.mail"
