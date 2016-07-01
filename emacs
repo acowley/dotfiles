@@ -1106,6 +1106,7 @@ predicate returns true."
  '(magit-use-overlays nil)
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
+ '(org-footnote-auto-label (quote plain))
  '(org-format-latex-options
    (quote
     (:foreground default :background default :scale 1.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
