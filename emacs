@@ -19,14 +19,14 @@
 ;;; Package setup
 
 ;; Make sure the packages I use are installed
-(setq my-packages '(exec-path-from-shell 
+(setq my-packages '(exec-path-from-shell
                     ; ghc
                     use-package
                     haskell-mode
                     company company-ghc
                     ; helm helm-ag
                     company-coq company-shell company-math
-		    helm-company helm-swoop helm-dash
+                    helm-company helm-swoop helm-dash
                     outorg
                     outshine
                     htmlize
@@ -39,14 +39,14 @@
                     session
                     projectile helm-projectile ag
                     nix-mode
-		    ;git-commit-mode git-rebase-mode magit
-		    magit
+                    ;git-commit-mode git-rebase-mode magit
+                    magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     buffer-move multiple-cursors
                     corral
                     visual-fill-column
                     ;; Use the terminal-notifier program on OS X
-                    erc-hl-nicks erc-terminal-notifier 
+                    erc-hl-nicks erc-terminal-notifier
                     jonprl-mode
                     god-mode
                     tuareg flycheck-ocaml))
@@ -57,7 +57,7 @@
 (setq package-archives '(("org" . "http://orgmode.org/elpa/")
                          ;("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
-			 ("gnu" . "http://elpa.gnu.org/packages/")))
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 
 ;; (add-to-list 'load-path "~/src/ob-ipython")
@@ -149,9 +149,14 @@
 ;(load-theme 'monokai t)
 ;(load-theme 'darktooth t)
 
-;; This is an attempt to prevent recentf (that keeps track of recent
-;; files) from stat'ing remote files.
-(setq recentf-keep '(file-remote-p file-readable-p))
+(use-package recentf
+  :init
+  (setq
+   ;; This is an attempt to prevent recentf (that keeps track of recent
+   ;; files) from stat'ing remote files.
+   recentf-keep '(file-remote-p file-readable-p)
+   recentf-exclude (quote
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/\\\\.emacs\\\\.d/elpa/"))))
 
 ;; Another options is
 ;; (require 'recentf)
@@ -163,7 +168,7 @@
   (ansi-color-process-output nil)
   (set (make-local-variable 'comint-last-output-start)
        (point-marker)))
- 
+
 (add-hook 'compilation-filter-hook #'compilation-ansi-color-process-output)
 
 ;; Use erc-terminal-notifier with erc
@@ -223,8 +228,8 @@ end tell" uri)))
 (add-to-list 'completion-ignored-extensions ".hi")
 (add-to-list 'completion-ignored-extensions ".o")
 (add-hook 'ido-setup-hook (setq ido-ignore-extensions t))
-(add-hook 'ido-setup-hook (lambda () 
-			   (add-to-list 'ido-ignore-files "\\.hi")
+(add-hook 'ido-setup-hook (lambda ()
+                           (add-to-list 'ido-ignore-files "\\.hi")
                            (add-to-list 'ido-ignore-files "\\.o")))
 
 
@@ -295,7 +300,7 @@ end tell" uri)))
   (unless (get-buffer "*httpd*") (httpd-start))
   (impatient-mode)
   (imp-set-user-filter #'markdown-html))
-  
+
 
 ;;; Org-mode
 
@@ -525,10 +530,10 @@ may begin anew."
 
 ;; ido offers a nicer UI for switching between open buffers
 (add-hook 'helm-mode-hook
-	  (lambda ()
-	    (add-to-list 'helm-completing-read-handlers-alist
-			 '(switch-to-buffer . ido))))
- 
+          (lambda ()
+            (add-to-list 'helm-completing-read-handlers-alist
+                         '(switch-to-buffer . ido))))
+
 (helm-mode t)
 (ido-mode -1)
 
@@ -616,7 +621,7 @@ active; black when inactive."
   :defer t
   :commands (mu4e)
   :config
-  (setq 
+  (setq
    mu4e-maildir "~/.mail"
    mu4e-html2text-command  "/usr/local/bin/w3m -T text/html"
                                         ;mu4e-mu-binary "/usr/local/bin/mu"
@@ -703,7 +708,7 @@ active; black when inactive."
               (setq buffer-face-mode-face '(:family "Avenir Next"))
               (buffer-face-mode)
               (text-scale-adjust 1)))
-  
+
   ;; Automatically update every 10 minutes and pop up a notification if
   ;; the index changed.
   (defun newest-subject ()
@@ -790,7 +795,7 @@ predicate returns true."
               recip-account
             (completing-read
              (format "Compose with account: (%s) "
-                     (mapconcat #'(lambda (var) (car var)) 
+                     (mapconcat #'(lambda (var) (car var))
                                 my-mu4e-account-alist "/"))
              (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
              nil t nil nil (caar my-mu4e-account-alist))))
@@ -1024,7 +1029,7 @@ predicate returns true."
             (buffer-face-mode)
             (text-scale-adjust 1)))
 (add-hook 'twittering-edit-mode-hook 'flyspell-mode)
-          
+
 (set-variable 'twittering-use-master-password t)
 
 ;;; corral
@@ -1274,4 +1279,3 @@ predicate returns true."
 ;; mode: emacs-lisp
 ;; eval: (org-overview)
 ;; End:
-
