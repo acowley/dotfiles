@@ -155,8 +155,8 @@
    ;; This is an attempt to prevent recentf (that keeps track of recent
    ;; files) from stat'ing remote files.
    recentf-keep '(file-remote-p file-readable-p)
-   recentf-exclude (quote
-    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/\\\\.emacs\\\\.d/elpa/"))))
+   recentf-exclude
+    `("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ,(regexp-quote "/.emacs.d/elpa/"))))
 
 ;; Another options is
 ;; (require 'recentf)
