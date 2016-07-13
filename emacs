@@ -27,7 +27,7 @@
                     ; helm helm-ag
                     company-coq company-shell company-math
                     helm-company helm-swoop helm-dash
-                    outorg
+                    ; outorg
                     outshine
                     htmlize
                     impatient-mode
@@ -447,6 +447,22 @@ of code to whatever theme I'm using's background"
                                           (face-attribute face :inherit))))
          (list 'font-latex-math-face 'font-latex-verbatim-face
                'font-lock-keyword-face)))
+
+(use-package outorg
+  :defer t
+  :commands (outorg-edit-as-org)
+  :config
+  (defun outorg-whole-file ()
+  "Call `outorg-edit-as-org` with a prefix argument so that the
+entire source file is loaded."
+    (interactive)
+    (outorg-edit-as-org '(4))))
+
+;; Copy from an Org buffer to the system clipboard after converting
+;; the Org content to rich text format.
+(use-package ox-clip
+  :defer t
+  :commands (ox-clip-formatted-copy))
 
 ;;;; Outshine
 
@@ -1264,7 +1280,8 @@ predicate returns true."
  '(python-shell-interpreter "python3")
  '(safe-local-variable-values
    (quote
-    ((org-html-postamble-format
+    ((org-html-htmlize-output-type . css)
+     (org-html-postamble-format
       ("en" "<p class=\"date\">Published: %d</p>"))
      (org-html-postamble-format quote
                                 (("en" "<p class=\"date\">Published: %d</p>")))
