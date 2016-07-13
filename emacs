@@ -370,6 +370,37 @@ end tell" uri)))
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cc" 'org-capture)
 
+(defun my/org-babel-next-src-block ()
+  "Move point to the next babel src block. Returns the new point
+location if there is a next src block; returns nil otherwise."
+  (condition-case nil
+    (org-babel-next-src-block)
+    (user-error nil)))
+
+(defun my/org-execute-up-to-point ()
+  "Execute every ipython source block whose :results are set to
+silent between the beginning of the file and the current point
+location."
+  (interactive)
+  (save-excursion
+    (let ((stop (point)))
+      (progn
+        (goto-char (point-min))
+        (let ((pt (my/org-babel-next-src-block)))
+          (loop until (or (null pt) (> pt stop)) do
+                (let ((info (org-babel-get-src-block-info 't)))
+                  (when (and (string-equal "ipython" (nth 0 info)) ; language
+                             (string-equal "silent"
+                                           (assoc-default
+                                            :results
+                                            (nth 2 info) ; header-arguments-alist
+                                            nil "")))
+                    (progn (message "Executing %s block at line %s"
+                                    (nth 0 info)
+                                    (line-number-at-pos pt))
+                           (org-babel-execute-src-block))))
+                (setq pt (my/org-babel-next-src-block))))))))
+
 ;; Adapted from
 ;; http://emacs.stackexchange.com/questions/3374/set-the-background-of-org-exported-code-blocks-according-to-theme
 (defun my/org-inline-css-hook (exporter)
