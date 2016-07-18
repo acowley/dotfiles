@@ -551,7 +551,7 @@ evaluation may begin anew."
          :html-link-home "http://www.arcadianvisions.com/blog/"
          :completion-function
            (lambda ()
-             (shell-command "mv ~/Documents/Projects/Blog/blog/index.xml ~/Documents/Projects/Blog/blog/rss.xml"))
+             (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml)"))
          :html-link-use-abs-url t
          :exclude ".*"
          :include ("index.org")
