@@ -89,6 +89,11 @@
       configureFlags = ["--disable-doc"];
     });
 
+    platformio = (pkgs.python27.buildEnv.override {
+      extraLibs = let p = pkgs.python27Packages;
+                  in [ p.setuptools p.pip p.bottle p.platformio ];
+    }).env;
+
     opencv3 =
       let mypy27 = pkgs.python27.buildEnv.override {
             extraLibs = [ pkgs.python27Packages.numpy ];
