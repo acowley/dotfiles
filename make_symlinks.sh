@@ -9,3 +9,7 @@ else
 fi
 ln -s ${DIR}/org.gnupg.gpg-agent.plist ${HOME}/Library/LaunchAgents/org.gnupg.gpg-agent.plist
 ln -s ${DIR}/.mbsyncrc ${HOME}/.mbsyncrc
+if [ ! -d "${HOME}/.stack" ]; then
+  mkdir "$HOME/.stack"
+fi
+ln -s "${DIR}/stack-config.yaml" "${HOME}/.stack/config.yaml"
