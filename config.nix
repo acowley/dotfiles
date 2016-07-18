@@ -69,6 +69,11 @@
       SDL = null;
     };
 
+    octave = pkgs.callPackage (<nixpkgs> + /pkgs/development/interpreters/octave) {
+      openblas = pkgs.openblasCompat;
+      jdk = null;
+    };
+
     busybox = null;
 
     libdevil = (pkgs.libdevil.override {
