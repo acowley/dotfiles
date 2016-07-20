@@ -394,7 +394,8 @@ location."
                                            (assoc-default
                                             :results
                                             (nth 2 info) ; header-arguments-alist
-                                            nil "")))
+                                            nil ""))
+                             (not (string-match "^module " (nth 1 info))))
                     (progn (message "Executing %s block at line %s"
                                     (nth 0 info)
                                     (line-number-at-pos pt))
