@@ -648,6 +648,16 @@ active; black when inactive."
 
   (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
   (add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
+  (defun ac/god-enable-on-new-buffers (&rest buffer-name)
+    "Enable god-mode on new buffers if it is enabled globally."
+    (when (and god-global-mode
+               (not (null buffer-name))
+               (string-match "^multiswitch" (car buffer-name)))
+      (god-mode-activate 1)))
+  (advice-add #'rename-buffer
+              :after
+              #'ac/god-enable-on-new-buffers
+              '((name . "Set god status on new buffers")))
 
   (defun ac/god-toggle-on-overwrite ()
     "Toggle god-mode on overwrite-mode."
