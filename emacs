@@ -348,6 +348,8 @@ end tell" uri)))
                         'org-display-inline-images
                         'append)
 
+              (add-to-list 'org-agenda-files "~/Documents/Projects/roshask/roshask-notes.org")
+
               ;; (setq org-agenda-prefix-format
               ;;       '((agenda . " %i %-12:c%?-12t% s")
               ;;         (timeline . "  % s")
