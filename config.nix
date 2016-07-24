@@ -41,23 +41,23 @@
       mesa_glu = null;
     };
 
-    luatool = pkgs.callPackage ~/Documents/Projects/BabyTimer/luatool {
-      inherit (pkgs) fetchgit;
-      inherit (pkgs.lib) licenses;
-      inherit (pkgs.python27Packages) buildPythonPackage pyserial;
-    };
+    # luatool = pkgs.callPackage ~/Documents/Projects/BabyTimer/luatool {
+    #   inherit (pkgs) fetchgit;
+    #   inherit (pkgs.lib) licenses;
+    #   inherit (pkgs.python27Packages) buildPythonPackage pyserial;
+    # };
 
-    nodemcu-uploader = pkgs.callPackage ~/Documents/Projects/BabyTimer/nodemcu-uploader {
-      inherit (pkgs) fetchgit;
-      inherit (pkgs.lib) licenses;
-      inherit (pkgs.python27Packages) buildPythonPackage pyserial;
-    };
+    # nodemcu-uploader = pkgs.callPackage ~/Documents/Projects/BabyTimer/nodemcu-uploader {
+    #   inherit (pkgs) fetchgit;
+    #   inherit (pkgs.lib) licenses;
+    #   inherit (pkgs.python27Packages) buildPythonPackage pyserial;
+    # };
 
-    esptool = pkgs.callPackage ~/Documents/Projects/BabyTimer/esptool {
-      inherit (pkgs) fetchgit;
-      inherit (pkgs.lib) licenses;
-      inherit (pkgs.python27Packages) buildPythonPackage pyserial;
-    };
+    # esptool = pkgs.callPackage ~/Documents/Projects/BabyTimer/esptool {
+    #   inherit (pkgs) fetchgit;
+    #   inherit (pkgs.lib) licenses;
+    #   inherit (pkgs.python27Packages) buildPythonPackage pyserial;
+    # };
 
     julia = pkgs.julia.overrideDerivation (_: {
       doCheck = false;
@@ -133,100 +133,6 @@
       });
 
     # ros = (pkgs.callPackage ~/Documents/Projects/Nix/Ros).indigo.perception;
-
-    myHaskellPackages =
-      with import (<nixpkgs> + /pkgs/development/haskell-modules/lib.nix) {
-        inherit pkgs;
-      };
-      pkgs.haskell.packages.lts-5_15.override {
-        overrides = self: super: {
-            intero = pkgs.callPackage ~/src/intero {
-              inherit (pkgs) stdenv;
-              inherit (self) mkDerivation array base bytestring containers
-                             directory filepath ghc ghc-paths haskeline hspec
-                             process regex-compat syb temporary time
-                             transformers unix;
-            };
-            hpp = pkgs.callPackage ~/Documents/Projects/hpp {
-              inherit (pkgs) stdenv;
-              inherit (self) mkDerivation base directory filepath time
-                             transformers;
-            };
-            GLUtil = pkgs.callPackage ~/Documents/Projects/GLUtil {
-              inherit (pkgs) stdenv;
-              inherit (self) mkDerivation array base bytestring containers
-                             directory filepath JuicyPixels linear
-                             OpenGL OpenGLRaw transformers vector;
-              inherit (self) hpp;
-              # frameworks = pkgs.darwin.apple_sdk.frameworks;
-            };
-
-            ipython-kernel = pkgs.callPackage ~/src/IHaskell/ipython-kernel {
-              inherit (pkgs) stdenv;
-              inherit (self) mkDerivation aeson base bytestring cereal containers
-                directory filepath mtl parsec process SHA temporary
-                text transformers unordered-containers uuid zeromq4-haskell;
-            };
-
-            ihaskell = pkgs.callPackage ~/src/IHaskell {
-              inherit (pkgs) stdenv;
-              inherit (self) mkDerivation aeson base base64-bytestring bin-package-db
-                 bytestring cereal cmdargs containers directory filepath ghc
-                 ghc-parser ghc-paths haskeline haskell-src-exts hlint hspec
-                 http-client http-client-tls HUnit ipython-kernel mtl parsec
-                 process random setenv shelly split stm strict
-                 system-argv0 text transformers unix unordered-containers
-                 utf8-string uuid vector;
-            };
-
-            ihaskell-diagrams = pkgs.callPackage ~/src/IHaskell/ihaskell-display/ihaskell-diagrams {
-              inherit (pkgs) stdenv;
-              inherit (self) mkDerivation active base bytestring diagrams
-                             diagrams-cairo diagrams-lib directory ihaskell
-                             text;
-            };
-
-          diagrams-builder = overrideCabal super.diagrams-builder (drv: {
-            configureFlags = [ "-fps" "-frasterific" "-fogs" ];
-            executableHaskellDepends = with super; [
-              base bytestring cmdargs diagrams-lib
-              diagrams-postscript diagrams-rasterific diagrams-svg directory
-              filepath JuicyPixels lens lucid-svg
-            ];
-          });
-          Chart-diagrams = super.Chart-diagrams_1_5_4;
-
-          mockery = super.mockery.overrideDerivation (_: {
-            doCheck = false;
-          });
-
-          tar = overrideCabal super.tar (_: {
-            doCheck = false;
-          });
-
-          ffmpeg-light = self.callPackage /Users/acowley/Documents/Projects/ffmpeg-light {
-            inherit (pkgs) stdenv;
-            inherit (self) mkDerivation base either exceptions JuicyPixels mtl
-                           transformers vector Rasterific time;
-            inherit ffmpeg-full;
-          };
-        };
-      };
-
-    myHaskellEnv = myHaskellPackages.ghcWithHoogle
-      (haskellPackages: with haskellPackages; [
-        cabal-install cabal2nix ghc-mod structured-haskell-mode
-        tasty tasty-hunit doctest
-        lens linear vector containers criterion foldl
-        hmatrix pipes
-        OpenGL GLUtil GLFW-b
-        OpenCL ffmpeg-light
-        JuicyPixels Rasterific
-        diagrams diagrams-rasterific diagrams-builder
-        Chart Chart-diagrams
-        ihaskell ihaskell-charts ihaskell-diagrams ihaskell-blaze
-        vinyl Frames
-      ]);
 
     myPythonEnv = pkgs.python3.buildEnv.override {
       extraLibs = with pkgs.python3Packages; [
