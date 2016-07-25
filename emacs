@@ -1142,6 +1142,13 @@ predicate returns true."
 (defun ac/jonprl-hook ()
   (setq jonprl-path "~/Documents/Projects/JonPRL/bin/jonprl"))
 (add-hook 'jonprl-mode-hook #'ac/jonprl-hook)
+;;; rust
+(use-package rust-mode
+  :defer t
+  :config
+  (use-package cargo)
+  (use-package flycheck-rust)
+  (flycheck-mode))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
