@@ -84,6 +84,30 @@
 
 ;;; General emacs configuration
 
+;;;; Elisp Helpers
+(defun fill-list (xs &optional separator prefix suffix)
+  "Format a list to respect the fill column.
+
+List elements are separated by SEPARATOR. The formatted list is
+prefixed by PREFIX, and terminated by SUFFIX. If the list is
+wrapped across multiple lines, lines after the first are indented
+by a number of spaces equal to the length of PREFIX."
+  (let ((sep (or separator ", "))
+        (prefix-len (if prefix (length prefix) 0)))
+    (with-temp-buffer
+      (when prefix (insert prefix))
+      (insert (string-join xs sep))
+      (when suffix (insert suffix))
+      (goto-char (point-min))
+      (setq fill-prefix (loop repeat prefix-len concat " "))
+      (fill-paragraph)
+      (buffer-string))))
+;;;; Miscellaneous Settings
+
+;; Cause use-package to install packages automatically if not already
+;; present
+(setq use-package-always-ensure t)
+
 ;; Use the exec-path-from-shell package to set the PATH
 (when (memq window-system '(mac ns))
   (add-hook 'after-init-hook #'exec-path-from-shell-initialize))
