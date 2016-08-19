@@ -1214,6 +1214,13 @@ sorted block."
 
 (use-package paredit)
 
+;;; PlatformIO
+
+;; From github user @pashky
+(add-hook 'projectile-mode-hook
+          (lambda ()
+            (projectile-register-project-type 'platformio '("platformio.ini") "platformio run" nil "platformio run -t upload")))
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
