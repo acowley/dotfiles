@@ -1018,7 +1018,38 @@ predicate returns true."
     (structured-haskell-mode)
     (add-hook 'before-save-hook #'whitespace-cleanup)
     (intero-mode t))
-  (add-hook 'haskell-mode-hook #'my-haskell-mode-hook))
+  (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
+  (defun haskell-find-pragmas ()
+    "Return a sorted list of Haskell language pragmas specified
+in the buffer. Leaves point after the last language pragma."
+    (goto-char (point-min))
+    (let ((pragmas nil))
+      (while (search-forward-regexp
+              (rx line-start "{-#" (1+ space)
+                  (or "LANGUAGE" "language")
+                  (1+ space))
+              (point-max) t)
+        (search-forward-regexp (rx (group
+                                    (zero-or-more
+                                     (one-or-more alnum)
+                                     (zero-or-one ?\,)
+                                     (zero-or-more (or space ?\n))))
+                                   "#-}")
+                               (point-max)
+                               t)
+        (setq pragmas (append pragmas
+                              (mapcar #'string-trim
+                                      (split-string (match-string 1) ",")))))
+      (sort pragmas #'string-lessp)))
+
+  (defun haskell-cleanup-pragmas ()
+    "Merge all GHC LANGUAGE pragmas into a single alphabetically
+sorted block."
+    (interactive)
+    (save-excursion
+      (let ((pragmas (haskell-find-pragmas)))
+        (delete-backward-char (1- (point)))
+        (insert (fill-list pragmas ", " "{-# LANGUAGE " " #-}"))))))
 
 ;; ; Prevent ghci from looking for a cabal projection definition when
 ;; ; loading a file
