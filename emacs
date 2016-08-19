@@ -1210,6 +1210,10 @@ sorted block."
   (use-package cargo)
   (use-package flycheck-rust)
   (flycheck-mode))
+;;; elisp
+
+(use-package paredit)
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
