@@ -725,6 +725,7 @@ active; black when inactive."
 ;(require 'mu4e)
 
 (use-package mu4e
+  :ensure nil
   :defer t
   :commands (mu4e)
   :config
@@ -821,6 +822,7 @@ active; black when inactive."
   (use-package gnus-dired
     ;; make the `gnus-dired-mail-buffers' function also work on
     ;; message-mode derived modes, such as mu4e-compose-mode
+    :ensure nil
     :config
     (defun gnus-dired-mail-buffers ()
       "Return a list of active message buffers."
