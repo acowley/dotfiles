@@ -347,6 +347,10 @@ end tell" uri)))
 (add-hook 'org-mode-hook
           (lambda ()
             (progn
+              ;; Let markup strings be bordered by letter characters
+              (setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
+              (setcar (nthcdr 1 org-emphasis-regexp-components)
+                      "[:alpha:]- \t.,:!?;'\")}\\")
               ;; Let emphasized strings be bordered by quotes
               (setcar (nthcdr 2 org-emphasis-regexp-components) "\t\r\n, ")
               (org-set-emph-re 'org-emphasis-regexp-components
