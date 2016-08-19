@@ -122,11 +122,12 @@
           export PYTHON2_INCLUDE_DIR=${mypy27}/include/python2.7
           export PYTHON2_PACKAGES_PATH=${mypy27}/lib/python2.7/site-packages
           export PYTHON3_EXECUTABLE=${mypy3}/bin/python3
-          export PYTHON3_LIBRARY=${mypy3}/lib/libpython3.4m.dylib
-          export PYTHON3_INCLUDE_DIR=${mypy3}/include/python3.4
-          export PYTHON3_PACKAGES_PATH=${mypy3}/lib/python3.4/site-packages
+          export PYTHON3_LIBRARY=${mypy3}/lib/libpython3.5m.dylib
+          export PYTHON3_INCLUDE_DIR=${mypy3}/include/python3.5
+          export PYTHON3_PACKAGES_PATH=${mypy3}/lib/python3.5/site-packages
           export EIGEN_ROOT=${pkgs.eigen}
           ${pkgs.gnused}/bin/sed -i 's,\(^[[:space:]]*PATH_SUFFIXES include/eigen3 include/eigen2 Eigen/include/eigen3 Eigen/include/eigen2\),\1 eigen3,' ./cmake/OpenCVFindLibsPerf.cmake
+          ${pkgs.gnused}/bin/sed -i 's|    INSTALL_NAME_DIR lib|    INSTALL_NAME_DIR ''${CMAKE_INSTALL_NAME_DIR}|' ./cmake/OpenCVModule.cmake
         '';
         cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_FFMPEG=OFF -DWITH_QT=OFF -DWITH_QUICKTIME=OFF -DWITH_AVFOUNDATION=ON" ];
         NIX_CFLAGS_COMPILE="-DDEPLOYMENT_TARGET_MACOSX";
