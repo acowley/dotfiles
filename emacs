@@ -1008,9 +1008,9 @@ predicate returns true."
   :config
   (electric-indent-local-mode -1)
   (company-mode)
-  (use-package structured-haskell-mode
+  (use-package shm
     :bind (("M-A" . shm/goto-parent-end)))
-  (use-package intero-mode
+  (use-package intero
    :bind (("M-n" . flycheck-next-error)
           ("M-p" . flycheck-previous-error)
           ("M-?" . flycheck-display-error-at-point)))
