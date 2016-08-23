@@ -376,7 +376,9 @@ end tell" uri)))
                         'org-display-inline-images
                         'append)
 
-              (add-to-list 'org-agenda-files "~/Documents/Projects/roshask/roshask-notes.org")
+              (add-to-list 'org-agenda-files
+                           "~/Documents/Projects/roshask/roshask-notes.org"
+                           "~/Documents/Projects/Cosy/Cosy-notes.org")
 
               ;; (setq org-agenda-prefix-format
               ;;       '((agenda . " %i %-12:c%?-12t% s")
@@ -1212,7 +1214,10 @@ sorted block."
   (flycheck-mode))
 ;;; elisp
 
-(use-package paredit)
+(use-package paredit
+  :commands paredit-mode
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode))
 
 ;;; PlatformIO
 
