@@ -637,7 +637,7 @@ under the current project's root directory."
 (ido-mode -1)
 
 (use-package projectile
-  :defer nil
+  :defer 5
   :config
   (setq projectile-enable-caching t
         projectile-global-mode t
@@ -646,7 +646,7 @@ under the current project's root directory."
         '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")
         projectile-project-root-files
         '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal"))
-  :idle (projectile-global-mode))
+  (projectile-global-mode))
 
 ;;; god-mode
 
