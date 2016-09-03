@@ -5,7 +5,7 @@
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
 
-(add-to-list 'load-path "/Users/acowley/src/irony-mode")
+;(add-to-list 'load-path "/Users/acowley/src/irony-mode")
 (add-to-list 'load-path "/Users/acowley/.nix-profile/share/emacs/site-lisp")
 
 ;; Using a source checkout of ghc-mod
@@ -20,35 +20,25 @@
 
 ;; Make sure the packages I use are installed
 (setq my-packages '(exec-path-from-shell
-                    ; ghc
                     use-package
                     haskell-mode
-                    company company-ghc
-                    ; helm helm-ag
                     company-coq company-shell company-math
-                    helm-company helm-swoop helm-dash
-                    ; outorg
                     outshine
                     htmlize
                     impatient-mode
                     auctex
-                    irony company-irony
                     powerline smart-mode-line smart-mode-line-powerline-theme
-                    monokai-theme markdown-mode
-                    darkokai-theme
+                    darkokai-theme monokai-theme
+                    markdown-mode
                     session
-                    projectile helm-projectile ag
+                    ag
                     nix-mode
                     ;git-commit-mode git-rebase-mode magit
                     magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
-                    buffer-move multiple-cursors
-                    corral
                     visual-fill-column
                     ;; Use the terminal-notifier program on OS X
                     erc-hl-nicks erc-terminal-notifier
-                    jonprl-mode
-                    god-mode
                     tuareg flycheck-ocaml))
 
 ; If we run package-initialize, then add-to-list melpa, the
@@ -59,18 +49,6 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
-
-;; (add-to-list 'load-path "~/src/ob-ipython")
-;; (require 'ob-ipython)
-
-;; (add-to-list 'load-path "~/src/org-mode")
-;; (require 'org)
-
-;; (add-to-list 'load-path "/Users/acowley/src/helm/")
-;; (require 'helm-config)
-;; (require 'helm)
-
-;; (add-to-list 'load-path "~/Documents/Projets/ox-reveal")
 
 ; Fetch the list of available packages
 (unless package-archive-contents (package-refresh-contents))
@@ -146,10 +124,6 @@ by a number of spaces equal to the length of PREFIX."
 
 ;; Keyboard shortcut for aligning a region on a regexp
 (global-set-key (kbd "C-x a r") 'align-regexp)
-
-;; helm-swoop keybindings
-(global-set-key (kbd "M-i") 'helm-swoop)
-(global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
 
 ;; Start the emacs server if possible
 (when (fboundp 'server-mode) (funcall 'server-mode 1))
@@ -603,57 +577,76 @@ evaluation may begin anew."
              (shell-command "rsync -a ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog")))
         ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
 ;;; Helm
+(use-package helm
+  :bind (("M-x" . helm-M-x)
+         ("C-c h" . helm-mini)
+         ("C-c i" . helm-imenu)
+         ("C-x C-f" . helm-find-files)
+         :map helm-map
+         ;; use TAB for action
+         ("<tab>" . helm-execute-persistent-action)
+         ;; make TAB work in terminal
+         ("C-i" . helm-execute-persistent-action)
+         ;; list actions
+         ("C-z" . helm-select-action))
+  :config
+  (setq
+   helm-candidate-number-limit 100
+   helm-quick-update t
+   helm-M-x-requires-pattern 3      ; Require at least one character
+   helm-ff-file-name-history-use-recentf t
+   helm-ff-skip-boring-files t
 
-(add-hook 'helm-mode-hook
-          (lambda ()
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; use TAB for action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal
-(define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions
-(setq
- helm-candidate-number-limit 100
- helm-quick-update t
- helm-M-x-requires-pattern 3 ; Require at least one character
- helm-ff-file-name-history-use-recentf t
- helm-ff-skip-boring-files t
+                                        ; helm-idle-delay 0.0
+                                        ; helm-input-idle-delay 0.01
 
- ; helm-idle-delay 0.0
- ; helm-input-idle-delay 0.01
+   ;; Use Spotlight on OS X to find files
+   helm-locate-command
+   "mdfind -onlyin $HOME -name %s %s | grep -E -v '/dist/|/Caches/'"
+   helm-mini-default-sources '(helm-source-buffers-list
+                               helm-source-recentf
+                               helm-source-buffer-not-found
+                               helm-source-locate))
 
- ;; Use Spotlight on OS X to find files
- helm-locate-command
- "mdfind -onlyin $HOME -name %s %s | grep -E -v '/dist/|/Caches/'"
- helm-mini-default-sources '(helm-source-buffers-list
-                             helm-source-recentf
-                             helm-source-buffer-not-found
-                             helm-source-locate))))
+  ;; ido offers a nicer UI for switching between open buffers
+  (add-hook 'helm-mode-hook
+            (lambda ()
+              (add-to-list 'helm-completing-read-handlers-alist
+                           '(switch-to-buffer . ido))))
+  (helm-mode t)
+  (use-package helm-company
+    :defer t)
+  (use-package helm-swoop
+    :defer t
+    :bind (("M-i" . helm-swoop)
+           ("M-I" . helm-swoop-back-to-last-point)))
+  (use-package helm-dash
+    :defer t
+    :commands (projectile-helm-dash)
+    :config
+    (setq helm-dash-browser-func #'eww)
+    (defun projectile-helm-dash ()
+      "Set the helm-dash docsets path to the 'docsets' directory
+under the current project's root directory."
+      (interactive)
+      (setq helm-dash-docsets-path (concat (projectile-project-root) "docsets"))
+      (message (format "Loaded docsets for %s" (projectile-project-name)))))
+  (use-package helm-projectile
+    :defer t))
 
-;; ido offers a nicer UI for switching between open buffers
-(add-hook 'helm-mode-hook
-          (lambda ()
-            (add-to-list 'helm-completing-read-handlers-alist
-                         '(switch-to-buffer . ido))))
-
-(helm-mode t)
 (ido-mode -1)
 
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-c h") 'helm-mini)
-(global-set-key (kbd "C-c i") 'helm-imenu)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-
-(projectile-global-mode)
-(setq projectile-enable-caching t)
-
-(defun projectile-helm-dash ()
-  "Set the helm-dash docsets path to the 'docsets' directory
-under the current project's root directory."
-  (interactive)
-  (require 'helm-dash)
-  (require 'projectile)
-  (setq helm-dash-browser-func 'eww)
-  (setq helm-dash-docsets-path (concat (projectile-project-root) "docsets"))
-  (message (format "Loaded docsets for %s" (projectile-project-name))))
-
+(use-package projectile
+  :defer nil
+  :config
+  (setq projectile-enable-caching t
+        projectile-global-mode t
+        projectile-ignored-projects '("~/")
+        projectile-globally-ignored-directories
+        '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")
+        projectile-project-root-files
+        '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal"))
+  :idle (projectile-global-mode))
 
 ;;; god-mode
 
@@ -961,16 +954,19 @@ predicate returns true."
 ;;; Multiple-cursors
 
 ;; multiple-cursors setup
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
-(defun ac/insert-numbers1 ()
-  "Insert a number at each cursor counting up from 1."
-  (interactive)
-  (mc/insert-numbers 1))
+(use-package multiple-cursors
+  :defer nil
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this))
+  :init
+  (add-hook 'prog-mode-hook #'multiple-cursors-mode)
+  :config
+  (defun ac/insert-numbers1 ()
+    "Insert a number at each cursor counting up from 1."
+    (interactive)
+    (mc/insert-numbers 1)))
 
 ;;; Buffer-move
 
@@ -986,6 +982,12 @@ predicate returns true."
 ;; (global-set-key (kbd "<C-S-up>") 'buf-move-up)
 ;; (global-set-key (kbd "<C-S-down>") 'buf-move-down)
 
+;;; flycheck
+(use-package flycheck
+  :bind (:map flycheck-mode-map
+         ("M-n" . flycheck-next-error)
+         ("M-p" . flycheck-previous-error)
+         ("M-?" . flycheck-display-error-at-point)))
 ;;; haskell
 
 ;; Using a source checkout of ghc-mod
@@ -1013,9 +1015,10 @@ predicate returns true."
   (use-package shm
     :bind (("M-A" . shm/goto-parent-end)))
   (use-package intero
-   :bind (("M-n" . flycheck-next-error)
-          ("M-p" . flycheck-previous-error)
-          ("M-?" . flycheck-display-error-at-point)))
+    :load-path "~/src/intero"
+    :bind (("M-n" . flycheck-next-error)
+           ("M-p" . flycheck-previous-error)
+           ("M-?" . flycheck-display-error-at-point)))
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
     (add-hook 'before-save-hook #'whitespace-cleanup)
@@ -1096,9 +1099,47 @@ sorted block."
 (autoload 'haskell-latex-mode "haskell-latex")
 
 ;;; C++
+
+(use-package helm-gtags
+  :defer t
+  :bind (:map helm-gtags-mode-map
+         ("M-." . helm-gtags-find-tag)
+         ("M-*" . helm-gtags-pop-stack))
+  :config
+  (setq helm-gtags-direct-helm-completing t
+        helm-gtags-auto-update t
+        helm-gtags-ignore-case t))
+
 (add-hook 'c++-mode-hook
           (lambda ()
-            (setq company-backends (delete 'company-semantic company-backends))))
+            (setq company-backends (delete 'company-semantic company-backends))
+            (helm-gtags-mode 1)))
+
+(use-package irony
+  :defer t
+  :load-path "/Users/acowley/src/irony-mode"
+  :commands irony-mode
+  :config
+  (use-package company-irony
+    :defer t
+    :config
+    (add-to-list 'company-backends 'company-irony))
+
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async)
+    (company-irony-setup-begin-commands))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+  (use-package flycheck-irony
+    :defer t
+    :init
+    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
+    (add-hook 'irony-mode-hook #'flycheck-mode)))
+
 ;;; python
 (defun ac/python-hook ()
   (setq python-indent-offset 2))
@@ -1134,30 +1175,20 @@ sorted block."
 (setq magit-push-always-verify nil)
 
 ;;; company-mode
-(add-hook 'company-mode-hook
-          (lambda ()
-            ;(custom-set-variables '(company-idle-delay 0.0)) ; Always complete immediately
-            (define-key company-mode-map (kbd "C-:") 'helm-company)
-            (define-key company-active-map (kbd "C-:") 'helm-company)
-            ))
-
-(eval-after-load 'company-ghc (lambda ()
-                                (company-ghc-turn-on-autoscan)
-                                (setq company-ghc-show-info t)))
-
-(defun ac/company-text-mode () )
-;  (add-to-list 'company-backends 'company-ispell))
-
-(eval-after-load 'company
-  (lambda ()
-    (add-to-list 'company-backends 'company-irony)
-    (add-hook 'text-mode-hook #'ac/company-text-mode)))
+(use-package company
+  :defer t
+  :config
+  (setq company-idle-delay 0.1)
+  (define-key company-mode-map (kbd "C-:") 'helm-company)
+  (define-key company-active-map (kbd "C-:") 'helm-company)
+  (defun ac/company-text-mode ()
+    ;; (add-to-list 'company-backends 'company-ispell)
+    )
+  (add-hook 'text-mode-hook #'ac/company-text-mode))
 
 ;; (optional) adds CC special commands to `company-begin-commands' in order to
 ;; trigger completion at interesting places, such as after scope operator
 ;;     std::|
-(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-
 (add-hook 'prog-mode-hook 'company-mode)
 
 
@@ -1195,16 +1226,18 @@ sorted block."
 (set-variable 'twittering-use-master-password t)
 
 ;;; corral
-(setq corral-preserve-point t)
-(global-set-key (kbd "M-9") 'corral-parentheses-backward)
-(global-set-key (kbd "M-0") 'corral-parentheses-forward)
-(global-set-key (kbd "M-\"") 'corral-double-quotes-backward)
-(global-set-key (kbd "M-{") 'corral-braces-backward)
-(global-set-key (kbd "M-}") 'corral-braces-forward)
-;;; JonPRL
-(defun ac/jonprl-hook ()
-  (setq jonprl-path "~/Documents/Projects/JonPRL/bin/jonprl"))
-(add-hook 'jonprl-mode-hook #'ac/jonprl-hook)
+(use-package corral
+  :defer nil
+  :config
+  (setq corral-preserve-point t)
+  (global-set-key (kbd "M-9") #'corral-parentheses-backward)
+  (global-set-key (kbd "M-0") #'corral-parentheses-forward)
+  (global-set-key (kbd "M-\"") #'corral-double-quotes-backward)
+  (global-set-key (kbd "M-{") #'corral-braces-backward)
+  (global-set-key (kbd "M-}") #'corral-braces-forward)
+  (global-set-key (kbd "M-[") #'corral-brackets-backword)
+  (global-set-key (kbd "M-]") #'corral-backents-forward))
+
 ;;; rust
 (use-package rust-mode
   :defer t
@@ -1251,7 +1284,7 @@ sorted block."
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("1a53efc62256480d5632c057d9e726b2e64714d871e23e43816735e1b85c144c" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "13270e81a07dac4aeb1efefb77b9e61919bb3d69da7253ade632856eed65b8a2" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" "70b9c3d480948a3d007978b29e31d6ab9d7e259105d558c41f8b9532c13219aa" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+    ("70403e220d6d7100bae7775b3334eddeb340ba9c37f4b39c189c2c29d458543b" "0f92b9f1d391caf540ac746bc251ea00a55f29e20a411460eb6d8e49892ddef9" "d94eec01b45c7dc72e324af86fd2858e97c92220c195b5dbae5f8fd926a09cec" "1a53efc62256480d5632c057d9e726b2e64714d871e23e43816735e1b85c144c" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "13270e81a07dac4aeb1efefb77b9e61919bb3d69da7253ade632856eed65b8a2" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" "70b9c3d480948a3d007978b29e31d6ab9d7e259105d558c41f8b9532c13219aa" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(debug-on-error t)
  '(default-input-method "TeX")
  '(dired-dwim-target t)
@@ -1282,8 +1315,6 @@ sorted block."
     ("#A41F99" . 85)
     ("#49483E" . 100)))
  '(hl-sexp-background-color "#efebe9")
- '(irony-server-source-dir
-   "/Users/acowley/.nix-profile/share/emacs/site-lisp/elpa/irony-0.1.2/server")
  '(magit-diff-use-overlays nil)
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
@@ -1386,14 +1417,6 @@ sorted block."
  '(pop-up-windows nil)
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
- '(projectile-global-mode t)
- '(projectile-globally-ignored-directories
-   (quote
-    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")))
- '(projectile-ignored-projects (quote ("~/")))
- '(projectile-project-root-files
-   (quote
-    ("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal")))
  '(python-shell-interpreter "python3")
  '(safe-local-variable-values
    (quote
