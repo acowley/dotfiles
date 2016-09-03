@@ -10,6 +10,7 @@
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
     emacs = pkgs.emacs24Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
+    irony-server = pkgs.callPackage ./irony-server {};
     mygnused = pkgs.stdenv.mkDerivation {
       name = "mygnused";
       buildInputs = [pkgs.gnused];
@@ -106,7 +107,7 @@
           mypy3 = pkgs.python3.buildEnv.override {
             extraLibs = [ pkgs.python3Packages.numpy ];
           };
-      in pkgs.opencv3.overrideDerivation
+      in (pkgs.opencv3.override {enableContrib = true;}).overrideDerivation
       (oldAttrs: {
         buildInputs = (with pkgs; [ unzip libjpeg libpng libtiff ])
           ++ [ pkgs.eigen pkgs.bzip2 mypy27 mypy3 ];
