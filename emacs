@@ -1251,7 +1251,21 @@ sorted block."
   :config
   (use-package cargo)
   (use-package flycheck-rust)
-  (flycheck-mode))
+  (use-package racer
+    :commands (racer-mode)
+    :bind (:map rust-mode-map
+           ("TAB" . company-indent-or-complete-common))
+    :config
+    (defun my/racer-hook ()
+      (eldoc-mode)
+      (company-mode)
+      (setq company-tooltip-align-annotations t))
+    (add-hook 'racer-mode-hook #'eldoc-mode))
+  (defun my/rust-hook ()
+    (flycheck-rust-setup)
+    (flycheck-mode)
+    (racer-mode))
+  (add-hook 'rust-mode-hook #'my/rust-hook))
 ;;; elisp
 
 (use-package paredit
