@@ -576,6 +576,13 @@ evaluation may begin anew."
            (lambda()
              (shell-command "rsync -a ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog")))
         ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
+;;;; org-mime
+
+(use-package org-mime
+  :load-path "~/src/org-mime"
+  :ensure nil
+  :commands (org-mime-org-buffer-htmlize))
+
 ;;; Helm
 (use-package helm
   :bind (("M-x" . helm-M-x)
