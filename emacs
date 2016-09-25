@@ -1299,6 +1299,11 @@ sorted block."
           (lambda ()
             (projectile-register-project-type 'platformio '("platformio.ini") "platformio run" nil "platformio run -t upload")))
 
+;;; redprl
+(use-package redprl
+  :config
+  (setq redprl-command "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"
+        flycheck-redprl-executable "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
