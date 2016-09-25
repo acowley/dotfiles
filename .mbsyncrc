@@ -20,7 +20,7 @@ MaildirStore gmail-local
 # The trailing "/" is important
 Path ~/.mail/gmail/
 Inbox ~/.mail/gmail/Inbox
-MaxSize 1M
+MaxSize 5M
 
 Channel gmail-trash
 Master ":gmail-remote:[Gmail]/Trash"
