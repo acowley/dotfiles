@@ -1272,6 +1272,19 @@ sorted block."
     (flycheck-mode)
     (racer-mode))
   (add-hook 'rust-mode-hook #'my/rust-hook))
+
+;;; purescript
+(use-package purescript-mode
+  :config
+  ;(use-package flycheck-purescript)
+  ;; (add-hook 'purescript-mode-hook #'flycheck-mode)
+  (use-package psc-ide)
+  (defun my/purescript-hook ()
+    (psc-ide-mode)
+    (company-mode t)
+    (flycheck-mode t)
+    (turn-on-purescript-indentation))
+  (add-hook 'purescript-mode-hook #'my/purescript-hook))
 ;;; elisp
 
 (use-package paredit
