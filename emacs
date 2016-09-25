@@ -228,13 +228,19 @@ end tell" uri)))
 (define-key process-menu-mode-map (kbd "C-k") #'joaot/delete-process-at-point)
 
 ;;;; variable-pitch-mode
-(add-hook 'text-mode-hook
-          (lambda ()
-            (turn-on-visual-line-mode)
-            ;(variable-pitch-mode)
-            (setq buffer-face-mode-face '(:family "Avenir Next"))
-            (buffer-face-mode)
-            (text-scale-adjust 1)))
+(defun my/text-mode-hook ()
+  (flyspell-mode)
+  (turn-on-visual-line-mode)
+  ;(variable-pitch-mode)
+  (setq buffer-face-mode-face '(:family "Helvetica Neue" :weight thin))
+
+    ;; (setq buffer-face-mode-face '(:family "Avenir"))
+  ;; (setq buffer-face-mode-face '(:family "Montserrat"))
+  (buffer-face-mode)
+  (text-scale-adjust 2)
+  ;; (text-mode-hook-identify)
+  )
+(add-hook 'text-mode-hook #'my/text-mode-hook)
 
 
 ;;;; Ignored extensions
