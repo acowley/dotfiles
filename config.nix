@@ -10,7 +10,7 @@
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
     emacs = pkgs.emacs24Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
-    irony-server = pkgs.callPackage ./irony-server {};
+    irony-server = pkgs.callPackage ./nix/irony-server {};
     mygnused = pkgs.stdenv.mkDerivation {
       name = "mygnused";
       buildInputs = [pkgs.gnused];
