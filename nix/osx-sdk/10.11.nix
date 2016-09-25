@@ -1,4 +1,4 @@
-{ stdenv }:
+{ stdenv, fetchzip }:
 
 let
   version = "10.11";
@@ -7,7 +7,7 @@ in stdenv.mkDerivation rec {
 
   src = fetchzip {
     url = "https://github.com/phracker/MacOSX-SDKs/releases/download/MacOSX10.11.sdk/MacOSX10.11.sdk.tar.xz";
-    sha256 = "0000f40jij2z1mia091xqyky5r11r4qyh7b8172blrmgm9q23sl9";
+    sha256 = "132vz288l6pk7ci49fcvkkmci47w451ggidh3sarm1f9m7sg7b1k";
   };
 
   unpackPhase    = "true";
