@@ -135,6 +135,11 @@
         '';
         cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_FFMPEG=ON -DWITH_QT=OFF -DWITH_QUICKTIME=OFF -DWITH_AVFOUNDATION=ON" ];
         NIX_CFLAGS_COMPILE="-DDEPLOYMENT_TARGET_MACOSX";
+        patches = [
+          (pkgs.fetchpatch {
+             url = https://github.com/opencv/opencv/commit/a2bda999211e8be9fbc5d40038fdfc9399de31fc.patch;
+             sha256 = "1dmq6gqsy1rzf57acr6kn4xy03vdmmk9b9kn1s0sv5ck9kgc2rfl";
+          })];
       });
 
     # ros = (pkgs.callPackage ~/Documents/Projects/Nix/Ros).indigo.perception;
