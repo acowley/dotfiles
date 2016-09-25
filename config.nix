@@ -77,6 +77,9 @@
 
     busybox = null;
 
+    # Uses osx_sdk rather than frameworks from nixpkgs
+    glfw = with pkgs; callPackage ./nix/glfw/3.x.nix {};
+
     libdevil = (pkgs.libdevil.override {
       mesa=null; libX11=null;
     }).overrideDerivation (_: {
