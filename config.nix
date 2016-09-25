@@ -113,7 +113,7 @@
       in (pkgs.opencv3.override {enableContrib = true;}).overrideDerivation
       (oldAttrs: {
         buildInputs = (with pkgs; [ unzip libjpeg libpng libtiff ])
-          ++ [ pkgs.eigen pkgs.bzip2 mypy27 mypy3 ];
+          ++ [ pkgs.eigen pkgs.bzip2 mypy27 mypy3 ffmpeg-full ];
         nativeBuildInputs = oldAttrs.nativeBuildInputs
           ++ [ pkgs.doxygen ]
           ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
@@ -133,7 +133,7 @@
           ${pkgs.gnused}/bin/sed -i 's,\(^[[:space:]]*PATH_SUFFIXES include/eigen3 include/eigen2 Eigen/include/eigen3 Eigen/include/eigen2\),\1 eigen3,' ./cmake/OpenCVFindLibsPerf.cmake
           ${pkgs.gnused}/bin/sed -i 's|    INSTALL_NAME_DIR lib|    INSTALL_NAME_DIR ''${CMAKE_INSTALL_NAME_DIR}|' ./cmake/OpenCVModule.cmake
         '';
-        cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_FFMPEG=OFF -DWITH_QT=OFF -DWITH_QUICKTIME=OFF -DWITH_AVFOUNDATION=ON" ];
+        cmakeFlags = oldAttrs.cmakeFlags ++ [ "-DWITH_FFMPEG=ON -DWITH_QT=OFF -DWITH_QUICKTIME=OFF -DWITH_AVFOUNDATION=ON" ];
         NIX_CFLAGS_COMPILE="-DDEPLOYMENT_TARGET_MACOSX";
       });
 
