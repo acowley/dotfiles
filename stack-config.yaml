@@ -2,7 +2,9 @@
 # in all projects.  For more information about stack's configuration, see
 # http://docs.haskellstack.org/en/stable/yaml_configuration.html
 #
-system-ghc: false
+system-ghc: true
+nix:
+  enable: true
 templates:
   params:
     author-email: acowley@gmail.com
