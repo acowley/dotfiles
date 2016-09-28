@@ -18,7 +18,7 @@ in stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/Developer/SDKs/
     echo "Source is: $src"
-    cp -r $src $out/Developer/SDKs/
+    cp -r $src/* $out/Developer/SDKs/
   '';
 
   meta = with stdenv.lib; {
