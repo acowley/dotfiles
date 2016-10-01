@@ -37,11 +37,11 @@
 
     pcl = pkgs.pcl.override { vtk=pkgs.vtkWithQt4; libXt=null; };
 
-    qt4 = pkgs.qt4.override {
-      mesaSupported = false;
-      mesa = null;
-      mesa_glu = null;
-    };
+    # qt4 = pkgs.qt4.override {
+    #   mesaSupported = false;
+    #   mesa = null;
+    #   mesa_glu = null;
+    # };
 
     # luatool = pkgs.callPackage ~/Documents/Projects/BabyTimer/luatool {
     #   inherit (pkgs) fetchgit;
