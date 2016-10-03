@@ -637,10 +637,10 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                                helm-source-locate))
 
   ;; ido offers a nicer UI for switching between open buffers
-  (add-hook 'helm-mode-hook
-            (lambda ()
-              (add-to-list 'helm-completing-read-handlers-alist
-                           '(switch-to-buffer . ido))))
+  ;; (add-hook 'helm-mode-hook
+  ;;           (lambda ()
+  ;;             (add-to-list 'helm-completing-read-handlers-alist
+  ;;                          '(switch-to-buffer . ido))))
   (helm-mode t)
   (use-package helm-company
     :defer t)
