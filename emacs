@@ -360,6 +360,8 @@ end tell" uri)))
                            "~/Documents/Projects/roshask/roshask-notes.org"
                            "~/Documents/Projects/Cosy/Cosy-notes.org")
 
+              (require 'org-clock)
+              (add-to-list 'org-clock-clocktable-language-setup '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
               ;; (setq org-agenda-prefix-format
               ;;       '((agenda . " %i %-12:c%?-12t% s")
               ;;         (timeline . "  % s")
@@ -589,6 +591,19 @@ evaluation may begin anew."
   :ensure nil
   :commands (org-mime-org-buffer-htmlize))
 
+;;;; org-clock
+
+(defun my-org-clocktable-notodo (ipos tables params)
+  "Remove the TODO and DONE keywords from clock table
+entries. From
+http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-done-from-clocktable-reports"
+  (cl-loop for tbl in tables
+           for entries = (nth 2 tbl)
+           do (cl-loop for entry in entries
+                       for headline = (nth 1 entry)
+                       do (setq headline (replace-regexp-in-string "TODO \\|DONE " "" headline))
+                       do (setcar (nthcdr 1 entry) headline)))
+  (org-clocktable-write-default ipos tables params))
 ;;; Helm
 (use-package helm
   :bind (("M-x" . helm-M-x)
