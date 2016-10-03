@@ -1138,10 +1138,13 @@ sorted block."
         helm-gtags-auto-update t
         helm-gtags-ignore-case t))
 
-(add-hook 'c++-mode-hook
-          (lambda ()
-            (setq company-backends (delete 'company-semantic company-backends))
-            (helm-gtags-mode 1)))
+(defun my/c++-mode-hook ()
+  (electric-indent-mode t)
+  (electric-pair-mode t)
+  (setq company-backends (delete 'company-semantic company-backends))
+  (helm-gtags-mode 1))
+
+(add-hook 'c++-mode-hook #'my/c++-mode-hook)
 
 (use-package irony
   :defer t
