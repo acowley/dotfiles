@@ -65,11 +65,11 @@
       doCheck = false;
     });
 
-    ffmpeg-full = pkgs.ffmpeg-full.override {
-      ffplayProgram = false;
-      openglExtlib = false;
-      SDL = null;
-    };
+    # ffmpeg-full = pkgs.ffmpeg-full.override {
+    #   ffplayProgram = false;
+    #   openglExtlib = false;
+    #   SDL = null;
+    # };
 
     octave = pkgs.callPackage (<nixpkgs> + /pkgs/development/interpreters/octave) {
       openblas = pkgs.openblasCompat;
@@ -114,7 +114,7 @@
       in (pkgs.opencv3.override {enableContrib = true;}).overrideDerivation
       (oldAttrs: {
         buildInputs = (with pkgs; [ unzip libjpeg libpng libtiff ])
-          ++ [ pkgs.eigen pkgs.bzip2 mypy27 mypy3 ffmpeg-full ];
+          ++ [ pkgs.eigen pkgs.bzip2 mypy27 mypy3 pkgs.ffmpeg-full ];
         nativeBuildInputs = oldAttrs.nativeBuildInputs
           ++ [ pkgs.doxygen ]
           ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
