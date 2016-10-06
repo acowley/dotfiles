@@ -35,9 +35,9 @@
     #   configureFlags = oldAttrs.configureFlags ++ [ "--enable-ext-colors" ];
     # });
 
-    pcl = (pkgs.pcl.override { vtk=pkgs.vtkWithQt4; libXt=null; }).overrideDerivation (old: {
-      cmakeFlags = old.cmakeFlags ++ [ "-DOPENGL_INCLUDE_DIR=${pkgs.darwin.apple_sdk.frameworks.OpenGL}/Library/Frameworks" ];
-   });
+   #  pcl = (pkgs.pcl.override { vtk=pkgs.vtkWithQt4; libXt=null; }).overrideDerivation (old: {
+   #    cmakeFlags = old.cmakeFlags ++ [ "-DOPENGL_INCLUDE_DIR=${pkgs.darwin.apple_sdk.frameworks.OpenGL}/Library/Frameworks" ];
+   # });
 
     # qt4 = pkgs.qt4.override {
     #   mesaSupported = false;
