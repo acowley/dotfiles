@@ -1300,6 +1300,7 @@ sorted block."
 
 ;;; purescript
 (use-package purescript-mode
+  :defer t
   :config
   ;(use-package flycheck-purescript)
   ;; (add-hook 'purescript-mode-hook #'flycheck-mode)
