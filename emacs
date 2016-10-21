@@ -5,16 +5,7 @@
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
 
-;(add-to-list 'load-path "/Users/acowley/src/irony-mode")
 (add-to-list 'load-path "/Users/acowley/.nix-profile/share/emacs/site-lisp")
-
-;; Using a source checkout of ghc-mod
-
-;; Be careful to get the right ghc-mod! `add-to-list` adds to the head
-;; of the list, so requiring right after adding the path should pull
-;; in the right one.
-;(add-to-list 'load-path "/Users/acowley/src/ghc-mod/elisp/")
-;(require 'ghc)
 
 ;;; Package setup
 
