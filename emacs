@@ -330,135 +330,152 @@ end tell" uri)))
 ;;; Org-mode
 
 ;;;; General Org Configuration
-(add-hook 'org-mode-hook
-          (lambda ()
-            (progn
-              ;; Let markup strings be bordered by letter characters
-              (setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
-              (setcar (nthcdr 1 org-emphasis-regexp-components)
-                      "[:alpha:]- \t.,:!?;'\")}\\")
-              ;; Let emphasized strings be bordered by quotes
-              (setcar (nthcdr 2 org-emphasis-regexp-components) "\t\r\n, ")
-              (org-set-emph-re 'org-emphasis-regexp-components
-                               org-emphasis-regexp-components)
-              (setq org-src-fontify-natively t)
-              (setq org-use-speed-commands t)
-              (setq org-html-doctype "html5")
-              (org-bullets-mode 1)
-              (org-babel-do-load-languages
-               'org-babel-load-languages
-               '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
-                 (C . t) (js . t) (ipython . t) (maxima . t) (latex . t)))
+(use-package org
+  :defer 7
+  :ensure org-plus-contrib
+  :pin org
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         ("C-c c" . org-capture)
+         :org-mode-map
+         ;; Don't fight the bindings that use
+         ;; shift-arrow to move focus between windows.
+         ("S-<left>" . nil)
+         ("S-<right>" . nil)
+         ("S-<up>" . nil)
+         ("S-<down>" . nil))
+  :config
+  ;; Let markup strings be bordered by letter characters
+  (setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
+  (setcar (nthcdr 1 org-emphasis-regexp-components)
+          "[:alpha:]- \t.,:!?;'\")}\\")
+  ;; Let emphasized strings be bordered by quotes
+  (setcar (nthcdr 2 org-emphasis-regexp-components) "\t\r\n, ")
+  (org-set-emph-re 'org-emphasis-regexp-components
+                   org-emphasis-regexp-components)
 
-              ;; Disable variable-pitch-mode in tables. We used to be
-              ;; able to disable this in src blocks, but this no
-              ;; longer works.
-              (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-              (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-              (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+  (setq org-src-fontify-natively t
+        org-use-speed-commands t
+        org-html-doctype "html5"
+        org-directory "~/org"
+        ;; For leuven-theme
+        ;; Fontify the whole line for headings (with a background color).
+        org-fontify-whole-heading-line t)
 
-              ;; display/update images in the buffer after I evaluate
-              (add-hook 'org-babel-after-execute-hook
-                        'org-display-inline-images
-                        'append)
+  (use-package org-bullets)
 
-              (add-to-list 'org-agenda-files
-                           "~/Documents/Projects/roshask/roshask-notes.org"
-                           "~/Documents/Projects/Cosy/Cosy-notes.org")
+  (defun my-org-hook ()
+    (org-bullets-mode 1))
+  (add-hook 'org-mode-hook #'my-org-hook)
 
-              (require 'org-clock)
-              (add-to-list 'org-clock-clocktable-language-setup '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
-              ;; (setq org-agenda-prefix-format
-              ;;       '((agenda . " %i %-12:c%?-12t% s")
-              ;;         (timeline . "  % s")
-              ;;         (todo . " %i %b%-12:c")
-              ;;         (tags . " %i %-12:c")
-              ;;         (search . " %i %-12:c")))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
+     (C . t) (js . t) (ipython . t) (maxima . t) (latex . t)))
 
-              ;; Don't fight the bindings that use
-              ;; shift-arrow to move focus between windows.
-              (define-key org-mode-map (kbd "S-<left>") nil)
-              (define-key org-mode-map (kbd "S-<right>") nil)
-              (define-key org-mode-map (kbd "S-<up>") nil)
-              (define-key org-mode-map (kbd "S-<down>") nil)
-              (require 'ox-extra)
-              (ox-extras-activate '(ignore-headlines)))))
+  ;; Disable variable-pitch-mode in tables. We used to be
+  ;; able to disable this in src blocks, but this no
+  ;; longer works.
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
 
-(setq org-directory "~/org")
+  ;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook
+            'org-display-inline-images
+            'append)
 
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
-(define-key global-map "\C-cc" 'org-capture)
+  (add-to-list 'org-agenda-files
+               "~/Documents/Projects/roshask/roshask-notes.org"
+               "~/Documents/Projects/Cosy/Cosy-notes.org")
 
-(defun my/org-babel-next-src-block ()
-  "Move point to the next babel src block. Returns the new point
+  (defun my/org-babel-next-src-block ()
+    "Move point to the next babel src block. Returns the new point
 location if there is a next src block; returns nil otherwise."
-  (condition-case nil
-    (org-babel-next-src-block)
-    (user-error nil)))
+    (condition-case nil
+        (org-babel-next-src-block)
+      (user-error nil)))
 
-(defun my/org-execute-up-to-point ()
-  "Execute every ipython source block whose :results are set to
+  (defun my/org-execute-up-to-point ()
+    "Execute every ipython source block whose :results are set to
 silent between the beginning of the file and the current point
 location."
-  (interactive)
-  (save-excursion
-    (let ((stop (point)))
-      (progn
-        (goto-char (point-min))
-        (let ((pt (my/org-babel-next-src-block)))
-          (loop until (or (null pt) (> pt stop)) do
-                (let ((info (org-babel-get-src-block-info 't)))
-                  (when (and (string-equal "ipython" (nth 0 info)) ; language
-                             (string-equal "silent"
-                                           (assoc-default
-                                            :results
-                                            (nth 2 info) ; header-arguments-alist
-                                            nil ""))
-                             (not (string-match "^module " (nth 1 info))))
-                    (progn (message "Executing %s block at line %s"
-                                    (nth 0 info)
-                                    (line-number-at-pos pt))
-                           (org-babel-execute-src-block))))
-                (setq pt (my/org-babel-next-src-block))))))))
+    (interactive)
+    (save-excursion
+      (let ((stop (point)))
+        (progn
+          (goto-char (point-min))
+          (let ((pt (my/org-babel-next-src-block)))
+            (loop until (or (null pt) (> pt stop)) do
+                  (let ((info (org-babel-get-src-block-info 't)))
+                    (when (and (string-equal "ipython" (nth 0 info)) ; language
+                               (string-equal "silent"
+                                             (assoc-default
+                                              :results
+                                              (nth 2 info) ; header-arguments-alist
+                                              nil ""))
+                               (not (string-match "^module " (nth 1 info))))
+                      (progn (message "Executing %s block at line %s"
+                                      (nth 0 info)
+                                      (line-number-at-pos pt))
+                             (org-babel-execute-src-block))))
+                  (setq pt (my/org-babel-next-src-block))))))))
 
-;; Adapted from
-;; http://emacs.stackexchange.com/questions/3374/set-the-background-of-org-exported-code-blocks-according-to-theme
-(defun my/org-inline-css-hook (exporter)
-  "Insert custom inline css to automatically set the background
+  ;; Adapted from
+  ;; http://emacs.stackexchange.com/questions/3374/set-the-background-of-org-exported-code-blocks-according-to-theme
+  (defun my/org-inline-css-hook (exporter)
+    "Insert custom inline css to automatically set the background
 of code to whatever theme I'm using's background"
-  (when (eq exporter 'html)
-    (let* ((my-pre-bg (face-background 'default))
-           (my-pre-fg (face-foreground 'default)))
-      (setq
-       org-html-head-extra
-       (concat
-        org-html-head-extra
-        (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s; overflow: scroll;} body { max-width: 600pt; margin: auto} </style>\n"
-                my-pre-bg my-pre-fg))))))
+    (when (eq exporter 'html)
+      (let* ((my-pre-bg (face-background 'default))
+             (my-pre-fg (face-foreground 'default)))
+        (setq
+         org-html-head-extra
+         (concat
+          org-html-head-extra
+          (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s; overflow: scroll;} body { max-width: 600pt; margin: auto} </style>\n"
+                  my-pre-bg my-pre-fg))))))
 
-(add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
+  (add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
 
-;; For leuven-theme
-;; Fontify the whole line for headings (with a background color).
-(setq org-fontify-whole-heading-line t)
-
-;; Use fixed-width fonts where appropriate
-;; From: https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/
-(defun adjoin-to-list-or-symbol (element list-or-symbol)
-  (require 'cl)
-  (adjoin element (if (not (listp list-or-symbol))
-                      (list list-or-symbol)
+  ;; Use fixed-width fonts where appropriate
+  ;; From: https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/
+  (defun adjoin-to-list-or-symbol (element list-or-symbol)
+    (require 'cl)
+    (adjoin element (if (not (listp list-or-symbol))
+                        (list list-or-symbol)
                       list-or-symbol)))
-
-(eval-after-load "org"
-  '(mapc (lambda (face)
+  (mapc (lambda (face)
            (set-face-attribute face nil
                                :inherit (adjoin-to-list-or-symbol
                                           'fixed-pitch
                                           (face-attribute face :inherit))))
          ;(list 'org-code 'org-block 'org-table 'org-block-background)))
-         (list 'org-code 'org-block 'org-table)))
+         (list 'org-code 'org-block 'org-table))
+
+  (require 'org-clock)
+  (add-to-list 'org-clock-clocktable-language-setup '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
+
+  ;; (setq org-agenda-prefix-format
+  ;;       '((agenda . " %i %-12:c%?-12t% s")
+  ;;         (timeline . "  % s")
+  ;;         (todo . " %i %b%-12:c")
+  ;;         (tags . " %i %-12:c")
+  ;;         (search . " %i %-12:c")))
+
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+  (use-package org-ref
+    :defer nil
+    :config
+    (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
+    (setq
+     reftex-default-bibliography '("~/Documents/MyPapers/mybib.bib")
+     ;; see org-ref for use of these variables
+     org-ref-bibliography-notes "~/Documents/MyPapers/bib-notes.org"
+     org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
+     org-ref-pdf-directory "~/Documents/MyPapers/references/"
+     bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib"))))
 
 (eval-after-load "font-latex"
   '(mapc (lambda (face)
