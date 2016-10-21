@@ -71,6 +71,21 @@ by a number of spaces equal to the length of PREFIX."
       (setq fill-prefix (loop repeat prefix-len concat " "))
       (fill-paragraph)
       (buffer-string))))
+
+(defun parse-time-span (s)
+"Parse a time span string representing hours, minutes and seconds
+of the form \"3h2m48.293s\" into a number of seconds."
+  (let* ((hours (pcase (split-string s "h")
+                  (`(,h ,rest) (cons (* 60 60 (string-to-number h)) rest))
+                  (_ (cons 0 s))))
+         (mins (pcase (split-string (cdr hours) "m")
+                 (`(,m ,rest) (cons (* 60 (string-to-number m)) rest))
+                 (_ `(0 . ,(cdr hours)))))
+         (secs (pcase (split-string (cdr mins) "s")
+                 (`(,s ,_) (string-to-number s))
+                 (_ (error "No seconds component")))))
+    (+ (car hours) (car mins) secs)))
+
 ;;;; Miscellaneous Settings
 
 ;; Cause use-package to install packages automatically if not already
