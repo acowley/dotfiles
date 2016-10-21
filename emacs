@@ -1330,6 +1330,12 @@ sorted block."
   :config
   (setq redprl-command "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"
         flycheck-redprl-executable "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"))
+
+;;; osx-dictionary
+(use-package osx-dictionary
+  :bind (("C-c d" . osx-dictionary-search-pointer))
+  :config
+  (setq osx-dictionary-dictionary-choice '("Dictionary" "Thesaurus")))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
