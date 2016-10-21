@@ -1243,17 +1243,13 @@ sorted block."
 ;;; znc
 
 (eval-after-load "znc"
-  '(let ((password
-          (let ((auth (auth-source-search :host "chat.nixmag.net")))
-            (cond
-             ((null auth) (error "Couldn't find nixmag authinfo"))
-             (t (funcall (plist-get (car auth) :secret)))))))
-     (set-variable
-      'znc-servers
-      `(("hiya.nerdpol.ovh" 1234 t ((hiya "acowley/freenode" ,password))))
-      ;; `(("chat.nixmag.net" 1234 t
-      ;;    ((nixmag\.net "acowley/freenode" ,password))))
-)))
+  '(let ((password (let ((auth (auth-source-search :host "rasznc.local")))
+                     (cond
+                      ((null auth) (error "Couldn't find rasznc authinfo"))
+                      (t (funcall (plist-get (car auth) :secret)))))))
+    (set-variable
+     'znc-servers
+     `(("raspberrypi.local" 1234 t ((rasznc "acowley/freenode" ,password)))))))
 
 ;;; twittering-mode
 (add-hook 'twittering-mode-hook
