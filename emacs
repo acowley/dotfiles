@@ -1207,9 +1207,14 @@ sorted block."
 
 ;;; git
 (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
-(add-hook 'magit-log-edit-mode-hook 'turn-on-auto-fill)
-(setq magit-last-seen-setup-instructions "1.4.0")
-(setq magit-push-always-verify nil)
+(use-package magit
+  :defer t
+  :config
+  (add-hook 'magit-log-edit-mode-hook 'turn-on-auto-fill)
+  (setq magit-last-seen-setup-instructions "1.4.0")
+  (setq magit-push-always-verify nil))
+
+
 
 ;;; company-mode
 (use-package company
