@@ -31,48 +31,6 @@
       };
     };
 
-    # ncurses = pkgs.ncurses.overrideDerivation (oldAttrs: {
-    #   configureFlags = oldAttrs.configureFlags ++ [ "--enable-ext-colors" ];
-    # });
-
-   #  pcl = (pkgs.pcl.override { vtk=pkgs.vtkWithQt4; libXt=null; }).overrideDerivation (old: {
-   #    cmakeFlags = old.cmakeFlags ++ [ "-DOPENGL_INCLUDE_DIR=${pkgs.darwin.apple_sdk.frameworks.OpenGL}/Library/Frameworks" ];
-   # });
-
-    # qt4 = pkgs.qt4.override {
-    #   mesaSupported = false;
-    #   mesa = null;
-    #   mesa_glu = null;
-    # };
-
-    # luatool = pkgs.callPackage ~/Documents/Projects/BabyTimer/luatool {
-    #   inherit (pkgs) fetchgit;
-    #   inherit (pkgs.lib) licenses;
-    #   inherit (pkgs.python27Packages) buildPythonPackage pyserial;
-    # };
-
-    # nodemcu-uploader = pkgs.callPackage ~/Documents/Projects/BabyTimer/nodemcu-uploader {
-    #   inherit (pkgs) fetchgit;
-    #   inherit (pkgs.lib) licenses;
-    #   inherit (pkgs.python27Packages) buildPythonPackage pyserial;
-    # };
-
-    # esptool = pkgs.callPackage ~/Documents/Projects/BabyTimer/esptool {
-    #   inherit (pkgs) fetchgit;
-    #   inherit (pkgs.lib) licenses;
-    #   inherit (pkgs.python27Packages) buildPythonPackage pyserial;
-    # };
-
-    julia = pkgs.julia.overrideDerivation (_: {
-      doCheck = false;
-    });
-
-    # ffmpeg-full = pkgs.ffmpeg-full.override {
-    #   ffplayProgram = false;
-    #   openglExtlib = false;
-    #   SDL = null;
-    # };
-
     octave = pkgs.callPackage (<nixpkgs> + /pkgs/development/interpreters/octave) {
       openblas = pkgs.openblasCompat;
       jdk = null;
@@ -83,19 +41,19 @@
     # Uses osx_sdk rather than frameworks from nixpkgs
     glfw = with pkgs; callPackage ./nix/glfw/3.x.nix {};
 
-    libdevil = (pkgs.libdevil.override {
-      mesa=null; libX11=null;
-    }).overrideDerivation (_: {
-        buildInputs = with pkgs;
-          [ libjpeg libpng libmng lcms1 libtiff openexr ]
-            ++ (if stdenv.isDarwin
-                then [darwin.apple_sdk.frameworks.OpenGL]
-                else [mesa libX11]);
-    });
+    # libdevil = (pkgs.libdevil.override {
+    #   mesa=null; libX11=null;
+    # }).overrideDerivation (_: {
+    #     buildInputs = with pkgs;
+    #       [ libjpeg libpng libmng lcms1 libtiff openexr ]
+    #         ++ (if stdenv.isDarwin
+    #             then [darwin.apple_sdk.frameworks.OpenGL]
+    #             else [mesa libX11]);
+    # });
 
-    graphviz = (pkgs.graphviz.override {
-      xorg = null;
-    });
+    # graphviz = (pkgs.graphviz.override {
+    #   xorg = null;
+    # });
 
     uriparser = pkgs.uriparser.overrideDerivation (_: {
       configureFlags = ["--disable-doc"];
