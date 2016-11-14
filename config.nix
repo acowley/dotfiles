@@ -9,7 +9,7 @@
     gnupg = pkgs.gnupg.override { x11Support = false; };
     pass = with pkgs;
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
-    emacs = pkgs.emacs24Macport;
+    emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
     irony-server = pkgs.callPackage ./nix/irony-server {};
     mygnused = pkgs.stdenv.mkDerivation {
