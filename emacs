@@ -12,20 +12,14 @@
 ;; Make sure the packages I use are installed
 (setq my-packages '(exec-path-from-shell
                     use-package
-                    haskell-mode
-                    company-coq company-shell company-math
-                    outshine
+                    company-coq company-math
                     htmlize
-                    impatient-mode
                     auctex
                     powerline smart-mode-line smart-mode-line-powerline-theme
-                    darkokai-theme monokai-theme
                     markdown-mode
                     session
                     ag
                     nix-mode
-                    ;git-commit-mode git-rebase-mode magit
-                    magit
                     glsl-mode yaml-mode vagrant-tramp cmake-mode
                     visual-fill-column
                     ;; Use the terminal-notifier program on OS X
@@ -112,6 +106,14 @@ of the form \"3h2m48.293s\" into a number of seconds."
 ;; Highlight matching parentheses
 (show-paren-mode 1)
 
+;; Display PDFs inline
+(add-to-list 'image-type-file-name-regexps '("\\.pdf\\'" . imagemagick))
+(add-to-list 'image-file-name-extensions "pdf")
+(setq imagemagick-types-inhibit (remove 'PDF imagemagick-types-inhibit))
+(add-to-list 'imagemagick-enabled-types 'PDF)
+(imagemagick-register-types)
+
+
 ;; Preserve history between sessions
 (add-hook 'after-init-hook 'session-initialize)
 
@@ -147,6 +149,8 @@ of the form \"3h2m48.293s\" into a number of seconds."
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
 (put 'downcase-region 'disabled nil)
+
+;; (setq TeX-command-extra-options "-shell-escape")
 
 (put 'dired-find-alternate-file 'disabled nil)
 
@@ -305,26 +309,33 @@ end tell" uri)))
 ;; (add-to-list 'tramp-default-proxies-alist
 ;;              '((regexp-quote (system-name)) nil nil))
 
+
+;;; Themes
+(use-package darkokai-theme)
+(use-package monokai-theme :defer t)
+
 ;;; impatient-mode
+(use-package impatient-mode
+  :defer t
+  :config
+  ;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
+  ;; markdown buffer, and supplying `markdown-html' as the argument.
+  (defun markdown-html (buffer)
+    (princ (with-current-buffer buffer
+             (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
+           (current-buffer)))
 
-;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
-;; markdown buffer, and supplying `markdown-html' as the argument.
-(defun markdown-html (buffer)
-  (princ (with-current-buffer buffer
-           (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
-         (current-buffer)))
-
-(defun impatient-markdown ()
-  "Serve markdown text as formatted HTML.
+  (defun impatient-markdown ()
+    "Serve markdown text as formatted HTML.
 
    Start up the simple HTTP server if it isn't running, enable
    `impatient-mode', and set the user filter to embed buffer
    contents in an HTML skeleton that invokes a Markdown processor
    on the text."
-  (interactive)
-  (unless (get-buffer "*httpd*") (httpd-start))
-  (impatient-mode)
-  (imp-set-user-filter #'markdown-html))
+    (interactive)
+    (unless (get-buffer "*httpd*") (httpd-start))
+    (impatient-mode)
+    (imp-set-user-filter #'markdown-html)))
 
 
 ;;; Org-mode
@@ -362,6 +373,19 @@ end tell" uri)))
         ;; Fontify the whole line for headings (with a background color).
         org-fontify-whole-heading-line t)
 
+  (set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
+
+(set-alist 'org-preview-latex-process-alist 'imagemagick '(:programs
+              ("latex" "convert")
+              :description "pdf > png" :message "you need to install the programs: latex, imagemagick and ghostscript." :use-xcolor t :image-input-type "pdf" :image-output-type "png" :image-size-adjust
+              (1.0 . 1.0)
+              :latex-compiler
+              ("pdflatex -interaction nonstopmode -output-directory %o %f")
+              :image-converter
+              ("convert -density %D -trim -antialias %f -quality 100 %b.png")))
+
+  ;; (setq org-image-actual-width 400)
+
   (use-package org-bullets)
 
   (defun my-org-hook ()
@@ -370,8 +394,15 @@ end tell" uri)))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t)
-     (C . t) (js . t) (ipython . t) (maxima . t) (latex . t)))
+   '((haskell . t) (ditaa . t) (shell . t) (emacs-lisp . t)
+     (C . t) (js . t) (ipython . t) (maxima . t) (latex . t) (dot . t)))
+
+  ;; Syntax highlight dot source blocks
+  (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
+
+  ;; Org sets the block face to a hard-to-read gray color by default.
+  (set-face-attribute
+   'org-block nil :foreground (face-attribute 'default :foreground))
 
   ;; Disable variable-pitch-mode in tables. We used to be
   ;; able to disable this in src blocks, but this no
@@ -475,7 +506,8 @@ of code to whatever theme I'm using's background"
      org-ref-bibliography-notes "~/Documents/MyPapers/bib-notes.org"
      org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
      org-ref-pdf-directory "~/Documents/MyPapers/references/"
-     bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib"))))
+     bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
+  (require 'org-ref))
 
 (eval-after-load "font-latex"
   '(mapc (lambda (face)
@@ -496,23 +528,18 @@ entire source file is loaded."
     (interactive)
     (outorg-edit-as-org '(4))))
 
+(use-package outshine
+  :init
+  (add-hook 'outline-minor-mode-hook (lambda ()
+                                       (require 'outshine)
+                                       (outshine-hook-function)))
+  (add-hook 'prog-mode-hook 'outline-minor-mode))
+
 ;; Copy from an Org buffer to the system clipboard after converting
 ;; the Org content to rich text format.
 (use-package ox-clip
   :defer t
   :commands (ox-clip-formatted-copy))
-
-;;;; Outshine
-
-;; (require 'outshine)
-;; (require 'outorg)
-
-; (add-to-list 'load-path "~/Documents/Projects/outorg/")
-; (add-to-list 'load-path "~/Documents/Projects/outshine/")
-(add-hook 'outline-minor-mode-hook (lambda ()
-                                     (require 'outshine)
-                                     (outshine-hook-function)))
-(add-hook 'prog-mode-hook 'outline-minor-mode)
 
 ;;;; Project Task Capture
 
