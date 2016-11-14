@@ -1303,14 +1303,23 @@ sorted block."
     str))
 ;;; znc
 
-(eval-after-load "znc"
-  '(let ((password (let ((auth (auth-source-search :host "rasznc.local")))
+(use-package znc
+  :config
+  (let ((password (let ((auth (auth-source-search :host "rasznc.local")))
                      (cond
                       ((null auth) (error "Couldn't find rasznc authinfo"))
                       (t (funcall (plist-get (car auth) :secret)))))))
     (set-variable
      'znc-servers
      `(("raspberrypi.local" 1234 t ((rasznc "acowley/freenode" ,password)))))))
+;; (eval-after-load "znc"
+;;   '(let ((password (let ((auth (auth-source-search :host "rasznc.local")))
+;;                      (cond
+;;                       ((null auth) (error "Couldn't find rasznc authinfo"))
+;;                       (t (funcall (plist-get (car auth) :secret)))))))
+;;     (set-variable
+;;      'znc-servers
+;;      `(("raspberrypi.local" 1234 t ((rasznc "acowley/freenode" ,password)))))))
 
 ;;; twittering-mode
 (add-hook 'twittering-mode-hook
