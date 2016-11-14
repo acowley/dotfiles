@@ -484,6 +484,21 @@ of code to whatever theme I'm using's background"
          ;(list 'org-code 'org-block 'org-table 'org-block-background)))
          (list 'org-code 'org-block 'org-table))
 
+  ;; LaTeX export
+  (require 'ox-latex)
+  (setq org-latex-pdf-process '("latexmk -g -pdf -shell-escape %f"))
+  (setq org-latex-listings 'minted)
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (add-to-list 'org-latex-minted-langs '(haskell "haskell"))
+
+  ;; mathescape permits math-mode in comments, while escapeinside
+  ;; specifies brackets within which math-mode can be enabled in code
+  ;; listings.
+  (setq org-latex-minted-options
+        '(("escapeinside" "||") ("mathescape=true")))
+  ;; (add-to-list 'org-latex-packages-alist '("" "listings"))
+  ;; (add-to-list 'org-latex-packages-alist '("" "color"))
+
   (require 'org-clock)
   (add-to-list 'org-clock-clocktable-language-setup '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
 
