@@ -1406,6 +1406,8 @@ sorted block."
   :bind (("C-c d" . osx-dictionary-search-pointer))
   :config
   (setq osx-dictionary-dictionary-choice '("Dictionary" "Thesaurus")))
+;;; graphviz-dot-mode
+(use-package graphviz-dot-mode :defer t)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
