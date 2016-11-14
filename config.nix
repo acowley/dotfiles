@@ -64,7 +64,8 @@
                   in [ p.setuptools p.pip p.bottle p.platformio ];
     }).env;
 
-    opencv3 = pkgs.opencv3.override {
+    # opencv3 = pkgs.opencv3.override {
+    opencv3 = pkgs.callPackage ./nix/opencv/3.x.nix {
       enableContrib = true;
       enableEigen = true;
       enableFfmpeg = true;
