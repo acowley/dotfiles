@@ -248,7 +248,7 @@ end tell" uri)))
   ;(variable-pitch-mode)
   (setq buffer-face-mode-face '(:family "Helvetica Neue" :weight thin))
 
-    ;; (setq buffer-face-mode-face '(:family "Avenir"))
+  ;; (setq buffer-face-mode-face '(:family "Avenir"))
   ;; (setq buffer-face-mode-face '(:family "Montserrat"))
   (buffer-face-mode)
   (text-scale-adjust 2)
