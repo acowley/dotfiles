@@ -315,9 +315,33 @@ end tell" uri)))
 
 
 ;;; Themes
-(use-package darkokai-theme)
+(use-package darkokai-theme :defer t)
 (use-package monokai-theme :defer t)
+(use-package apropospriate-theme
+  :load-path "~/Documents/Projects/apropospriate-theme"
+  :config
+  (load-theme 'apropospriate-dark))
 
+;;; Projectile
+(use-package projectile
+  :config
+  (setq projectile-enable-caching t
+        projectile-global-mode t
+        projectile-ignored-projects '("~/")
+        projectile-globally-ignored-directories
+        '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")
+        projectile-project-root-files
+        '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal"))
+  (projectile-global-mode))
+
+;;; Dashboard
+(use-package dashboard 
+  :load-path "~/src/emacs-dashboard"
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5))))
 ;;; impatient-mode
 (use-package impatient-mode
   :defer t
