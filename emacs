@@ -412,7 +412,7 @@ end tell" uri)))
               :image-converter
               ("convert -density %D -trim -antialias %f -quality 100 %b.png")))
 
-  ;; (setq org-image-actual-width 400)
+  (setq org-image-actual-width 600)
 
   (use-package org-bullets)
 
