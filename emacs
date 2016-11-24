@@ -572,6 +572,7 @@ entire source file is loaded."
     (outorg-edit-as-org '(4))))
 
 (use-package outshine
+  :defer t
   :init
   (add-hook 'outline-minor-mode-hook (lambda ()
                                        (require 'outshine)
@@ -699,6 +700,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (org-clocktable-write-default ipos tables params))
 ;;; Helm
 (use-package helm
+  :defer 5
   :bind (("M-x" . helm-M-x)
          ("C-c h" . helm-mini)
          ("C-c i" . helm-imenu)
@@ -756,18 +758,6 @@ under the current project's root directory."
     :defer t))
 
 (ido-mode -1)
-
-(use-package projectile
-  :defer 5
-  :config
-  (setq projectile-enable-caching t
-        projectile-global-mode t
-        projectile-ignored-projects '("~/")
-        projectile-globally-ignored-directories
-        '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")
-        projectile-project-root-files
-        '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal"))
-  (projectile-global-mode))
 
 ;;; god-mode
 
