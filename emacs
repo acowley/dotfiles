@@ -1124,9 +1124,13 @@ predicate returns true."
   (electric-indent-local-mode -1)
   (company-mode)
   (use-package shm
-    :bind (("M-A" . shm/goto-parent-end)))
+    :bind (("M-A" . shm/goto-parent-end))
+    :config
+    ;; Appropriate for light themes
+    (set-face-background 'shm-current-face "#eee8d5")
+    (set-face-background 'shm-quarantine-face "lemonchiffon"))
   (use-package intero
-    :load-path "~/src/intero"
+    :load-path "~/src/intero/elisp"
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
            ("M-?" . flycheck-display-error-at-point)))
