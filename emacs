@@ -1326,6 +1326,7 @@ sorted block."
 ;;; znc
 
 (use-package znc
+  :defer t
   :config
   (let ((password (let ((auth (auth-source-search :host "rasznc.local")))
                      (cond
