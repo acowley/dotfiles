@@ -164,7 +164,11 @@ of the form \"3h2m48.293s\" into a number of seconds."
    ;; files) from stat'ing remote files.
    recentf-keep '(file-remote-p file-readable-p)
    recentf-exclude
-    `("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ,(regexp-quote "/.emacs.d/elpa/"))))
+    `("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ,(regexp-quote "/.emacs.d/elpa/") ,(regexp-quote "/var/folders/")))
+  (defun recent-buffer (b &rest _)
+    (let ((file (buffer-file-name (get-buffer b))))
+      (unless (null file) (recentf-add-file file))))
+  (advice-add 'switch-to-buffer :after #'recent-buffer))
 
 ;; Another options is
 ;; (require 'recentf)
