@@ -429,8 +429,8 @@ end tell" uri)))
   (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
 
   ;; Org sets the block face to a hard-to-read gray color by default.
-  (set-face-attribute
-   'org-block nil :foreground (face-attribute 'default :foreground))
+  ;; (set-face-attribute
+  ;;  'org-block nil :foreground (face-attribute 'default :foreground))
 
   ;; Disable variable-pitch-mode in tables. We used to be
   ;; able to disable this in src blocks, but this no
