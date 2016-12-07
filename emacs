@@ -1140,8 +1140,13 @@ predicate returns true."
     :bind (("M-A" . shm/goto-parent-end))
     :config
     ;; Appropriate for light themes
-    (set-face-background 'shm-current-face "#eee8d5")
-    (set-face-background 'shm-quarantine-face "lemonchiffon"))
+    ;; (set-face-background 'shm-current-face "#eee8d5")
+    ;; (set-face-background 'shm-quarantine-face "lemonchiffon")
+
+    ;; For dark themes
+    (set-face-background 'shm-current-face "#505050")
+    (set-face-background 'shm-quarantine-face "#aa0505")
+    )
   (use-package intero
     :load-path "~/src/intero/elisp"
     :bind (("M-n" . flycheck-next-error)
