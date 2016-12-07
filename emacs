@@ -403,16 +403,17 @@ end tell" uri)))
 
   (set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
 
-(set-alist 'org-preview-latex-process-alist 'imagemagick '(:programs
-              ("latex" "convert")
-              :description "pdf > png" :message "you need to install the programs: latex, imagemagick and ghostscript." :use-xcolor t :image-input-type "pdf" :image-output-type "png" :image-size-adjust
-              (1.0 . 1.0)
-              :latex-compiler
-              ("pdflatex -interaction nonstopmode -output-directory %o %f")
-              :image-converter
-              ("convert -density %D -trim -antialias %f -quality 100 %b.png")))
+;; (set-alist 'org-preview-latex-process-alist 'imagemagick '(:programs
+;;               ("latex" "convert")
+;;               :description "pdf > png" :message "you need to install the programs: latex, imagemagick and ghostscript." :use-xcolor t :image-input-type "pdf" :image-output-type "png" :image-size-adjust
+;;               (1.0 . 1.0)
+;;               :latex-compiler
+;;               ("pdflatex -interaction nonstopmode -output-directory %o %f")
+;;               :image-converter
+;;               ("convert -density %D -trim -antialias %f -quality 100 %b.png")))
 
   (setq org-image-actual-width 600)
+  (setq org-latex-prefer-user-labels t)
 
   (use-package org-bullets)
 
@@ -514,7 +515,7 @@ of code to whatever theme I'm using's background"
 
   ;; LaTeX export
   (require 'ox-latex)
-  (setq org-latex-pdf-process '("latexmk -g -pdf -shell-escape %f"))
+  (setq org-latex-pdf-process '("latexmk -g -pdf -shell-escape %f -outdir=$(echo '%o' | sed 's|\\(.*\\)/$|\\1|g')"))
   (setq org-latex-listings 'minted)
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (add-to-list 'org-latex-minted-langs '(haskell "haskell"))
