@@ -1,10 +1,11 @@
 import Control.Arrow (second)
+import Control.Exception (bracket_)
 import Data.Char (isSpace)
 import Data.Maybe (fromMaybe)
-import System.Exit (exitSuccess)
-import System.IO (hFlush, stdout)
-import System.Posix.Process (getProcessID)
-import System.Process (callCommand, readProcess)
+import System.Exit (exitSuccess, ExitCode(..))
+import System.IO (hFlush, stdout, hGetEcho, hSetEcho, stdin)
+import System.Posix.Process (getProcessID, executeFile)
+import System.Process (callCommand, readProcess, readProcessWithExitCode)
 
 data PinEntry = PinEntry { desc      :: Maybe String
                          , prompt    :: Maybe String
@@ -40,11 +41,12 @@ pinEntry pe = getLine >>= uncurry aux . second (drop 1) . break isSpace
                                (fromMaybe "PROMPT" (prompt pe))
                                (fromMaybe "OK" (ok pe))
                                (fromMaybe "ERROR" (errorMsg pe))
-             r <- readProcess "/Users/acowley/.nix-profile/bin/emacsclient"
-                          [ "-e", sexp]
-                          []
-             putStrLn $ "D " ++ takeWhile (/= '"') (dropWhile (== '"') r)
-             k
+             sout <- readProcess 
+                       "/Users/acowley/.nix-profile/bin/emacsclient" 
+                       ["-e", sexp] 
+                       []
+             let pw = takeWhile (/= '"') (dropWhile (== '"') sout)
+             putStrLn ("D " ++ pw) >> k
         aux "OPTION" x = do
           case second (drop 1) $ break (== '=') x of
             ("ttyname", t) -> k' pe { tty = Just t }
@@ -61,8 +63,21 @@ pinEntry pe = getLine >>= uncurry aux . second (drop 1) . break isSpace
                _ -> return ()
              k
         aux _ _ = k
+        
+emacsServerRunning :: IO Bool
+emacsServerRunning = 
+  do (code, _, _) <- readProcessWithExitCode 
+                       "emacsclient" 
+                       ["-a", "false", "-e", "0"] 
+                       ""
+     return (code == ExitSuccess)
 
 main :: IO ()
-main = do putStrLn "OK"
-          hFlush stdout
-          pinEntry $ PinEntry Nothing Nothing Nothing Nothing Nothing Nothing
+main = 
+  do go <- emacsServerRunning
+     if go
+       then do putStrLn "Ok"
+               hFlush stdout
+               pinEntry $ PinEntry Nothing Nothing Nothing Nothing Nothing Nothing
+       else executeFile "pinentry-curses" True [] Nothing
+
