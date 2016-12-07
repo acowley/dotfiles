@@ -320,7 +320,7 @@ end tell" uri)))
 (use-package apropospriate-theme
   :load-path "~/Documents/Projects/apropospriate-theme"
   :config
-  (load-theme 'apropospriate-dark))
+  (load-theme 'apropospriate-dark t))
 
 ;;; Projectile
 (use-package projectile
