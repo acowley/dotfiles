@@ -31,10 +31,11 @@
       };
     };
 
-    octave = pkgs.callPackage (<nixpkgs> + /pkgs/development/interpreters/octave) {
-      openblas = pkgs.openblasCompat;
-      jdk = null;
-    };
+    # octave = pkgs.callPackage (<nixpkgs> + /pkgs/development/interpreters/octave) {
+    #   openblas = pkgs.openblasCompat;
+    #   jdk = null;
+    # };
+    fltk = pkgs.callPackage ./nix/fltk {};    
 
     gazebo7 = pkgs.callPackage ./nix/gazebo/7.nix {};
     sdformat4 = pkgs.callPackage (<nixpkgs> + /pkgs/development/libraries/sdformat) { };
