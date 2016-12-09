@@ -39,6 +39,8 @@
     gazebo7 = pkgs.callPackage ./nix/gazebo/7.nix {};
     sdformat4 = pkgs.callPackage (<nixpkgs> + /pkgs/development/libraries/sdformat) { };
     sdformat = sdformat4;
+    ogre = pkgs.callPackage ./nix/ogre/default.nix {};
+
     busybox = null;
 
     # Uses osx_sdk rather than frameworks from nixpkgs
