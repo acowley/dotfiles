@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 -- Build with:
 -- nix-shell -p 'haskellPackages.ghcWithPackages (p: [p.directory p.time])'
 -- ghc Main.hs -o hpinentry
@@ -47,14 +48,16 @@ pinEntry pe = getLine >>= uncurry aux' . second (drop 1) . break isSpace
         aux "SETOK" x = k' pe { ok = Just x }
         aux "SETERROR" x = k' pe { errorMsg = Just x }
         aux "GETPIN" _ =
-          do let sexp = mkSexp (fromMaybe "DESC" (desc pe))
+          do let sexp = mkSexp (maybe "DESC" sanitize (desc pe))
                                (fromMaybe "PROMPT" (prompt pe))
                                (fromMaybe "OK" (ok pe))
                                (fromMaybe "ERROR" (errorMsg pe))
+             logMsg ("Asking emacs to evaluate: " ++ sexp)
              sout <- readProcess
                        "/Users/acowley/.nix-profile/bin/emacsclient"
                        ["-e", sexp]
                        []
+             logMsg "emacs finished"
              let pw = takeWhile (/= '"') (dropWhile (== '"') sout)
              putStrLn ("D " ++ pw) >> k
         aux "OPTION" x = do
@@ -73,6 +76,9 @@ pinEntry pe = getLine >>= uncurry aux' . second (drop 1) . break isSpace
                _ -> return ()
              k
         aux _ _ = k
+        sanitize = foldMap (\c -> if c == '"'
+                                     then "\\\""
+                                     else [c])
 
 emacsServerRunning :: IO Bool
 emacsServerRunning =
@@ -82,6 +88,7 @@ emacsServerRunning =
                        ""
      return (code == ExitSuccess)
 
+#ifndef LOGGING
 main :: IO ()
 main =
   do putStrLn "OK"
@@ -91,32 +98,35 @@ main =
 logMsg :: String -> IO ()
 logMsg _ = return ()
 
--- getFileSize :: String -> IO FileOffset
--- getFileSize path = do
---     stat <- getFileStatus path
---     return (fileSize stat)
+#else
 
--- logMsg :: String -> IO ()
--- logMsg msg =
---   do t <- getCurrentTime
---      let stamp = formatTime defaultTimeLocale "%F %X" t
---      appendFile logFile ('[': stamp ++ "] " ++ msg ++ "\n")
---      sz <- getFileSize logFile
---      when (sz > 1024*1024) $
---        do bakExists <- doesFileExist old
---           when bakExists (removeFile old)
---           renameFile logFile old
---   where logFile = "/tmp/hpinentry-log"
---         old = "/tmp/hpinentry-log-old"
+getFileSize :: String -> IO FileOffset
+getFileSize path = do
+    stat <- getFileStatus path
+    return (fileSize stat)
 
--- main :: IO ()
--- main =
---   do logMsg "Starting hpinentry"
---      go <- emacsServerRunning
---      if True || go
---        then do logMsg "emacs server is running"
---                putStrLn "OK"
---                hFlush stdout
---                pinEntry $ PinEntry Nothing Nothing Nothing Nothing Nothing Nothing
---        else do logMsg "exec'ing pinentry-curses"
---                executeFile "pinentry-curses" True [] Nothing
+logMsg :: String -> IO ()
+logMsg msg =
+  do t <- getCurrentTime
+     let stamp = formatTime defaultTimeLocale "%F %X" t
+     appendFile logFile ('[': stamp ++ "] " ++ msg ++ "\n")
+     sz <- getFileSize logFile
+     when (sz > 1024*1024) $
+       do bakExists <- doesFileExist old
+          when bakExists (removeFile old)
+          renameFile logFile old
+  where logFile = "/tmp/hpinentry-log"
+        old = "/tmp/hpinentry-log-old"
+
+main :: IO ()
+main =
+  do logMsg "Starting hpinentry"
+     go <- emacsServerRunning
+     if True || go
+       then do logMsg "emacs server is running"
+               putStrLn "OK"
+               hFlush stdout
+               pinEntry $ PinEntry Nothing Nothing Nothing Nothing Nothing Nothing
+       else do logMsg "exec'ing pinentry-curses"
+               executeFile "pinentry-curses" True [] Nothing
+#endif
