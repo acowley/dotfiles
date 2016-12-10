@@ -804,6 +804,24 @@ active; black when inactive."
 
   (add-hook 'overwrite-mode-hook #'ac/god-toggle-on-overwrite)
 
+  ; mortal-mode from: https://github.com/chrisdone/god-mode/issues/77
+
+  ; This mortal mode is designed to allow temporary departures from god mode
+  ; The idea is that within god-mode, you can hit shift-i, type in a few characters
+  ; and then hit enter to return to god-mode. To avoid clobbering the previous bindings,
+  ; we wrap up this behavior in a minor-mode.
+  (define-minor-mode mortal-mode
+    "Allow temporary departure from god-mode."
+    :lighter " mortal"
+    :keymap '(([return] . (lambda ()
+                            "Exit mortal-mode and resume god mode." (interactive)
+                            (god-local-mode-resume)
+                            (mortal-mode 0))))
+    (when mortal-mode
+      (god-local-mode-pause)))
+
+  (define-key god-local-mode-map (kbd "i") 'mortal-mode)
+
   ;; On OS X, set "caps lock" to no action in system preferences, then
   ;; use the Seil app to rebind "caps lock" to f9.
 
