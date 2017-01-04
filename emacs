@@ -16,7 +16,6 @@
                     htmlize
                     auctex
                     powerline smart-mode-line smart-mode-line-powerline-theme
-                    markdown-mode
                     session
                     ag
                     nix-mode
@@ -335,7 +334,7 @@ end tell" uri)))
   (projectile-global-mode))
 
 ;;; Dashboard
-(use-package dashboard 
+(use-package dashboard
   :load-path "~/src/emacs-dashboard"
   :config
   (dashboard-setup-startup-hook)
@@ -384,14 +383,15 @@ end tell" uri)))
          ("S-<up>" . nil)
          ("S-<down>" . nil))
   :config
+
   ;; Let markup strings be bordered by letter characters
-  (setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
-  (setcar (nthcdr 1 org-emphasis-regexp-components)
-          "[:alpha:]- \t.,:!?;'\")}\\")
-  ;; Let emphasized strings be bordered by quotes
-  (setcar (nthcdr 2 org-emphasis-regexp-components) "\t\r\n, ")
-  (org-set-emph-re 'org-emphasis-regexp-components
-                   org-emphasis-regexp-components)
+  ;; (setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
+  ;; (setcar (nthcdr 1 org-emphasis-regexp-components)
+  ;;         "[:alpha:]- \t\.,:!?;'\")}\\")
+  ;; ;; Let emphasized strings be bordered by quotes
+  ;; (setcar (nthcdr 2 org-emphasis-regexp-components) "\t\r\n, ")
+  ;; (org-set-emph-re 'org-emphasis-regexp-components
+  ;;                  org-emphasis-regexp-components)
 
   (setq org-src-fontify-natively t
         org-use-speed-commands t
@@ -911,15 +911,17 @@ active; black when inactive."
 
   ;; Auto-complete contact email addresses
   ;; We don't want line breaks added to emails we compose
-  (add-hook 'mu4e-compose-mode-hook
-            (lambda ()
-              (company-mode)
-              (turn-off-auto-fill)
-              (variable-pitch-mode)
-              (turn-on-visual-line-mode)
-              (setq buffer-face-mode-face '(:family "Avenir Next"))
-              (buffer-face-mode)
-              (text-scale-adjust 1)))
+  (defun my/mu4e-compose-hook ()
+    (company-mode)
+    (turn-off-auto-fill)
+    (variable-pitch-mode)
+    (turn-on-visual-line-mode)
+    (setq buffer-face-mode-face '(:family "Avenir Next"))
+    (buffer-face-mode)
+    ;; (text-scale-adjust 1)
+    )
+
+  (add-hook 'mu4e-compose-mode-hook #'my/mu4e-compose-hook)
 
   ;; Add a view in browser action. Trigger with "aV"
   (add-to-list 'mu4e-view-actions
@@ -934,13 +936,14 @@ active; black when inactive."
   ;(setq mu4e-view-prefer-html t)
   ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
 
-  (add-hook 'mu4e-view-mode-hook
-            (lambda ()
-              (turn-on-visual-line-mode)
-              (variable-pitch-mode)
-              (setq buffer-face-mode-face '(:family "Avenir Next"))
-              (buffer-face-mode)
-              (text-scale-adjust 1)))
+  (defun my/mu4e-view-hook ()
+    (turn-on-visual-line-mode)
+    (variable-pitch-mode)
+    (setq buffer-face-mode-face '(:family "Avenir Next"))
+    (buffer-face-mode)
+    (text-scale-adjust 1))
+
+  (add-hook 'mu4e-view-mode-hook #'my/mu4e-view-hook)
 
   ;; Mark email attachments in dired with C-c RET C-a
   ;; From http://www.djcbsoftware.nl/code/mu/mu4e/Attaching-files-with-dired.html
