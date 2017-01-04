@@ -38,7 +38,12 @@
     #   openblas = pkgs.openblasCompat;
     #   jdk = null;
     # };
-    fltk = pkgs.callPackage ./nix/fltk {};    
+    fltk = pkgs.callPackage ./nix/fltk {};
+
+    pip2nix = pkgs.callPackage ~/Documents/Projects/pip2nix {
+      inherit (pkgs.pythonPackages) buildPythonApplication pip;
+      inherit (pkgs) nix cacert;
+    };
 
     gazebo7 = pkgs.callPackage ./nix/gazebo/7.nix {};
     sdformat4 = pkgs.callPackage (<nixpkgs> + /pkgs/development/libraries/sdformat) { };
