@@ -1165,8 +1165,8 @@ predicate returns true."
     ;; (set-face-background 'shm-quarantine-face "lemonchiffon")
 
     ;; For dark themes
-    (set-face-background 'shm-current-face "#505050")
-    (set-face-background 'shm-quarantine-face "#aa0505")
+    (set-face-background 'shm-current-face "#303030")
+    (set-face-background 'shm-quarantine-face "#550505")
     )
   (use-package intero
     :load-path "~/src/intero/elisp"
@@ -1175,7 +1175,7 @@ predicate returns true."
            ("M-?" . flycheck-display-error-at-point)))
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
-    ;(add-hook 'before-save-hook #'whitespace-cleanup)
+    (add-hook 'before-save-hook #'whitespace-cleanup)
     (electric-indent-mode -1)
     (electric-pair-mode -1)
     (intero-mode t))
