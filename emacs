@@ -1543,9 +1543,7 @@ sorted block."
     (:foreground default :background default :scale 1.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-html-validation-link "")
- '(org-image-actual-width nil)
  '(org-imenu-depth 3)
- '(org-latex-create-formula-image-program (quote imagemagick))
  '(org-latex-default-packages-alist
    (quote
     (("AUTO" "inputenc" t)
@@ -1562,8 +1560,8 @@ sorted block."
      ("" "amssymb" t)
      ("" "capt-of" nil)
      ("colorlinks=true" "hyperref" nil))))
- '(org-latex-pdf-process (quote ("latexmk -g -pdf %f")))
  '(org-mobile-files (quote ("~/org/home.org")))
+ '(org-preview-latex-default-process (quote imagemagick))
  '(org-reveal-root "reveal.js")
  '(org-src-preserve-indentation t)
  '(org-src-window-setup (quote other-window))
