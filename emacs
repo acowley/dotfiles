@@ -1472,6 +1472,10 @@ sorted block."
   (setq osx-dictionary-dictionary-choice '("Dictionary" "Thesaurus")))
 ;;; graphviz-dot-mode
 (use-package graphviz-dot-mode :defer t)
+;;; toml
+(use-package toml-mode :defer t)
+;;; markdown-mode
+(use-package markdown-mode :defer t)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
