@@ -1413,7 +1413,9 @@ sorted block."
   :defer t
   :config
   (use-package cargo)
-  (use-package flycheck-rust)
+  (use-package flycheck-rust
+    :config
+    (flycheck-rust-setup))
   (use-package racer
     :commands (racer-mode)
     :bind (:map rust-mode-map
