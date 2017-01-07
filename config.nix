@@ -10,9 +10,10 @@
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
     emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
-    mu = pkgs.mu.override {
-      gtk3 = null;
-      webkitgtk24x = null;
+    # mu = pkgs.mu.override {
+    #   gtk3 = null;
+    #   webkitgtk24x = null;
+    # };
     };
     irony-server = pkgs.callPackage ./nix/irony-server {};
     mygnused = pkgs.stdenv.mkDerivation {
