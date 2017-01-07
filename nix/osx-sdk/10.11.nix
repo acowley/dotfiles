@@ -1,4 +1,4 @@
-{ stdenv, fetchzip }:
+{ stdenv, fetchzip, darwin }:
 
 let
   version = "10.11";
@@ -14,6 +14,8 @@ in stdenv.mkDerivation rec {
   configurePhase = "true";
   buildPhase     = "true";
   setupHook = ./setup-hook.sh;
+
+  propagatedBuildInputs = [ darwin.libobjc darwin.apple_sdk.libs.xpc ];
 
   installPhase = ''
     mkdir -p $out/Developer/SDKs/
