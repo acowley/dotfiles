@@ -87,6 +87,16 @@
       enablePython = true;
     };
 
+    ignition = pkgs.ignition // {
+      transport2 = pkgs.callPackage ./nix/ignition-transport/2.1.0.nix {
+        inherit (ignition) tools messages math2;
+      };
+      messages = pkgs.callPackage ./nix/ignition-messages/default.nix {
+        inherit (ignition) math2;
+      };
+      tools = pkgs.callPackage ./nix/ignition-tools/default.nix { };
+    };
+
     # opencv3 =
     #   let mypy27 = pkgs.python27.buildEnv.override {
     #         extraLibs = [ pkgs.python27Packages.numpy ];
