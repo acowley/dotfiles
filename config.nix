@@ -96,6 +96,13 @@
       };
       tools = pkgs.callPackage ./nix/ignition-tools/default.nix { };
     };
+    kaldi = pkgs.callPackage ./nix/kaldi { };
+    sctk = pkgs.callPackage ./nix/sctk { };
+    openfst = pkgs.callPackage ./nix/openfst { };
+    sph2pipe = pkgs.callPackage ./nix/sph2pipe { };
+    atlas = pkgs.atlas.overrideDerivation (_: {
+      doCheck = false;
+    });
 
     # opencv3 =
     #   let mypy27 = pkgs.python27.buildEnv.override {
