@@ -1598,15 +1598,15 @@ sorted block."
 #+END_CENTER" "<center>
 ?
 </center>")
-     ("l" "#+BEGIN_LaTeX
+     ("l" "#+BEGIN_EXPORT LaTeX
 ?
-#+END_LaTeX" "<literal style=\"latex\">
+#+END_EXPORT" "<literal style=\"latex\">
 ?
 </literal>")
      ("L" "#+LaTeX: " "<literal style=\"latex\">?</literal>")
-     ("h" "#+BEGIN_HTML
+     ("h" "#+BEGIN_EXPORT html
 ?
-#+END_HTML" "<literal style=\"html\">
+#+END_EXPORT" "<literal style=\"html\">
 ?
 </literal>")
      ("H" "#+HTML: " "<literal style=\"html\">?</literal>")
