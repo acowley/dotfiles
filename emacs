@@ -1173,6 +1173,7 @@ predicate returns true."
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
            ("M-?" . flycheck-display-error-at-point)))
+  (use-package hindent)
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
     (add-hook 'before-save-hook #'whitespace-cleanup)
