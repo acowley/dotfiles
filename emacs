@@ -633,6 +633,10 @@ evaluation may begin anew."
 
 ;;;; Blog Publishing
 (setq org-rss-use-entry-url-as-guid nil)
+(defun my/blog-copy-index-to-rss (_)
+  (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml)"))
+(defun my/blog-sync-assets (_)
+  (shell-command "rsync -a ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog"))
 (setq org-publish-project-alist
       '(("blog-content"
          :base-directory "~/Documents/Projects/Blog/articles/"
@@ -659,9 +663,7 @@ evaluation may begin anew."
          :publishing-directory "~/Documents/Projects/Blog/blog"
          :publishing-function (org-rss-publish-to-rss)
          :html-link-home "http://www.arcadianvisions.com/blog/"
-         :completion-function
-           (lambda ()
-             (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml)"))
+         :completion-function my/blog-copy-index-to-rss
          :html-link-use-abs-url t
          :exclude ".*"
          :include ("index.org")
@@ -675,9 +677,7 @@ evaluation may begin anew."
          :recursive t
          :publishing-directory "~/Documents/Projects/Blog/blog/assets"
          :publishing-function org-publish-attachment
-         :completion-function
-           (lambda()
-             (shell-command "rsync -a ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog")))
+         :completion-function my/blog-sync-assets)
         ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
 ;;;; org-mime
 
