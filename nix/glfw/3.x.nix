@@ -29,6 +29,12 @@ stdenv.mkDerivation rec {
     sed -i 's|    list(APPEND glfw_LIBRARIES "''${COCOA_FRAMEWORK}"|    list(APPEND glfw_INCLUDE_DIRS "${darwin.libobjc}/include")\n    list(APPEND glfw_LIBRARIES "''${COCOA_FRAMEWORK}"|' ./CMakeLists.txt
   '';
 
+  preFixup = stdenv.lib.optionalString stdenv.isDarwin ''
+    for file in $out/lib/*.dylib* ; do
+      install_name_tool -id "$file" $file
+    done
+  '';
+
   meta = with stdenv.lib; {
     description = "Multi-platform library for creating OpenGL contexts and managing input, including keyboard, mouse, joystick and time";
     homepage = "http://www.glfw.org/";
