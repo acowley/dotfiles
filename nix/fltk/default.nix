@@ -20,13 +20,16 @@ composableDerivation.composableDerivation {} {
     substituteInPlace FL/x.H \
       --replace 'class Fl_XFont_On_Demand' 'class FL_EXPORT Fl_XFont_On_Demand'
   ''   + stdenv.lib.optionalString stdenv.isDarwin ''
-     sed -i 's/#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_10/#if 0/' ./src/Fl_cocoa.mm
+     sed -e 's/#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_10/#if 0/' \
+         -e 's|dlopen("/System/Library/Frameworks/Carbon.framework/Carbon"|dlopen("${darwin.apple_sdk.frameworks.Carbon}/Library/Frameworks/Carbon.framework/Carbon"|' \
+         -i ./src/Fl_cocoa.mm
+     sed -i 's/DIRS = $(IMAGEDIRS) src $(CAIRODIR) fluid test documentation/DIRS = $(IMAGEDIRS) src $(CAIRODIR) fluid documentation/' -i ./Makefile
    '';
 
   nativeBuildInputs = [ pkgconfig ];
   propagatedBuildInputs = [ inputproto ]
     ++ (if stdenv.isDarwin
-        then (with darwin.apple_sdk.frameworks; [Cocoa AGL GLUT OpenGL freetype libtiff])
+        then (with darwin.apple_sdk.frameworks; [Cocoa AGL GLUT OpenGL freetype libtiff darwin.cf-private])
         else [ xlibsWrapper libXi freeglut ]);
 
   enableParallelBuilding = true;
