@@ -6,7 +6,7 @@ IMAPAccount gmail
 # Address to connect to
 Host imap.gmail.com
 User acowley@gmail.com
-PassCmd "gpg -q --for-your-eyes-only -d ~/.mailpass.gpg"
+PassCmd "gpg2 -q --for-your-eyes-only -d ~/.mailpass.gpg"
 # Use SSL
 # UseIMAPS yes
 SSLType IMAPS
