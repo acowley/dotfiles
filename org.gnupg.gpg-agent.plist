@@ -7,7 +7,7 @@
     <string>org.gnupg.gpg-agent</string>
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/local/bin/gpg-agent</string>
+      <string>/Users/acowley/.nix-profile/bin/gpg-agent</string>
       <string>--daemon</string>
       <string>--write-env-file</string>
       <string>/Users/acowley/.gpg-agent-info</string>
