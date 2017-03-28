@@ -40,6 +40,19 @@
       };
     };
 
+    gnat = pkgs.wrapCC (pkgs.gcc.cc.override {
+          name = "gnat";
+          langCC  = false;
+          langC   = true;
+          langAda = true;
+          profiledCompiler = false;
+
+          # We can't use the ppl stuff, because we would have
+          # libstdc++ problems.
+          # cloogppl = null;
+          # ppl = null;
+    });
+
     # octave = pkgs.callPackage (<nixpkgs> + /pkgs/development/interpreters/octave) {
     #   openblas = pkgs.openblasCompat;
     #   jdk = null;
