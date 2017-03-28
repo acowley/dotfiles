@@ -855,7 +855,7 @@ active; black when inactive."
   ;; On OS X, set "caps lock" to no action in system preferences, then
   ;; use the Seil app to rebind "caps lock" to f9.
 
-  :bind (("<f9>" . god-mode-all)
+  :bind (("<escape>" . god-mode-all)
          ("C-x C-o" . other-window) ;; Easier to use with god-mode
          ("C-s" . helm-swoop)       ;; instead of isearch-forward
 
