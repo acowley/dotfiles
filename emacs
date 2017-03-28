@@ -444,14 +444,16 @@ end tell" uri)))
   (setq org-latex-prefer-user-labels t)
 
   (use-package org-bullets)
+  (use-package org-table-sticky-header)
 
   (defun my-org-hook ()
-    (org-bullets-mode 1))
+    (org-bullets-mode 1)
+    (org-table-sticky-header-mode))
   (add-hook 'org-mode-hook #'my-org-hook)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((haskell . t) (ditaa . t) (shell . t) (emacs-lisp . t)
+   '((haskell . t) (ditaa . t) (shell . t) (emacs-lisp . t) (octave . t)
      (C . t) (js . t) (ipython . t) (maxima . t) (latex . t) (dot . t)))
 
   ;; Syntax highlight dot source blocks
