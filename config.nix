@@ -16,6 +16,9 @@
     #   gtk3 = null;
     #   webkitgtk24x = null;
     # };
+    nixBufferBuilders = import (<nixpkgs> + /pkgs/build-support/emacs/buffer.nix) {
+      inherit (pkgs) lib writeText;
+      inherit (emacsMacPackagesNg) inherit-local;
     };
     irony-server = pkgs.callPackage ./nix/irony-server {};
     mygnused = pkgs.stdenv.mkDerivation {
