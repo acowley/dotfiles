@@ -79,6 +79,33 @@ of the form \"3h2m48.293s\" into a number of seconds."
                  (_ (error "No seconds component")))))
     (+ (car hours) (car mins) secs)))
 
+;; Based on http://emacs.stackexchange.com/a/11067/6537
+(defun my-transpose-sexps ()
+  "If point is at or just after certain chars (comma, space, or
+dash) transpose chunks around that. Otherwise transpose sexps."
+  (interactive "*")
+  (if (not (or (looking-at "[, -]*")
+               (looking-back "[, -]*" (point-at-bol))))
+      (progn (transpose-sexps 1) (forward-sexp -1))
+    (while (looking-at "[, -]") (forward-char))
+    (let ((beg (point)) end rhs lhs)
+      (while (and (not (eobp))
+                  (not (looking-at "\\s-*\\([,]\\|\\s)\\)")))
+        (forward-sexp 1))
+      (setq rhs (buffer-substring beg (point)))
+      (delete-region beg (point))
+      (re-search-backward "[,]\\s-*" nil t)
+      (setq beg (point))
+      (while (and (not (bobp))
+                  (not (looking-back "\\([,]\\|\\s(\\)\\s-*" (point-at-bol))))
+        (forward-sexp -1))
+      (setq lhs (buffer-substring beg (point)))
+      (delete-region beg (point))
+      (insert rhs)
+      (re-search-forward "[,]\\s-*" nil t)
+      (save-excursion
+        (insert lhs)))))
+
 ;;;; Miscellaneous Settings
 
 ;; Cause use-package to install packages automatically if not already
