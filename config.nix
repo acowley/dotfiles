@@ -40,6 +40,19 @@
     #   openblas = pkgs.openblasCompat;
     #   jdk = null;
     # };
+    # octave = pkgs.octave.override {
+    #   ghostscript = pkgs.ghostscript;
+    #   graphicsmagick = pkgs.graphicsmagick;
+    #   llvm = pkgs.llvm;
+    #   hdf5 = pkgs.pdf5;
+    #   glpk = pkgs.glpk;
+    #   suitesparse = pkgs.suitesparse;
+    # };
+    octaveFull = pkgs.octaveFull.override {
+      openblas = if pkgs.stdenv.isDarwin then pkgs.openblasCompat else pkgs.openblas;
+      suitesparse = pkgs.suitesparse;
+      jdk = null;
+    };
     fltk = pkgs.callPackage ./nix/fltk {};
 
     pip2nix = pkgs.callPackage ~/Documents/Projects/pip2nix {
