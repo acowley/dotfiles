@@ -323,7 +323,8 @@ end tell" uri)))
 (defun copy-and-comment ()
   (interactive)
   (kill-ring-save (region-beginning) (region-end))
-  (comment-dwim nil))
+  (comment-dwim nil)
+  (insert "\n"))
 
 ;;;; Tramp with sudo
 
