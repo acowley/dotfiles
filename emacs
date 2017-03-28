@@ -1156,13 +1156,15 @@ predicate returns true."
 (use-package nix-mode)
 (defun find-nix-shell ()
   "Search for the first shell.nix file to be found in the same directory as the current file or all ancestor directories."
-  (let ((dir (file-name-directory (or load-file-name buffer-file-name))))
-    (while (not (or (file-exists-p (concat dir "shell.nix"))
-                    (string-equal dir "/")))
-      (setq dir (file-name-directory (directory-file-name dir))))
-    (if (string-equal dir "/")
-        (error "Couldn't find a shell.nix")
-      (concat dir "shell.nix"))))
+  (let ((fname (or load-file-name buffer-file-name)))
+    (when (not (null fname))
+      (let ((dir (file-name-directory fname)))
+        (while (not (or (file-exists-p (concat dir "shell.nix"))
+                        (string-equal dir "/")))
+          (setq dir (file-name-directory (directory-file-name dir))))
+        (if (string-equal dir "/")
+            (error "Couldn't find a shell.nix")
+          (concat dir "shell.nix"))))))
 ;;; haskell
 
 ;; Using a source checkout of ghc-mod
