@@ -8,6 +8,7 @@
     };
     pass = with pkgs;
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
+    libigl = pkgs.callPackage ./nix/libigl {};
     emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
     # mu = pkgs.mu.override {
