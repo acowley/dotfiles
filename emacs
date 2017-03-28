@@ -304,10 +304,10 @@ end tell" uri)))
 ;; dictionaries hunspell is using. The "personal dictionary" is just a
 ;; word list.
 (setq ispell-program-name "hunspell")
-(setq ispell-local-dictionary-alist
-      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil
-         ("-d" "en_US"))
-        nil utf-8))
+;; (setq ispell-local-dictionary-alist
+;;       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil
+;;          ("-d" "en_US"))
+;;         nil utf-8))
 ;(setq ispell-extra-args '("-a" "-i" "utf-8"))
 (setq ispell-local-dictionary "en_US")
 (setq ispell-personal-dictionary "~/.hunspell_en_US")
@@ -664,7 +664,7 @@ evaluation may begin anew."
 ;;;; Blog Publishing
 (setq org-rss-use-entry-url-as-guid nil)
 (defun my/blog-copy-index-to-rss (_)
-  (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml)"))
+  (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")"))
 (defun my/blog-sync-assets (_)
   (shell-command "rsync -a ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog"))
 (setq org-publish-project-alist
@@ -714,7 +714,7 @@ evaluation may begin anew."
 (use-package org-mime
   :load-path "~/src/org-mime"
   :ensure nil
-  :commands (org-mime-org-buffer-htmlize))
+  :commands (org-mime-org-buffer-htmlize org-mime-org-subtree-htmlize))
 
 ;;;; org-clock
 
@@ -1514,10 +1514,20 @@ sorted block."
   (setq osx-dictionary-dictionary-choice '("Dictionary" "Thesaurus")))
 ;;; graphviz-dot-mode
 (use-package graphviz-dot-mode :defer t)
+;;; nix-buffer
+(use-package nix-buffer
+  :defer t
+  :commands (nix-buffer))
 ;;; toml
 (use-package toml-mode :defer t)
 ;;; markdown-mode
 (use-package markdown-mode :defer t)
+;;; smartparens-mode
+(use-package smartparens
+  :defer t
+  :config
+  (require 'smartparens-config))
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
@@ -1533,7 +1543,8 @@ sorted block."
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
-   ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
+   ["#212121" "#EF9A9A" "#C5E1A5" "#FFEE58" "#64B5F6" "#E1BEE7" "#80DEEA" "#E0E0E0"])
+ '(beacon-color "#ec4780")
  '(column-number-mode t)
  '(company-begin-commands
    (quote
