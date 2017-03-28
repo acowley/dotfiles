@@ -1332,6 +1332,15 @@ sorted block."
     (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
     (add-hook 'irony-mode-hook #'flycheck-mode)))
 
+(eval-and-compile
+  (defun rtags-site-load-path ()
+    (concat (string-trim (shell-command-to-string "nix-build --no-out-link '<nixpkgs>' -A rtags_39")) "/share/emacs/site-lisp/rtags")))
+
+(use-package rtags
+  :defer t
+  :load-path (lambda () (rtags-site-load-path)))
+
+
 ;;; python
 (defun ac/python-hook ()
   (setq python-indent-offset 2))
