@@ -1304,7 +1304,8 @@ sorted block."
 (defun my/c++-mode-hook ()
   (electric-indent-mode t)
   (electric-pair-mode t)
-  (setq company-backends (delete 'company-semantic company-backends))
+  (setq company-backends (delete 'company-clang (delete 'company-semantic company-backends)))
+
   (helm-gtags-mode 1))
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
@@ -1340,7 +1341,9 @@ sorted block."
 
 (use-package rtags
   :defer t
-  :load-path (lambda () (rtags-site-load-path)))
+  :load-path (lambda () (rtags-site-load-path))
+  :config
+  (setq rtags-use-bookmarks nil))
 
 
 ;;; python
