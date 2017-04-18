@@ -1431,16 +1431,19 @@ sorted block."
 ;;      `(("raspberrypi.local" 1234 t ((rasznc "acowley/freenode" ,password)))))))
 
 ;;; twittering-mode
-(add-hook 'twittering-mode-hook
-          (lambda ()
-            (variable-pitch-mode)
-            (turn-on-visual-line-mode)
-            (setq buffer-face-mode-face '(:family "Avenir Next"))
-            (buffer-face-mode)
-            (text-scale-adjust 1)))
-(add-hook 'twittering-edit-mode-hook 'flyspell-mode)
+(use-package twittering-mode
+  :defer t
+  :config
+  (add-hook 'twittering-mode-hook
+            (lambda ()
+              (variable-pitch-mode)
+              (turn-on-visual-line-mode)
+              (setq buffer-face-mode-face '(:family "Avenir Next"))
+              (buffer-face-mode)
+              (text-scale-adjust 1)))
+  (add-hook 'twittering-edit-mode-hook 'flyspell-mode)
 
-(set-variable 'twittering-use-master-password t)
+  (set-variable 'twittering-use-master-password t))
 
 ;;; corral
 (use-package corral
