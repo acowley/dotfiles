@@ -445,10 +445,12 @@ end tell" uri)))
 
   (use-package org-bullets)
   (use-package org-table-sticky-header)
+  (use-package org-sticky-header)
 
   (defun my-org-hook ()
     (org-bullets-mode 1)
-    (org-table-sticky-header-mode))
+    (org-table-sticky-header-mode)
+    (org-sticky-header-mode))
   (add-hook 'org-mode-hook #'my-org-hook)
 
   (org-babel-do-load-languages
