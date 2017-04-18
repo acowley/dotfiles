@@ -1507,7 +1507,9 @@ sorted block."
 ;; From github user @pashky
 (add-hook 'projectile-mode-hook
           (lambda ()
-            (projectile-register-project-type 'platformio '("platformio.ini") "platformio run" nil "platformio run -t upload")))
+            (projectile-register-project-type 'platformio '("platformio.ini") 
+                                              :compile "platformio run"
+                                              :run "platformio run -t upload")))
 
 ;;; redprl
 (use-package redprl
