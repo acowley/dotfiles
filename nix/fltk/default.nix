@@ -6,30 +6,21 @@
 
 let inherit (composableDerivation) edf; in
 
-let version = "1.3.3"; in
+let version = "1.3.4"; in
 composableDerivation.composableDerivation {} {
   name = "fltk-${version}";
 
   src = fetchurl {
     url = "http://fltk.org/pub/fltk/${version}/fltk-${version}-source.tar.gz";
-    sha256 = "15qd7lkz5d5ynz70xhxhigpz3wns39v9xcf7ggkl0792syc8sfgq";
+    sha256 = "13y57pnayrkfzm8azdfvysm8b77ysac8zhhdsh8kxmb0x3203ay8";
   };
 
-  # http://www.fltk.org/str.php?L3156
-  postPatch = ''
-    substituteInPlace FL/x.H \
-      --replace 'class Fl_XFont_On_Demand' 'class FL_EXPORT Fl_XFont_On_Demand'
-  ''   + stdenv.lib.optionalString stdenv.isDarwin ''
-     sed -e 's/#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_10/#if 0/' \
-         -e 's|dlopen("/System/Library/Frameworks/Carbon.framework/Carbon"|dlopen("${darwin.apple_sdk.frameworks.Carbon}/Library/Frameworks/Carbon.framework/Carbon"|' \
-         -i ./src/Fl_cocoa.mm
-     sed -i 's/DIRS = $(IMAGEDIRS) src $(CAIRODIR) fluid test documentation/DIRS = $(IMAGEDIRS) src $(CAIRODIR) fluid documentation/' -i ./Makefile
-   '';
+  patches = stdenv.lib.optionals stdenv.isDarwin [ ./nsosv.patch ];
 
   nativeBuildInputs = [ pkgconfig ];
   propagatedBuildInputs = [ inputproto ]
     ++ (if stdenv.isDarwin
-        then (with darwin.apple_sdk.frameworks; [Cocoa AGL GLUT OpenGL freetype libtiff darwin.cf-private])
+        then (with darwin.apple_sdk.frameworks; [Cocoa AGL GLUT freetype libtiff])
         else [ xlibsWrapper libXi freeglut ]);
 
   enableParallelBuilding = true;
