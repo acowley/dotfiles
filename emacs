@@ -23,7 +23,8 @@
                     visual-fill-column
                     ;; Use the terminal-notifier program on OS X
                     erc-hl-nicks erc-terminal-notifier
-                    tuareg flycheck-ocaml))
+                    ;tuareg
+                    flycheck-ocaml))
 
 ; If we run package-initialize, then add-to-list melpa, the
 ; package-install invocation will fail. We need the package-archives
@@ -112,6 +113,9 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 ;; present
 (setq use-package-always-ensure t)
 
+;; Clean trailing whitespace when saving a buffer
+(setq before-save-hook #'whitespace-cleanup)
+
 ;; Use the exec-path-from-shell package to set the PATH
 (when (memq window-system '(mac ns))
   (add-hook 'after-init-hook #'exec-path-from-shell-initialize))
@@ -123,6 +127,9 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 ;; Support Cmd-up/down for top/bottom of buffer
 (global-set-key (kbd "<s-up>") 'beginning-of-buffer)
 (global-set-key (kbd "<s-down>") 'end-of-buffer)
+
+;; Make bookmark jumping easier
+(global-set-key (kbd "C-c b") #'bookmark-jump)
 
 ;; Use Shift+ArrowKey to move the cursor between windows.
 ;; This means you lose shift select.
@@ -272,7 +279,7 @@ end tell" uri)))
   (flyspell-mode)
   (turn-on-visual-line-mode)
   ;(variable-pitch-mode)
-  (setq buffer-face-mode-face '(:family "Helvetica Neue" :weight thin))
+  ;; (setq buffer-face-mode-face '(:family "Helvetica Neue" :weight thin))
 
   ;; (setq buffer-face-mode-face '(:family "Avenir"))
   ;; (setq buffer-face-mode-face '(:family "Montserrat"))
@@ -813,7 +820,8 @@ active; black when inactive."
       (set-face-background 'sml/line-number "black")
       (set-face-foreground 'sml/line-number "white")
       (set-face-attribute 'mode-line nil :box nil)
-      (unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))))
+      ;(unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))
+      ))
 
   (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
   (add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
@@ -835,27 +843,6 @@ active; black when inactive."
       (god-local-mode-resume)))
 
   (add-hook 'overwrite-mode-hook #'ac/god-toggle-on-overwrite)
-
-  ; mortal-mode from: https://github.com/chrisdone/god-mode/issues/77
-
-  ; This mortal mode is designed to allow temporary departures from god mode
-  ; The idea is that within god-mode, you can hit shift-i, type in a few characters
-  ; and then hit enter to return to god-mode. To avoid clobbering the previous bindings,
-  ; we wrap up this behavior in a minor-mode.
-  (define-minor-mode mortal-mode
-    "Allow temporary departure from god-mode."
-    :lighter " mortal"
-    :keymap '(([return] . (lambda ()
-                            "Exit mortal-mode and resume god mode." (interactive)
-                            (god-local-mode-resume)
-                            (mortal-mode 0))))
-    (when mortal-mode
-      (god-local-mode-pause)))
-
-  (define-key god-local-mode-map (kbd "i") 'mortal-mode)
-
-  ;; On OS X, set "caps lock" to no action in system preferences, then
-  ;; use the Seil app to rebind "caps lock" to f9.
 
   :bind (("<escape>" . god-mode-all)
          ("C-x C-o" . other-window) ;; Easier to use with god-mode
@@ -888,7 +875,7 @@ active; black when inactive."
   :config
   (setq
    mu4e-maildir "~/.mail"
-   mu4e-html2text-command  "/usr/local/bin/w3m -T text/html"
+   mu4e-html2text-command  "/Users/acowley/.nix-profile/bin/w3m -T text/html"
                                         ;mu4e-mu-binary "/usr/local/bin/mu"
 
    ;; allow for updating mail using 'U' in the main view:
@@ -1206,14 +1193,25 @@ predicate returns true."
     :load-path "~/src/intero/elisp"
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
-           ("M-?" . flycheck-display-error-at-point)))
+           ("M-?" . flycheck-display-error-at-point))
+    :config
+    (setq intero-whitelist (mapcar (lambda (p) (concat "~/Documents/Projects/" p))
+                                   '("VinylRecords"
+                                     "concurrent-machines"
+                                     "ffmpeg-light"
+                                     "GLUtil"
+                                     "CLUtil"
+                                     "llvm-hs"
+                                     "llvm-hs-pure"
+                                     "HoclSuite"
+                                     "yaml-light-lens"))))
   (use-package hindent)
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
     (add-hook 'before-save-hook #'whitespace-cleanup)
     (electric-indent-mode -1)
     (electric-pair-mode -1)
-    (intero-mode t))
+    (intero-mode-whitelist))
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (defun haskell-find-pragmas ()
     "Return a sorted list of Haskell language pragmas specified
@@ -1337,7 +1335,7 @@ sorted block."
 
 (eval-and-compile
   (defun rtags-site-load-path ()
-    (concat (string-trim (shell-command-to-string "nix-build --no-out-link '<nixpkgs>' -A rtags_39")) "/share/emacs/site-lisp/rtags")))
+    (concat (string-trim (shell-command-to-string "nix-build --no-out-link '<nixpkgs>' -A rtags")) "/share/emacs/site-lisp/rtags")))
 
 (use-package rtags
   :defer t
@@ -1507,7 +1505,7 @@ sorted block."
 ;; From github user @pashky
 (add-hook 'projectile-mode-hook
           (lambda ()
-            (projectile-register-project-type 'platformio '("platformio.ini") 
+            (projectile-register-project-type 'platformio '("platformio.ini")
                                               :compile "platformio run"
                                               :run "platformio run -t upload")))
 
@@ -1553,7 +1551,7 @@ sorted block."
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
-   ["#212121" "#EF9A9A" "#C5E1A5" "#FFEE58" "#64B5F6" "#E1BEE7" "#80DEEA" "#E0E0E0"])
+   ["#424242" "#EF9A9A" "#C5E1A5" "#FFEE58" "#64B5F6" "#E1BEE7" "#80DEEA" "#E0E0E0"])
  '(beacon-color "#ec4780")
  '(column-number-mode t)
  '(company-begin-commands
@@ -1564,15 +1562,21 @@ sorted block."
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("70403e220d6d7100bae7775b3334eddeb340ba9c37f4b39c189c2c29d458543b" "0f92b9f1d391caf540ac746bc251ea00a55f29e20a411460eb6d8e49892ddef9" "d94eec01b45c7dc72e324af86fd2858e97c92220c195b5dbae5f8fd926a09cec" "1a53efc62256480d5632c057d9e726b2e64714d871e23e43816735e1b85c144c" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "13270e81a07dac4aeb1efefb77b9e61919bb3d69da7253ade632856eed65b8a2" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" "70b9c3d480948a3d007978b29e31d6ab9d7e259105d558c41f8b9532c13219aa" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+    ("f78de13274781fbb6b01afd43327a4535438ebaeec91d93ebdbba1e3fba34d3c" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "412c25cf35856e191cc2d7394eed3d0ff0f3ee90bacd8db1da23227cdff74ca2" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "70403e220d6d7100bae7775b3334eddeb340ba9c37f4b39c189c2c29d458543b" "0f92b9f1d391caf540ac746bc251ea00a55f29e20a411460eb6d8e49892ddef9" "d94eec01b45c7dc72e324af86fd2858e97c92220c195b5dbae5f8fd926a09cec" "1a53efc62256480d5632c057d9e726b2e64714d871e23e43816735e1b85c144c" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "13270e81a07dac4aeb1efefb77b9e61919bb3d69da7253ade632856eed65b8a2" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" "70b9c3d480948a3d007978b29e31d6ab9d7e259105d558c41f8b9532c13219aa" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(debug-on-error t)
  '(default-input-method "TeX")
  '(dired-dwim-target t)
  '(dired-recursive-deletes (quote always))
  '(doc-view-resolution 200)
  '(doc-view-scale-internally nil)
+ '(electric-pair-mode t)
+ '(electric-quote-mode t)
  '(erc-hide-list (quote ("JOIN" "PART" "QUIT")))
  '(erc-server-auto-reconnect nil)
+ '(evil-emacs-state-cursor (quote ("#E57373" hbar)))
+ '(evil-insert-state-cursor (quote ("#E57373" bar)))
+ '(evil-normal-state-cursor (quote ("#FFEE58" box)))
+ '(evil-visual-state-cursor (quote ("#C5E1A5" box)))
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
  '(fci-rule-color "#49483E")
  '(flycheck-ghc-args (quote ("-Wall")))
@@ -1581,23 +1585,23 @@ sorted block."
  '(flycheck-swift-target "x86_64-macosx10.11")
  '(ghc-doc-browser-function (quote ghc-browse-url-safari))
  '(ghc-use-nix-shell (quote (quote t)))
- '(global-visual-fill-column-mode t)
+ '(global-eldoc-mode t)
  '(haskell-indent-offset 2)
  '(helm-mu-gnu-sed-program "gnused")
  '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
- '(highlight-tail-colors
-   (("#49483E" . 0)
-    ("#67930F" . 20)
-    ("#349B8D" . 30)
-    ("#21889B" . 50)
-    ("#968B26" . 60)
-    ("#A45E0A" . 70)
-    ("#A41F99" . 85)
-    ("#49483E" . 100)))
+ '(highlight-indent-guides-auto-enabled nil)
+ '(highlight-symbol-colors
+   (quote
+    ("#FFEE58" "#C5E1A5" "#80DEEA" "#64B5F6" "#E1BEE7" "#FFCC80")))
+ '(highlight-symbol-foreground-color "#E0E0E0")
+ '(highlight-tail-colors (quote (("#ec4780" . 0) ("#424242" . 100))))
  '(hl-sexp-background-color "#efebe9")
  '(magit-diff-use-overlays nil)
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
+ '(org-agenda-files
+   (quote
+    ("~/Documents/MyPapers/PhD/proposal/proposal.org" "~/org/home.org")))
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-footnote-auto-label (quote plain))
@@ -1692,13 +1696,708 @@ sorted block."
 #+END_NOTES" ""))))
  '(outshine-preserve-delimiter-whitespace t)
  '(outshine-use-speed-commands t)
+ '(package-selected-packages
+   (quote
+    (imenu-anywhere org-sticky-header twittering-mode rtags-helm rtags org-plus-contrib org-table-sticky-header magit magit-extras smartparens smartparens-mode hindent toml-mode nix-buffer intero apropospriate-dark-theme racer osx-dictionary org-ref emamux znc yaml-mode visual-fill-column vagrant-tramp use-package undo-tree speed-type smart-mode-line-powerline-theme shm session semi redprl purescript-mode psc-ide poporg paredit ox-reveal ox-clip org-tree-slide org-bullets ob-ipython nix-mode navi-mode multiple-cursors monokai-theme material-theme leuven-theme julia-shell jonprl-mode impatient-mode highlight-symbol helm-swoop helm-projectile helm-mu helm-gtags helm-descbinds helm-dash helm-company helm-ag god-mode glsl-mode gh ggtags flycheck-rust flycheck-purescript flycheck-ocaml flycheck-irony flycheck-haskell exec-path-from-shell esup erc-terminal-notifier erc-hl-nicks darkokai-theme corral company-shell company-irony company-ghc company-coq cmake-mode cargo buffer-move bash-completion auto-complete auctex android-mode ag)))
  '(pop-up-windows nil)
- '(pos-tip-background-color "#A6E22E")
- '(pos-tip-foreground-color "#272822")
+ '(pos-tip-background-color "#3a3a3a")
+ '(pos-tip-foreground-color "#9E9E9E")
  '(python-shell-interpreter "python3")
+ '(racer-cmd "racer")
  '(safe-local-variable-values
    (quote
-    ((org-html-htmlize-output-type . css)
+    ((eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-default rtags-path
+                           (string-trim
+                            (shell-command-to-string
+                             (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc -W"))
+             (rtags-start-process-unless-running)
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-highlighting-mode nil)
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))
+             (local-set-key
+              (kbd "C-c r f")
+              (function rtags-find-symbol))
+             (local-set-key
+              (kbd "C-c r n")
+              (function rtags-next-match))
+             (local-set-key
+              (kbd "C-c r p")
+              (function rtags-previous-match))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-default rtags-path
+                           (string-trim
+                            (shell-command-to-string
+                             (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc -W"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-highlighting-mode nil)
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))
+             (local-set-key
+              (kbd "C-c r f")
+              (function rtags-find-symbol))
+             (local-set-key
+              (kbd "C-c r n")
+              (function rtags-next-match))
+             (local-set-key
+              (kbd "C-c r p")
+              (function rtags-previous-match))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-default rtags-path
+                           (string-trim
+                            (shell-command-to-string
+                             (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc -W"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-highlighting-mode nil)
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))
+             (local-set-key
+              (kbd "C-c r f")
+              (function rtags-find-symbol))
+             (local-set-key
+              (kbd "C-c r n")
+              (function rtags-next-match))
+             (local-set-key
+              (kbd "C-c r p")
+              (function rtags-previous-match))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(dirname $(which rdm))'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc -W"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-highlighting-mode nil)
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))
+             (local-set-key
+              (kbd "C-c r f")
+              (function rtags-find-symbol))
+             (local-set-key
+              (kbd "C-c r n")
+              (function rtags-next-match))
+             (local-set-key
+              (kbd "C-c r p")
+              (function rtags-previous-match))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc -W"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-highlighting-mode nil)
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))
+             (local-set-key
+              (kbd "C-c r f")
+              (function rtags-find-symbol))
+             (local-set-key
+              (kbd "C-c r n")
+              (function rtags-next-match))
+             (local-set-key
+              (kbd "C-c r p")
+              (function rtags-previous-match))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc -W"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-highlighting-mode nil)
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-backends)
+              (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list company-backends
+                          (quote company-rtags))
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc"))
+             (setq-local rtags-autostart-diagnostics t)
+             (add-to-list
+              (quote company-rtags)
+              company-backends)
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (flycheck-mode 1)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (when dir
+             (setq-local rtags-path
+                         (string-trim
+                          (shell-command-to-string
+                           (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+             (setq-local rtags-process-flags
+                         (concat "-c "
+                                 (file-name-directory dir)
+                                 ".rdmrc"))
+             (setq-local rtags-autostart-diagnostics t)
+             (push
+              (quote company-rtags)
+              company-backends)
+             (require
+              (quote flycheck-rtags))
+             (flycheck-select-checker
+              (quote rtags))
+             (setq-local flycheck-highlighting-mode nil)
+             (setq-local flycheck-check-syntax-automatically nil)
+             (flycheck-mode)
+             (require
+              (quote rtags-helm))
+             (setq-local rtags-use-helm t)
+             (local-set-key
+              (kbd "C-c C-t")
+              (function rtags-symbol-type))
+             (local-set-key
+              (kbd "C-c C-f")
+              (function rtags-fixit))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (setq-local rtags-path
+                       (string-trim
+                        (shell-command-to-string
+                         (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
+           (setq-local rtags-process-flags
+                       (concat "-c "
+                               (file-name-directory dir)
+                               ".rdmrc"))
+           (setq-local rtags-autostart-diagnostics t)
+           (push
+            (quote company-rtags)
+            company-backends)
+           (require
+            (quote flycheck-rtags))
+           (flycheck-select-checker
+            (quote rtags))
+           (setq-local flycheck-highlighting-mode nil)
+           (setq-local flycheck-check-syntax-automatically nil)
+           (flycheck-mode)
+           (require
+            (quote rtags-helm))
+           (setq-local rtags-use-helm t)
+           (local-set-key
+            (kbd "C-c C-t")
+            (function rtags-symbol-type))
+           (local-set-key
+            (kbd "C-c C-f")
+            (function rtags-fixit)))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (setq-local rtags-path
+                       (string-trim
+                        (shell-command-to-string
+                         (concat "nix-shell " dir " --run 'dirname $(which rdm)'")))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (setq-local rtags-path
+                       (string-trim
+                        (shell-command-to-string
+                         (concat "nix-shell " dir "shell.nix  --run 'dirname $(which rdm)'")))))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (setq-local rtags-path
+                       (string-trim
+                        (shell-command-to-string "nix-shell " dir "shell.nix  --run 'dirname $(which rdm)'"))))
+     (eval setq-local rtags-path
+           (string-trim
+            (shell-command-to-string "nix-shell --run 'dirname $(which rdm)'")))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (require
+            (quote dash))
+           (setq exec-path
+                 (append
+                  (-filter
+                   (lambda
+                     (p)
+                     (string-prefix-p "/nix/store/" p))
+                   (split-string
+                    (shell-command-to-string
+                     (concat "nix-shell " dir "shell.nix --run 'echo $PATH'"))
+                    ":"))
+                  exec-path))
+           (setq-local flycheck-purescript-bower-dir dir))
+     (eval progn
+           (require
+            (quote dash))
+           (setq exec-path
+                 (append
+                  (-filter
+                   (lambda
+                     (p)
+                     (string-prefix-p "/nix/store/" p))
+                   (split-string
+                    (shell-command-to-string
+                     (concat "nix-shell -p ghc --run 'echo $PATH'"))
+                    ":"))
+                  exec-path)))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (require
+            (quote dash))
+           (setq exec-path
+                 (append
+                  (-filter
+                   (lambda
+                     (p)
+                     (string-prefix-p "/nix/store/" p))
+                   (split-string
+                    (shell-command-to-string
+                     (concat "nix-shell -p ghc --run 'echo $PATH'"))
+                    ":"))
+                  exec-path)))
+     (eval let
+           ((dir
+             (find-nix-shell)))
+           (setq-local racer-cmd "racer")
+           (require
+            (quote dash))
+           (setq exec-path
+                 (append
+                  (-filter
+                   (lambda
+                     (p)
+                     (string-prefix-p "/nix/store/" p))
+                   (split-string
+                    (shell-command-to-string
+                     (concat "nix-shell " dir " --run 'echo $PATH'"))
+                    ":"))
+                  exec-path))
+           (setq-local racer-rust-src-path
+                       (string-trim
+                        (shell-command-to-string
+                         (concat "nix-shell " dir "shell.nix --run 'cat $(which racer) | sed -n 2,2p | sed \"s/export RUST_SRC_PATH=\\\"\\(.*\\)\\\"/\\1/\"'")))))
+     (org-time-stamp-format quote
+                            ("<%Y-%m-%d>" . "<%Y-%m-%d>"))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (require
+            (quote dash))
+           (setq-local exec-path
+                       (append
+                        (-filter
+                         (lambda
+                           (p)
+                           (string-prefix-p "/nix/store/" p))
+                         (split-string
+                          (shell-command-to-string
+                           (concat "nix-shell " dir "shell.nix --run 'echo $PATH'"))
+                          ":"))
+                        exec-path))
+           (setq-local flycheck-purescript-bower-dir dir))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (require
+            (quote dash))
+           (setq-local exec-path
+                       (append
+                        (-filter
+                         (lambda
+                           (p)
+                           (string-prefix-p "/nix/store/" p))
+                         (split-string
+                          (shell-command-to-string
+                           (concat "nix-shell " dir "shell.nix --run 'echo $PATH'"))
+                          ":"))
+                        exec-path))
+           (setq-local flycheck-purescript-bower-dir
+                       (concat dir "bower_components")))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (setq-local racer-cmd "racer")
+           (require
+            (quote dash))
+           (setq exec-path
+                 (append
+                  (-filter
+                   (lambda
+                     (p)
+                     (string-prefix-p "/nix/store/" p))
+                   (split-string
+                    (shell-command-to-string
+                     (concat "nix-shell " dir "shell.nix --run 'echo $PATH'"))
+                    ":"))
+                  exec-path))
+           (setq-local racer-rust-src-path
+                       (string-trim
+                        (shell-command-to-string
+                         (concat "nix-shell " dir "shell.nix --run 'cat $(which racer) | sed -n 2,2p | sed \"s/export RUST_SRC_PATH=\\\"\\(.*\\)\\\"/\\1/\"'")))))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (setq-local racer-cmd "racer")
+           (require
+            (quote dash))
+           (setq-local racer-rust-src-path
+                       (string-trim
+                        (shell-command-to-string
+                         (concat "nix-shell " dir "shell.nix --run 'cat $(which racer) | sed -n 2,2p | sed \"s/export RUST_SRC_PATH=\\\"\\(.*\\)\\\"/\\1/\"'")))))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (setq-local racer-cmd "racer")
+           (require
+            (quote dash))
+           (setq exec-path
+                 (append
+                  (-filter
+                   (lambda
+                     (p)
+                     (string-prefix-p "/nix/store/" p))
+                   (split-string
+                    (shell-command-to-string
+                     (concat "nix-shell " dir "shell.nix --run 'echo $PATH'"))
+                    ":"))
+                  exec-path)))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (require
+            (quote dash))
+           (setq exec-path
+                 (append
+                  (-filter
+                   (lambda
+                     (p)
+                     (string-prefix-p "/nix/store/" p))
+                   (split-string
+                    (shell-command-to-string
+                     (concat "nix-shell " dir "shell.nix --run 'echo $PATH'"))
+                    ":"))
+                  exec-path)))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (setq-local racer-cmd
+                       (concat dir "nix-racer"))
+           (setq flycheck-rust-executable
+                 (concat dir "nix-rustc"))
+           (setq flycheck-rust-cargo-executable
+                 (concat dir "nix-cargo")))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (setq-local racer-cmd
+                       (concat dir "nix-racer"))
+           (set-variable flycheck-rust-executable
+                         (concat dir "nix-rustc"))
+           (set-variable flycheck-rust-cargo-executable
+                         (concat dir "nix-cargo")))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (setq-local racer-cmd
+                       (concat dir "nix-racer"))
+           (setq-local flycheck-rust-executable
+                       (concat dir "nix-rustc"))
+           (setq-local flycheck-rust-cargo-executable
+                       (concat dir "nix-cargo")))
+     (eval let
+           ((dir
+             (file-name-directory
+              (directory-file-name
+               (file-name-directory
+                (or load-file-name buffer-file-name))))))
+           (setq-local racer-cmd
+                       (concat dir "nix-racer")
+                       flycheck-rust-executable
+                       (concat dir "nix-rustc")
+                       flycheck-rust-cargo-executable
+                       (concat dir "nix-cargo")))
+     (eval setq-local racer-cmd
+           (concat
+            (file-name-directory
+             (directory-file-name
+              (file-name-directory
+               (or load-file-name buffer-file-name))))
+            "nix-racer"))
+     (racer-rust-src-path . "")
+     (rust-rust-src-path . "")
+     (racer-cmd concat
+                (file-name-directory
+                 (directory-file-name
+                  (file-name-directory
+                   (or load-file-name buffer-file-name))))
+                "nix-racer")
+     (org-html-htmlize-output-type . css)
      (org-html-postamble-format
       ("en" "<p class=\"date\">Published: %d</p>"))
      (org-html-postamble-format quote
@@ -1719,6 +2418,7 @@ sorted block."
  '(show-paren-mode t)
  '(sml/pre-modes-separator (propertize " " (quote face) (quote sml/modes)))
  '(swift-repl-executable "xcrun swift -target x86_64-macosx10.11")
+ '(tabbar-background-color "#353535")
  '(tramp-shell-prompt-pattern
    "\\(?:^\\|\\)[^]#$%>
 ]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*")
@@ -1756,8 +2456,7 @@ sorted block."
  '(font-lock-type-face ((t (:foreground "dodger blue" :slant normal :weight bold))))
  '(highlight ((t (:inverse-video nil))))
  '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
- '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "light green" :weight bold))))
- '(org-level-1 ((t (:inherit outline-1 :box (:line-width 1 :style released-button) :weight bold :height 1.3)))))
+ '(mu4e-unread-face ((t (:inherit font-lock-keyword-face :foreground "light green" :weight bold)))))
 
 
 ;;; File Local Variables
