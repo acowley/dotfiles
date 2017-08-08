@@ -1257,7 +1257,7 @@ sorted block."
     (interactive)
     (save-excursion
       (let ((pragmas (haskell-find-pragmas)))
-        (delete-backward-char (1- (point)))
+        (delete-char (-(1- (point))))
         (insert (fill-list pragmas ", " "{-# LANGUAGE " " #-}"))))))
 
 ;; ; Prevent ghci from looking for a cabal projection definition when
