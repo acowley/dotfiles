@@ -298,7 +298,7 @@ end tell" uri)))
   ;; (setq buffer-face-mode-face '(:family "Avenir"))
   ;; (setq buffer-face-mode-face '(:family "Montserrat"))
   (buffer-face-mode)
-  (text-scale-adjust 2)
+  ;; (text-scale-adjust 2)
   ;; (text-mode-hook-identify)
   )
 (add-hook 'text-mode-hook #'my/text-mode-hook)
@@ -418,7 +418,7 @@ end tell" uri)))
 
 ;;;; General Org Configuration
 (use-package org
-  :defer 7
+  :defer t
   :ensure org-plus-contrib
   :pin org
   :bind (("C-c l" . org-store-link)
@@ -489,9 +489,9 @@ end tell" uri)))
   ;; Disable variable-pitch-mode in tables. We used to be
   ;; able to disable this in src blocks, but this no
   ;; longer works.
-  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+  ;; (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
 
   ;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook
@@ -553,18 +553,18 @@ of code to whatever theme I'm using's background"
 
   ;; Use fixed-width fonts where appropriate
   ;; From: https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/
-  (defun adjoin-to-list-or-symbol (element list-or-symbol)
-    (require 'cl)
-    (adjoin element (if (not (listp list-or-symbol))
-                        (list list-or-symbol)
-                      list-or-symbol)))
-  (mapc (lambda (face)
-           (set-face-attribute face nil
-                               :inherit (adjoin-to-list-or-symbol
-                                          'fixed-pitch
-                                          (face-attribute face :inherit))))
-         ;(list 'org-code 'org-block 'org-table 'org-block-background)))
-         (list 'org-code 'org-block 'org-table))
+  ;; (defun adjoin-to-list-or-symbol (element list-or-symbol)
+  ;;   (require 'cl)
+  ;;   (adjoin element (if (not (listp list-or-symbol))
+  ;;                       (list list-or-symbol)
+  ;;                     list-or-symbol)))
+  ;; (mapc (lambda (face)
+  ;;          (set-face-attribute face nil
+  ;;                              :inherit (adjoin-to-list-or-symbol
+  ;;                                         'fixed-pitch
+  ;;                                         (face-attribute face :inherit))))
+  ;;        ;(list 'org-code 'org-block 'org-table 'org-block-background)))
+  ;;        (list 'org-code 'org-block 'org-table))
 
   ;; LaTeX export
   (require 'ox-latex)
@@ -652,7 +652,6 @@ entire source file is loaded."
 
 ;; With the given configuration "C-c c p" adds a TODO item to the
 ;; current project's notes file.
-
 (defun find-project-notes ()
   "A project's notes file is defined as ProjectName-notes.org in
   the project root directory."
@@ -948,7 +947,7 @@ active; black when inactive."
   (defun my/mu4e-compose-hook ()
     (company-mode)
     (turn-off-auto-fill)
-    (variable-pitch-mode)
+    ;; (variable-pitch-mode)
     (turn-on-visual-line-mode)
     (setq buffer-face-mode-face '(:family "Avenir Next"))
     (buffer-face-mode)
@@ -972,7 +971,7 @@ active; black when inactive."
 
   (defun my/mu4e-view-hook ()
     (turn-on-visual-line-mode)
-    (variable-pitch-mode)
+    ;; (variable-pitch-mode)
     (setq buffer-face-mode-face '(:family "Avenir Next"))
     (buffer-face-mode)
     (text-scale-adjust 1))
@@ -1112,11 +1111,12 @@ predicate returns true."
 (sml/apply-theme 'dark)
 
 ;; Don't show common minor modes
-(setq rm-blacklist (mapconcat 'identity '(" Fly" " company" " God" " Helm" " Outl" " ARev" " BufFace" " Wrap" "+1" "Projectile.*") "\\|"))
-;(setq sml/mode-width "full")
+(setq rm-blacklist (mapconcat 'identity '(" Fly" " company" " God" " Helm" " Outl" " ARev" " BufFace" " Wrap" "+1" "Projectile.*" "Abbrev") "\\|"))
+(setq sml/mode-width 'full)
 ;; (setq sml/mode-width 0)
 ;; (setq sml/shorten-modes nil)
-(setq sml/name-width '(0 . 44))
+;; (setq sml/name-width '(0 . 44))
+(setq sml/name-width '(0 . 25))
 
 ;;; Multiple-cursors
 
@@ -1358,6 +1358,17 @@ sorted block."
   :config
   (setq rtags-use-bookmarks nil))
 
+
+;;; mixed-pitch
+(use-package mixed-pitch
+  :ensure t
+  :config
+  ;; If you want it in all text modes:
+  (add-hook 'text-mode-hook #'mixed-pitch-mode)
+  ;; Depending on your specific setup, you may want to adjust the height of
+  ;; variable pitch fonts:
+  (set-face-attribute 'variable-pitch nil :height 160)
+  )
 
 ;;; python
 (defun ac/python-hook ()
