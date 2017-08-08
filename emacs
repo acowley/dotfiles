@@ -1318,7 +1318,7 @@ sorted block."
   (electric-indent-mode t)
   (electric-pair-mode t)
   (setq company-backends (delete 'company-clang (delete 'company-semantic company-backends)))
-
+  (which-function-mode)
   (helm-gtags-mode 1))
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
