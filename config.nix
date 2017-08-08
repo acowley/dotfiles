@@ -115,6 +115,8 @@
       enableEigen = true;
       enableFfmpeg = true;
       enablePython = true;
+      inherit (darwin.apple_sdk.frameworks)
+        AVFoundation Cocoa QTKit VideoDecodeAcceleration;
     };
 
     ignition = pkgs.ignition // {
