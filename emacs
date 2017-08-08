@@ -48,6 +48,7 @@
 ;;; General emacs configuration
 
 ;;;; Elisp Helpers
+(require 'subr-x)
 (defun fill-list (xs &optional separator prefix suffix)
   "Format a list to respect the fill column.
 
