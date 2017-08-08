@@ -604,16 +604,17 @@ of code to whatever theme I'm using's background"
      org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
      org-ref-pdf-directory "~/Documents/MyPapers/references/"
      bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
-  (require 'org-ref))
+  ;(require 'org-ref)
+  )
 
-(eval-after-load "font-latex"
-  '(mapc (lambda (face)
-           (set-face-attribute face nil
-                               :inherit (adjoin-to-list-or-symbol
-                                          'fixed-pitch
-                                          (face-attribute face :inherit))))
-         (list 'font-latex-math-face 'font-latex-verbatim-face
-               'font-lock-keyword-face)))
+;; (eval-after-load "font-latex"
+;;   '(mapc (lambda (face)
+;;            (set-face-attribute face nil
+;;                                :inherit (adjoin-to-list-or-symbol
+;;                                           'fixed-pitch
+;;                                           (face-attribute face :inherit))))
+;;          (list 'font-latex-math-face 'font-latex-verbatim-face
+;;                'font-lock-keyword-face)))
 
 (use-package outorg
   :defer t
