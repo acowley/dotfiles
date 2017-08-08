@@ -108,11 +108,24 @@ dash) transpose chunks around that. Otherwise transpose sexps."
       (save-excursion
         (insert lhs)))))
 
+(defun insert-include-guard ()
+  "Insert a C/C++-style ‘#ifndef‘ include guard in the current buffer."
+  (interactive)
+  (let* ((fname (buffer-file-name))
+         (ext (upcase (file-name-extension fname)))
+         (base (upcase (file-name-sans-extension (file-name-nondirectory fname))))
+         (guard (concat "__" base "_" ext)))
+    (save-excursion
+      (goto-char (point-min))
+      (insert (concat "#ifndef " guard "\n#define " guard "\n"))
+      (goto-char (point-max))
+      (insert "#endif"))))
+
 ;;;; Miscellaneous Settings
 
-;; Cause use-package to install packages automatically if not already
-;; present
-(setq use-package-always-ensure t)
+  ;; Cause use-package to install packages automatically if not already
+  ;; present
+  (setq use-package-always-ensure t))
 
 ;; Clean trailing whitespace when saving a buffer
 (setq before-save-hook #'whitespace-cleanup)
