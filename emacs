@@ -1479,8 +1479,8 @@ sorted block."
   (global-set-key (kbd "M-\"") #'corral-double-quotes-backward)
   (global-set-key (kbd "M-{") #'corral-braces-backward)
   (global-set-key (kbd "M-}") #'corral-braces-forward)
-  (global-set-key (kbd "M-[") #'corral-brackets-backword)
-  (global-set-key (kbd "M-]") #'corral-backents-forward))
+  (global-set-key (kbd "M-[") #'corral-brackets-backward)
+  (global-set-key (kbd "M-]") #'corral-brackets-forward))
 
 ;;; rust
 (use-package rust-mode
