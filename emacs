@@ -349,7 +349,7 @@ end tell" uri)))
   (interactive)
   (kill-ring-save (region-beginning) (region-end))
   (comment-dwim nil)
-  (insert "\n"))
+  (newline-and-indent))
 
 ;;;; Tramp with sudo
 
