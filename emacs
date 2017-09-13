@@ -19,7 +19,7 @@
                     session
                     ag
                     nix-mode
-                    glsl-mode yaml-mode vagrant-tramp cmake-mode
+                    glsl-mode vagrant-tramp cmake-mode
                     visual-fill-column
                     ;; Use the terminal-notifier program on OS X
                     erc-hl-nicks erc-terminal-notifier
@@ -117,18 +117,22 @@ dash) transpose chunks around that. Otherwise transpose sexps."
          (guard (concat "__" base "_" ext)))
     (save-excursion
       (goto-char (point-min))
-      (insert (concat "#ifndef " guard "\n#define " guard "\n"))
+      (insert (concat "#ifndef " guard "\n#define " guard "\n\n\n"))
       (goto-char (point-max))
-      (insert "#endif"))))
+      (insert "\n#endif"))
+    (goto-line 4)))
 
 ;;;; Miscellaneous Settings
 
-  ;; Cause use-package to install packages automatically if not already
-  ;; present
-  (setq use-package-always-ensure t))
+;; Cause use-package to install packages automatically if not already
+;; present
+(setq use-package-always-ensure t)
 
 ;; Clean trailing whitespace when saving a buffer
 (setq before-save-hook #'whitespace-cleanup)
+
+;; Keep ediff UI in a single frame
+(setq ediff-window-setup-function #'ediff-setup-windows-plain)
 
 ;; Use the exec-path-from-shell package to set the PATH
 (when (memq window-system '(mac ns))
