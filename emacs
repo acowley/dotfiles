@@ -1539,6 +1539,17 @@ sorted block."
                                               :compile "platformio run"
                                               :run "platformio run -t upload")))
 
+;;; yaml
+(use-package yaml-mode
+  :defer t
+  :config
+  ;; From https://github.com/yoshiki/yaml-mode/issues/25#issuecomment-250440342
+  (add-hook 'yaml-mode-hook
+            (lambda ()
+              (outline-minor-mode)
+              (define-key yaml-mode-map (kbd "TAB") 'outline-toggle-children)
+              ;(setq outline-regexp "^ *\\([A-Za-z0-9_-]*: *[>|]?$\\|-\\b\\)")
+              )))
 ;;; redprl
 (use-package redprl
   :config
