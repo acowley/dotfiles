@@ -8,7 +8,7 @@
     };
     pass = with pkgs;
            callPackage (<nixpkgs> + /pkgs/tools/security/pass) { x11Support = false; };
-    rtags_39 = pkgs.rtags.override { llvmPackages = pkgs.llvmPackages_39; };
+    global = pkgs.callPackage ./nix/global {};
     libigl = pkgs.callPackage ./nix/libigl {};
     emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
