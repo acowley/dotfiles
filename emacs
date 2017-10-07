@@ -1195,7 +1195,7 @@ predicate returns true."
          ("C-c M-." . nil)
          ("C-c C-d" . nil))
   :config
-  (electric-indent-local-mode -1)
+  ;; (electric-indent-local-mode -1)
   (company-mode)
   (use-package shm
     :bind (("M-A" . shm/goto-parent-end))
@@ -1228,8 +1228,8 @@ predicate returns true."
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
     (add-hook 'before-save-hook #'whitespace-cleanup)
-    (electric-indent-mode -1)
-    (electric-pair-mode -1)
+    (electric-indent-local-mode -1)
+    (electric-pair-local-mode -1)
     (intero-mode-whitelist))
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (defun haskell-find-pragmas ()
