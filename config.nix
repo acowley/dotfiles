@@ -12,6 +12,11 @@
     libigl = pkgs.callPackage ./nix/libigl {};
     emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
+
+    easyloggingpp = pkgs.callPackage ./nix/easyloggingpp {};
+
+    gtsam = pkgs.callPackage ./nix/gtsam {};
+
     # mu = pkgs.mu.override {
     #   gtk3 = null;
     #   webkitgtk24x = null;
