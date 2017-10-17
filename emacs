@@ -1305,40 +1305,40 @@ sorted block."
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
 
-(use-package irony
-  :defer t
-  :load-path "/Users/acowley/src/irony-mode"
-  :commands irony-mode
-  :config
-  (use-package company-irony
-    :defer t
-    :config
-    (add-to-list 'company-backends 'company-irony))
+;; (use-package irony
+;;   :defer t
+;;   :load-path "/Users/acowley/src/irony-mode"
+;;   :commands irony-mode
+;;   :config
+;;   (use-package company-irony
+;;     :defer t
+;;     :config
+;;     (add-to-list 'company-backends 'company-irony))
 
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async)
-    (company-irony-setup-begin-commands))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+;;   (defun my-irony-mode-hook ()
+;;     (define-key irony-mode-map [remap completion-at-point]
+;;       'irony-completion-at-point-async)
+;;     (define-key irony-mode-map [remap complete-symbol]
+;;       'irony-completion-at-point-async)
+;;     (company-irony-setup-begin-commands))
+;;   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-  (use-package flycheck-irony
-    :defer t
-    :init
-    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
-    (add-hook 'irony-mode-hook #'flycheck-mode)))
+;;   (use-package flycheck-irony
+;;     :defer t
+;;     :init
+;;     (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
+;;     (add-hook 'irony-mode-hook #'flycheck-mode)))
 
-(eval-and-compile
-  (defun rtags-site-load-path ()
-    (concat (string-trim (shell-command-to-string "nix-build --no-out-link '<nixpkgs>' -A rtags")) "/share/emacs/site-lisp/rtags")))
+;; (eval-and-compile
+;;   (defun rtags-site-load-path ()
+;;     (concat (string-trim (shell-command-to-string "nix-build --no-out-link '<nixpkgs>' -A rtags")) "/share/emacs/site-lisp/rtags")))
 
-(use-package rtags
-  :defer t
-  :load-path (lambda () (rtags-site-load-path))
-  :config
-  (setq rtags-use-bookmarks nil))
+;; (use-package rtags
+;;   :defer t
+;;   :load-path (lambda () (rtags-site-load-path))
+;;   :config
+;;   (setq rtags-use-bookmarks nil))
 
 
 ;;; mixed-pitch
