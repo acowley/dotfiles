@@ -12,6 +12,7 @@
     libigl = pkgs.callPackage ./nix/libigl {};
     emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
+    pcl_demo = pkgs.callPackage ./nix/pcl_demo {};
 
     easyloggingpp = pkgs.callPackage ./nix/easyloggingpp {};
 
