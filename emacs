@@ -21,9 +21,6 @@
                     nix-mode
                     glsl-mode vagrant-tramp cmake-mode
                     visual-fill-column
-                    ;; Use the terminal-notifier program on OS X
-                    erc-hl-nicks erc-terminal-notifier
-                    ;tuareg
                     flycheck-ocaml))
 
 ; If we run package-initialize, then add-to-list melpa, the
@@ -124,6 +121,9 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 
 ;;;; Miscellaneous Settings
 
+;; Enable ligatures for fonts that provide them (e.g. hæck)
+(add-hook 'prog-mode-hook #'mac-auto-operator-composition-mode)
+
 ;; Cause use-package to install packages automatically if not already
 ;; present
 (setq use-package-always-ensure t)
@@ -204,6 +204,9 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 ;; (setq TeX-command-extra-options "-shell-escape")
 
 (put 'dired-find-alternate-file 'disabled nil)
+(setq wdired-allow-to-change-permissions t)
+
+(setq gc-cons-threshold 100000000) ; ie 100mb, default is 800kb
 
 ;(load-theme 'monokai t)
 ;(load-theme 'darktooth t)
@@ -233,9 +236,6 @@ dash) transpose chunks around that. Otherwise transpose sexps."
        (point-marker)))
 
 (add-hook 'compilation-filter-hook #'compilation-ansi-color-process-output)
-
-;; Use erc-terminal-notifier with erc
-(add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier)))
 
 (defun sort-words ()
   (interactive)
@@ -370,7 +370,7 @@ end tell" uri)))
 (use-package darkokai-theme :defer t)
 (use-package monokai-theme :defer t)
 (use-package apropospriate-theme
-  :load-path "~/Documents/Projects/apropospriate-theme"
+  ;; :load-path "~/Documents/Projects/apropospriate-theme"
   :config
   (load-theme 'apropospriate-dark t))
 
@@ -388,7 +388,7 @@ end tell" uri)))
 
 ;;; Dashboard
 (use-package dashboard
-  :load-path "~/src/emacs-dashboard"
+  ;; :load-path "~/src/emacs-dashboard"
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents  . 5)
@@ -437,15 +437,6 @@ end tell" uri)))
          ("S-<down>" . nil))
   :config
 
-  ;; Let markup strings be bordered by letter characters
-  ;; (setcar org-emphasis-regexp-components " \t('\"{[:alpha:]")
-  ;; (setcar (nthcdr 1 org-emphasis-regexp-components)
-  ;;         "[:alpha:]- \t\.,:!?;'\")}\\")
-  ;; ;; Let emphasized strings be bordered by quotes
-  ;; (setcar (nthcdr 2 org-emphasis-regexp-components) "\t\r\n, ")
-  ;; (org-set-emph-re 'org-emphasis-regexp-components
-  ;;                  org-emphasis-regexp-components)
-
   (setq org-src-fontify-natively t
         org-use-speed-commands t
         org-html-doctype "html5"
@@ -455,15 +446,6 @@ end tell" uri)))
         org-fontify-whole-heading-line t)
 
   (set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
-
-;; (set-alist 'org-preview-latex-process-alist 'imagemagick '(:programs
-;;               ("latex" "convert")
-;;               :description "pdf > png" :message "you need to install the programs: latex, imagemagick and ghostscript." :use-xcolor t :image-input-type "pdf" :image-output-type "png" :image-size-adjust
-;;               (1.0 . 1.0)
-;;               :latex-compiler
-;;               ("pdflatex -interaction nonstopmode -output-directory %o %f")
-;;               :image-converter
-;;               ("convert -density %D -trim -antialias %f -quality 100 %b.png")))
 
   (setq org-image-actual-width 600)
   (setq org-latex-prefer-user-labels t)
@@ -504,7 +486,7 @@ end tell" uri)))
 
   (add-to-list 'org-agenda-files
                "~/Documents/Projects/roshask/roshask-notes.org"
-               "~/Documents/Projects/Cosy/Cosy-notes.org")
+               "~/Documents/Projects/MAST/IROS/mast-iros-notes.org")
 
   (defun my/org-babel-next-src-block ()
     "Move point to the next babel src block. Returns the new point
@@ -586,7 +568,9 @@ of code to whatever theme I'm using's background"
   ;; (add-to-list 'org-latex-packages-alist '("" "color"))
 
   (require 'org-clock)
-  (add-to-list 'org-clock-clocktable-language-setup '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
+  (add-to-list
+   'org-clock-clocktable-language-setup
+   '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
 
   ;; (setq org-agenda-prefix-format
   ;;       '((agenda . " %i %-12:c%?-12t% s")
@@ -608,17 +592,8 @@ of code to whatever theme I'm using's background"
      org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
      org-ref-pdf-directory "~/Documents/MyPapers/references/"
      bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
-  ;(require 'org-ref)
-  )
 
-;; (eval-after-load "font-latex"
-;;   '(mapc (lambda (face)
-;;            (set-face-attribute face nil
-;;                                :inherit (adjoin-to-list-or-symbol
-;;                                           'fixed-pitch
-;;                                           (face-attribute face :inherit))))
-;;          (list 'font-latex-math-face 'font-latex-verbatim-face
-;;                'font-lock-keyword-face)))
+  )
 
 (use-package outorg
   :defer t
@@ -739,7 +714,7 @@ evaluation may begin anew."
 ;;;; org-mime
 
 (use-package org-mime
-  :load-path "~/src/org-mime"
+  ;; :load-path "~/src/org-mime"
   :ensure nil
   :commands (org-mime-org-buffer-htmlize org-mime-org-subtree-htmlize))
 
@@ -1209,25 +1184,27 @@ predicate returns true."
     (set-face-background 'shm-quarantine-face "#550505")
     )
   (use-package intero
-    :load-path "~/src/intero/elisp"
+    ;; :load-path "~/src/intero/elisp"
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
            ("M-?" . flycheck-display-error-at-point))
     :config
-    (setq intero-whitelist (mapcar (lambda (p) (concat "~/Documents/Projects/" p))
-                                   '("VinylRecords"
-                                     "concurrent-machines"
-                                     "ffmpeg-light"
-                                     "GLUtil"
-                                     "CLUtil"
-                                     "llvm-hs"
-                                     "llvm-hs-pure"
-                                     "HoclSuite"
-                                     "yaml-light-lens"))))
+    (setq intero-whitelist (append (mapcar (lambda (p) (concat "~/Documents/Projects/" p))
+                                           '("VinylRecords"
+                                             "concurrent-machines"
+                                             "ffmpeg-light"
+                                             "GLUtil"
+                                             "CLUtil"
+                                             "llvm-hs"
+                                             "llvm-hs-pure"
+                                             "HoclSuite"
+                                             "yaml-light-lens"))
+                                   (mapcar (lambda (p) (concat "~/Projects/" p))
+                                           '("MotionCT")))))
   (use-package hindent)
+
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
-    (add-hook 'before-save-hook #'whitespace-cleanup)
     (electric-indent-local-mode -1)
     (electric-pair-local-mode -1)
     (intero-mode-whitelist))
@@ -1438,6 +1415,19 @@ sorted block."
   "Interface for entering a password into gpg-agent."
   (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
     str))
+;;; erc (IRC)
+(use-package erc
+  :defer t
+  :config
+  (setq erc-fill-function 'erc-fill-static
+        erc-fill-static-center 22)
+
+  (use-package erc-terminal-notifier
+    :config
+    (add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier))))
+  (use-package erc-hl-nicks
+    :config
+    (add-to-list 'erc-modules 'hl-nicks)))
 ;;; znc
 
 (use-package znc
