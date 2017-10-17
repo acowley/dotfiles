@@ -806,13 +806,13 @@ active; black when inactive."
         (progn
           (set-face-background 'sml/line-number "orange")
           (set-face-foreground 'sml/line-number "black")
-          (set-face-attribute 'mode-line nil :box "orange")
+          ;; (set-face-attribute 'mode-line nil :box "orange")
           ;; (hl-line-mode 1)
           )
 
       (set-face-background 'sml/line-number "black")
       (set-face-foreground 'sml/line-number "white")
-      (set-face-attribute 'mode-line nil :box nil)
+      ;; (set-face-attribute 'mode-line nil :box nil)
       ;(unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))
       ))
 
