@@ -1569,6 +1569,18 @@ sorted block."
   :config
   (require 'smartparens-config))
 
+;;; logview
+(use-package logview
+  :defer t
+  :config
+  (setq logview-additional-level-mappings '(("ICP" . ((error       "ERROR")
+                                                      (warning     "WARNING")
+                                                      (information "INFO")
+                                                      (debug       "DEBUG")
+                                                      (trace       "TRACE"))))
+        logview-additional-submodes '(("ICP" . ((format . "TIMESTAMP LEVEL ")
+                                                (levels . "ICP")
+                                                (timestamp . ("HH:mm:ss")))))))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
