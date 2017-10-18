@@ -9,20 +9,6 @@
 
 ;;; Package setup
 
-;; Make sure the packages I use are installed
-(setq my-packages '(exec-path-from-shell
-                    use-package
-                    company-coq company-math
-                    htmlize
-                    auctex
-                    powerline smart-mode-line smart-mode-line-powerline-theme
-                    session
-                    ag
-                    nix-mode
-                    glsl-mode vagrant-tramp cmake-mode
-                    visual-fill-column
-                    flycheck-ocaml))
-
 ; If we run package-initialize, then add-to-list melpa, the
 ; package-install invocation will fail. We need the package-archives
 ; list setup before calling package-initialize.
@@ -30,17 +16,15 @@
                          ;("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
+
 (package-initialize)
+(setq package-enable-at-startup nil)
 
-; Fetch the list of available packages
-(unless package-archive-contents (package-refresh-contents))
-
-(dolist (package my-packages)
-  (unless (package-installed-p package)
-    (princ "Installing package ")
-    (princ package)
-    (newline)
-    (package-install package)))
+; (require 'use-package)
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
 
 ;;; General emacs configuration
 
@@ -292,6 +276,8 @@ end tell" uri)))
 
 (define-key process-menu-mode-map (kbd "C-k") #'joaot/delete-process-at-point)
 
+(use-package visual-fill-column :defer t)
+
 ;;;; variable-pitch-mode
 (defun my/text-mode-hook ()
   (flyspell-mode)
@@ -418,11 +404,13 @@ end tell" uri)))
     (imp-set-user-filter #'markdown-html)))
 
 
+;;; esup
+(use-package esup :defer t)
 ;;; Org-mode
 
 ;;;; General Org Configuration
 (use-package org
-  :defer t
+  :defer 10
   :ensure org-plus-contrib
   :pin org
   :bind (("C-c l" . org-store-link)
@@ -445,7 +433,7 @@ end tell" uri)))
         ;; Fontify the whole line for headings (with a background color).
         org-fontify-whole-heading-line t)
 
-  (set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
+  ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
 
   (setq org-image-actual-width 600)
   (setq org-latex-prefer-user-labels t)
@@ -457,16 +445,35 @@ end tell" uri)))
   (defun my-org-hook ()
     (org-bullets-mode 1)
     (org-table-sticky-header-mode)
-    (org-sticky-header-mode))
+    (org-sticky-header-mode)
+
+    ; Encryption
+    (require 'org-crypt)
+    (org-crypt-use-before-save-magic)
+    (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+    ;; GPG key to use for encryption
+    ;; Either the Key ID or set to nil to use symmetric encryption.
+    (setq org-crypt-key "D50A574B"))
   (add-hook 'org-mode-hook #'my-org-hook)
+
+  (use-package ob-ipython
+  :defer t
+  :config
+  (defun kill-ihaskell ()
+    "IHaskell dies after a few evaluations of a big notebook due
+to keeping too many files open. This cleans things up so
+evaluation may begin anew."
+    (interactive)
+    (mapc #'kill-buffer '("*Python*" "*ob-ipython-client-driver*"
+                          "*ob-ipython-kernel-default*"))))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((haskell . t) (ditaa . t) (shell . t) (emacs-lisp . t) (octave . t)
-     (C . t) (js . t) (ipython . t) (maxima . t) (latex . t) (dot . t)))
+   '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t) (octave . t)
+     (C . t) (js . t) (maxima . t) (latex . t) (dot . t)))
 
   ;; Syntax highlight dot source blocks
-  (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
+  ; (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
 
   ;; Org sets the block face to a hard-to-read gray color by default.
   ;; (set-face-attribute
@@ -554,10 +561,10 @@ of code to whatever theme I'm using's background"
 
   ;; LaTeX export
   ;; (require 'ox-latex)
-  (setq org-latex-pdf-process '("latexmk -g -pdf -shell-escape %f -outdir=$(echo '%o' | sed 's|\\(.*\\)/$|\\1|g')"))
-  (setq org-latex-listings 'minted)
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (add-to-list 'org-latex-minted-langs '(haskell "haskell"))
+  ;; (setq org-latex-pdf-process '("latexmk -g -pdf -shell-escape %f -outdir=$(echo '%o' | sed 's|\\(.*\\)/$|\\1|g')"))
+  ;; (setq org-latex-listings 'minted)
+  ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; (add-to-list 'org-latex-minted-langs '(haskell "haskell"))
 
   ;; mathescape permits math-mode in comments, while escapeinside
   ;; specifies brackets within which math-mode can be enabled in code
@@ -567,10 +574,10 @@ of code to whatever theme I'm using's background"
   ;; (add-to-list 'org-latex-packages-alist '("" "listings"))
   ;; (add-to-list 'org-latex-packages-alist '("" "color"))
 
-  (require 'org-clock)
-  (add-to-list
-   'org-clock-clocktable-language-setup
-   '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
+  ;; (require 'org-clock)
+  ;; (add-to-list
+  ;;  'org-clock-clocktable-language-setup
+  ;;  '("en" "File"     "L"  "Timestamp"  "Task" "Time"  "ALL"   "Total time"   "File time" "Time Sheet at"))
 
   ;; (setq org-agenda-prefix-format
   ;;       '((agenda . " %i %-12:c%?-12t% s")
@@ -582,18 +589,17 @@ of code to whatever theme I'm using's background"
   ;; (require 'ox-extra)
   ;; (ox-extras-activate '(ignore-headlines))
 
-  (use-package org-ref
-    :defer nil
-    :config
-    (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
-    (setq
-     reftex-default-bibliography '("~/Documents/MyPapers/mybib.bib")
-     ;; see org-ref for use of these variables
-     org-ref-bibliography-notes "~/Documents/MyPapers/bib-notes.org"
-     org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
-     org-ref-pdf-directory "~/Documents/MyPapers/references/"
-     bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
-
+  ;; (use-package org-ref
+  ;;   :defer nil
+  ;;   :config
+  ;;   (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
+  ;;   (setq
+  ;;    reftex-default-bibliography '("~/Documents/MyPapers/mybib.bib")
+  ;;    ;; see org-ref for use of these variables
+  ;;    org-ref-bibliography-notes "~/Documents/MyPapers/bib-notes.org"
+  ;;    org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
+  ;;    org-ref-pdf-directory "~/Documents/MyPapers/references/"
+  ;;    bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
   )
 
 (use-package outorg
@@ -608,11 +614,13 @@ entire source file is loaded."
 
 (use-package outshine
   :defer t
+  :commands (outshine-hook-function)
   :init
-  (add-hook 'outline-minor-mode-hook (lambda ()
-                                       (require 'outshine)
-                                       (outshine-hook-function)))
-  (add-hook 'prog-mode-hook 'outline-minor-mode))
+  (add-hook 'outline-minor-mode-hook #'outshine-hook-function)
+  (add-hook 'prog-mode-hook #'outline-minor-mode)
+  :config
+  (setq outshine-preserve-delimiter-whitespace t
+        outshine-use-speed-commands t))
 
 ;; Copy from an Org buffer to the system clipboard after converting
 ;; the Org content to rich text format.
@@ -642,27 +650,6 @@ entire source file is loaded."
          "* TODO %?\n  SCHEDULED: %t\n%i\n")
         ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
          "* TODO %?\n  %i\n  %a")))
-
-;;;; Encryption
-(require 'org-crypt)
-(org-crypt-use-before-save-magic)
-(setq org-tags-exclude-from-inheritance (quote ("crypt")))
-;; GPG key to use for encryption
-;; Either the Key ID or set to nil to use symmetric encryption.
-(setq org-crypt-key "D50A574B")
-
-;;;; IHaskell
-
-(use-package ob-ipython
-  :defer t
-  :config
-  (defun kill-ihaskell ()
-    "IHaskell dies after a few evaluations of a big notebook due
-to keeping too many files open. This cleans things up so
-evaluation may begin anew."
-    (interactive)
-    (mapc #'kill-buffer '("*Python*" "*ob-ipython-client-driver*"
-                          "*ob-ipython-kernel-default*"))))
 
 ;;;; Blog Publishing
 (setq org-rss-use-entry-url-as-guid nil)
@@ -716,7 +703,6 @@ evaluation may begin anew."
 
 (use-package org-mime
   ;; :load-path "~/src/org-mime"
-  :ensure nil
   :commands (org-mime-org-buffer-htmlize org-mime-org-subtree-htmlize))
 
 ;;;; org-clock
@@ -732,9 +718,11 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                        do (setq headline (replace-regexp-in-string "TODO \\|DONE " "" headline))
                        do (setcar (nthcdr 1 entry) headline)))
   (org-clocktable-write-default ipos tables params))
+
 ;;; Helm
 (use-package helm
-  :defer 5
+  :defer nil
+  :commands (helm-find-files helm-mini helm-M-x helm-imenu)
   :bind (("M-x" . helm-M-x)
          ("C-c h" . helm-mini)
          ("C-c i" . helm-imenu)
@@ -796,6 +784,8 @@ under the current project's root directory."
 ;;; god-mode
 
 (use-package god-mode
+  :defer nil
+  :commands (god-mode god-mode-all)
   :config
   (setq god-exempt-major-modes nil
         god-exempt-predicates nil)
@@ -1081,28 +1071,32 @@ predicate returns true."
                 my-mu4e-account-alist)))
 
 ;;; smart-mode-line (powerline)
+(use-package smart-mode-line
+  :config
+  (use-package smart-mode-line-powerline-theme)
+  (setq sml/no-confirm-load-theme t)
+  (sml/setup)
 
-(setq sml/no-confirm-load-theme t)
-(sml/setup)
+  ;; Replace ":Doc:Projects/Foo/blah.hs" with ":Foo:blah.hs"
+  (add-to-list 'sml/replacer-regexp-list '("^:Doc:Projects/\\([^/]*\\)/" ":\\1:") t)
 
-;; Replace ":Doc:Projects/Foo/blah.hs" with ":Foo:blah.hs"
-(add-to-list 'sml/replacer-regexp-list '("^:Doc:Projects/\\([^/]*\\)/" ":\\1:") t)
-;(sml/apply-theme 'smart-mode-line-powerline)
-(sml/apply-theme 'dark)
+  ;(sml/apply-theme 'smart-mode-line-powerline)
+  (sml/apply-theme 'dark)
 
-;; Don't show common minor modes
-(setq rm-blacklist (mapconcat 'identity '(" Fly" " company" " God" " Helm" " Outl" " ARev" " BufFace" " Wrap" "+1" "Projectile.*" "Abbrev") "\\|"))
-(setq sml/mode-width 'full)
-;; (setq sml/mode-width 0)
-;; (setq sml/shorten-modes nil)
-;; (setq sml/name-width '(0 . 44))
-(setq sml/name-width '(0 . 25))
+  ;; Don't show common minor modes
+  (setq rm-blacklist (mapconcat 'identity '(" Fly" " company" " God" " Helm" " Outl" " ARev" " BufFace" " Wrap" "+1" "Projectile.*" "Abbrev") "\\|"))
+  (setq sml/mode-width 'full)
+  ;; (setq sml/mode-width 0)
+  ;; (setq sml/shorten-modes nil)
+  ;; (setq sml/name-width '(0 . 44))
+  (setq sml/name-width '(0 . 25)))
 
 ;;; Multiple-cursors
 
 ;; multiple-cursors setup
 (use-package multiple-cursors
   :defer nil
+  :commands (multiple-cursors-mode)
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
@@ -1286,6 +1280,9 @@ sorted block."
 
 ;;; C++
 
+(use-package cmake-mode
+  :mode "\\CMakeLists.txt\\’")
+
 (use-package helm-gtags
   :defer t
   :bind (:map helm-gtags-mode-map
@@ -1395,10 +1392,14 @@ sorted block."
 ;;; company-mode
 (use-package company
   :defer t
+  :commands (company-mode)
+  :init
+  (add-hook 'prog-mode-hook 'company-mode)
   :config
   (setq company-idle-delay 0.1)
   (define-key company-mode-map (kbd "C-:") 'helm-company)
   (define-key company-active-map (kbd "C-:") 'helm-company)
+  (setq company-backends (remq 'company-eclim (remq 'company-oddmuse company-backends)))
   (defun ac/company-text-mode ()
     ;; (add-to-list 'company-backends 'company-ispell)
     )
@@ -1407,9 +1408,6 @@ sorted block."
 ;; (optional) adds CC special commands to `company-begin-commands' in order to
 ;; trigger completion at interesting places, such as after scope operator
 ;;     std::|
-(add-hook 'prog-mode-hook 'company-mode)
-
-
 
 ;;; gpg
 (defun pinentry-emacs (desc prompt ok error)
@@ -1581,6 +1579,8 @@ sorted block."
         logview-additional-submodes '(("ICP" . ((format . "TIMESTAMP LEVEL ")
                                                 (levels . "ICP")
                                                 (timestamp . ("HH:mm:ss")))))))
+;;; ag
+(use-package ag :defer t)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (load "~/.emacsPrivate.el")
@@ -1592,11 +1592,8 @@ sorted block."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(android-mode-sdk-dir "/usr/local/opt/android-sdk")
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["#424242" "#EF9A9A" "#C5E1A5" "#FFEE58" "#64B5F6" "#E1BEE7" "#80DEEA" "#E0E0E0"])
  '(beacon-color "#ec4780")
  '(column-number-mode t)
  '(company-begin-commands
@@ -1604,10 +1601,9 @@ sorted block."
     (self-insert-command org-self-insert-command outshine-self-insert-command)))
  '(company-ghc-autoscan t)
  '(company-ghc-show-info (quote oneline))
- '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("f78de13274781fbb6b01afd43327a4535438ebaeec91d93ebdbba1e3fba34d3c" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "412c25cf35856e191cc2d7394eed3d0ff0f3ee90bacd8db1da23227cdff74ca2" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "70403e220d6d7100bae7775b3334eddeb340ba9c37f4b39c189c2c29d458543b" "0f92b9f1d391caf540ac746bc251ea00a55f29e20a411460eb6d8e49892ddef9" "d94eec01b45c7dc72e324af86fd2858e97c92220c195b5dbae5f8fd926a09cec" "1a53efc62256480d5632c057d9e726b2e64714d871e23e43816735e1b85c144c" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "13270e81a07dac4aeb1efefb77b9e61919bb3d69da7253ade632856eed65b8a2" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" "70b9c3d480948a3d007978b29e31d6ab9d7e259105d558c41f8b9532c13219aa" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
+    ("d5cdb20cc31dfd701ee4ac5fed09d0e1898ee828c6036c4ee00fdc1e50eb7558" "f78de13274781fbb6b01afd43327a4535438ebaeec91d93ebdbba1e3fba34d3c" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "412c25cf35856e191cc2d7394eed3d0ff0f3ee90bacd8db1da23227cdff74ca2" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "70403e220d6d7100bae7775b3334eddeb340ba9c37f4b39c189c2c29d458543b" "0f92b9f1d391caf540ac746bc251ea00a55f29e20a411460eb6d8e49892ddef9" "d94eec01b45c7dc72e324af86fd2858e97c92220c195b5dbae5f8fd926a09cec" "1a53efc62256480d5632c057d9e726b2e64714d871e23e43816735e1b85c144c" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "13270e81a07dac4aeb1efefb77b9e61919bb3d69da7253ade632856eed65b8a2" "e97dbbb2b1c42b8588e16523824bc0cb3a21b91eefd6502879cf5baa1fa32e10" "2305decca2d6ea63a408edd4701edf5f4f5e19312114c9d1e1d5ffe3112cde58" "70b9c3d480948a3d007978b29e31d6ab9d7e259105d558c41f8b9532c13219aa" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "0fb6369323495c40b31820ec59167ac4c40773c3b952c264dd8651a3b704f6b5" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "0a1a7f64f8785ffbf5b5fbe8bca1ee1d9e1fb5e505ad9a0f184499fe6747c1af" "30b7087fdd149a523aa614568dc6bacfab884145f4a67d64c80d6011d4c90837" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" "c810219104d8ff9b37e608e02bbc83c81e5c30036f53cab9fe9a2163a2404057" "d46b5a32439b319eb390f29ae1810d327a2b4ccb348f2018b94ff22f410cb5c4" "3fd36152f5be7e701856c3d817356f78a4b1f4aefbbe8bbdd1ecbfa557b50006" "990920bac6d35106d59ded4c9fafe979fb91dc78c86e77d742237bc7da90d758" "2d20b505e401964bb6675832da2b7e59175143290dc0f187c63ca6aa4af6c6c1" "4e262566c3d57706c70e403d440146a5440de056dfaeb3062f004da1711d83fc" "d22a6696fd09294c7b1601cb2575d8e5e7271064453d6fa77ab4e05e5e503cee" "64581032564feda2b5f2cf389018b4b9906d98293d84d84142d90d7986032d33" default)))
  '(debug-on-error t)
  '(default-input-method "TeX")
  '(dired-dwim-target t)
@@ -1623,7 +1619,6 @@ sorted block."
  '(evil-normal-state-cursor (quote ("#FFEE58" box)))
  '(evil-visual-state-cursor (quote ("#C5E1A5" box)))
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "GPG_AGENT_INFO")))
- '(fci-rule-color "#49483E")
  '(flycheck-ghc-args (quote ("-Wall")))
  '(flycheck-swift-sdk-path
    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
@@ -1633,15 +1628,11 @@ sorted block."
  '(global-eldoc-mode t)
  '(haskell-indent-offset 2)
  '(helm-mu-gnu-sed-program "gnused")
- '(highlight-changes-colors ("#FD5FF0" "#AE81FF"))
- '(highlight-indent-guides-auto-enabled nil)
  '(highlight-symbol-colors
    (quote
     ("#FFEE58" "#C5E1A5" "#80DEEA" "#64B5F6" "#E1BEE7" "#FFCC80")))
  '(highlight-symbol-foreground-color "#E0E0E0")
- '(highlight-tail-colors (quote (("#ec4780" . 0) ("#424242" . 100))))
  '(hl-sexp-background-color "#efebe9")
- '(magit-diff-use-overlays nil)
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
  '(org-agenda-files
@@ -1739,14 +1730,10 @@ sorted block."
      ("n" "#+BEGIN_NOTES
 ?
 #+END_NOTES" ""))))
- '(outshine-preserve-delimiter-whitespace t)
- '(outshine-use-speed-commands t)
  '(package-selected-packages
    (quote
-    (imenu-anywhere org-sticky-header twittering-mode rtags-helm rtags org-plus-contrib org-table-sticky-header magit magit-extras smartparens smartparens-mode hindent toml-mode nix-buffer intero apropospriate-dark-theme racer osx-dictionary org-ref emamux znc yaml-mode visual-fill-column vagrant-tramp use-package undo-tree speed-type smart-mode-line-powerline-theme shm session semi redprl purescript-mode psc-ide poporg paredit ox-reveal ox-clip org-tree-slide org-bullets ob-ipython nix-mode navi-mode multiple-cursors monokai-theme material-theme leuven-theme julia-shell jonprl-mode impatient-mode highlight-symbol helm-swoop helm-projectile helm-mu helm-gtags helm-descbinds helm-dash helm-company helm-ag god-mode glsl-mode gh ggtags flycheck-rust flycheck-purescript flycheck-ocaml flycheck-irony flycheck-haskell exec-path-from-shell esup erc-terminal-notifier erc-hl-nicks darkokai-theme corral company-shell company-irony company-ghc company-coq cmake-mode cargo buffer-move bash-completion auto-complete auctex android-mode ag)))
+    (racer flycheck-rust cargo znc yaml-mode visual-fill-column use-package twittering-mode toml-mode smartparens smart-mode-line-powerline-theme shm rust-mode redprl purescript-mode psc-ide paredit ox-clip outshine osx-dictionary org-table-sticky-header org-sticky-header org-plus-contrib org-mime org-bullets ob-ipython nix-mode nix-buffer multiple-cursors monokai-theme mixed-pitch markdown-mode magit logview intero impatient-mode imenu-anywhere hindent helm-swoop helm-projectile helm-gtags helm-dash helm-company graphviz-dot-mode god-mode exec-path-from-shell esup erc-terminal-notifier erc-hl-nicks dashboard darkokai-theme corral cmake-mode buffer-move apropospriate-theme ag)))
  '(pop-up-windows nil)
- '(pos-tip-background-color "#3a3a3a")
- '(pos-tip-foreground-color "#9E9E9E")
  '(python-shell-interpreter "python3")
  '(racer-cmd "racer")
  '(safe-local-variable-values
