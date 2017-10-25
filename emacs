@@ -1090,11 +1090,13 @@ predicate returns true."
   (diminish 'abbrev-mode)
   (spaceline-toggle-buffer-encoding-abbrev-off)
   (spaceline-toggle-buffer-size-off)
+  (spaceline-toggle-erc-track-off)
 
   (defun ac/spaceline-highlight-face-god-state ()
     (if (bound-and-true-p god-local-mode)
-        'spaceline-evil-visual
-      'spaceline-evil-insert))
+        'spaceline-evil-normal ;'spaceline-evil-visual
+      'spaceline-evil-emacs;'spaceline-evil-insert
+      ))
 
 ;; spaceline-evil-state-faces is a variable defined in ‘spaceline.el’.
 ;; Its value is ((normal . spaceline-evil-normal)
