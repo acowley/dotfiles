@@ -197,6 +197,19 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 
 (setq gc-cons-threshold 100000000) ; ie 100mb, default is 800kb
 
+;; When `'which-function` output is too long, it can interfere with
+;; modeline rendering
+(advice-add 'which-function :filter-return
+            (lambda (s)
+              (unless (null s)
+                (truncate-string-to-width s 20 nil nil "..."))))
+
+;; From https://emacs.stackexchange.com/a/24658
+(defun advice-unadvice (sym)
+  "Remove all advices from symbol SYM."
+  (interactive "aFunction symbol: ")
+  (advice-mapc (lambda (advice _props) (advice-remove sym advice)) sym))
+
 ;(load-theme 'monokai t)
 ;(load-theme 'darktooth t)
 
