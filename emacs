@@ -1094,7 +1094,6 @@ predicate returns true."
         (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
                 my-mu4e-account-alist)))
 
-;;; abbrev
 ;;; spaceline
 (use-package spaceline
   :config
@@ -1104,24 +1103,28 @@ predicate returns true."
   (diminish 'projectile-mode)
   (diminish 'helm-mode)
   (diminish 'abbrev-mode)
+  (diminish 'buffer-face-mode)
+  (diminish 'flyspell-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'text-scale-mode)
   (spaceline-toggle-buffer-encoding-abbrev-off)
   (spaceline-toggle-buffer-size-off)
   (spaceline-toggle-erc-track-off)
 
   (defun ac/spaceline-highlight-face-god-state ()
     (if (bound-and-true-p god-local-mode)
-        'spaceline-evil-normal ;'spaceline-evil-visual
-      'spaceline-evil-emacs;'spaceline-evil-insert
+        'spaceline-evil-normal          ;'spaceline-evil-visual
+      'spaceline-evil-emacs             ;'spaceline-evil-insert
       ))
 
-;; spaceline-evil-state-faces is a variable defined in ‘spaceline.el’.
-;; Its value is ((normal . spaceline-evil-normal)
-;;  (insert . spaceline-evil-insert)
-;;  (emacs . spaceline-evil-emacs)
-;;  (replace . spaceline-evil-replace)
-;;  (visual . spaceline-evil-visual)
-;;  (motion . spaceline-evil-motion))
-  ;(setq spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
+  ;; spaceline-evil-state-faces is a variable defined in ‘spaceline.el’.
+  ;; Its value is ((normal . spaceline-evil-normal)
+  ;;  (insert . spaceline-evil-insert)
+  ;;  (emacs . spaceline-evil-emacs)
+  ;;  (replace . spaceline-evil-replace)
+  ;;  (visual . spaceline-evil-visual)
+  ;;  (motion . spaceline-evil-motion))
+                                        ;(setq spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
   ;; (setq spaceline-highlight-face-func #'spaceline-highlight-face-default)
   (setq spaceline-highlight-face-func #'ac/spaceline-highlight-face-god-state)
   )
