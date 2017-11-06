@@ -1480,10 +1480,12 @@ sorted block."
   :defer t
   :config
   (setq erc-fill-function 'erc-fill-static
-        erc-fill-static-center 22)
+        erc-fill-static-center 14)
+  ;; (setq erc-fill-function 'erc-fill-variable)
 
   (use-package erc-terminal-notifier
     :config
+    (setq erc-terminal-notifier-command "~/.nix-profile/bin/terminal-notifier")
     (add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier))))
   (use-package erc-hl-nicks
     :config
@@ -1936,9 +1938,8 @@ sorted block."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Hæck" :foundry "nil" :slant normal :weight normal :height 130 :width normal))))
  '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
- '(variable-pitch ((t (:family "Avenir Next" :slant italic))))
+ '(variable-pitch ((t (:family "Fira Sans"))))
  '(org-block ((t (:slant normal)))))
 
 
