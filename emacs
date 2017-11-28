@@ -1477,7 +1477,7 @@ sorted block."
   :defer t
   :config
   (setq erc-fill-function 'erc-fill-static
-        erc-fill-static-center 14)
+        erc-fill-static-center 18)
   ;; (setq erc-fill-function 'erc-fill-variable)
 
   (use-package erc-terminal-notifier
