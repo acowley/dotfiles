@@ -199,10 +199,17 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 
 ;; When `'which-function` output is too long, it can interfere with
 ;; modeline rendering
-(advice-add 'which-function :filter-return
-            (lambda (s)
-              (unless (null s)
-                (truncate-string-to-width s 20 nil nil "..."))))
+(defun truncate-function-name (s)
+"Truncates a string to 20 characters. If the name has one or more
+double colons (\"::\") in it, the part of the string after the
+last double colon is truncated to 20 characters."
+  (unless (null s)
+    (if (> (length s) 20)
+        (truncate-string-to-width
+         (car (last (split-string s "::")))
+         20 nil nil "...")
+      s)))
+(advice-add 'which-function :filter-return #'truncate-function-name)
 
 ;; From https://emacs.stackexchange.com/a/24658
 (defun advice-unadvice (sym)
