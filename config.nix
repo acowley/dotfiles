@@ -18,6 +18,8 @@
       inherit (pkgs.darwin) apple_sdk;
     };
 
+    cquery = pkgs.callPackage ./nix/cquery {};
+
     nixBufferBuilders = import (<nixpkgs> + /pkgs/build-support/emacs/buffer.nix) {
       inherit (pkgs) lib writeText;
       inherit (emacsMacPackagesNg) inherit-local;
