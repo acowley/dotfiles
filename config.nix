@@ -14,6 +14,10 @@
 
     gtsam = pkgs.callPackage ./nix/gtsam {};
 
+    rtags = pkgs.callPackage ./nix/rtags {
+      inherit (pkgs.darwin) apple_sdk;
+    };
+
     nixBufferBuilders = import (<nixpkgs> + /pkgs/build-support/emacs/buffer.nix) {
       inherit (pkgs) lib writeText;
       inherit (emacsMacPackagesNg) inherit-local;
