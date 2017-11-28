@@ -879,11 +879,13 @@ under the current project's root directory."
 
 
 ;;; Email (mu4e)
-;(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
-(add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
-;(require 'mu4e)
+
+;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+;; (add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
+;; (require 'mu4e)
 
 (use-package mu4e
+  :load-path "~/.nix-profile/share/emacs/site-lisp/mu4e"
   :ensure nil
   :defer t
   :commands (mu4e)
@@ -891,20 +893,10 @@ under the current project's root directory."
   (setq
    mu4e-maildir "~/.mail"
    mu4e-html2text-command  "/Users/acowley/.nix-profile/bin/w3m -T text/html"
-                                        ;mu4e-mu-binary "/usr/local/bin/mu"
-
-   ;; allow for updating mail using 'U' in the main view:
-                                        ; mu4e-get-mail-command "/usr/local/bin/mbsync -a"
-   ;; mu4e-get-mail-command
-   ;;   (concat
-   ;;    (replace-regexp-in-string
-   ;;     "\n\\'" "" (shell-command-to-string "readlink $(which mbsync)"))
-   ;;    " -a")
-   ;mu4e-get-mail-command "~/.nix-profile/bin/mbsync -a"
    mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
 
    ;; gmail folder setup
-   ;mu4e-drafts-folder "/gmail/drafts"
+                                        ;mu4e-drafts-folder "/gmail/drafts"
    mu4e-drafts-folder "/mu4e/drafts"
    mu4e-sent-folder   "/gmail/sent"
    mu4e-trash-folder  "/gmail/trash"
@@ -951,9 +943,7 @@ under the current project's root directory."
     ;; (variable-pitch-mode)
     (turn-on-visual-line-mode)
     (setq buffer-face-mode-face '(:family "Avenir Next"))
-    (buffer-face-mode)
-    ;; (text-scale-adjust 1)
-    )
+    (buffer-face-mode))
 
   (add-hook 'mu4e-compose-mode-hook #'my/mu4e-compose-hook)
 
@@ -967,8 +957,8 @@ under the current project's root directory."
   (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
   (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
   (when (fboundp 'imagemagick-register-types) (imagemagick-register-types))
-  ;(setq mu4e-view-prefer-html t)
-  ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
+                                        ;(setq mu4e-view-prefer-html t)
+                                        ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
 
   (defun my/mu4e-view-hook ()
     (turn-on-visual-line-mode)
