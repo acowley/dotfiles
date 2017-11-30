@@ -1,13 +1,13 @@
-{stdenv, fetchFromGitHub, python, git, llvmPackages }:
+{ stdenv, fetchFromGitHub, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2017-11-27";
+  version = "2017-11-30";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "537fc627303c78320f4e658b3e881f60cfef9677";
-    sha256 = "1hbf8r8cgjq2sadyracly2yiym56kgzavlnj6y1p477v9wf8fkcc";
+    rev = "80737a17709d7fc7ceeee65dedf19f40ac7b3688";
+    sha256 = "1hr67ynfrgx5lgvffsl0mvmrwba64aw66wr4jsp119dm2xycj4kh";
     fetchSubmodules = true;
   };
   buildInputs = [ python git llvmPackages.llvm llvmPackages.clang llvmPackages.clang-unwrapped ];
@@ -24,6 +24,8 @@ stdenv.mkDerivation rec {
     ./waf install
     mkdir -p $out/clang_resource_dir
     ln -s ${llvmPackages.clang-unwrapped}/lib/clang/*/include $out/clang_resource_dir/include
+    mkdir -p $out/share/emacs/site-lisp
+    cp emacs/cquery.el $out/share/emacs/site-lisp
   '';
 
   preFixup = ''
