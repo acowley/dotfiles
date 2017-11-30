@@ -14,10 +14,6 @@
 
     gtsam = pkgs.callPackage ./nix/gtsam {};
 
-    rtags = pkgs.callPackage ./nix/rtags {
-      inherit (pkgs.darwin) apple_sdk;
-    };
-
     cquery = pkgs.callPackage ./nix/cquery {};
 
     nixBufferBuilders = import (<nixpkgs> + /pkgs/build-support/emacs/buffer.nix) {

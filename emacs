@@ -1340,6 +1340,14 @@ sorted block."
 (add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . haskell-latex-mode))
 (autoload 'haskell-latex-mode "haskell-latex")
 
+
+;;; Language Server Protocol (LSP)
+(use-package lsp-mode
+  :config
+  (use-package company-lsp
+    :config
+    (add-to-list 'company-backends 'company-lsp)))
+
 ;;; C++
 
 (use-package cmake-mode
