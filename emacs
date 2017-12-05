@@ -381,6 +381,8 @@ end tell" uri)))
 ;;              '((regexp-quote (system-name)) nil nil))
 
 
+;;; Diminish
+(use-package diminish :ensure t)
 ;;; Themes
 (use-package darkokai-theme :defer t)
 (use-package monokai-theme :defer t)
