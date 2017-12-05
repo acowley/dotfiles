@@ -1273,7 +1273,8 @@ predicate returns true."
                                              "llvm-hs"
                                              "llvm-hs-pure"
                                              "HoclSuite"
-                                             "yaml-light-lens"))
+                                             "yaml-light-lens"
+                                             "hpp"))
                                    (mapcar (lambda (p) (concat "~/Projects/" p))
                                            '("MotionCT")))))
   (use-package hindent)
@@ -1282,6 +1283,7 @@ predicate returns true."
     (structured-haskell-mode)
     (electric-indent-local-mode -1)
     (electric-pair-local-mode -1)
+    (electric-quote-local-mode -1)
     (intero-mode-whitelist))
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (defun haskell-find-pragmas ()
@@ -1316,47 +1318,20 @@ sorted block."
         (delete-char (-(1- (point))))
         (insert (fill-list pragmas ", " "{-# LANGUAGE " " #-}"))))))
 
-;; ; Prevent ghci from looking for a cabal projection definition when
-;; ; loading a file
-;; (setq inferior-haskell-find-project-root nil)
+(use-package dante
+  :after haskell-mode
+  :commands 'dante-mode
+  :config
+  (defun my-dante-hook ()
+    (intero-mode -1)
+    (flycheck-mode)
+    ;(flycheck-add-next-checker 'haskell-dante '(warning . haskell-hlint))
+    )
+  (add-hook 'dante-mode-hook #'my-dante-hook))
 
-;; ; Let GLFW-b open windows from GHCi.
-;; (setq haskell-process-type 'cabal-repl)
-;; (setq haskell-process-args-cabal-repl '("--ghc-options=-ferror-spans -fno-ghci-sandbox"))
-
-;; (eval-after-load "haskell-mode"
-;;   '(progn
-;;     (define-key haskell-mode-map (kbd "C-x C-d") nil)
-;;     (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-;;     (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-;;     (define-key haskell-mode-map (kbd "C-c C-b") 'haskell-interactive-switch)
-;;     ;; (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
-;;     ;; (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
-;;     (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
-;;     (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
-;;     (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
-;;     (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
-
-;;     (define-key haskell-mode-map (kbd "C-c M-.") nil)
-;;     (define-key haskell-mode-map (kbd "C-c C-d") nil)))
-
-;; (defun ac/haskell-mode-hook ()
-;;   ;(require 'ghc)
-;;   ;(setq ghc-debug 't)
-;;   (electric-indent-local-mode -1)
-;;   ;(ghc-init) ;;; ghc-mod
-;;   (company-mode)
-;;   ;; (add-to-list 'company-backends
-;;   ;;              '(company-ghc :with company-dabbrev-code))
-
-;;   ;(custom-set-variables '(haskell-tags-on-save t))
-;;   (turn-on-haskell-indent))
-
-;; (add-hook 'haskell-mode-hook #'ac/haskell-mode-hook)
-
-(add-to-list 'load-path "~/.emacs.d/misc")
-(add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . haskell-latex-mode))
-(autoload 'haskell-latex-mode "haskell-latex")
+;; (add-to-list 'load-path "~/.emacs.d/misc")
+;; (add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . haskell-latex-mode))
+;; (autoload 'haskell-latex-mode "haskell-latex")
 
 
 ;;; Language Server Protocol (LSP)
