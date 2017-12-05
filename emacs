@@ -505,7 +505,7 @@ evaluation may begin anew."
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((haskell . t) (ditaa . t) (sh . t) (emacs-lisp . t) (octave . t)
+   '((haskell . t) (ditaa . t) (shell . t) (emacs-lisp . t) (octave . t)
      (C . t) (js . t) (maxima . t) (latex . t) (dot . t)))
 
   ;; Syntax highlight dot source blocks
