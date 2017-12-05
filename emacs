@@ -1341,6 +1341,44 @@ sorted block."
     :config
     (add-to-list 'company-backends 'company-lsp)))
 
+;;; cquery from nix
+(defun cquery-nix-shell ()
+  "Find a cquery executable in a nix-shell associated with the
+directory containig the current file if that file’s extension is
+`cpp` or `hpp`. Use the location of that executable in the nix
+store to load and configure the cquery lsp client."
+  (when (let ((ext (file-name-extension (or (buffer-file-name) ""))))
+          (and (not (null ext))
+               (or (string-equal ext "cpp")
+                   (string-equal ext "hpp"))))
+    (let ((dir (find-nix-shell)))
+      (when dir
+        (let* ((cquery-exe
+                (string-trim
+                 (shell-command-to-string
+                  (concat "nix-shell " dir
+                          " --run 'which cquery'"))))
+               (cquery-root (file-name-directory
+                             (directory-file-name
+                              (file-name-directory cquery-exe)))))
+          (message "cquery-root: %s" cquery-root)
+          (require 'cquery
+                   (concat cquery-root
+                           "share/emacs/site-lisp/cquery.el"))
+
+          (setq-local cquery-executable cquery-exe)
+          (setq-default cquery-resource-dir
+                        (concat cquery-root "clang_resource_dir"))
+          (require 'lsp-flycheck)
+          (flycheck-mode)
+          ;; The first call returns an error:
+          ;; cquery client (v0) and server (v3) version mismatch. Please update your extension client (VSIX file). Make sure to uninstall the cquery extension and restart vscode before reinstalling.
+          ;; The second call tends to work.
+          (lsp-cquery-enable)
+          (lsp-cquery-enable)
+
+          (helm-gtags-mode -1)
+          (local-set-key (kbd "M-.") #'xref-find-definitions))))))
 ;;; C++
 
 (use-package cmake-mode
