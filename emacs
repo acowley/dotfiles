@@ -105,11 +105,12 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 
 ;;;; Miscellaneous Settings
 
-(set-default-font "Hæck 14")
+;; (set-default-font "Hæck 14")
+(set-default-font "Monaco 14")
 
 ;; Enable ligatures for fonts that provide them (e.g. hæck)
 ;; This may cause slowdown
-(add-hook 'prog-mode-hook #'mac-auto-operator-composition-mode)
+;; (add-hook 'prog-mode-hook #'mac-auto-operator-composition-mode)
 ;; (add-hook 'prog-mode-hook (lambda () (auto-composition-mode -1)))
 ;; (add-hook 'text-mode-hook (lambda () (auto-composition-mode -1)))
 
