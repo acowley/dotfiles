@@ -688,6 +688,21 @@ entire source file is loaded."
          "* TODO %?\n  %i\n  %a")))
 
 ;;;; Blog Publishing
+(defun org-custom-link-blog-follow (path)
+  (org-open-file-with-emacs path))
+
+(defun org-custom-link-blog-export (path desc format)
+  (cond
+   ((eq format 'html)
+    (format "<a href=\"https://www.arcadianvisions.com/blog/%s.html\">%s</a>"
+            (file-name-sans-extension path)
+            desc))))
+
+(org-link-set-parameters
+ "blog"
+ :follow #'org-custom-link-blog-follow
+ :export #'org-custom-link-blog-export)
+
 (setq org-rss-use-entry-url-as-guid nil)
 (defun my/blog-copy-index-to-rss (_)
   (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")"))
