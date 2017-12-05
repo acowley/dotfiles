@@ -622,8 +622,8 @@ of code to whatever theme I'm using's background"
   ;;         (tags . " %i %-12:c")
   ;;         (search . " %i %-12:c")))
 
-  ;; (require 'ox-extra)
-  ;; (ox-extras-activate '(ignore-headlines))
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
 
   ;; (use-package org-ref
   ;;   :defer nil
