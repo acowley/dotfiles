@@ -16,6 +16,15 @@
 
     cquery = pkgs.callPackage ./nix/cquery {};
 
+    python27 = pkgs.python27.override {
+      packageOverrides = self: super: {
+        pyserial = super.pyserial.overridePythonAttrs {
+          doCheck = false;
+        };
+      };
+    };
+    python27Packages = python27.pkgs;
+
     nixBufferBuilders = import (<nixpkgs> + /pkgs/build-support/emacs/buffer.nix) {
       inherit (pkgs) lib writeText;
       inherit (emacsMacPackagesNg) inherit-local;
