@@ -1,13 +1,13 @@
 { stdenv, fetchFromGitHub, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2017-12-01";
+  version = "2017-12-11";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "c1aa51bfc2bf7c47d3054f5ef2919aa2f8c2aafd";
-    sha256 = "08q812kspkbfr6dl15xwks3dl6bkbg13sqdj5bd85fwb3n8z8dqj";
+    rev = "089689c62d48079a5e82651da14d4b4091a5b2c7";
+    sha256 = "0vc6a9df5ilws1j4b4fhpwbc8rfgmbpf1lg1wk8ly5siaknalpcb";
     fetchSubmodules = true;
   };
   buildInputs = [ python git llvmPackages.llvm llvmPackages.clang llvmPackages.clang-unwrapped ];
