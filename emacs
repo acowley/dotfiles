@@ -22,8 +22,9 @@
 
 ; (require 'use-package)
 (eval-when-compile
+  (add-to-list 'load-path "~/src/use-package")
   (require 'use-package))
-(require 'diminish)
+;; (require 'diminish)
 (require 'bind-key)
 
 ;;; General emacs configuration
@@ -1371,12 +1372,7 @@ store to load and configure the cquery lsp client."
                         (concat cquery-root "clang_resource_dir"))
           (require 'lsp-flycheck)
           (flycheck-mode)
-          ;; The first call returns an error:
-          ;; cquery client (v0) and server (v3) version mismatch. Please update your extension client (VSIX file). Make sure to uninstall the cquery extension and restart vscode before reinstalling.
-          ;; The second call tends to work.
           (lsp-cquery-enable)
-          (lsp-cquery-enable)
-
           (helm-gtags-mode -1)
           (local-set-key (kbd "M-.") #'xref-find-definitions))))))
 ;;; C++
