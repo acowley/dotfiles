@@ -1,13 +1,13 @@
 { stdenv, fetchFromGitHub, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2017-12-11";
+  version = "2017-12-12";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "089689c62d48079a5e82651da14d4b4091a5b2c7";
-    sha256 = "0vc6a9df5ilws1j4b4fhpwbc8rfgmbpf1lg1wk8ly5siaknalpcb";
+    rev = "f8813c612e5cf243338e5a9726f8638a35654f69";
+    sha256 = "10g014s8g82fqkizhsb4dh0kyiz3vvzhj4vwhvpwxiibgvi9snaj";
     fetchSubmodules = true;
   };
   buildInputs = [ python git llvmPackages.llvm llvmPackages.clang llvmPackages.clang-unwrapped ];
@@ -26,10 +26,6 @@ stdenv.mkDerivation rec {
     ln -s ${llvmPackages.clang-unwrapped}/lib/clang/*/include $out/clang_resource_dir/include
     mkdir -p $out/share/emacs/site-lisp
     cp emacs/cquery.el $out/share/emacs/site-lisp
-  '';
-
-  preFixup = ''
-    mv $out/bin/app $out/bin/cquery
   '';
 
   meta = {
