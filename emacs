@@ -479,6 +479,9 @@ end tell" uri)))
     (org-table-sticky-header-mode)
     (org-sticky-header-mode)
 
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines))
+
     ;; electric quotes turn single quotes (') into smart single quotes
     ;; that can greak things in src blocks
     (electric-quote-local-mode -1)
@@ -621,9 +624,6 @@ of code to whatever theme I'm using's background"
   ;;         (todo . " %i %b%-12:c")
   ;;         (tags . " %i %-12:c")
   ;;         (search . " %i %-12:c")))
-
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines))
 
   ;; (use-package org-ref
   ;;   :defer nil
