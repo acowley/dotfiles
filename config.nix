@@ -10,8 +10,6 @@
 
     pcl_demo = pkgs.callPackage ./nix/pcl_demo {};
 
-    isync = pkgs.callPackage ./nix/isync {};
-
     easyloggingpp = pkgs.callPackage ./nix/easyloggingpp {};
 
     gtsam = pkgs.callPackage ./nix/gtsam {};
