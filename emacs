@@ -1129,6 +1129,7 @@ predicate returns true."
   (diminish 'flycheck-mode)
   (diminish 'company-mode)
   (diminish 'paredit-mode)
+  (diminish 'eldoc-mode)
   (spaceline-toggle-buffer-encoding-abbrev-off)
   (spaceline-toggle-buffer-size-off)
   (spaceline-toggle-erc-track-off)
