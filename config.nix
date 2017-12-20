@@ -6,6 +6,8 @@
     emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
 
+    glfw31 = pkgs.callPackage ./nix/glfw/3.1.nix {};
+
     pcl_demo = pkgs.callPackage ./nix/pcl_demo {};
 
     isync = pkgs.callPackage ./nix/isync {};
