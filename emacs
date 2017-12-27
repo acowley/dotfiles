@@ -1369,8 +1369,6 @@ store to load and configure the cquery lsp client."
                            "share/emacs/site-lisp/cquery.el"))
 
           (setq-local cquery-executable cquery-exe)
-          (setq-default cquery-resource-dir
-                        (concat cquery-root "clang_resource_dir"))
           (require 'lsp-flycheck)
           (flycheck-mode)
           (lsp-cquery-enable)
