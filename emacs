@@ -1346,7 +1346,10 @@ sorted block."
   :config
   (use-package company-lsp
     :config
-    (add-to-list 'company-backends 'company-lsp)))
+    (add-to-list 'company-backends 'company-lsp))
+  (use-package lsp-ui)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  )
 
 ;;; cquery from nix
 (defun cquery-nix-shell ()
