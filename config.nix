@@ -54,9 +54,9 @@
       suitesparse = pkgs.suitesparse;
       jdk = null;
     };
-    octave-image = pkgs.callPackage ./nix/octave-image {
-      octave = octaveFull;
-    };
+    # octave-image = pkgs.callPackage ./nix/octave-image {
+    #   octave = octaveFull;
+    # };
     fltk = pkgs.callPackage ./nix/fltk {};
 
     pip2nix = pkgs.callPackage ~/Documents/Projects/pip2nix {
