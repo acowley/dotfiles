@@ -43,6 +43,8 @@
     };
     python27Packages = python27.pkgs;
 
+    loguru = pkgs.callPackage ./nix/loguru {};
+
     nixBufferBuilders = import (<nixpkgs> + /pkgs/build-support/emacs/buffer.nix) {
       inherit (pkgs) lib writeText;
       inherit (emacsMacPackagesNg) inherit-local;
