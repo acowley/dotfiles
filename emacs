@@ -115,6 +115,11 @@ dash) transpose chunks around that. Otherwise transpose sexps."
 ;; (add-hook 'prog-mode-hook (lambda () (auto-composition-mode -1)))
 ;; (add-hook 'text-mode-hook (lambda () (auto-composition-mode -1)))
 
+;; Disable electric-quote-mode everywhere
+(add-hook 'after-change-major-mode-hook
+          (lambda () (electric-quote-mode -1)))
+(electric-quote-mode -1)
+
 ;; Cause use-package to install packages automatically if not already
 ;; present
 (setq use-package-always-ensure t)
