@@ -1,6 +1,24 @@
 {
   allowUnfree = true;
   allowBroken = true;
+  perlPackageOverrides = pkgs: {
+    FileRename = pkgs.perlPackages.buildPerlModule rec {
+      name = "File-Rename-0.20";
+      src = pkgs.fetchurl {
+        url = "mirror://cpan/authors/id/R/RM/RMBARKER/${name}.tar.gz";
+        sha256 = "5eee75ea92a987930c5bec4a631ee0201f23c77908ba322e553df80845efc6b1";
+      };
+      # buildInputs = [ pkgs.perlPackages.ModuleBuild ];
+      buildInputs = [ pkgs.makeWrapper ];
+      perlPostHook = ''
+        wrapProgram $out/bin/rename --prefix PERL5LIB : $out/lib/perl5/site_perl
+      '';
+      meta = {
+        description = "Perl extension for renaming multiple files";
+        license = with pkgs.stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+      };
+    };
+  };
   packageOverrides = pkgs: rec {
     global = pkgs.callPackage ./nix/global {};
     emacs = pkgs.emacs25Macport;
