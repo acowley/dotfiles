@@ -11,7 +11,7 @@ PassCmd "gpg2 -q --for-your-eyes-only -d ~/.mailpass.gpg"
 # UseIMAPS yes
 SSLType IMAPS
 AuthMechs LOGIN
-CertificateFile "~/.nix-profile/etc/ca-bundle.crt"
+# CertificateFile "~/.nix-profile/etc/ca-bundle.crt"
 
 IMAPStore gmail-remote
 Account gmail
