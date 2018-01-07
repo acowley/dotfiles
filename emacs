@@ -1347,9 +1347,12 @@ sorted block."
   (use-package company-lsp
     :config
     (add-to-list 'company-backends 'company-lsp))
-  (use-package lsp-ui)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  )
+  (use-package lsp-ui
+    :commands lsp-ui-mode
+    :bind (:map lsp-ui-mode-map
+                ("C-c C-s" . lsp-ui-sideline-toggle-symbols-info)))
+  (require 'lsp-ui)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 ;;; cquery from nix
 (defun cquery-nix-shell ()
