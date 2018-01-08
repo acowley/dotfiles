@@ -10,13 +10,11 @@ stdenv.mkDerivation rec {
     sha256 = "0x1cb7m30i2zfyx7hk9mfvw06s72yy0x200nr53fyy602vswnsm1";
     fetchSubmodules = true;
   };
-  buildInputs = [ python git llvmPackages.llvm llvmPackages.clang llvmPackages.clang-unwrapped ];
+  buildInputs = [ python git llvmPackages.clang llvmPackages.clang-unwrapped ];
 
   configurePhase = ''
-    ./waf configure --use-system-clang --prefix=$out
+    ./waf configure --use-system-clang --prefix=$out --clang-prefix=${llvmPackages.clang-unwrapped} --llvm-config=
   '';
-
-  patches = [ ./clang-on-path.patch ];
 
   buildPhase = ''
     ./waf build
@@ -40,8 +38,8 @@ stdenv.mkDerivation rec {
   # include directory needed on darwin.
   setupHook = builtins.toFile "setup-hook.sh" ''
     nix-cquery() {
-      echo "Adding Nix include directories to the compiler commands"
       if [ -f compile_commands.json ]; then
+        echo "Adding Nix include directories to the compiler commands"
         local extraincs=$(echo $NIX_CFLAGS_COMPILE | awk '{ for(i = 1; i <= NF; i++) if($i == "-isystem") printf "-isystem %s ", $(i+1) }' | sed 's|-isystem \([^[:space:]]*libc++[^[:space:]]*\)|-isystem \1 -isystem \1/c++/v1 |'; cat $(dirname $(which clang++))/../nix-support/libc-cflags | awk '{ for(i = 1; i <= NF; i++) if($i == "-idirafter" && $(i+1) ~ /Libsystem/) printf "-isystem %s", $(i+1) }')
         sed "s|/bin/clang++ |/bin/clang++ ''${extraincs} |" -i compile_commands.json
       else
