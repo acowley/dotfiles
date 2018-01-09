@@ -745,6 +745,8 @@ entire source file is loaded."
          :exclude ".*"
          :include ("index.org")
          :with-toc nil
+         :with-creator "Anthony"
+         :with-author "Anthony Cowley"
          :section-numbers nil)
         ("blog-assets"
          ;; Static content like images and CSS
