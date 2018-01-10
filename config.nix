@@ -34,6 +34,8 @@
 
     cquery = pkgs.callPackage ./nix/cquery {};
 
+    SDL2_gpu = pkgs.callPackage ./nix/SDL_gpu {};
+
     python27 = pkgs.python27.override {
       packageOverrides = self: super: {
         pyserial = super.pyserial.overridePythonAttrs {
