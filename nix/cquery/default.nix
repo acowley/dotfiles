@@ -1,15 +1,16 @@
 { stdenv, fetchFromGitHub, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-01-08";
+  version = "2018-01-10";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "84294070ca2407155dd8500fa5e03ee4d0ff5d48";
-    sha256 = "0l16g975xcnzilbp20w6j1kgrvw3z2j0j8ad57qjgzhxkm096d8h";
+    rev = "e19a76d10364db5a07cecd7a1b014d10c49a2408";
+    sha256 = "0bf6l97vzl8qjbrp9fdnc0v4nbm92ggbr6ls9cp4s75bzchx7im2";
     fetchSubmodules = true;
   };
+
   buildInputs = [ python git llvmPackages.clang llvmPackages.clang-unwrapped ];
 
   configurePhase = ''
@@ -37,15 +38,24 @@ stdenv.mkDerivation rec {
   # from the nix environment variable. We also pick out the Libsystem
   # include directory needed on darwin.
   setupHook = builtins.toFile "setup-hook.sh" ''
+    nix-cflags-include() {
+      echo $NIX_CFLAGS_COMPILE | awk '{ for(i = 1; i <= NF; i++) if($i == "-isystem") printf "-isystem %s ", $(i+1) }' | sed 's|-isystem \([^[:space:]]*libc++[^[:space:]]*\)|-isystem \1 -isystem \1/c++/v1|'; cat $(dirname $(which clang++))/../nix-support/libc-cflags | awk '{ for(i = 1; i <= NF; i++) if($i == "-idirafter" && $(i+1) ~ /Libsystem/) printf "-isystem %s", $(i+1) }'
+    }
     nix-cquery() {
       if [ -f compile_commands.json ]; then
         echo "Adding Nix include directories to the compiler commands"
-        local extraincs=$(echo $NIX_CFLAGS_COMPILE | awk '{ for(i = 1; i <= NF; i++) if($i == "-isystem") printf "-isystem %s ", $(i+1) }' | sed 's|-isystem \([^[:space:]]*libc++[^[:space:]]*\)|-isystem \1 -isystem \1/c++/v1 |'; cat $(dirname $(which clang++))/../nix-support/libc-cflags | awk '{ for(i = 1; i <= NF; i++) if($i == "-idirafter" && $(i+1) ~ /Libsystem/) printf "-isystem %s", $(i+1) }')
+        local extraincs=$(nix-cflags-include)
         sed "s|/bin/clang++ |/bin/clang++ ''${extraincs} |" -i compile_commands.json
       else
         echo "There is no compile_commands.json file to edit!"
         echo "Create one with cmake using:"
         echo "(cd build && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. && mv compile_commands.json ..)"
+        read -n 1 -p "Do you want to create a .cquery file instead? [Y/n]: " genCquery
+        genCquery=''${genCquery:-y}
+        case "$genCquery" in
+          y|Y ) nix-cflags-include | tr ' ' '\n' > .cquery && echo $'\nGenerated a new .cquery file' ;;
+          * ) echo $'\nNot doing anything!' ;;
+        esac
       fi
     }
   '';
