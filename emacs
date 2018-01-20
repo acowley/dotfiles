@@ -453,9 +453,9 @@ end tell" uri)))
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
-         :org-mode-map
          ;; Don't fight the bindings that use
          ;; shift-arrow to move focus between windows.
+         :map org-mode-map
          ("S-<left>" . nil)
          ("S-<right>" . nil)
          ("S-<up>" . nil)
