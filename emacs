@@ -479,6 +479,7 @@ end tell" uri)))
   (use-package org-table-sticky-header
     :diminish org-table-sticky-header-mode)
   (use-package org-sticky-header)
+  (use-package ox-tufte)
 
   (defun my-org-hook ()
     (org-bullets-mode 1)
@@ -836,10 +837,18 @@ under the current project's root directory."
       (interactive)
       (setq helm-dash-docsets-path (concat (projectile-project-root) "docsets"))
       (message (format "Loaded docsets for %s" (projectile-project-name)))))
+  (use-package helm-tramp
+    :config
+    (use-package docker-tramp))
   (use-package helm-projectile
     :defer t))
 
 (ido-mode -1)
+
+(use-package imenu-anywhere
+  :defer t
+  :config
+  (setq imenu-anywhere-buffer-filter-functions (list #'imenu-anywhere-same-project-p)))
 
 ;;; god-mode
 
