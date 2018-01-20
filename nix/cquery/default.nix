@@ -1,13 +1,13 @@
 { stdenv, fetchFromGitHub, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-01-12";
+  version = "2018-01-19";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "1e38f2db388912eaa62ee7b3d4a22b98015ff6de";
-    sha256 = "02slfqmqs3vpig5qp2aks60gdjhn453cg99wb5x7m6gc5rcvm6pq";
+    rev = "4a328d8afaa7c4fa83abd083b43cc3fff0c2f5aa";
+    sha256 = "1sdkh38qby97js3k1pqqhrl8sy57m8fgljhm8gfqhrv190p54sq8";
     fetchSubmodules = true;
   };
 
@@ -23,8 +23,6 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     ./waf install
-    mkdir -p $out/share/emacs/site-lisp
-    cp emacs/cquery.el $out/share/emacs/site-lisp
   '';
 
   # This helper is provided to help pass include directories nix

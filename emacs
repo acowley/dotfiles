@@ -1217,7 +1217,8 @@ predicate returns true."
   :bind (:map flycheck-mode-map
          ("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)
-         ("M-?" . flycheck-display-error-at-point)))
+         ;; ("M-?" . flycheck-display-error-at-point)
+         ))
 ;;; nix
 
 (use-package nix-mode)
@@ -1352,11 +1353,24 @@ sorted block."
   (use-package lsp-ui
     :commands lsp-ui-mode
     :bind (:map lsp-ui-mode-map
-                ("C-c C-s" . lsp-ui-sideline-toggle-symbols-info)))
+           ("C-c C-s" . lsp-ui-sideline-toggle-symbols-info)
+           :map lsp-ui-peek-mode-map
+           ("M-n" . lsp-ui-peek--select-next)
+           ("M-p" . lsp-ui-peek--select-prev))
+    :config
+    (setq lsp-ui-sideline-delay 0.2))
   (require 'lsp-ui)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
-;;; cquery from nix
+;;; cquery
+(use-package cquery
+  :load-path "~/Projects/emacs-cquery"
+  :config
+  (setq xref-prompt-for-identifier (append xref-prompt-for-identifier '(xref-find-references)))
+  (setq-local cquery-extra-init-params
+              '(:indexBlacklist '("GPATH" "GRTAGS" "GTAGS")
+                :cacheFormat "msgpack")))
+
 (defun cquery-nix-shell ()
   "Find a cquery executable in a nix-shell associated with the
 directory containig the current file if that file’s extension is
@@ -1365,23 +1379,26 @@ store to load and configure the cquery lsp client."
   (when (let ((ext (file-name-extension (or (buffer-file-name) ""))))
           (and (not (null ext))
                (or (string-equal ext "cpp")
+                   (string-equal ext "cc")
                    (string-equal ext "hpp"))))
-    (let ((dir (find-nix-shell)))
-      (when dir
+    (let ((nix-shell
+           (concat (locate-dominating-file (or load-file-name buffer-file-name)
+                                           "shell.nix")
+                   "shell.nix")))
+      (when nix-shell
         (let* ((cquery-exe
                 (string-trim
                  (shell-command-to-string
-                  (concat "nix-shell " dir
+                  (concat "nix-shell " nix-shell
                           " --run 'which cquery'"))))
                (cquery-root (file-name-directory
                              (directory-file-name
                               (file-name-directory cquery-exe)))))
           (message "cquery-root: %s" cquery-root)
-          (require 'cquery
-                   (concat cquery-root
-                           "share/emacs/site-lisp/cquery.el"))
-
+          (require 'cquery)
           (setq-local cquery-executable cquery-exe)
+          ;; (setq-local cquery-additional-arguments '("--log-file" "cquery.log" "--log-stdin-stdout-to-stderr"))
+
           (require 'lsp-flycheck)
           (flycheck-mode)
           (lsp-cquery-enable)
