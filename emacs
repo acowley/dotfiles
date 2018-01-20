@@ -1278,11 +1278,15 @@ predicate returns true."
     (set-face-background 'shm-quarantine-face "#550505")
     )
   (use-package intero
-    ;; :load-path "~/src/intero/elisp"
+    :load-path "~/src/intero/elisp"
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
-           ("M-?" . flycheck-display-error-at-point))
+           ;; ("M-?" . flycheck-display-error-at-point)
+           )
     :config
+    (defun my-intero-repl-hook ()
+      (company-mode -1))
+    (add-hook 'intero-repl-mode-hook #'my-intero-repl-hook)
     (setq intero-whitelist (append (mapcar (lambda (p) (concat "~/Documents/Projects/" p))
                                            '("VinylRecords"
                                              "concurrent-machines"
