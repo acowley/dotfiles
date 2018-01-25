@@ -413,6 +413,8 @@ end tell" uri)))
         '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal"))
   (projectile-mode))
 
+;;; yasnippet
+(use-package yasnippet)
 ;;; Dashboard
 (use-package dashboard
   ;; :load-path "~/src/emacs-dashboard"
@@ -1363,14 +1365,20 @@ sorted block."
 
 ;;; Language Server Protocol (LSP)
 (use-package lsp-mode
+  :custom-face
+  ;; Make the symbol-at-point highlight a bit dimmer than the default
+  (lsp-face-highlight-textual ((t (:background "#757500"))))
   :config
   (use-package company-lsp
     :config
+    (setq company-lsp-enable-snippet t)
     (add-to-list 'company-backends 'company-lsp))
   (use-package lsp-ui
     :commands lsp-ui-mode
     :bind (:map lsp-ui-mode-map
            ("C-c C-s" . lsp-ui-sideline-toggle-symbols-info)
+           ("M-." . lsp-ui-peek-find-definitions)
+           ("M-?" . lsp-ui-peek-find-references)
            :map lsp-ui-peek-mode-map
            ("M-n" . lsp-ui-peek--select-next)
            ("M-p" . lsp-ui-peek--select-prev))
@@ -1384,6 +1392,7 @@ sorted block."
   :load-path "~/Projects/emacs-cquery"
   :config
   (setq xref-prompt-for-identifier (append xref-prompt-for-identifier '(xref-find-references)))
+  (setq cquery-sem-highlight-method 'overlay)
   (setq-local cquery-extra-init-params
               '(:indexBlacklist '("GPATH" "GRTAGS" "GTAGS")
                 :cacheFormat "msgpack")))
@@ -1412,13 +1421,14 @@ store to load and configure the cquery lsp client."
                              (directory-file-name
                               (file-name-directory cquery-exe)))))
           (message "cquery-root: %s" cquery-root)
-          (require 'cquery)
+          ;; (require 'cquery)
           (setq-local cquery-executable cquery-exe)
           ;; (setq-local cquery-additional-arguments '("--log-file" "cquery.log" "--log-stdin-stdout-to-stderr"))
 
           (require 'lsp-flycheck)
           (flycheck-mode)
           (lsp-cquery-enable)
+          (yas-minor-mode)
           (helm-gtags-mode -1)
           (local-set-key (kbd "M-.") #'xref-find-definitions))))))
 ;;; C++
