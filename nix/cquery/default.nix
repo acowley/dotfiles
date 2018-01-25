@@ -6,8 +6,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "455423f2b855325ba7ebb54535aa1a5db0676db5";
-    sha256 = "1pm0hrr29bch7aglnkpwjgzj1nzn6czksfd3dnqs700irygbdnik";
+    rev = "v2018-01-23@1825";
+    sha256 = "08ais3p5nj00ald5x56v5hrqxnv4vvm8xhg518nphj3vj34lcjmp";
     fetchSubmodules = true;
   };
 
