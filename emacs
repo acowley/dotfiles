@@ -237,7 +237,11 @@ last double colon is truncated to 20 characters."
    ;; files) from stat'ing remote files.
    recentf-keep '(file-remote-p file-readable-p)
    recentf-exclude
-    `("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" ,(regexp-quote "/.emacs.d/elpa/") ,(regexp-quote "/var/folders/")))
+   `("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'"
+     ,(regexp-quote "/.emacs.d/elpa/")
+     ,(regexp-quote "/var/folders/")
+     ,(regexp-quote "/.emacs.d/bookmarks")
+     ,(regexp-quote "/.emacs.d/recentf")))
   (defun recent-buffer (b &rest _)
     (let ((file (buffer-file-name (get-buffer b))))
       (unless (null file) (recentf-add-file file))))
