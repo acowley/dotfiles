@@ -1,13 +1,13 @@
 { stdenv, fetchFromGitHub, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-01-21";
+  version = "2018-01-26";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "v2018-01-23@1825";
-    sha256 = "08ais3p5nj00ald5x56v5hrqxnv4vvm8xhg518nphj3vj34lcjmp";
+    rev = "4793a853747d3b10de8f84928efd577f8e6e9a84";
+    sha256 = "0vjriq54fjj83a2ms3dry655anwg02r51x1myb5f2c76fsxr1669";
     fetchSubmodules = true;
   };
 
@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
   # include directory needed on darwin.
   setupHook = builtins.toFile "setup-hook.sh" ''
     nix-cflags-include() {
-      echo $NIX_CFLAGS_COMPILE | awk '{ for(i = 1; i <= NF; i++) if($i == "-isystem") printf "-isystem %s ", $(i+1) }' | sed 's|-isystem \([^[:space:]]*libc++[^[:space:]]*\)|-isystem \1 -isystem \1/c++/v1|'; cat $(dirname $(which clang++))/../nix-support/libc-cflags | awk '{ for(i = 1; i <= NF; i++) if($i == "-idirafter" && $(i+1) ~ /Libsystem/) printf "-isystem %s", $(i+1) }'
+      echo $NIX_CFLAGS_COMPILE | awk '{ for(i = 1; i <= NF; i++) if($i == "-isystem") printf "-isystem %s ", $(i+1); else if($i ~ /^-F/) printf "%s ", $i; }' | sed 's|-isystem \([^[:space:]]*libc++[^[:space:]]*\)|-isystem \1 -isystem \1/c++/v1|'; cat $(dirname $(which clang++))/../nix-support/libc-cflags | awk '{ for(i = 1; i <= NF; i++) if($i == "-idirafter" && $(i+1) ~ /Libsystem/) printf "-isystem %s", $(i+1) }'
     }
     nix-cquery() {
       if [ -f compile_commands.json ]; then
