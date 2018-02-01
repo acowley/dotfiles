@@ -1048,11 +1048,23 @@ under the current project's root directory."
                  msgs
                  "\n")))
 
+  (defun quote-shell-string (str)
+    "Safely embed a string in single-quotes.
+
+We can pass single-quoted strings to shell commands, but single
+quotes within those strings need to be escaped. We use the
+technique of ending the quoted string, concatenating a literal
+single-quote character, and concatenating the remaining
+single-quoted string."
+    (concat "'" (replace-regexp-in-string "'" "'\\\\''" str) "'"))
+
   (add-hook 'mu4e-index-updated-hook
             (lambda ()
               (let ((msg (newest-subject)))
                 (unless (string-equal ": " msg)
-                  (shell-command (concat "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message '" msg "'"))))))
+                  (shell-command
+                   (concat "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message "
+                           (quote-shell-string msg)))))))
 
 ;;;; Additional SMTP Accounts
   ;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
