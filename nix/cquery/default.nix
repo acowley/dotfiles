@@ -6,15 +6,14 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "85eee32b86c57de82faa85e78515a0da1a24fc3f";
-    sha256 = "0hiyhgaq0cz583p0y4m1gzb2061l71za4aj1xii7sf2qzdv6m82p";
+    rev = "ae0323a016e57236bad73ec56f84c53ea3c354b7";
+    sha256 = "1xiksi48ks8h0iq4x53rpy71k3vn3wiscjrksm535b5kyivyhbcj";
     fetchSubmodules = true;
-    # date = 2018-02-02T10:51:14-08:00;
   };
-  # src = ~/Projects/cquery;
   CXXFLAGS = "-std=c++1z";
 
-  buildInputs = [ python git llvmPackages.clang llvmPackages.clang-unwrapped llvmPackages.libclang ];
+  nativeBuildInputs = [ python git ];
+  buildInputs = [ llvmPackages.clang llvmPackages.clang-unwrapped llvmPackages.libclang ];
 
   # The header files we want cquery to find are under the
   # /nix/store/xxx-clang-version/lib/clang/version/include directory, while
@@ -26,10 +25,8 @@ stdenv.mkDerivation rec {
 \1prefixLib = ctx.root.find_node("${llvmPackages.libclang}")|' \
         -e 's|\(includes = \[ n.abspath() for n in \[ prefix\)|\1Inc|' \
         -e 's|\(libpath  = \[ n.abspath() for n in \[ prefix\)|\1Lib|' \
-        -e "s|if bld.cmd == 'install':|if False:|" \
         -i wscript
       '';
-  #         -e 's|if not prefix:|if False:|' \
 
   configurePhase = ''
     eval "$preConfigure"
