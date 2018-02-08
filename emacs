@@ -1264,7 +1264,10 @@ predicate returns true."
          ))
 ;;; nix
 
-(use-package nix-mode)
+(use-package nix-mode
+  :config
+  (require 'nix-update "~/src/nix-update-el/nix-update.el"))
+
 (defun find-nix-shell ()
   "Search for the first shell.nix file to be found in the same directory as the current file or all ancestor directories."
   (let ((fname (or load-file-name buffer-file-name)))
