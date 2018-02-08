@@ -21,8 +21,12 @@
   };
   packageOverrides = pkgs: rec {
     global = pkgs.callPackage ./nix/global {};
-    emacs = pkgs.emacs25Macport;
-    emacsMacPackagesNg = pkgs.emacsPackagesNgGen emacs;
+    # emacs = pkgs.emacs25Macport;
+    emacsMacPackagesNg = pkgs.emacsPackagesNgGen pkgs.emacs25Macport;
+    emacs = emacsMacPackagesNg.emacsWithPackages (epkgs:
+      with epkgs.melpaPackages; [ epkgs.pdf-tools ]
+    );
+
 
     glfw31 = pkgs.callPackage ./nix/glfw/3.1.nix {};
 
