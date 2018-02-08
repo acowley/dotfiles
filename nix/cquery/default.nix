@@ -1,13 +1,13 @@
 { stdenv, fetchFromGitHub, writeTextFile, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-02-06";
+  version = "2018-02-07";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "aa7cec9be837269c5d4ca88aa051edff6738743a";
-    sha256 = "1gfg5xzkll4pv3z8r0rk2qxzzywry0pakpij15vmkfrmk40yj0kf";
+    rev = "7eecb0eb9a1fbbc5d812eda8c2e97e66ed99aa35";
+    sha256 = "1qxy0i4flyg6dx358ydazm7wyn5j98hzzvl3wnhgm7rscl0pdvha";
     fetchSubmodules = true;
   };
   CXXFLAGS = "-std=c++1z";
