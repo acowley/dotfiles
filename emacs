@@ -785,6 +785,21 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                        do (setcar (nthcdr 1 entry) headline)))
   (org-clocktable-write-default ipos tables params))
 
+;;; olivetti-mode
+(use-package olivetti)
+;;; pdf-tools
+(use-package pdf-tools
+  :magic ("%PDF" . pdf-view-mode)
+  :config
+  ;; If pdf-tools is installed using emacsWithPackage in nix, then the
+  ;; `epdfinfo` binary is installed alongside the elisp package.
+  (setq pdf-info-epdfinfo-program
+        (concat (file-name-directory (locate-library "pdf-tools"))
+                "epdfinfo")
+        pdf-info-epdfinfo-error-filename nil)
+  (pdf-tools-install))
+;;; org-noter
+(use-package org-noter)
 ;;; Helm
 (use-package helm
   :defer nil
