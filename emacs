@@ -2074,9 +2074,10 @@ store to load and configure the cquery lsp client."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(lsp-face-highlight-textual ((t (:background "#757500"))))
  '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
- '(variable-pitch ((t (:family "Fira Sans"))))
- '(org-block ((t (:slant normal)))))
+ '(org-block ((t (:slant normal))))
+ '(variable-pitch ((t (:family "Fira Sans")))))
 
 
 ;;; File Local Variables
