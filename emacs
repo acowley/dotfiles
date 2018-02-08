@@ -1177,6 +1177,7 @@ predicate returns true."
   (diminish 'text-scale-mode)
   (diminish 'flycheck-mode)
   (diminish 'company-mode)
+  (diminish 'yas-minor-mode)
   (diminish 'paredit-mode)
   (diminish 'eldoc-mode)
   (spaceline-toggle-buffer-encoding-abbrev-off)
