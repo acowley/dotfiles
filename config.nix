@@ -38,6 +38,8 @@
 
     cquery = pkgs.callPackage ./nix/cquery {};
 
+    libsimdpp = pkgs.callPackage ./nix/libsimdpp {};
+
     SDL2_gpu = pkgs.callPackage ./nix/SDL_gpu {};
 
     python27 = pkgs.python27.override {
