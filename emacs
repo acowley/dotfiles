@@ -1396,6 +1396,7 @@ sorted block."
 
 ;;; Language Server Protocol (LSP)
 (use-package lsp-mode
+  :defer t
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   (lsp-face-highlight-textual ((t (:background "#757500"))))
@@ -1421,12 +1422,16 @@ sorted block."
 ;;; cquery
 (use-package cquery
   :load-path "~/Projects/emacs-cquery"
-  :config
-  (setq xref-prompt-for-identifier (append xref-prompt-for-identifier '(xref-find-references)))
+  :commands lsp-cquery-enable
+  :init
   (setq cquery-sem-highlight-method 'overlay)
+  ;; (setq cquery-sem-highlight-method 'font-lock)
+  ;; (setq cquery-sem-highlight-method nil)
   (setq-local cquery-extra-init-params
               '(:indexBlacklist '("GPATH" "GRTAGS" "GTAGS")
-                :cacheFormat "msgpack")))
+                                :cacheFormat "msgpack"))
+  :config
+  (setq xref-prompt-for-identifier (append xref-prompt-for-identifier '(xref-find-references))))
 
 (defun cquery-nix-shell ()
   "Find a cquery executable in a nix-shell associated with the
@@ -1443,17 +1448,23 @@ store to load and configure the cquery lsp client."
                                            "shell.nix")
                    "shell.nix")))
       (when nix-shell
-        (let* ((cquery-exe
-                (string-trim
-                 (shell-command-to-string
-                  (concat "nix-shell " nix-shell
-                          " --run 'which cquery'"))))
+        (let* ((exes
+                (split-string
+                 (string-trim
+                  (shell-command-to-string
+                   (concat "nix-shell " nix-shell
+                           " --run 'which cquery; which clang-format'")))
+                 "\n" t))
+               (cquery-exe (car exes))
+               (clang-format-exe (cadr exes))
                (cquery-root (file-name-directory
                              (directory-file-name
                               (file-name-directory cquery-exe)))))
           (message "cquery-root: %s" cquery-root)
           ;; (require 'cquery)
+          (setq clang-format-executable clang-format-exe)
           (setq-local cquery-executable cquery-exe)
+
           ;; (setq-local cquery-additional-arguments '("--log-file" "cquery.log" "--log-stdin-stdout-to-stderr"))
 
           (require 'lsp-flycheck)
