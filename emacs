@@ -1472,6 +1472,8 @@ store to load and configure the cquery lsp client."
           (lsp-cquery-enable)
           (yas-minor-mode)
           (helm-gtags-mode -1)
+          (diminish 'company-mode)
+          (diminish 'flyspell-mode)
           (local-set-key (kbd "M-.") #'xref-find-definitions))))))
 ;;; C++
 
