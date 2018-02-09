@@ -1491,6 +1491,8 @@ store to load and configure the cquery lsp client."
         helm-gtags-auto-update t
         helm-gtags-ignore-case t))
 
+(use-package clang-format)
+
 (defun my/c++-mode-hook ()
   (electric-indent-mode t)
   (electric-pair-mode t)
