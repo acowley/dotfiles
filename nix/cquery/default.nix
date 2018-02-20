@@ -1,15 +1,16 @@
 { stdenv, fetchFromGitHub, writeTextFile, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-02-09";
+  version = "2018-02-18";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "ba9cb8547245070e567ddbb9778674d947baacc5";
-    sha256 = "11wz9r38csdpng86njwika4hlwa7fhlj433bzm64gkkyg6w454gm";
+    rev = "2efe70ecc832b04d083a6e653f5799e124486582";
+    sha256 = "1dznf3xb8rpm5kdrprv8k4fqp1jsj7yksfvmrkc7ip5c6sdh3dda";
     fetchSubmodules = true;
   };
+
   CXXFLAGS = "-std=c++1z";
 
   nativeBuildInputs = [ python git ];
@@ -30,7 +31,7 @@ stdenv.mkDerivation rec {
 
   configurePhase = ''
     eval "$preConfigure"
-    ./waf configure --prefix=$out --clang-prefix=${llvmPackages.clang-unwrapped} --llvm-config=
+    ./waf configure --prefix=$out --clang-prefix=${llvmPackages.clang-unwrapped}
   '';
 
   buildPhase = ''
