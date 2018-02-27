@@ -448,7 +448,7 @@ end tell" uri)))
 
 
 ;;; esup
-(use-package esup :defer t)
+(use-package esup :defer t :commands esup)
 ;;; Org-mode
 
 ;;;; General Org Configuration
