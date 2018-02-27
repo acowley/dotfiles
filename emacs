@@ -415,14 +415,17 @@ end tell" uri)))
 
 ;;; yasnippet
 (use-package yasnippet)
+
 ;;; Dashboard
 (use-package dashboard
   ;; :load-path "~/src/emacs-dashboard"
+  ;; :commands dashboard-insert-startupify-lists
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents  . 5)
                           (bookmarks . 5)
                           (projects . 5))))
+
 ;;; impatient-mode
 (use-package impatient-mode
   :defer t
@@ -648,17 +651,86 @@ of code to whatever theme I'm using's background"
   ;;         (tags . " %i %-12:c")
   ;;         (search . " %i %-12:c")))
 
-  ;; (use-package org-ref
-  ;;   :defer nil
-  ;;   :config
-  ;;   (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
-  ;;   (setq
-  ;;    reftex-default-bibliography '("~/Documents/MyPapers/mybib.bib")
-  ;;    ;; see org-ref for use of these variables
-  ;;    org-ref-bibliography-notes "~/Documents/MyPapers/bib-notes.org"
-  ;;    org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
-  ;;    org-ref-pdf-directory "~/Documents/MyPapers/references/"
-  ;;    bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
+  (use-package org-ref
+    :defer t
+    :config
+    (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
+    (setq
+     reftex-default-bibliography '("~/Documents/MyPapers/mybib.bib")
+     ;; see org-ref for use of these variables
+     org-ref-bibliography-notes "~/Documents/MyPapers/bib-notes.org"
+     org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
+     org-ref-pdf-directory "~/Documents/MyPapers/references/"
+     bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
+
+;;;; Blog Publishing
+  (defun org-custom-link-blog-follow (path)
+    (org-open-file-with-emacs path))
+
+  (defun org-custom-link-blog-export (path desc format)
+    (cond
+     ((eq format 'html)
+      (format "<a href=\"https://www.arcadianvisions.com/blog/%s.html\">%s</a>"
+              (file-name-sans-extension path)
+              desc))))
+
+  (org-link-set-parameters
+   "blog"
+   :follow #'org-custom-link-blog-follow
+   :export #'org-custom-link-blog-export)
+
+  (setq org-rss-use-entry-url-as-guid nil)
+  (defun my/blog-copy-index-to-rss (_)
+    (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")"))
+  (defun my/blog-sync-assets (_)
+    (shell-command "rsync -a  ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog"))
+  (setq org-publish-project-alist
+        '(("blog-content"
+           :base-directory "~/Documents/Projects/Blog/articles/"
+           :publishing-directory "~/Documents/Projects/Blog/blog/"
+           :publishing-function org-html-publish-to-html
+           :export-babel-evaluate nil
+           :recursive t
+           ;; :auto-sitemap t
+           ;; :sitemap-filename "index.html"
+           ;; :sitemap-title "Arcadian Visions Blog"
+           ;; :makeindex t
+           :htmlized-source t
+           :with-creator nil
+           :with-date nil
+           :with-email nil
+           :with-timestamps nil
+           :with-toc nil
+           :section-numbers nil
+           :html-head-include-default-style nil
+           :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../core-style.css\" />"
+           :html-postamble "")
+          ("blog-rss"
+           :base-directory "~/Documents/Projects/Blog/articles/"
+           :publishing-directory "~/Documents/Projects/Blog/blog"
+           :publishing-function (org-rss-publish-to-rss)
+           :html-link-home "http://www.arcadianvisions.com/blog/"
+           :completion-function my/blog-copy-index-to-rss
+           :html-link-use-abs-url t
+           :exclude ".*"
+           :include ("index.org")
+           :with-toc nil
+           :with-creator "Anthony"
+           :with-author "Anthony Cowley"
+           :section-numbers nil)
+          ("blog-assets"
+           ;; Static content like images and CSS
+           :base-directory "~/Documents/Projects/Blog/assets"
+           :base-extension any
+           :include ("basedir/.htaccess")
+           :recursive t
+           :publishing-directory "~/Documents/Projects/Blog/blog/assets"
+           :publishing-function org-publish-attachment
+           :completion-function my/blog-sync-assets)
+          ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
+
+  ;;; org-noter
+  (use-package org-noter)
   )
 
 (use-package outorg
@@ -674,9 +746,9 @@ entire source file is loaded."
 (use-package outshine
   :defer t
   :commands (outshine-hook-function)
-  :init
-  (add-hook 'outline-minor-mode-hook #'outshine-hook-function)
-  (add-hook 'prog-mode-hook #'outline-minor-mode)
+  ;; :init
+  ;; (add-hook 'outline-minor-mode-hook #'outshine-hook-function)
+  ;; (add-hook 'prog-mode-hook #'outline-minor-mode)
   :config
   (setq outshine-preserve-delimiter-whitespace t
         outshine-use-speed-commands t))
@@ -710,71 +782,7 @@ entire source file is loaded."
         ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
          "* TODO %?\n  %i\n  %a")))
 
-;;;; Blog Publishing
-(defun org-custom-link-blog-follow (path)
-  (org-open-file-with-emacs path))
 
-(defun org-custom-link-blog-export (path desc format)
-  (cond
-   ((eq format 'html)
-    (format "<a href=\"https://www.arcadianvisions.com/blog/%s.html\">%s</a>"
-            (file-name-sans-extension path)
-            desc))))
-
-(org-link-set-parameters
- "blog"
- :follow #'org-custom-link-blog-follow
- :export #'org-custom-link-blog-export)
-
-(setq org-rss-use-entry-url-as-guid nil)
-(defun my/blog-copy-index-to-rss (_)
-  (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")"))
-(defun my/blog-sync-assets (_)
-  (shell-command "rsync -a ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog"))
-(setq org-publish-project-alist
-      '(("blog-content"
-         :base-directory "~/Documents/Projects/Blog/articles/"
-         :publishing-directory "~/Documents/Projects/Blog/blog/"
-         :publishing-function org-html-publish-to-html
-         :export-babel-evaluate nil
-         :recursive t
-         ;; :auto-sitemap t
-         ;; :sitemap-filename "index.html"
-         ;; :sitemap-title "Arcadian Visions Blog"
-         ;; :makeindex t
-         :htmlized-source t
-         :with-creator nil
-         :with-date nil
-         :with-email nil
-         :with-timestamps nil
-         :with-toc nil
-         :section-numbers nil
-         :html-head-include-default-style nil
-         :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../core-style.css\" />"
-         :html-postamble "")
-        ("blog-rss"
-         :base-directory "~/Documents/Projects/Blog/articles/"
-         :publishing-directory "~/Documents/Projects/Blog/blog"
-         :publishing-function (org-rss-publish-to-rss)
-         :html-link-home "http://www.arcadianvisions.com/blog/"
-         :completion-function my/blog-copy-index-to-rss
-         :html-link-use-abs-url t
-         :exclude ".*"
-         :include ("index.org")
-         :with-toc nil
-         :with-creator "Anthony"
-         :with-author "Anthony Cowley"
-         :section-numbers nil)
-        ("blog-assets"
-         ;; Static content like images and CSS
-         :base-directory "~/Documents/Projects/Blog/assets"
-         :base-extension any
-         :include ("basedir/.htaccess")
-         :recursive t
-         :publishing-directory "~/Documents/Projects/Blog/blog/assets"
-         :publishing-function org-publish-attachment
-         :completion-function my/blog-sync-assets)
-        ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
 ;;;; org-mime
 
 (use-package org-mime
@@ -808,8 +816,6 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                 "epdfinfo")
         pdf-info-epdfinfo-error-filename nil)
   (pdf-tools-install))
-;;; org-noter
-(use-package org-noter)
 ;;; Helm
 (use-package helm
   :defer nil
