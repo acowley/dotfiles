@@ -11,8 +11,6 @@ stdenv.mkDerivation rec {
     fetchSubmodules = true;
   };
 
-  CXXFLAGS = "-std=c++1z";
-
   nativeBuildInputs = [ python git ];
   buildInputs = [ llvmPackages.clang llvmPackages.clang-unwrapped llvmPackages.libclang ];
 
