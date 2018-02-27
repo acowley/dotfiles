@@ -467,7 +467,6 @@ end tell" uri)))
          ("S-<up>" . nil)
          ("S-<down>" . nil))
   :config
-
   (setq org-src-fontify-natively t
         org-use-speed-commands t
         org-html-doctype "html5"
@@ -485,7 +484,10 @@ end tell" uri)))
   (use-package org-table-sticky-header
     :diminish org-table-sticky-header-mode)
   (use-package org-sticky-header)
-  (use-package ox-tufte)
+
+
+  ;; This is slow to load
+  (use-package ox-tufte :defer t)
 
   (defun my-org-hook ()
     (org-bullets-mode 1)
