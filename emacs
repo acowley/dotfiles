@@ -523,8 +523,16 @@ evaluation may begin anew."
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((haskell . t) (ditaa . t) (shell . t) (emacs-lisp . t) (octave . t)
-     (C . t) (js . t) (maxima . t) (latex . t) (dot . t)))
+   '((haskell . t)
+     ;; (ditaa . t)
+     (shell . t)
+     (emacs-lisp . t)
+     (octave . t)
+     ;; (C . t)
+     ;; (js . t)
+     ;; (maxima . t)
+     (latex . t)
+     (dot . t)))
 
   ;; Syntax highlight dot source blocks
   ; (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
