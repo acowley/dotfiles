@@ -40,6 +40,8 @@
 
     cquery = pkgs.callPackage ./nix/cquery {};
 
+    cquerypp = pkgs.callPackage ./nix/cquery/cxx.nix {};
+
     libsimdpp = pkgs.callPackage ./nix/libsimdpp {};
 
     SDL2_gpu = pkgs.callPackage ./nix/SDL_gpu {};
