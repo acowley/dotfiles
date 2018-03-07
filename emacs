@@ -13,7 +13,6 @@
 ; package-install invocation will fail. We need the package-archives
 ; list setup before calling package-initialize.
 (setq package-archives '(("org" . "http://orgmode.org/elpa/")
-                         ;("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
@@ -400,6 +399,23 @@ end tell" uri)))
   ;; :load-path "~/Documents/Projects/apropospriate-theme"
   :config
   (load-theme 'apropospriate-dark t))
+
+;;; company-mode
+(use-package company
+  ;; :load-path "~/src/company-mode/company-0.9.4"
+  :defer nil
+  :commands (company-mode)
+  :init
+  (add-hook 'prog-mode-hook 'company-mode)
+  :config
+  (setq company-idle-delay 0.1)
+  ;; (define-key company-mode-map (kbd "C-:") 'helm-company)
+  ;; (define-key company-active-map (kbd "C-:") 'helm-company)
+  ;(setq company-backends (remq 'company-eclim (remq 'company-oddmuse company-backends)))
+  (defun ac/company-text-mode ()
+    ;; (add-to-list 'company-backends 'company-ispell)
+    )
+  (add-hook 'text-mode-hook #'ac/company-text-mode))
 
 ;;; Projectile
 (use-package projectile
@@ -836,7 +852,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (setq
    helm-candidate-number-limit 100
    helm-quick-update t
-   helm-M-x-requires-pattern 3      ; Require at least one character
+   helm-M-x-requires-pattern 3        ; Require at least one character
    helm-ff-file-name-history-use-recentf t
    helm-ff-skip-boring-files t
 
@@ -857,10 +873,15 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   ;;             (add-to-list 'helm-completing-read-handlers-alist
   ;;                          '(switch-to-buffer . ido))))
   (helm-mode t)
+
+  (require 'helm-command)
   (use-package helm-company
-    :defer t)
+    :defer t
+    :bind (:map company-mode-map
+           ("C-:" . helm-company)))
   (use-package helm-swoop
     :defer t
+    :commands helm-swoop
     :bind (("M-i" . helm-swoop)
            ("M-I" . helm-swoop-back-to-last-point)))
   (use-package helm-dash
@@ -1332,11 +1353,16 @@ predicate returns true."
     )
   (use-package intero
     :load-path "~/src/intero/elisp"
+    :commands (intero-mode intero-mode-whitelist)
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
+           ;; :map intero-mode-map
+           ;; ("C-c [\\C-?\t]" . haskell-indentation-indent-line)
            ;; ("M-?" . flycheck-display-error-at-point)
            )
     :config
+
+    (define-key intero-mode-map (kbd "C-c <C-tab>") #'haskell-indentation-indent-line)
     (defun my-intero-repl-hook ()
       (company-mode -1))
     (add-hook 'intero-repl-mode-hook #'my-intero-repl-hook)
@@ -1351,8 +1377,9 @@ predicate returns true."
                                              "HoclSuite"
                                              "yaml-light-lens"
                                              "hpp"))
-                                   (mapcar (lambda (p) (concat "~/Projects/" p))
-                                           '("MotionCT")))))
+                                   ;; (mapcar (lambda (p) (concat "~/Projects/" p))
+                                   ;;         '("MotionCT"))
+                                   )))
   (use-package hindent)
 
   (defun my-haskell-mode-hook ()
@@ -1413,10 +1440,12 @@ sorted block."
 ;;; Language Server Protocol (LSP)
 (use-package lsp-mode
   :defer t
+  :commands lsp-mode
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   (lsp-face-highlight-textual ((t (:background "#757500"))))
   :config
+  (setq lsp-highlight-symbol-at-point nil)
   (use-package company-lsp
     :config
     (setq company-lsp-enable-snippet t)
@@ -1483,7 +1512,7 @@ store to load and configure the cquery lsp client."
 
           ;; (setq-local cquery-additional-arguments '("--log-file" "cquery.log" "--log-stdin-stdout-to-stderr"))
 
-          (require 'lsp-flycheck)
+          ; (require 'lsp-flycheck)
           (flycheck-mode)
           (lsp-cquery-enable)
           (yas-minor-mode)
@@ -1605,26 +1634,6 @@ store to load and configure the cquery lsp client."
   (setq magit-push-always-verify nil))
 
 
-
-;;; company-mode
-(use-package company
-  :defer t
-  :commands (company-mode)
-  :init
-  (add-hook 'prog-mode-hook 'company-mode)
-  :config
-  (setq company-idle-delay 0.1)
-  (define-key company-mode-map (kbd "C-:") 'helm-company)
-  (define-key company-active-map (kbd "C-:") 'helm-company)
-  (setq company-backends (remq 'company-eclim (remq 'company-oddmuse company-backends)))
-  (defun ac/company-text-mode ()
-    ;; (add-to-list 'company-backends 'company-ispell)
-    )
-  (add-hook 'text-mode-hook #'ac/company-text-mode))
-
-;; (optional) adds CC special commands to `company-begin-commands' in order to
-;; trigger completion at interesting places, such as after scope operator
-;;     std::|
 
 ;;; gpg
 (defun pinentry-emacs (desc prompt ok error)
@@ -1854,9 +1863,6 @@ store to load and configure the cquery lsp client."
  '(hl-sexp-background-color "#efebe9")
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
- '(org-agenda-files
-   (quote
-    ("~/Documents/MyPapers/PhD/proposal/proposal.org" "~/org/home.org")))
  '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-footnote-auto-label (quote plain))
@@ -2103,5 +2109,7 @@ store to load and configure the cquery lsp client."
 ;;; File Local Variables
 ;; Local Variables:
 ;; mode: emacs-lisp
+;; eval: (outline-minor-mode)
+;; eval: (outshine-hook-function)
 ;; eval: (org-overview)
 ;; End:
