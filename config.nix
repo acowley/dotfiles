@@ -236,17 +236,11 @@
       inherit (pkgs) nix cacert;
     };
 
-    # gazebo7 = pkgs.callPackage ./nix/gazebo/7.nix {};
-    # sdformat4 = pkgs.callPackage (<nixpkgs> + /pkgs/development/libraries/sdformat) { };
-    # sdformat = sdformat4;
-    # ois = pkgs.callPackage ./nix/ois {};
-    # ogre = pkgs.callPackage ./nix/ogre {};
+    # busybox = null;
 
-    busybox = null;
-
-    uriparser = pkgs.uriparser.overrideDerivation (_: {
-      configureFlags = ["--disable-doc"];
-    });
+    # uriparser = pkgs.uriparser.overrideDerivation (_: {
+    #   configureFlags = ["--disable-doc"];
+    # });
 
     platformio = (pkgs.python27.buildEnv.override {
       extraLibs = let p = pkgs.python27Packages;
