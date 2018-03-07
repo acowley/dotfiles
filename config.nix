@@ -173,7 +173,7 @@
 
     pcl_demo = pkgs.callPackage ./nix/pcl_demo {};
 
-    easyloggingpp = pkgs.callPackage ./nix/easyloggingpp {};
+    # easyloggingpp = pkgs.callPackage ./nix/easyloggingpp {};
 
     gtsam = pkgs.callPackage ./nix/gtsam/next.nix {};
     gtsamOld = pkgs.callPackage ./nix/gtsam {};
