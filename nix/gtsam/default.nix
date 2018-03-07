@@ -13,6 +13,7 @@ stdenv.mkDerivation {
     "-DGTSAM_TYPEDEF_POINTS_TO_VECTORS=ON"
     "-DGTSAM_BUILD_WRAP=OFF"
   ];
+  # "-DGTSAM_BUILD_TESTS=OFF"
 
   nativeBuildInputs = [ cmake boost eigen ];
   meta = with stdenv.lib; {
