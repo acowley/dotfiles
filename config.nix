@@ -265,6 +265,24 @@
         AVFoundation Cocoa QTKit VideoDecodeAcceleration;
     };
 
+    # opencv3 = pkgs.opencv3.override {
+    #   enableContrib = true;
+    #   enableEigen = true;
+    #   enableFfmpeg = true;
+    #   enablePython = true;
+    # };
+
+    opencv3nix = pkgs.opencv3;
+
+    # opencv3x = pkgs.callPackage ./nix/opencv/331.nix {
+    #   # enableContrib = true;
+    #   # enableEigen = true;
+    #   enableFfmpeg = true;
+    #   # enablePython = true;
+    #   inherit (pkgs.darwin.apple_sdk.frameworks)
+    #     AVFoundation Cocoa QTKit VideoDecodeAcceleration;
+    # };
+
     ignition = pkgs.ignition // {
       transport2 = pkgs.callPackage ./nix/ignition-transport/2.1.0.nix {
         inherit (ignition) tools messages math2;
