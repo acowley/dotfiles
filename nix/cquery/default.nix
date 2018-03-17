@@ -1,34 +1,21 @@
 { stdenv, fetchFromGitHub, writeTextFile, python, git, llvmPackages }:
 stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-03-11";
+  version = "2018-03-13";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "0c695ad50d873a8910ed69ada58b8ea126291aeb";
-    sha256 = "0ys6y4hady6rj1ncivd40wjl76n410mxy394gm9dfs769b7avs9g";
+    rev = "49ac2e9832f93519b66f6609195225a2ee4c0580";
+    sha256 = "18y2sp4ggbjfhmhl7aqrbai8yjw05xd7nbcpvvgikfqwhgi66c86";
     fetchSubmodules = true;
   };
 
   nativeBuildInputs = [ python git ];
-  buildInputs = [ llvmPackages.clang llvmPackages.clang-unwrapped llvmPackages.libclang ];
-
-  # The header files we want cquery to find are under the
-  # /nix/store/xxx-clang-version/lib/clang/version/include directory, while
-  # the libclang it needs is in /nix/store/xxx-clang/lib so we can not
-  # give it a single --clang-prefix that locates everything it needs.
-  preConfigure = ''
-    sed -e 's|^\([[:space:]]*\)\(prefix = ctx.root.find_node(ctx.options.clang_prefix)\)|\1\2\
-\1prefixInc = ctx.root.find_node("${llvmPackages.clang-unwrapped}/lib/clang/${stdenv.lib.getVersion llvmPackages.clang.name}")\
-\1prefixLib = ctx.root.find_node("${llvmPackages.libclang}")|' \
-        -e 's|\(includes = \[ n.abspath() for n in \[ prefix\)|\1Inc|' \
-        -e 's|\(libpath  = \[ n.abspath() for n in \[ prefix\)|\1Lib|' \
-        -i wscript
-      '';
+  buildInputs = [ llvmPackages.llvm llvmPackages.clang ];
 
   configurePhase = ''
-    eval "$preConfigure"
+    unset CXX
     ./waf configure --prefix=$out --clang-prefix=${llvmPackages.clang-unwrapped}
   '';
 
@@ -54,13 +41,13 @@ stdenv.mkDerivation rec {
     name = "setup-hook.sh";
     text = ''
     nix-cflags-include() {
-      echo $NIX_CFLAGS_COMPILE | awk '{ for(i = 1; i <= NF; i++) if($i == "-isystem") printf "-isystem %s ", $(i+1); else if($i ~ /^-F/) printf "%s ", $i; }' | sed 's|-isystem \([^[:space:]]*libc++[^[:space:]]*\)|-isystem \1 -isystem \1/c++/v1|'; printf "%s " "-isystem ${llvmPackages.clang-unwrapped}/lib/clang/${stdenv.lib.getVersion llvmPackages.clang.name}/include"; cat $(dirname $(which clang++))/../nix-support/libc-cflags | awk '{ for(i = 1; i <= NF; i++) if($i == "-idirafter" && $(i+1) ~ /Libsystem/) printf "-isystem %s", $(i+1) }'
+      ($CXX -xc++ -E -v /dev/null) 2>&1 | awk 'BEGIN { incsearch = 0} /^End of search list/ { incsearch = 0 } { if(incsearch) { print $0 }} /^#include </ { incsearch = 1 }' | sed 's/^[[:space:]]*\(.*\)/-isystem \1/' | tr '\n' ' '
     }
     nix-cquery() {
       if [ -f compile_commands.json ]; then
         echo "Adding Nix include directories to the compiler commands"
         local extraincs=$(nix-cflags-include)
-        sed "s|/bin/clang++ |/bin/clang++ ''${extraincs} |" -i compile_commands.json
+        sed "s*/bin/\(clang++\|g++\) */bin/\1 ''${extraincs} *" -i compile_commands.json
       else
         echo "There is no compile_commands.json file to edit!"
         echo "Create one with cmake using:"
