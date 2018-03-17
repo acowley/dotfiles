@@ -174,6 +174,8 @@
 
     pcl_demo = pkgs.callPackage ./nix/pcl_demo {};
 
+    vkmark = pkgs.callPackage ./nix/vkmark {};
+
     # easyloggingpp = pkgs.callPackage ./nix/easyloggingpp {};
 
     gtsam = pkgs.callPackage ./nix/gtsam/next.nix {};
