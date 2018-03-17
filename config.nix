@@ -162,6 +162,7 @@
         ghc822 = pkgs.haskell.packages.ghc822.override {
           overrides = self: super: {
             vinyl = pkgs.haskell.lib.dontCheck (super.callPackage ~/Documents/Projects/VinylRecords/Vinyl {});
+            intero = pkgs.haskell.lib.dontCheck (super.callPackage ~/src/intero {});
           };
         };
       };
