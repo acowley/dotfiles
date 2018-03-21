@@ -103,10 +103,24 @@ dash) transpose chunks around that. Otherwise transpose sexps."
       (insert "\n#endif"))
     (goto-line 4)))
 
+(defun quote-shell-string (str)
+    "Safely embed a string in single-quotes.
+
+We can pass single-quoted strings to shell commands, but single
+quotes within those strings need to be escaped. We use the
+technique of ending the quoted string, concatenating a literal
+single-quote character, and concatenating the remaining
+single-quoted string."
+    (concat "'" (replace-regexp-in-string "'" "'\\\\''" str) "'"))
+
 ;;;; Miscellaneous Settings
 
 ;; (set-default-font "Hæck 14")
-(set-default-font "Monaco 14")
+(when (memq window-system '(mac ns))
+  (set-default-font "Monaco 14"))
+
+(tool-bar-mode -1)
+(when window-system (set-frame-size (selected-frame) 40 28))
 
 ;; Enable ligatures for fonts that provide them (e.g. hæck)
 ;; This may cause slowdown
@@ -272,7 +286,9 @@ tell application \"Safari\"
 end tell" uri)))
     (do-applescript script)))
 
-(setq browse-url-browser-function #'browse-url-safari)
+(if (memq window-system '(mac ns))
+    (setq browse-url-browser-function #'browse-url-safari)
+  (setq browse-url-browser-function #'browse-url-firefox))
 
 ;; From http://emacsredux.com/blog/2013/06/21/eval-and-replace/
 (defun eval-and-replace ()
@@ -352,14 +368,16 @@ end tell" uri)))
 ;; likewise for the `.dic' file. Try running `hunspell -D' to see what
 ;; dictionaries hunspell is using. The "personal dictionary" is just a
 ;; word list.
-(setq ispell-program-name "hunspell")
+(when (memq window-system '(mac ns))
+    (progn
+      (setq ispell-program-name "hunspell")
+      (setq ispell-local-dictionary "en_US")
+      (setq ispell-personal-dictionary "~/.hunspell_en_US")))
 ;; (setq ispell-local-dictionary-alist
 ;;       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil
 ;;          ("-d" "en_US"))
 ;;         nil utf-8))
 ;(setq ispell-extra-args '("-a" "-i" "utf-8"))
-(setq ispell-local-dictionary "en_US")
-(setq ispell-personal-dictionary "~/.hunspell_en_US")
 
 ;; hunspell hacking to get ispell to actually use utf-8
 ;; See: http://stackoverflow.com/questions/3961119/working-setup-for-hunspell-in-emacs
@@ -860,12 +878,14 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                                         ; helm-input-idle-delay 0.01
 
    ;; Use Spotlight on OS X to find files
-   helm-locate-command
-   "mdfind -onlyin $HOME -name %s %s | grep -E -v '/dist/|/Caches/'"
    helm-mini-default-sources '(helm-source-buffers-list
                                helm-source-recentf
                                helm-source-buffer-not-found
                                helm-source-locate))
+  (when (memq window-system '(mac ns))
+    (setq helm-locate-command
+          "mdfind -onlyin $HOME -name %s %s | grep -E -v '/dist/|/Caches/'"))
+
 
   ;; ido offers a nicer UI for switching between open buffers
   ;; (add-hook 'helm-mode-hook
@@ -1099,16 +1119,6 @@ under the current project's root directory."
                            (plist-get msg :subject)))
                  msgs
                  "\n")))
-
-  (defun quote-shell-string (str)
-    "Safely embed a string in single-quotes.
-
-We can pass single-quoted strings to shell commands, but single
-quotes within those strings need to be escaped. We use the
-technique of ending the quoted string, concatenating a literal
-single-quote character, and concatenating the remaining
-single-quoted string."
-    (concat "'" (replace-regexp-in-string "'" "'\\\\''" str) "'"))
 
   (add-hook 'mu4e-index-updated-hook
             (lambda ()
@@ -1649,9 +1659,25 @@ store to load and configure the cquery lsp client."
   ;; (setq erc-fill-function 'erc-fill-variable)
 
   (use-package erc-terminal-notifier
+    :if (memq window-system '(mac ns))
     :config
     (setq erc-terminal-notifier-command "~/.nix-profile/bin/terminal-notifier")
     (add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier))))
+  (use-package ercn
+    :if (not (memq window-system '(mac ns)))
+    :config
+    (defun do-notify (nickname message)
+      (let* ((channel (buffer-name))
+             (title (if (string-match-p (concat "^" nickname) channel)
+                        nickname
+                      (concat nickname " (" channel ")")))
+             (msg (s-trim (s-collapse-whitespace message))))
+        (start-process "notify-send"
+                       "*notify-send*"
+                       "notify-send"
+                       (concat "ERC - " title)
+                       (quote-shell-string (format "%s" msg)))))
+    (add-hook 'ercn-notify-hook #'do-notify))
   (use-package erc-hl-nicks
     :config
     (add-to-list 'erc-modules 'hl-nicks)))
@@ -1957,13 +1983,15 @@ store to load and configure the cquery lsp client."
 #+END_NOTES" ""))))
  '(package-selected-packages
    (quote
-    (abbrev spaceline spaceline-config racer flycheck-rust cargo znc yaml-mode visual-fill-column use-package twittering-mode toml-mode smartparens smart-mode-line-powerline-theme shm rust-mode redprl purescript-mode psc-ide paredit ox-clip outshine osx-dictionary org-table-sticky-header org-sticky-header org-plus-contrib org-mime org-bullets ob-ipython nix-mode nix-buffer multiple-cursors monokai-theme mixed-pitch markdown-mode magit logview intero impatient-mode imenu-anywhere hindent helm-swoop helm-projectile helm-gtags helm-dash helm-company graphviz-dot-mode god-mode exec-path-from-shell esup erc-terminal-notifier erc-hl-nicks dashboard darkokai-theme corral cmake-mode buffer-move apropospriate-theme ag)))
+    (ercn org-sticky-header org-table-sticky-header org-bullets org-ref org-noter znc yaml-mode use-package twittering-mode toml-mode spaceline smartparens shm redprl recentf-remove-sudo-tramp-prefix racer purescript-mode paredit osx-dictionary nix-mode nix-buffer multiple-cursors mixed-pitch magit lsp-ui logview intero hindent helm-tramp helm-swoop helm-projectile helm-gtags helm-dash helm-company graphviz-dot-mode god-mode flycheck-rust erc-terminal-notifier erc-hl-nicks docker-tramp dante corral company-lsp clang-format cargo buffer-move ag yasnippet visual-fill-column ox-tufte ox-clip outshine org-plus-contrib olivetti monokai-theme impatient-mode imenu-anywhere esup diminish dashboard darkokai-theme cmake-mode apropospriate-theme)))
  '(pop-up-windows nil)
  '(python-shell-interpreter "python3")
  '(racer-cmd "racer")
  '(safe-local-variable-values
    (quote
-    ((eval let
+    ((eval outshine-hook-function)
+     (eval cquery-nix-shell)
+     (eval let
            ((dir
              (find-nix-shell)))
            (when dir
