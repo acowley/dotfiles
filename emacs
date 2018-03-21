@@ -1843,7 +1843,8 @@ store to load and configure the cquery lsp client."
 (use-package ag :defer t)
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
-(load "~/.emacsPrivate.el")
+(when (file-exists-p "~/.emacsPrivate.el")
+  (load "~/.emacsPrivate.el"))
 
 ;;; Customize
 
