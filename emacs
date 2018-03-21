@@ -1049,7 +1049,13 @@ under the current project's root directory."
    smtpmail-smtp-service 587
 
    ;; don't keep message buffers around
-   message-kill-buffer-on-exit t)
+   message-kill-buffer-on-exit t
+   mu4e-headers-fields
+   '( (:human-date    .  12)    ;; alternatively, use :human-date
+      (:flags         .   4)
+      (:from          .  22)
+      (:subject       .  nil)) ;; alternatively, use :thread-subject
+   )
 
   ;; Auto-complete contact email addresses
   ;; We don't want line breaks added to emails we compose
