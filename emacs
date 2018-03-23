@@ -119,6 +119,8 @@ single-quoted string."
 (when (memq window-system '(mac ns))
   (set-default-font "Monaco 14"))
 
+(setq confirm-kill-emacs #'y-or-n-p)
+
 (tool-bar-mode -1)
 (when window-system (set-frame-size (selected-frame) 40 28))
 
