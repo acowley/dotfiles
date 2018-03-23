@@ -1528,7 +1528,7 @@ store to load and configure the cquery lsp client."
           (setq clang-format-executable clang-format-exe)
           (setq-local cquery-executable cquery-exe)
 
-          ;; (setq-local cquery-additional-arguments '("--log-file" "cquery.log" "--log-stdin-stdout-to-stderr"))
+          ;; (setq cquery-extra-args '("--log-all-to-stderr" "--log-file" "cquery.log"))
 
           ; (require 'lsp-flycheck)
           (flycheck-mode)
