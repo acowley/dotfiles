@@ -1,42 +1,55 @@
-{ stdenv, fetchFromGitHub, writeTextFile, python, git, llvmPackages }:
-stdenv.mkDerivation rec {
+{ stdenv, writeTextFile, fetchFromGitHub, cmake, llvmPackages, ncurses }:
+let flagToLib = flag:
+  let name = builtins.elemAt (stdenv.lib.splitString "_" flag) 1;
+  in "lib${name}.a";
+in llvmPackages.stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-03-13";
+  version = "2018-03-26";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "49ac2e9832f93519b66f6609195225a2ee4c0580";
-    sha256 = "18y2sp4ggbjfhmhl7aqrbai8yjw05xd7nbcpvvgikfqwhgi66c86";
+    rev = "310bb882677086f61745369729378ad09d92abb2";
+    sha256 = "174w2n31ay46pw0zvrj2hv3c3acx96viv5bixgfgk12gmjxfa4sv";
     fetchSubmodules = true;
   };
 
-  nativeBuildInputs = [ python git ];
-  buildInputs = [ llvmPackages.llvm llvmPackages.clang ];
+  nativeBuildInputs = [ cmake ];
+  buildInputs = [
+    llvmPackages.llvm llvmPackages.clang llvmPackages.libclang.out
+    llvmPackages.libclang.lib ncurses
+  ];
 
-  configurePhase = ''
-    unset CXX
-    ./waf configure --prefix=$out --clang-prefix=${llvmPackages.clang-unwrapped}
-  '';
-
-  buildPhase = ''
-    ./waf build
-  '';
-
-  installPhase = ''
-    ./waf install
-  '';
+  # We don't have a `FindClang.cmake`, so we explicitly set all the
+  # variables it would provide.
+  cmakeFlags = [
+    "-DSYSTEM_CLANG=ON"
+    "-DCLANG_CXX=ON"
+    "-DClang_LIBRARY=${llvmPackages.libclang.lib}/lib/libclang.so"
+    "-DClang_INCLUDE_DIR=${llvmPackages.libclang.out}/include"
+  ] ++ (map (inc: "-D${inc}=${llvmPackages.libclang.out}/include")
+            [ "Clang_clangFormat_INCLUDE_DIR"
+            "Clang_clangToolingCore_INCLUDE_DIR"
+            "Clang_clangRewrite_INCLUDE_DIR"
+            "Clang_clangAST_INCLUDE_DIR"
+            "Clang_clangLex_INCLUDE_DIR"
+            "Clang_clangBasic_INCLUDE_DIR"
+  ]) ++ (map (lib: "-D${lib}=${llvmPackages.libclang.out}/lib/${flagToLib lib}")
+             [ "Clang_clangLex_LIBRARY"
+             "Clang_clangFormat_LIBRARY"
+             "Clang_clangToolingCore_LIBRARY"
+             "Clang_clangRewrite_LIBRARY"
+             "Clang_clangAST_LIBRARY"
+             "Clang_clangBasic_LIBRARY"
+  ]);
 
   # This helper is provided to help pass include directories nix
-  # communicates in the environment to cquery through a
-  # compile_commands.json. Such a file will record a compiler
-  # invocation that might work to build a program, but this may rely
-  # on the compiler being a nix-built wrapper that adds include paths
-  # gleaned from the environment. Tooling like cquery needs to know
-  # what the compiler knows, so we dig through the environment and
-  # augment the compiler command to explicitly include the headers
-  # from the nix environment variable. We also pick out the Libsystem
-  # include directory needed on darwin.
+  # communicates in the environment and via wrapper scripts to cquery
+  # through a compile_commands.json. Tooling like cquery needs to know
+  # what the compiler knows, so we augment the compiler command to
+  # explicitly include the headers from the nix environment
+  # variable. We also pick out the Libsystem include directory needed
+  # on darwin.
   setupHook = writeTextFile {
     name = "setup-hook.sh";
     text = ''
@@ -61,6 +74,7 @@ stdenv.mkDerivation rec {
       fi
     }
   '';};
+
   meta = {
     description = "Low-latency language server for C++, powered by libclang";
     homepage = https://github.com/jacobdufault/cquery;
