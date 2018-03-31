@@ -20,6 +20,25 @@
     };
   };
   packageOverrides = pkgs: rec {
+    hcc-clang-unwrapped = pkgs.callPackage ./nix/hcc/clang.nix {};
+    hcc-env = let self = {
+      clang = pkgs.ccWrapperFun {
+        cc = hcc-clang-unwrapped;
+        inherit (pkgs.stdenv.cc) bintools libc nativeTools nativeLibc;
+        extraPackages = [ pkgs.libstdcxxHook ];
+        extraBuildCommands = ''
+          mkdir -p $out/include
+          ln -s ${hcc-clang-unwrapped}/include $out/include/hcc
+          ln -s $out/bin/clang++ $out/bin/hcc
+        '';
+      };
+      stdenv = pkgs.stdenv.override (drv: {
+        allowedRequisites = null;
+        cc = self.clang;
+      });
+    }; in self;
+    hcc-clang = hcc-env.clang;
+    hcc = pkgs.callPackage ./nix/hcc/hcc.nix {};
     global = pkgs.callPackage ./nix/global {};
     # emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = (pkgs.emacsPackagesNgGen pkgs.emacs25Macport).overrideScope (super: self: {
