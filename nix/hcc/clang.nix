@@ -48,6 +48,7 @@ llvmPackages.stdenv.mkDerivation rec {
     inherit gcc;
   };
 
-  hardeningUnsupportedFlags = ["stackprotector"];
+  # Building clang's compiler-rt is sensitive to hardening flags
   hardeningDisable = ["all"];
+  hardeningUnsupportedFlags = ["stackprotector"];
 }

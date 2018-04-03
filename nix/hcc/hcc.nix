@@ -47,7 +47,12 @@ stdenv.mkDerivation rec {
 
     export PATH="$(pwd)/compiler/bin:$PATH"
   '';
+
+  # If we don't disable hardening, we get a compiler error mentioning
+  # `ssp-buffer-size`, however disabling only the `"stackprotector"`
+  # flag is not enough to make everything work.
   hardeningDisable = ["all"];
+  # hardeningDisable = ["stackprotector"];
 
   postFixup = ''
     ln -s ${hcc-clang-unwrapped}/bin/* $out/bin
