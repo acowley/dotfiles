@@ -40,6 +40,7 @@
     hcc-clang = hcc-env.clang;
     hcc = pkgs.callPackage ./nix/hcc/hcc.nix {};
     hip = pkgs.callPackage ./nix/hip {};
+    rocm-smi = pkgs.callPackage ./nix/rocm-smi {};
     global = pkgs.callPackage ./nix/global {};
     # emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = (pkgs.emacsPackagesNgGen pkgs.emacs25Macport).overrideScope (super: self: {
