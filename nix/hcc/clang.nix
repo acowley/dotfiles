@@ -11,11 +11,12 @@ llvmPackages.stdenv.mkDerivation rec {
     owner = "RadeonOpenCompute";
     repo = "hcc";
     rev = tag;
-    sha256 = "14f3xfil15vs3dgaxzsha349khyyhihc15bhf2n0jcskljygs7ag";
+    sha256 = "1qlydaimiby078riin8zhp073xnrlkdr4qd5zl8s3y08nvhlv713";
     fetchSubmodules = true;
+    leaveDotGit = true;
   };
-  nativeBuildInputs = [ cmake pkgconfig python ];
-  buildInputs = [ libunwind rocr ];
+  nativeBuildInputs = [ cmake pkgconfig python git ];
+  buildInputs = [ libunwind rocr rocminfo ];
   cmakeFlags = [
     "-DCMAKE_CXX_FLAGS=-std=c++11"
     "-DCMAKE_BUILD_TYPE=Release"

@@ -8,8 +8,9 @@ stdenv.mkDerivation rec {
     owner = "RadeonOpenCompute";
     repo = "hcc";
     rev = tag;
-    sha256 = "14f3xfil15vs3dgaxzsha349khyyhihc15bhf2n0jcskljygs7ag";
+    sha256 = "1qlydaimiby078riin8zhp073xnrlkdr4qd5zl8s3y08nvhlv713";
     fetchSubmodules = true;
+    leaveDotGit = true;
   };
   propagatedBuildInputs = [ file libunwind ];
   nativeBuildInputs = [ cmake pkgconfig python ];
