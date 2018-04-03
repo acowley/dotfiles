@@ -1,5 +1,5 @@
 { stdenv, llvmPackages, fetchFromGitHub, cmake, pkgconfig, writeText, python,
-  hcc-clang, hcc-clang-unwrapped, rocr, libunwind, file }:
+  hcc-clang, hcc-clang-unwrapped, rocr, libunwind, file, rocminfo }:
 stdenv.mkDerivation rec {
   name = "hcc";
   version = "1.7.0";
@@ -29,6 +29,7 @@ stdenv.mkDerivation rec {
     for f in $(find lib -name '*.in'); do
       sed 's_#!/bin/bash_#!${stdenv.shell}_' -i "$f"
     done
+    sed 's,\(const char* tmp = \)std::getenv("ROCM_ROOT");,\1${rocminfo};,' -i ./clang/lib/Driver/ToolChains/Hcc.cpp
   '';
 
   # We split the build so that we can build a Nix wrapper for clang
