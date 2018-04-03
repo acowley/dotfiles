@@ -1,4 +1,5 @@
-{ stdenv, llvmPackages, fetchFromGitHub, cmake, writeText, perl, hcc, rocr, roct, rocminfo }:
+{ stdenv, llvmPackages, fetchFromGitHub, cmake, git, writeText, perl,
+  hcc, rocr, roct, rocminfo }:
 stdenv.mkDerivation rec {
   name = "hip";
   version = "1.7.0";
@@ -11,7 +12,7 @@ stdenv.mkDerivation rec {
   };
   propagatedBuildInputs = [ hcc roct ];
   buildInputs = [ rocminfo ];
-  nativeBuildInputs = [ cmake ];
+  nativeBuildInputs = [ cmake git ];
   cmakeFlags = [ "-DHSA_PATH=${rocr}" "-DHCC_HOME=${hcc}" "-DCMAKE_CURRENT_SOURCE_DIR=${src}"];
   patchPhase = ''
     for f in $(find bin -type f); do
@@ -26,15 +27,7 @@ stdenv.mkDerivation rec {
     sed -i 's,\([[:space:]]*$HCC_HOME=\).*$,\1"${hcc}";,' -i bin/hipconfig
   '';
 
-  # This patch-level version number gets lost in the nix build, so we
-  # provide it ourselves. Setting HIP_VERSION_PATCH to the same number
-  # may not be correct.
-  postConfigure = ''
-    export NIX_CFLAGS_COMPILE+=' -D__hcc_workweek__=17503 -DHIP_VERSION_PATCH=17503 -Wno-macro-redefined'
-  '';
-
   setupHook = writeText "setupHook.sh" ''
-    export NIX_CFLAGS_COMPILE+=' -D__hcc_workweek__=17503 -Wno-macro-redefined'
     export HIP_PATH="@out@"
   '';
 }
