@@ -1,0 +1,659 @@
+From 6978e0d629bdaf67729879bac4d3a853ea107f08 Mon Sep 17 00:00:00 2001
+From: Daniel Drake <drake@endlessm.com>
+Date: Fri, 19 Jan 2018 08:34:44 -0400
+Subject: [PATCH] rtl8821ce: fix build for Linux-4.15
+
+---
+ drivers/net/wireless/rtl8821ce/core/rtw_mlme.c     | 31 ++++++-----
+ drivers/net/wireless/rtl8821ce/core/rtw_mlme_ext.c | 20 +++----
+ drivers/net/wireless/rtl8821ce/core/rtw_p2p.c      | 61 +++++++++++++---------
+ drivers/net/wireless/rtl8821ce/core/rtw_pwrctrl.c  |  9 ++--
+ drivers/net/wireless/rtl8821ce/core/rtw_recv.c     | 14 ++---
+ drivers/net/wireless/rtl8821ce/core/rtw_sreset.c   |  2 +-
+ drivers/net/wireless/rtl8821ce/core/rtw_sta_mgt.c  |  4 +-
+ drivers/net/wireless/rtl8821ce/hal/hal_btcoex.c    |  4 +-
+ .../net/wireless/rtl8821ce/hal/led/hal_pci_led.c   |  6 +--
+ .../wireless/rtl8821ce/hal/phydm/phydm_interface.c |  6 ++-
+ .../net/wireless/rtl8821ce/include/hal_com_led.h   |  2 +-
+ .../net/wireless/rtl8821ce/include/osdep_service.h |  2 +-
+ .../rtl8821ce/include/osdep_service_linux.h        |  6 +--
+ drivers/net/wireless/rtl8821ce/include/rtw_bt_mp.h |  2 +-
+ drivers/net/wireless/rtl8821ce/include/rtw_mlme.h  |  9 ++--
+ .../net/wireless/rtl8821ce/include/rtw_mlme_ext.h  |  6 +--
+ .../net/wireless/rtl8821ce/include/rtw_pwrctrl.h   |  1 +
+ drivers/net/wireless/rtl8821ce/include/rtw_recv.h  |  2 +-
+ .../net/wireless/rtl8821ce/os_dep/linux/os_intfs.c |  2 +-
+ .../net/wireless/rtl8821ce/os_dep/osdep_service.c  |  4 +-
+ 20 files changed, 108 insertions(+), 85 deletions(-)
+
+diff --git a/drivers/net/wireless/rtl8821ce/core/rtw_mlme.c b/drivers/net/wireless/rtl8821ce/core/rtw_mlme.c
+index 407c259ceba4..de771033b1a0 100644
+--- a/drivers/net/wireless/rtl8821ce/core/rtw_mlme.c
++++ b/drivers/net/wireless/rtl8821ce/core/rtw_mlme.c
+@@ -29,15 +29,15 @@ void rtw_init_mlme_timer(_adapter *padapter)
+ {
+ 	struct	mlme_priv *pmlmepriv = &padapter->mlmepriv;
+ 
+-	rtw_init_timer(&(pmlmepriv->assoc_timer), padapter, rtw_join_timeout_handler, padapter);
+-	rtw_init_timer(&(pmlmepriv->scan_to_timer), padapter, rtw_scan_timeout_handler, padapter);
++	rtw_init_timer(&(pmlmepriv->assoc_timer), padapter, rtw_join_timeout_handler);
++	rtw_init_timer(&(pmlmepriv->scan_to_timer), padapter, rtw_scan_timeout_handler);
+ 
+ #ifdef CONFIG_DFS_MASTER
+ 	rtw_init_timer(&(pmlmepriv->dfs_master_timer), padapter, rtw_dfs_master_timer_hdl, padapter);
+ #endif
+ 
+ #ifdef CONFIG_SET_SCAN_DENY_TIMER
+-	rtw_init_timer(&(pmlmepriv->set_scan_deny_timer), padapter, rtw_set_scan_deny_timer_hdl, padapter);
++	rtw_init_timer(&(pmlmepriv->set_scan_deny_timer), padapter, rtw_set_scan_deny_timer_hdl);
+ #endif
+ 
+ #ifdef RTK_DMP_PLATFORM
+@@ -2701,11 +2701,10 @@ void rtw_wmm_event_callback(PADAPTER padapter, u8 *pbuf)
+ /*
+ * rtw_join_timeout_handler - Timeout/failure handler for CMD JoinBss
+ */
+-void rtw_join_timeout_handler(void *ctx)
++void rtw_join_timeout(struct mlme_priv *pmlmepriv)
+ {
+-	_adapter *adapter = (_adapter *)ctx;
++	_adapter *adapter = container_of(pmlmepriv, _adapter, mlmepriv);
+ 	_irqL irqL;
+-	struct	mlme_priv *pmlmepriv = &adapter->mlmepriv;
+ 
+ #if 0
+ 	if (rtw_is_drv_stopped(adapter)) {
+@@ -2777,17 +2776,22 @@ void rtw_join_timeout_handler(void *ctx)
+ 
+ 
+ 
++}
++
++void rtw_join_timeout_handler(struct timer_list *t) {
++	struct	mlme_priv *pmlmepriv = from_timer(pmlmepriv, t, assoc_timer);
++	rtw_join_timeout(pmlmepriv);
+ }
+ 
+ /*
+ * rtw_scan_timeout_handler - Timeout/Faliure handler for CMD SiteSurvey
+ * @adapter: pointer to _adapter structure
+ */
+-void rtw_scan_timeout_handler(void *ctx)
++void rtw_scan_timeout_handler(struct timer_list *t)
+ {
+-	_adapter *adapter = (_adapter *)ctx;
++	struct	mlme_priv *pmlmepriv = from_timer(pmlmepriv, t, scan_to_timer);
++	_adapter *adapter = container_of(pmlmepriv, _adapter, mlmepriv);
+ 	_irqL irqL;
+-	struct mlme_priv *pmlmepriv = &adapter->mlmepriv;
+ 	RTW_INFO(FUNC_ADPT_FMT" fw_state=%x\n", FUNC_ADPT_ARG(adapter), get_fwstate(pmlmepriv));
+ 
+ 	_enter_critical_bh(&pmlmepriv->lock, &irqL);
+@@ -3050,9 +3054,9 @@ static void collect_traffic_statistics(_adapter *padapter)
+ 	#endif
+ }
+ 
+-void rtw_dynamic_check_timer_handlder(void *ctx)
++void rtw_dynamic_check_timer_handlder(struct timer_list *t)
+ {
+-	struct dvobj_priv *pdvobj = (struct dvobj_priv *)ctx;
++	struct dvobj_priv *pdvobj = from_timer(pdvobj, t, dynamic_chk_timer);
+ 	_adapter *adapter = dvobj_get_primary_adapter(pdvobj);
+ 
+ #if (MP_DRIVER == 1)
+@@ -3098,9 +3102,10 @@ inline void rtw_clear_scan_deny(_adapter *adapter)
+ 		RTW_INFO(FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(adapter));
+ }
+ 
+-void rtw_set_scan_deny_timer_hdl(void *ctx)
++void rtw_set_scan_deny_timer_hdl(struct timer_list *t)
+ {
+-	_adapter *adapter = (_adapter *)ctx;
++	struct	mlme_priv *pmlmepriv = from_timer(pmlmepriv, t, set_scan_deny_timer);
++	_adapter *adapter = container_of(pmlmepriv, _adapter, mlmepriv);
+ 
+ 	rtw_clear_scan_deny(adapter);
+ }
+diff --git a/drivers/net/wireless/rtl8821ce/core/rtw_mlme_ext.c b/drivers/net/wireless/rtl8821ce/core/rtw_mlme_ext.c
+index a91e7b98d906..ea480b1cde13 100755
+--- a/drivers/net/wireless/rtl8821ce/core/rtw_mlme_ext.c
++++ b/drivers/net/wireless/rtl8821ce/core/rtw_mlme_ext.c
+@@ -1333,8 +1333,8 @@ void init_mlme_ext_timer(_adapter *padapter)
+ {
+ 	struct	mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+ 
+-	rtw_init_timer(&pmlmeext->survey_timer, padapter, survey_timer_hdl, padapter);
+-	rtw_init_timer(&pmlmeext->link_timer, padapter, link_timer_hdl, padapter);
++	rtw_init_timer(&pmlmeext->survey_timer, padapter, survey_timer_hdl);
++	rtw_init_timer(&pmlmeext->link_timer, padapter, link_timer_hdl);
+ #ifdef CONFIG_RTW_80211R
+ 	rtw_init_timer(&pmlmeext->ft_link_timer, padapter, ft_link_timer_hdl, padapter);
+ 	rtw_init_timer(&pmlmeext->ft_roam_timer, padapter, ft_roam_timer_hdl, padapter);
+@@ -12760,13 +12760,13 @@ void linked_status_chk(_adapter *padapter, u8 from_timer)
+ 
+ }
+ 
+-void survey_timer_hdl(void *ctx)
++void survey_timer_hdl(struct timer_list *t)
+ {
+-	_adapter *padapter = (_adapter *)ctx;
++	struct mlme_ext_priv    *pmlmeext = from_timer(pmlmeext, t, survey_timer);
++	_adapter *padapter = container_of(pmlmeext, _adapter, mlmeextpriv);
+ 	struct cmd_obj *cmd;
+ 	struct sitesurvey_parm *psurveyPara;
+ 	struct cmd_priv *pcmdpriv = &padapter->cmdpriv;
+-	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+ #ifdef CONFIG_P2P
+ 	struct wifidirect_info *pwdinfo = &(padapter->wdinfo);
+ #endif
+@@ -12793,13 +12793,13 @@ void survey_timer_hdl(void *ctx)
+ 	return;
+ }
+ 
+-void link_timer_hdl(void *ctx)
++void link_timer_hdl(struct timer_list *t)
+ {
+-	_adapter *padapter = (_adapter *)ctx;
++	struct mlme_ext_priv    *pmlmeext = from_timer(pmlmeext, t, link_timer);
++	_adapter *padapter = container_of(pmlmeext, _adapter, mlmeextpriv);
+ 	/* static unsigned int		rx_pkt = 0; */
+ 	/* static u64				tx_cnt = 0; */
+ 	/* struct xmit_priv		*pxmitpriv = &(padapter->xmitpriv); */
+-	struct mlme_ext_priv	*pmlmeext = &padapter->mlmeextpriv;
+ 	struct mlme_ext_info	*pmlmeinfo = &(pmlmeext->mlmext_info);
+ 	/* struct sta_priv		*pstapriv = &padapter->stapriv; */
+ #ifdef CONFIG_RTW_80211R
+@@ -12867,9 +12867,9 @@ void link_timer_hdl(void *ctx)
+ 	return;
+ }
+ 
+-void addba_timer_hdl(void *ctx)
++void addba_timer_hdl(struct timer_list *t)
+ {
+-	struct sta_info *psta = (struct sta_info *)ctx;
++	struct sta_info *psta = from_timer(psta, t, addba_retry_timer);
+ 
+ #ifdef CONFIG_80211N_HT
+ 	struct ht_priv	*phtpriv;
+diff --git a/drivers/net/wireless/rtl8821ce/core/rtw_p2p.c b/drivers/net/wireless/rtl8821ce/core/rtw_p2p.c
+index ee1da7b7ba2a..c8cc7d2dbd95 100644
+--- a/drivers/net/wireless/rtl8821ce/core/rtw_p2p.c
++++ b/drivers/net/wireless/rtl8821ce/core/rtw_p2p.c
+@@ -3355,9 +3355,10 @@ static int cancel_ro_ch_handler(_adapter *padapter, u8 *buf)
+ 	return ret;
+ }
+ 
+-static void ro_ch_timer_process(void *FunctionContext)
++static void ro_ch_timer_process(struct timer_list *t)
+ {
+-	_adapter *adapter = (_adapter *)FunctionContext;
++	struct cfg80211_wifidirect_info *pcfg80211_wdinfo = from_timer(pcfg80211_wdinfo, t, remain_on_ch_timer);
++	_adapter *adapter = container_of(pcfg80211_wdinfo, _adapter, cfg80211_wdinfo);
+ 
+ 	p2p_cancel_roch_cmd(adapter, 0, NULL, 0);
+ }
+@@ -4203,7 +4204,7 @@ void rtw_init_cfg80211_wifidirect_info(_adapter	*padapter)
+ 
+ 	_rtw_memset(pcfg80211_wdinfo, 0x00, sizeof(struct cfg80211_wifidirect_info));
+ 
+-	rtw_init_timer(&pcfg80211_wdinfo->remain_on_ch_timer, padapter, ro_ch_timer_process, padapter);
++	rtw_init_timer(&pcfg80211_wdinfo->remain_on_ch_timer, padapter, ro_ch_timer_process);
+ }
+ #endif /* CONFIG_IOCTL_CFG80211	 */
+ 
+@@ -4519,10 +4520,9 @@ u8 p2p_ps_wk_cmd(_adapter *padapter, u8 p2p_ps_state, u8 enqueue)
+ }
+ #endif /* CONFIG_P2P_PS */
+ 
+-static void reset_ch_sitesurvey_timer_process(void *FunctionContext)
++static void __reset_ch_sitesurvey_timer_process(struct wifidirect_info *pwdinfo)
+ {
+-	_adapter *adapter = (_adapter *)FunctionContext;
+-	struct	wifidirect_info		*pwdinfo = &adapter->wdinfo;
++	_adapter *adapter = container_of(pwdinfo, _adapter, wdinfo);
+ 
+ 	if (rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+ 		return;
+@@ -4538,10 +4538,15 @@ static void reset_ch_sitesurvey_timer_process(void *FunctionContext)
+ 	pwdinfo->rx_invitereq_info.scan_op_ch_only = 0;
+ }
+ 
+-static void reset_ch_sitesurvey_timer_process2(void *FunctionContext)
++static void reset_ch_sitesurvey_timer_process(struct timer_list *t)
+ {
+-	_adapter *adapter = (_adapter *)FunctionContext;
+-	struct	wifidirect_info		*pwdinfo = &adapter->wdinfo;
++	struct	wifidirect_info		*pwdinfo = from_timer(pwdinfo, t, reset_ch_sitesurvey);
++	__reset_ch_sitesurvey_timer_process(pwdinfo);
++}
++
++static void __reset_ch_sitesurvey_timer_process2(struct wifidirect_info *pwdinfo)
++{
++	_adapter *adapter = container_of(pwdinfo, _adapter, wdinfo);
+ 
+ 	if (rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+ 		return;
+@@ -4557,10 +4562,16 @@ static void reset_ch_sitesurvey_timer_process2(void *FunctionContext)
+ 	pwdinfo->p2p_info.scan_op_ch_only = 0;
+ }
+ 
+-static void restore_p2p_state_timer_process(void *FunctionContext)
++static void reset_ch_sitesurvey_timer_process2(struct timer_list *t)
+ {
+-	_adapter *adapter = (_adapter *)FunctionContext;
+-	struct	wifidirect_info		*pwdinfo = &adapter->wdinfo;
++	struct	wifidirect_info		*pwdinfo = from_timer(pwdinfo, t, reset_ch_sitesurvey2);
++	__reset_ch_sitesurvey_timer_process2(pwdinfo);
++}
++
++static void restore_p2p_state_timer_process(struct timer_list *t)
++{
++	struct	wifidirect_info		*pwdinfo = from_timer(pwdinfo, t, restore_p2p_state_timer);
++	_adapter *adapter = container_of(pwdinfo, _adapter, wdinfo);
+ 
+ 	if (rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+ 		return;
+@@ -4568,10 +4579,10 @@ static void restore_p2p_state_timer_process(void *FunctionContext)
+ 	p2p_protocol_wk_cmd(adapter, P2P_RESTORE_STATE_WK);
+ }
+ 
+-static void pre_tx_scan_timer_process(void *FunctionContext)
++static void pre_tx_scan_timer_process(struct timer_list *t)
+ {
+-	_adapter							*adapter = (_adapter *) FunctionContext;
+-	struct	wifidirect_info				*pwdinfo = &adapter->wdinfo;
++	struct	wifidirect_info		*pwdinfo = from_timer(pwdinfo, t, pre_tx_scan_timer);
++	_adapter *adapter = container_of(pwdinfo, _adapter, wdinfo);
+ 	_irqL							irqL;
+ 	struct mlme_priv					*pmlmepriv = &adapter->mlmepriv;
+ 	u8								_status = 0;
+@@ -4600,10 +4611,10 @@ static void pre_tx_scan_timer_process(void *FunctionContext)
+ 	_exit_critical_bh(&pmlmepriv->lock, &irqL);
+ }
+ 
+-static void find_phase_timer_process(void *FunctionContext)
++static void find_phase_timer_process(struct timer_list *t)
+ {
+-	_adapter *adapter = (_adapter *)FunctionContext;
+-	struct	wifidirect_info		*pwdinfo = &adapter->wdinfo;
++	struct	wifidirect_info		*pwdinfo = from_timer(pwdinfo, t, find_phase_timer);
++	_adapter *adapter = container_of(pwdinfo, _adapter, wdinfo);
+ 
+ 	if (rtw_p2p_chk_state(pwdinfo, P2P_STATE_NONE))
+ 		return;
+@@ -4859,11 +4870,11 @@ void rtw_init_wifidirect_timers(_adapter *padapter)
+ {
+ 	struct wifidirect_info *pwdinfo = &padapter->wdinfo;
+ 
+-	rtw_init_timer(&pwdinfo->find_phase_timer, padapter, find_phase_timer_process, padapter);
+-	rtw_init_timer(&pwdinfo->restore_p2p_state_timer, padapter, restore_p2p_state_timer_process, padapter);
+-	rtw_init_timer(&pwdinfo->pre_tx_scan_timer, padapter, pre_tx_scan_timer_process, padapter);
+-	rtw_init_timer(&pwdinfo->reset_ch_sitesurvey, padapter, reset_ch_sitesurvey_timer_process, padapter);
+-	rtw_init_timer(&pwdinfo->reset_ch_sitesurvey2, padapter, reset_ch_sitesurvey_timer_process2, padapter);
++	rtw_init_timer(&pwdinfo->find_phase_timer, padapter, find_phase_timer_process);
++	rtw_init_timer(&pwdinfo->restore_p2p_state_timer, padapter, restore_p2p_state_timer_process);
++	rtw_init_timer(&pwdinfo->pre_tx_scan_timer, padapter, pre_tx_scan_timer_process);
++	rtw_init_timer(&pwdinfo->reset_ch_sitesurvey, padapter, reset_ch_sitesurvey_timer_process);
++	rtw_init_timer(&pwdinfo->reset_ch_sitesurvey2, padapter, reset_ch_sitesurvey_timer_process2);
+ #ifdef CONFIG_CONCURRENT_MODE
+ 	rtw_init_timer(&pwdinfo->ap_p2p_switch_timer, padapter, ap_p2p_switch_timer_process, padapter);
+ #endif
+@@ -5248,8 +5259,8 @@ int rtw_p2p_enable(_adapter *padapter, enum P2P_ROLE role)
+ 			_cancel_timer_ex(&pwdinfo->pre_tx_scan_timer);
+ 			_cancel_timer_ex(&pwdinfo->reset_ch_sitesurvey);
+ 			_cancel_timer_ex(&pwdinfo->reset_ch_sitesurvey2);
+-			reset_ch_sitesurvey_timer_process(padapter);
+-			reset_ch_sitesurvey_timer_process2(padapter);
++			__reset_ch_sitesurvey_timer_process(pwdinfo);
++			__reset_ch_sitesurvey_timer_process2(pwdinfo);
+ #ifdef CONFIG_CONCURRENT_MODE
+ 			_cancel_timer_ex(&pwdinfo->ap_p2p_switch_timer);
+ #endif
+diff --git a/drivers/net/wireless/rtl8821ce/core/rtw_pwrctrl.c b/drivers/net/wireless/rtl8821ce/core/rtw_pwrctrl.c
+index 182ef5018e07..3676b4c1f00f 100644
+--- a/drivers/net/wireless/rtl8821ce/core/rtw_pwrctrl.c
++++ b/drivers/net/wireless/rtl8821ce/core/rtw_pwrctrl.c
+@@ -393,9 +393,11 @@ void rtw_ps_processor(_adapter *padapter)
+ 	return;
+ }
+ 
+-void pwr_state_check_handler(void *ctx)
++void pwr_state_check_handler(struct timer_list *t)
+ {
+-	_adapter *padapter = (_adapter *)ctx;
++	struct pwrctrl_priv *pwrpriv = from_timer(pwrpriv, t, pwr_state_check_timer);
++	struct dvobj_priv *dvobj = pwrctl_to_dvobj(pwrpriv);
++	_adapter *padapter = dvobj_get_primary_adapter(dvobj);
+ 	rtw_ps_cmd(padapter);
+ }
+ 
+@@ -1970,6 +1972,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
+ 
+ 	_init_pwrlock(&pwrctrlpriv->lock);
+ 	_init_pwrlock(&pwrctrlpriv->check_32k_lock);
++	pwrctrlpriv->adapter = padapter;
+ 	pwrctrlpriv->rf_pwrstate = rf_on;
+ 	pwrctrlpriv->ips_enter_cnts = 0;
+ 	pwrctrlpriv->ips_leave_cnts = 0;
+@@ -2032,7 +2035,7 @@ void rtw_init_pwrctrl_priv(PADAPTER padapter)
+ #endif /* CONFIG_LPS_RPWM_TIMER */
+ #endif /* CONFIG_LPS_LCLK */
+ 
+-	rtw_init_timer(&pwrctrlpriv->pwr_state_check_timer, padapter, pwr_state_check_handler, padapter);
++	rtw_init_timer(&pwrctrlpriv->pwr_state_check_timer, padapter, pwr_state_check_handler);
+ 
+ 	pwrctrlpriv->wowlan_mode = _FALSE;
+ 	pwrctrlpriv->wowlan_ap_mode = _FALSE;
+diff --git a/drivers/net/wireless/rtl8821ce/core/rtw_recv.c b/drivers/net/wireless/rtl8821ce/core/rtw_recv.c
+index 1552f369a63b..eb1e816a8023 100755
+--- a/drivers/net/wireless/rtl8821ce/core/rtw_recv.c
++++ b/drivers/net/wireless/rtl8821ce/core/rtw_recv.c
+@@ -30,7 +30,7 @@
+ 
+ 
+ #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
+-static void rtw_signal_stat_timer_hdl(void *ctx);
++static void rtw_signal_stat_timer_hdl(struct timer_list *t);
+ 
+ enum {
+ 	SIGNAL_STAT_CALC_PROFILE_0 = 0,
+@@ -145,7 +145,7 @@ sint _rtw_init_recv_priv(struct recv_priv *precvpriv, _adapter *padapter)
+ 	res = rtw_hal_init_recv_priv(padapter);
+ 
+ #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
+-	rtw_init_timer(&precvpriv->signal_stat_timer, padapter, rtw_signal_stat_timer_hdl, padapter);
++	rtw_init_timer(&precvpriv->signal_stat_timer, padapter, rtw_signal_stat_timer_hdl);
+ 
+ 	precvpriv->signal_stat_sampling_interval = 2000; /* ms */
+ 	/* precvpriv->signal_stat_converging_constant = 5000; */ /* ms */
+@@ -3213,10 +3213,10 @@ int recv_indicatepkt_reorder(_adapter *padapter, union recv_frame *prframe)
+ }
+ 
+ 
+-void rtw_reordering_ctrl_timeout_handler(void *pcontext)
++void rtw_reordering_ctrl_timeout_handler(struct timer_list *t)
+ {
+ 	_irqL irql;
+-	struct recv_reorder_ctrl *preorder_ctrl = (struct recv_reorder_ctrl *)pcontext;
++	struct recv_reorder_ctrl *preorder_ctrl = from_timer(preorder_ctrl, t, reordering_ctrl_timer);
+ 	_adapter *padapter = preorder_ctrl->padapter;
+ 	_queue *ppending_recvframe_queue = &preorder_ctrl->pending_recvframe_queue;
+ 
+@@ -4220,10 +4220,10 @@ s32 rtw_recv_entry(union recv_frame *precvframe)
+ }
+ 
+ #ifdef CONFIG_NEW_SIGNAL_STAT_PROCESS
+-static void rtw_signal_stat_timer_hdl(void *ctx)
++static void rtw_signal_stat_timer_hdl(struct timer_list *t)
+ {
+-	_adapter *adapter = (_adapter *)ctx;
+-	struct recv_priv *recvpriv = &adapter->recvpriv;
++	struct recv_priv *recvpriv = from_timer(recvpriv, t, signal_stat_timer);
++	_adapter *adapter = container_of(recvpriv, _adapter, recvpriv);
+ 
+ 	u32 tmp_s, tmp_q;
+ 	u8 avg_signal_strength = 0;
+diff --git a/drivers/net/wireless/rtl8821ce/core/rtw_sreset.c b/drivers/net/wireless/rtl8821ce/core/rtw_sreset.c
+index a93daa68a8c0..3ea40d9500a0 100644
+--- a/drivers/net/wireless/rtl8821ce/core/rtw_sreset.c
++++ b/drivers/net/wireless/rtl8821ce/core/rtw_sreset.c
+@@ -273,7 +273,7 @@ void sreset_stop_adapter(_adapter *padapter)
+ 
+ 	if (check_fwstate(pmlmepriv, _FW_UNDER_LINKING)) {
+ 		rtw_set_to_roam(padapter, 0);
+-		rtw_join_timeout_handler(padapter);
++		rtw_join_timeout(pmlmepriv);
+ 	}
+ 
+ }
+diff --git a/drivers/net/wireless/rtl8821ce/core/rtw_sta_mgt.c b/drivers/net/wireless/rtl8821ce/core/rtw_sta_mgt.c
+index 79c9c6082970..46e1bc9dda22 100644
+--- a/drivers/net/wireless/rtl8821ce/core/rtw_sta_mgt.c
++++ b/drivers/net/wireless/rtl8821ce/core/rtw_sta_mgt.c
+@@ -450,7 +450,7 @@ static void rtw_init_recv_timer(struct recv_reorder_ctrl *preorder_ctrl)
+ {
+ 	_adapter *padapter = preorder_ctrl->padapter;
+ 
+-	rtw_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter, rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
++	rtw_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter, rtw_reordering_ctrl_timeout_handler);
+ 
+ }
+ 
+@@ -516,7 +516,7 @@ struct	sta_info *rtw_alloc_stainfo(struct	sta_priv *pstapriv, u8 *hwaddr)
+ 		for (i = 0; i < 16; i++)
+ 			_rtw_memcpy(&psta->sta_recvpriv.rxcache.tid_rxseq[i], &wRxSeqInitialValue, 2);
+ 
+-		rtw_init_timer(&psta->addba_retry_timer, psta->padapter, addba_timer_hdl, psta);
++		rtw_init_timer(&psta->addba_retry_timer, psta->padapter, addba_timer_hdl);
+ #ifdef CONFIG_IEEE80211W
+ 		rtw_init_timer(&psta->dot11w_expire_timer, psta->padapter, sa_query_timer_hdl, psta);
+ #endif /* CONFIG_IEEE80211W */
+diff --git a/drivers/net/wireless/rtl8821ce/hal/hal_btcoex.c b/drivers/net/wireless/rtl8821ce/hal/hal_btcoex.c
+index 2a4f4e31d978..c47a9d125f15 100644
+--- a/drivers/net/wireless/rtl8821ce/hal/hal_btcoex.c
++++ b/drivers/net/wireless/rtl8821ce/hal/hal_btcoex.c
+@@ -578,7 +578,7 @@ u32 halbtcoutsrc_GetWifiLinkStatus(PBTC_COEXIST pBtCoexist)
+ 	return retVal;
+ }
+ 
+-static void _btmpoper_timer_hdl(void *p)
++static void _btmpoper_timer_hdl(struct timer_list *t)
+ {
+ 	if (GLBtcBtMpRptWait) {
+ 		GLBtcBtMpRptWait = 0;
+@@ -2457,7 +2457,7 @@ u8 EXhalbtcoutsrc_InitlizeVariables(void *padapter)
+ 	/* BT Control H2C/C2H*/
+ 	GLBtcBtMpOperSeq = 0;
+ 	_rtw_mutex_init(&GLBtcBtMpOperLock);
+-	rtw_init_timer(&GLBtcBtMpOperTimer, padapter, _btmpoper_timer_hdl, pBtCoexist);
++	rtw_init_timer(&GLBtcBtMpOperTimer, padapter, _btmpoper_timer_hdl);
+ 	_rtw_init_sema(&GLBtcBtMpRptSema, 0);
+ 	GLBtcBtMpRptSeq = 0;
+ 	GLBtcBtMpRptStatus = 0;
+diff --git a/drivers/net/wireless/rtl8821ce/hal/led/hal_pci_led.c b/drivers/net/wireless/rtl8821ce/hal/led/hal_pci_led.c
+index bdfeef787d27..3fccb14849ad 100644
+--- a/drivers/net/wireless/rtl8821ce/hal/led/hal_pci_led.c
++++ b/drivers/net/wireless/rtl8821ce/hal/led/hal_pci_led.c
+@@ -785,9 +785,9 @@ void BlinkHandler(PLED_PCIE pLed)
+  *		Callback function of LED BlinkTimer,
+  *		it just schedules to corresponding BlinkWorkItem/led_blink_hdl
+  *   */
+-void BlinkTimerCallback(void *data)
++void BlinkTimerCallback(struct timer_list *t)
+ {
+-	PLED_PCIE	 pLed = (PLED_PCIE)data;
++	PLED_PCIE	 pLed = from_timer(pLed, t, BlinkTimer);
+ 	_adapter		*padapter = pLed->padapter;
+ 
+ 	/* RTW_INFO("%s\n", __FUNCTION__); */
+@@ -2148,7 +2148,7 @@ InitLed(
+ 
+ 	ResetLedStatus(pLed);
+ 
+-	rtw_init_timer(&(pLed->BlinkTimer), padapter, BlinkTimerCallback, pLed);
++	rtw_init_timer(&(pLed->BlinkTimer), padapter, BlinkTimerCallback);
+ }
+ 
+ 
+diff --git a/drivers/net/wireless/rtl8821ce/hal/phydm/phydm_interface.c b/drivers/net/wireless/rtl8821ce/hal/phydm/phydm_interface.c
+index 156f090bc5a6..277e1099143c 100644
+--- a/drivers/net/wireless/rtl8821ce/hal/phydm/phydm_interface.c
++++ b/drivers/net/wireless/rtl8821ce/hal/phydm/phydm_interface.c
+@@ -572,6 +572,10 @@ odm_set_timer(
+ 
+ }
+ 
++#if 0
++/* Disabled because all users would need to be converted to the Linux 4.15
++* timer API change. However it has no users so just get rid of this helper.
++ */
+ void
+ odm_initialize_timer(
+ 	struct PHY_DM_STRUCT			*p_dm_odm,
+@@ -594,7 +598,7 @@ odm_initialize_timer(
+ 	PlatformInitializeTimer(adapter, p_timer, call_back_func, p_context, sz_id);
+ #endif
+ }
+-
++#endif
+ 
+ void
+ odm_cancel_timer(
+diff --git a/drivers/net/wireless/rtl8821ce/include/hal_com_led.h b/drivers/net/wireless/rtl8821ce/include/hal_com_led.h
+index 01dbb9c54138..e3c2cd97ebf4 100644
+--- a/drivers/net/wireless/rtl8821ce/include/hal_com_led.h
++++ b/drivers/net/wireless/rtl8821ce/include/hal_com_led.h
+@@ -373,7 +373,7 @@ struct led_priv {
+ 			(adapter)->ledpriv.SwLedOff((adapter), (pLed)); \
+ 	} while (0)
+ 
+-void BlinkTimerCallback(void *data);
++void BlinkTimerCallback(struct timer_list *t);
+ void BlinkWorkItemCallback(_workitem *work);
+ 
+ void ResetLedStatus(PLED_DATA pLed);
+diff --git a/drivers/net/wireless/rtl8821ce/include/osdep_service.h b/drivers/net/wireless/rtl8821ce/include/osdep_service.h
+index cbce327379b6..ef43d85210f0 100644
+--- a/drivers/net/wireless/rtl8821ce/include/osdep_service.h
++++ b/drivers/net/wireless/rtl8821ce/include/osdep_service.h
+@@ -343,7 +343,7 @@ extern void	rtw_udelay_os(int us);
+ extern void rtw_yield_os(void);
+ 
+ 
+-extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc, void *ctx);
++extern void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc);
+ 
+ 
+ __inline static unsigned char _cancel_timer_ex(_timer *ptimer)
+diff --git a/drivers/net/wireless/rtl8821ce/include/osdep_service_linux.h b/drivers/net/wireless/rtl8821ce/include/osdep_service_linux.h
+index 5ec1b71cbdca..5510009f8856 100644
+--- a/drivers/net/wireless/rtl8821ce/include/osdep_service_linux.h
++++ b/drivers/net/wireless/rtl8821ce/include/osdep_service_linux.h
+@@ -288,12 +288,10 @@ __inline static void rtw_list_delete(_list *plist)
+ 	list_del_init(plist);
+ }
+ 
+-__inline static void _init_timer(_timer *ptimer, _nic_hdl nic_hdl, void *pfunc, void *cntx)
++__inline static void _init_timer(_timer *ptimer, _nic_hdl nic_hdl, void *pfunc)
+ {
+ 	/* setup_timer(ptimer, pfunc,(u32)cntx);	 */
+-	ptimer->function = pfunc;
+-	ptimer->data = (unsigned long)cntx;
+-	init_timer(ptimer);
++	timer_setup(ptimer, pfunc, 0);
+ }
+ 
+ __inline static void _set_timer(_timer *ptimer, u32 delay_time)
+diff --git a/drivers/net/wireless/rtl8821ce/include/rtw_bt_mp.h b/drivers/net/wireless/rtl8821ce/include/rtw_bt_mp.h
+index cd6ed0aa14e6..0383d08c200b 100644
+--- a/drivers/net/wireless/rtl8821ce/include/rtw_bt_mp.h
++++ b/drivers/net/wireless/rtl8821ce/include/rtw_bt_mp.h
+@@ -190,7 +190,7 @@ MPTBT_FwC2hBtMpCtrl(
+ 	u1Byte		length
+ );
+ 
+-void MPh2c_timeout_handle(void *FunctionContext);
++void MPh2c_timeout_handle(struct timer_list *t);
+ 
+ VOID mptbt_BtControlProcess(
+ 	PADAPTER	Adapter,
+diff --git a/drivers/net/wireless/rtl8821ce/include/rtw_mlme.h b/drivers/net/wireless/rtl8821ce/include/rtw_mlme.h
+index c9ebaff8c5c8..c98a28b40534 100644
+--- a/drivers/net/wireless/rtl8821ce/include/rtw_mlme.h
++++ b/drivers/net/wireless/rtl8821ce/include/rtw_mlme.h
+@@ -1040,16 +1040,17 @@ extern void rtw_update_registrypriv_dev_network(_adapter *adapter);
+ 
+ extern void rtw_get_encrypt_decrypt_from_registrypriv(_adapter *adapter);
+ 
+-extern void rtw_join_timeout_handler(void *ctx);
+-extern void rtw_scan_timeout_handler(void *ctx);
++extern void rtw_join_timeout_handler(struct timer_list *t);
++extern void rtw_join_timeout(struct mlme_priv *pmlmepriv);
++extern void rtw_scan_timeout_handler(struct timer_list *t);
+ 
+-extern void rtw_dynamic_check_timer_handlder(void *ctx);
++extern void rtw_dynamic_check_timer_handlder(struct timer_list *t);
+ extern void rtw_iface_dynamic_check_timer_handlder(_adapter *adapter);
+ 
+ #ifdef CONFIG_SET_SCAN_DENY_TIMER
+ bool rtw_is_scan_deny(_adapter *adapter);
+ void rtw_clear_scan_deny(_adapter *adapter);
+-void rtw_set_scan_deny_timer_hdl(void *ctx);
++void rtw_set_scan_deny_timer_hdl(struct timer_list *t);
+ void rtw_set_scan_deny(_adapter *adapter, u32 ms);
+ #else
+ #define rtw_is_scan_deny(adapter) _FALSE
+diff --git a/drivers/net/wireless/rtl8821ce/include/rtw_mlme_ext.h b/drivers/net/wireless/rtl8821ce/include/rtw_mlme_ext.h
+index 27435732e8ca..5ab808857b6b 100644
+--- a/drivers/net/wireless/rtl8821ce/include/rtw_mlme_ext.h
++++ b/drivers/net/wireless/rtl8821ce/include/rtw_mlme_ext.h
+@@ -1047,9 +1047,9 @@ void linked_status_chk(_adapter *padapter, u8 from_timer);
+ 
+ void _linked_info_dump(_adapter *padapter);
+ 
+-void survey_timer_hdl(void *ctx);
+-void link_timer_hdl(void *ctx);
+-void addba_timer_hdl(void *ctx);
++void survey_timer_hdl(struct timer_list *t);
++void link_timer_hdl(struct timer_list *t);
++void addba_timer_hdl(struct timer_list *t);
+ #ifdef CONFIG_IEEE80211W
+ void sa_query_timer_hdl(void *ctx);
+ #endif /* CONFIG_IEEE80211W */
+diff --git a/drivers/net/wireless/rtl8821ce/include/rtw_pwrctrl.h b/drivers/net/wireless/rtl8821ce/include/rtw_pwrctrl.h
+index 2dbb83901a9b..eb35edf90571 100644
+--- a/drivers/net/wireless/rtl8821ce/include/rtw_pwrctrl.h
++++ b/drivers/net/wireless/rtl8821ce/include/rtw_pwrctrl.h
+@@ -315,6 +315,7 @@ struct aoac_report {
+ };
+ 
+ struct pwrctrl_priv {
++	_adapter *adapter;
+ 	_pwrlock	lock;
+ 	_pwrlock	check_32k_lock;
+ 	volatile u8 rpwm; /* requested power state for fw */
+diff --git a/drivers/net/wireless/rtl8821ce/include/rtw_recv.h b/drivers/net/wireless/rtl8821ce/include/rtw_recv.h
+index 4a95d239bb95..4c90ebb3acbc 100644
+--- a/drivers/net/wireless/rtl8821ce/include/rtw_recv.h
++++ b/drivers/net/wireless/rtl8821ce/include/rtw_recv.h
+@@ -667,7 +667,7 @@ sint rtw_enqueue_recvbuf_to_head(struct recv_buf *precvbuf, _queue *queue);
+ sint rtw_enqueue_recvbuf(struct recv_buf *precvbuf, _queue *queue);
+ struct recv_buf *rtw_dequeue_recvbuf(_queue *queue);
+ 
+-void rtw_reordering_ctrl_timeout_handler(void *pcontext);
++void rtw_reordering_ctrl_timeout_handler(struct timer_list *t);
+ 
+ void rx_query_phy_status(union recv_frame *rframe, u8 *phy_stat);
+ int rtw_inc_and_chk_continual_no_rx_packet(struct sta_info *sta, int tid_index);
+diff --git a/drivers/net/wireless/rtl8821ce/os_dep/linux/os_intfs.c b/drivers/net/wireless/rtl8821ce/os_dep/linux/os_intfs.c
+index ef957aa67e8e..6b32dd751777 100644
+--- a/drivers/net/wireless/rtl8821ce/os_dep/linux/os_intfs.c
++++ b/drivers/net/wireless/rtl8821ce/os_dep/linux/os_intfs.c
+@@ -1924,7 +1924,7 @@ struct dvobj_priv *devobj_init(void)
+ #endif
+ #endif
+ 
+-	rtw_init_timer(&(pdvobj->dynamic_chk_timer), NULL, rtw_dynamic_check_timer_handlder, pdvobj);
++	rtw_init_timer(&(pdvobj->dynamic_chk_timer), NULL, rtw_dynamic_check_timer_handlder);
+ 
+ #ifdef CONFIG_MCC_MODE
+ 	_rtw_mutex_init(&(pdvobj->mcc_objpriv.mcc_mutex));
+diff --git a/drivers/net/wireless/rtl8821ce/os_dep/osdep_service.c b/drivers/net/wireless/rtl8821ce/os_dep/osdep_service.c
+index 8fdb4bbe09b7..f558edd78951 100644
+--- a/drivers/net/wireless/rtl8821ce/os_dep/osdep_service.c
++++ b/drivers/net/wireless/rtl8821ce/os_dep/osdep_service.c
+@@ -1066,12 +1066,12 @@ void rtw_list_insert_tail(_list *plist, _list *phead)
+ 
+ }
+ 
+-void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc, void *ctx)
++void rtw_init_timer(_timer *ptimer, void *padapter, void *pfunc)
+ {
+ 	_adapter *adapter = (_adapter *)padapter;
+ 
+ #ifdef PLATFORM_LINUX
+-	_init_timer(ptimer, adapter->pnetdev, pfunc, ctx);
++	_init_timer(ptimer, adapter->pnetdev, pfunc);
+ #endif
+ #ifdef PLATFORM_FREEBSD
+ 	_init_timer(ptimer, adapter->pifp, pfunc, ctx);
