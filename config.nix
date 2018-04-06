@@ -41,6 +41,8 @@
     hcc = pkgs.callPackage ./nix/hcc/hcc.nix {};
     hip = pkgs.callPackage ./nix/hip {};
     rocm-smi = pkgs.callPackage ./nix/rocm-smi {};
+    rocm-cmake = pkgs.callPackage ./nix/rocm-cmake {};
+    clang-ocl = pkgs.callPackage ./nix/clang-ocl {};
     global = pkgs.callPackage ./nix/global {};
     # emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = (pkgs.emacsPackagesNgGen pkgs.emacs25Macport).overrideScope (super: self: {
