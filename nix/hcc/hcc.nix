@@ -2,16 +2,9 @@
   hcc-clang, hcc-clang-unwrapped, rocr, libunwind, file, rocminfo }:
 stdenv.mkDerivation rec {
   name = "hcc";
-  version = "1.7.0";
+  version = "1.7.1";
   tag = "roc-${version}";
-  src = fetchFromGitHub {
-    owner = "RadeonOpenCompute";
-    repo = "hcc";
-    rev = tag;
-    sha256 = "1qlydaimiby078riin8zhp073xnrlkdr4qd5zl8s3y08nvhlv713";
-    fetchSubmodules = true;
-    leaveDotGit = true;
-  };
+  src = fetchFromGitHub (import ./hcc-sources.nix);
   propagatedBuildInputs = [ file libunwind ];
   nativeBuildInputs = [ cmake pkgconfig python ];
   buildInputs = [ rocr ];

@@ -7,14 +7,7 @@ llvmPackages.stdenv.mkDerivation rec {
   name = "hcc-clang";
   version = "1.7.1";
   tag = "roc-${version}";
-  src = fetchFromGitHub {
-    owner = "RadeonOpenCompute";
-    repo = "hcc";
-    rev = tag;
-    sha256 = "1qlydaimiby078riin8zhp073xnrlkdr4qd5zl8s3y08nvhlv713";
-    fetchSubmodules = true;
-    leaveDotGit = true;
-  };
+  src = fetchFromGitHub (import ./hcc-sources.nix);
   nativeBuildInputs = [ cmake pkgconfig python git ];
   buildInputs = [ libunwind rocr rocminfo ];
   cmakeFlags = [
