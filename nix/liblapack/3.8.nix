@@ -30,6 +30,12 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ atlasMaybeShared ];
   buildInputs = [ gfortran cmake ];
   nativeBuildInputs = [ python2 ];
+  preConfigure = stdenv.lib.optionalString buildCBLAS ''
+    sed -e 's,set(LAPACK_DIR "''${_CBLAS_PREFIX}/@CMAKE_INSTALL_LIBDIR@/cmake/lapack-@LAPACK_VERSION@"),set(LAPACK_DIR "@CMAKE_INSTALL_LIBDIR@/cmake/lapack-@LAPACK_VERSION@"),' \
+        -e 's,set(CBLAS_INCLUDE_DIRS ''${_CBLAS_PREFIX}/include),set(CBLAS_INCLUDE_DIRS @CMAKE_INSTALL_INCLUDEDIR@),' \
+        -e '/# Load lapacke targets from the install tree./,/endif()/ d' \
+        -i CBLAS/cmake/cblas-config-install.cmake.in
+  '';
 
   cmakeFlags = [
     "-DUSE_OPTIMIZED_BLAS=ON"
