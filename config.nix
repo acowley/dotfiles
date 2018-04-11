@@ -40,6 +40,8 @@
     hcc-clang = hcc-env.clang;
     hcc = pkgs.callPackage ./nix/hcc/hcc.nix {};
     hip = pkgs.callPackage ./nix/hip {};
+    rocblas-check = pkgs.callPackage ./nix/rocblas { doCheck = true; };
+    rocblas = pkgs.callPackage ./nix/rocblas {};
     rocm-smi = pkgs.callPackage ./nix/rocm-smi {};
     rocm-cmake = pkgs.callPackage ./nix/rocm-cmake {};
     clang-ocl = pkgs.callPackage ./nix/clang-ocl {};
