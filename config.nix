@@ -43,6 +43,7 @@
     rocm-smi = pkgs.callPackage ./nix/rocm-smi {};
     rocm-cmake = pkgs.callPackage ./nix/rocm-cmake {};
     clang-ocl = pkgs.callPackage ./nix/clang-ocl {};
+    liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
     global = pkgs.callPackage ./nix/global {};
     # emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = (pkgs.emacsPackagesNgGen pkgs.emacs25Macport).overrideScope (super: self: {
