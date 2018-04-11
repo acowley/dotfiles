@@ -1,7 +1,7 @@
 diff -ruN a/CMakeLists.txt b/CMakeLists.txt
---- a/CMakeLists.txt	2018-03-30 14:21:18.855289382 -0400
-+++ b/CMakeLists.txt	2018-03-30 14:24:04.740286633 -0400
-@@ -310,77 +310,10 @@
+--- a/CMakeLists.txt	2018-04-06 13:58:38.170878227 -0400
++++ b/CMakeLists.txt	2018-04-06 14:00:14.048608959 -0400
+@@ -310,78 +310,10 @@
  set(LLVM_EXTERNAL_COMPILER_RT_SOURCE_DIR "${PROJECT_SOURCE_DIR}/compiler-rt")
  set(LLVM_EXTERNAL_LLD_SOURCE_DIR "${PROJECT_SOURCE_DIR}/lld")
  
@@ -29,6 +29,7 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
 -install(PROGRAMS $<TARGET_FILE:llvm-as>
 -                 $<TARGET_FILE:llvm-dis>
 -                 $<TARGET_FILE:llvm-link>
+-                 $<TARGET_FILE:llvm-lto>
 -                 $<TARGET_FILE:llvm-objdump>
 -                 $<TARGET_FILE:llvm-mc>
 -                 $<TARGET_FILE:opt>
@@ -80,7 +81,7 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
  
  # move headers to build dir before building rocdl and hcc lib
  add_subdirectory(include)
-@@ -475,7 +408,6 @@
+@@ -476,7 +408,6 @@
  add_subdirectory(tests)
  add_subdirectory(amp-conformance)
  add_subdirectory(stl-test)

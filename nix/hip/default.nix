@@ -2,18 +2,18 @@
   hcc, rocr, roct, rocminfo }:
 stdenv.mkDerivation rec {
   name = "hip";
-  version = "1.7.0";
+  version = "1.7.1";
   tag = "roc-${version}";
   src = fetchFromGitHub {
     owner = "ROCm-Developer-Tools";
     repo = "HIP";
     rev = tag;
-    sha256 = "1jds1d45wa0qqns907z50zwzmpygl94yc6qn52b8sdll3klgf7l1";
+    sha256 = "1h3cwz1fxfhpzvyqhhh4ap6q804gp03jjb8kyq96j28xqns4mzff";
   };
   propagatedBuildInputs = [ hcc roct ];
   buildInputs = [ rocminfo ];
   nativeBuildInputs = [ cmake git ];
-  cmakeFlags = [ "-DHSA_PATH=${rocr}" "-DHCC_HOME=${hcc}" "-DCMAKE_CURRENT_SOURCE_DIR=${src}"];
+  cmakeFlags = [ "-DHSA_PATH=${rocr}" "-DHCC_HOME=${hcc}" "-DCMAKE_CURRENT_SOURCE_DIR=${src}" ];
   patchPhase = ''
     for f in $(find bin -type f); do
       sed -e 's,#!/usr/bin/perl,#!${perl}/bin/perl,' \

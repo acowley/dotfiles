@@ -15,9 +15,7 @@ stdenv.mkDerivation rec {
     "-DROCDL_BUILD_DIR=${hcc-clang-unwrapped}/rocdl"
     "-DHCC_INTEGRATE_ROCDL=OFF"
     "-DCMAKE_BUILD_TYPE=Release"
-  ]
-  ++ stdenv.lib.optional (stdenv.cc.libc != null) "-DC_INCLUDE_DIRS=${stdenv.cc.libc}/include"
-  ;
+  ];
 
   preConfigure = ''
     for f in $(find lib -name '*.in'); do

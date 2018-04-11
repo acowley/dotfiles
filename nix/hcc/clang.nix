@@ -14,8 +14,7 @@ llvmPackages.stdenv.mkDerivation rec {
     "-DCMAKE_CXX_FLAGS=-std=c++11"
     "-DCMAKE_BUILD_TYPE=Release"
   ]
-  ++ stdenv.lib.optional stdenv.isLinux "-DGCC_INSTALL_PREFIX=${gcc}"
-  ++ stdenv.lib.optional (stdenv.cc.libc != null) "-DC_INCLUDE_DIRS=${stdenv.cc.libc}/include";
+  ++ stdenv.lib.optional stdenv.isLinux "-DGCC_INSTALL_PREFIX=${gcc}";
 
   # - Stop the build after the clang and rocdl builds
   # - Fix bash paths in various tool scripts
