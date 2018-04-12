@@ -37,4 +37,11 @@ stdenv.mkDerivation rec {
     "-DCMAKE_INSTALL_INCLUDEDIR=include"
   ] ++ (let flag = if doCheck then "ON" else "OFF";
         in [ "-DBUILD_TEST=${flag} -DBUILD_BENCHMARK=${flag}" ]);
+  postInstall = ''
+    mkdir -p $out/include $out/lib
+    cp -rs $out/hiprand/include/* $out/include
+    cp -rs $out/rocrand/include/* $out/include
+    cp -rs $out/hiprand/lib/* $out/lib
+    cp -rs $out/rocrand/lib/* $out/lib
+  '';
 }
