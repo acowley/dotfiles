@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
     ++ stdenv.lib.optionals doCheck [ gfortran boost gtest liblapack_3_8 ];
   cmakeFlags = [
     "-DCMAKE_CXX_COMPILER=${hcc}/bin/hcc"
+    "-DCMAKE_INSTALL_INCLUDEDIR=include"
   ] ++ stdenv.lib.optionals doCheck [
    "-DBUILD_CLIENTS_SAMPLES=YES"
    "-DBUILD_CLIENTS_TESTS=YES"
