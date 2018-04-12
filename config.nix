@@ -43,7 +43,9 @@
     rocblas-check = pkgs.callPackage ./nix/rocblas { doCheck = true; };
     rocblas = pkgs.callPackage ./nix/rocblas {};
     rocrand-check = pkgs.callPackage ./nix/rocrand { doCheck = true; };
-    rocrand = pkgs.callPackage ./nix/rocrand { doCheck = true; };
+    rocrand = pkgs.callPackage ./nix/rocrand {};
+    rocfft-check = pkgs.callPackage ./nix/rocfft { doCheck = true; };
+    rocfft = pkgs.callPackage ./nix/rocfft {};
     rocm-smi = pkgs.callPackage ./nix/rocm-smi {};
     rocm-cmake = pkgs.callPackage ./nix/rocm-cmake {};
     clang-ocl = pkgs.callPackage ./nix/clang-ocl {};
