@@ -40,8 +40,12 @@
     hcc-clang = hcc-env.clang;
     hcc = pkgs.callPackage ./nix/hcc/hcc.nix {};
     hip = pkgs.callPackage ./nix/hip {};
+
+    hipblas-check = pkgs.callPackage ./nix/hipblas { doCheck = true; };
+    hipblas = pkgs.callPackage ./nix/hipblas {};
     rocblas-check = pkgs.callPackage ./nix/rocblas { doCheck = true; };
     rocblas = pkgs.callPackage ./nix/rocblas {};
+
     rocrand-check = pkgs.callPackage ./nix/rocrand { doCheck = true; };
     rocrand = pkgs.callPackage ./nix/rocrand {};
     rocfft-check = pkgs.callPackage ./nix/rocfft { doCheck = true; };
