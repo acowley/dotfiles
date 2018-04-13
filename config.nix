@@ -57,6 +57,8 @@
     miopen = pkgs.callPackage ./nix/miopen {};
     miopen-hip = pkgs.callPackage ./nix/miopen { useHip = true; };
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
+
+    zenstates = pkgs.callPackage ./nix/zenstates {};
     global = pkgs.callPackage ./nix/global {};
     # emacs = pkgs.emacs25Macport;
     emacsMacPackagesNg = (pkgs.emacsPackagesNgGen pkgs.emacs25Macport).overrideScope (super: self: {
