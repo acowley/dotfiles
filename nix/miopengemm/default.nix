@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, rocm-cmake, rocm-opencl-runtime }:
+{ stdenv, fetchFromGitHub, cmake, rocm-cmake, rocm-opencl-runtime, hcc }:
 stdenv.mkDerivation {
   name = "miopengemm";
   version = "2018-04-03";
@@ -11,8 +11,9 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ cmake rocm-cmake ];
   buildInputs = [ rocm-opencl-runtime ];
   cmakeFlags = [
+    "-DCMAKE_CXX_COMPILER=${hcc}/bin/hcc"
     "-DOPENCL_INCLUDE_DIRS=${rocm-opencl-runtime}/include/opencl2.2"
-    "-DOPENCL_LIBRARIES=${rocm-opencl-runtime}/lib"
+    "-DOPENCL_LIBRARIES=${rocm-opencl-runtime}/lib/libOpenCL.so"
     "-DCMAKE_INSTALL_INCLUDEDIR=include"
   ];
 }
