@@ -8,12 +8,12 @@ let pyenv = python.withPackages (ps:
                with ps; [pyyaml pip wheel setuptools virtualenv]); in
 stdenv.mkDerivation rec {
   name = "rocBLAS";
-  version = "0.12.1.1";
+  version = "12.2.1";
   src = fetchFromGitHub {
     owner = "ROCmSoftwarePlatform";
     repo = "rocBLAS";
     rev = "v${version}";
-    sha256 = "0m9ws6a83nxwg42g85ihldnjrn0kmw0wc499h45nc8y6rq2v58vj";
+    sha256 = "1vkv968m692psw7jdajm6l701d5syg6g9j4njl49g371s2nl67ab";
   };
   nativeBuildInputs = [ cmake rocm-cmake pkgconfig git ];
   buildInputs = [ libunwind pyenv hcc hip rocminfo rocr ]
