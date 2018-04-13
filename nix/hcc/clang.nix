@@ -1,4 +1,4 @@
-{ stdenv, llvmPackages, fetchFromGitHub, cmake, pkgconfig, python, git, libunwind, rocr, rocminfo }:
+{ stdenv, llvmPackages, fetchFromGitHub, cmake, pkgconfig, python, git, rocr, rocminfo }:
 let
   gcc = if stdenv.cc.isGNU then stdenv.cc.cc else stdenv.cc.cc.gcc;
   release_version = "6.0.0";
@@ -9,7 +9,7 @@ llvmPackages.stdenv.mkDerivation rec {
   tag = "roc-${version}";
   src = fetchFromGitHub (import ./hcc-sources.nix);
   nativeBuildInputs = [ cmake pkgconfig python git ];
-  buildInputs = [ libunwind rocr rocminfo ];
+  buildInputs = [ rocr rocminfo ];
   cmakeFlags = [
     "-DCMAKE_CXX_FLAGS=-std=c++11"
     "-DCMAKE_BUILD_TYPE=Release"

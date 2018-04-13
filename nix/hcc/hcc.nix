@@ -1,11 +1,11 @@
 { stdenv, llvmPackages, fetchFromGitHub, cmake, pkgconfig, writeText, python,
-  hcc-clang, hcc-clang-unwrapped, rocr, libunwind, file, rocminfo }:
+  hcc-clang, hcc-clang-unwrapped, rocr, file, rocminfo }:
 stdenv.mkDerivation rec {
   name = "hcc";
   version = "1.7.1";
   tag = "roc-${version}";
   src = fetchFromGitHub (import ./hcc-sources.nix);
-  propagatedBuildInputs = [ file libunwind ];
+  propagatedBuildInputs = [ file rocr rocminfo ];
   nativeBuildInputs = [ cmake pkgconfig python ];
   buildInputs = [ rocr ];
   cmakeFlags = [
