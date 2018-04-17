@@ -60,6 +60,19 @@
 
     rocprim = pkgs.callPackage ./nix/rocprim {};
     rocm-thrust = pkgs.callPackage ./nix/rocm-thrust {};
+    google-gflags-dyn = pkgs.google-gflags.overrideAttrs (old: {
+      cmakeFlags = pkgs.lib.filter (f: isNull (builtins.match ".*STATIC.*" f)) old.cmakeFlags;
+    });
+    rocm-caffe2 = pkgs.callPackage ./nix/rocm-caffe2 {
+      eigen3 = pkgs.eigen3_3;
+      inherit (pkgs.python3Packages) python future six numpy pydot;
+      protobuf = pkgs.protobuf3_1;
+      python-protobuf = pkgs.python3Packages.protobuf3_1;
+      # Used only for image loading.
+      opencv3 = pkgs.opencv3WithoutCuda;
+      google-gflags = google-gflags-dyn;
+    };
+    rocm-caffe2-check = rocm-caffe2.override { doCheck = true; };
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
 
     zenstates = pkgs.callPackage ./nix/zenstates {};
