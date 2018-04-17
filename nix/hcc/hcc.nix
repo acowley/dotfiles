@@ -48,9 +48,11 @@ stdenv.mkDerivation rec {
   postFixup = ''
     ln -s ${hcc-clang-unwrapped}/bin/* $out/bin
     ln -sf ${hcc-clang}/bin/* $out/bin
-    ln -s ${hcc-clang-unwrapped}/include $out/include/hcc
     cp -rs ${hcc-clang-unwrapped}/lib/* $out/lib
+    cp -rs ${hcc-clang-unwrapped}/include $out/include
+    ln -s $out/include $out/include/hcc
   '';
+  # ln -s ${hcc-clang-unwrapped}/include $out/include/hcc
 
   # We get several warnings about unused include paths during
   # compilation. We quiet them here, though it would be better to not
