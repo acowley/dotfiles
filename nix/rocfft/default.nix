@@ -17,6 +17,7 @@ stdenv.mkDerivation rec {
     "-DCMAKE_CXX_COMPILER=${hcc}/bin/hcc"
     "-DHSA_HEADER=${rocr}/include"
     "-DHSA_LIBRARY=${rocr}/lib/libhsa-runtime64.so"
+    "-DCMAKE_INSTALL_INCLUDEDIR=include"
   ] ++ stdenv.lib.optionals doCheck [
     "-DBUILD_CLIENTS_TESTS=ON"
     "-DBUILD_CLIENTS_BENCHMARKS=ON"
