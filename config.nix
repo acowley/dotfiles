@@ -53,9 +53,13 @@
     rocm-smi = pkgs.callPackage ./nix/rocm-smi {};
     rocm-cmake = pkgs.callPackage ./nix/rocm-cmake {};
     clang-ocl = pkgs.callPackage ./nix/clang-ocl {};
+
     miopengemm = pkgs.callPackage ./nix/miopengemm {};
     miopen = pkgs.callPackage ./nix/miopen {};
     miopen-hip = pkgs.callPackage ./nix/miopen { useHip = true; };
+
+    rocprim = pkgs.callPackage ./nix/rocprim {};
+    rocm-thrust = pkgs.callPackage ./nix/rocm-thrust {};
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
 
     zenstates = pkgs.callPackage ./nix/zenstates {};
