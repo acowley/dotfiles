@@ -184,8 +184,7 @@
 
     # easyloggingpp = pkgs.callPackage ./nix/easyloggingpp {};
 
-    gtsam = pkgs.callPackage ./nix/gtsam/next.nix {};
-    gtsamOld = pkgs.callPackage ./nix/gtsam {};
+    gtsam = pkgs.callPackage ./nix/gtsam {};
 
     cquery = pkgs.callPackage ./nix/cquery {};
 
