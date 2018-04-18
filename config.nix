@@ -19,60 +19,10 @@
       };
     };
   };
+  overlays = if builtins.pathExists (builtins.toPath "/System/Library")
+             then []
+             else [ (import ./rocm.nix) ];
   packageOverrides = pkgs: rec {
-    hcc-clang-unwrapped = pkgs.callPackage ./nix/hcc/clang.nix {};
-    hcc-env = let self = {
-      clang = pkgs.ccWrapperFun {
-        cc = hcc-clang-unwrapped;
-        inherit (pkgs.stdenv.cc) bintools libc nativeTools nativeLibc;
-        extraPackages = [ pkgs.libstdcxxHook ];
-        extraBuildCommands = ''
-          mkdir -p $out/include
-          ln -s ${hcc-clang-unwrapped}/include $out/include/hcc
-          ln -s $out/bin/clang++ $out/bin/hcc
-        '';
-      };
-      stdenv = pkgs.stdenv.override (drv: {
-        allowedRequisites = null;
-        cc = self.clang;
-      });
-    }; in self;
-    hcc-clang = hcc-env.clang;
-    hcc = pkgs.callPackage ./nix/hcc/hcc.nix {};
-    hip = pkgs.callPackage ./nix/hip {};
-
-    hipblas-check = pkgs.callPackage ./nix/hipblas { doCheck = true; };
-    hipblas = pkgs.callPackage ./nix/hipblas {};
-    rocblas-check = pkgs.callPackage ./nix/rocblas { doCheck = true; };
-    rocblas = pkgs.callPackage ./nix/rocblas {};
-
-    rocrand-check = pkgs.callPackage ./nix/rocrand { doCheck = true; };
-    rocrand = pkgs.callPackage ./nix/rocrand {};
-    rocfft-check = pkgs.callPackage ./nix/rocfft { doCheck = true; };
-    rocfft = pkgs.callPackage ./nix/rocfft {};
-    rocm-smi = pkgs.callPackage ./nix/rocm-smi {};
-    rocm-cmake = pkgs.callPackage ./nix/rocm-cmake {};
-    clang-ocl = pkgs.callPackage ./nix/clang-ocl {};
-
-    miopengemm = pkgs.callPackage ./nix/miopengemm {};
-    miopen = pkgs.callPackage ./nix/miopen {};
-    miopen-hip = pkgs.callPackage ./nix/miopen { useHip = true; };
-
-    rocprim = pkgs.callPackage ./nix/rocprim {};
-    rocm-thrust = pkgs.callPackage ./nix/rocm-thrust {};
-    google-gflags-dyn = pkgs.google-gflags.overrideAttrs (old: {
-      cmakeFlags = pkgs.lib.filter (f: isNull (builtins.match ".*STATIC.*" f)) old.cmakeFlags;
-    });
-    rocm-caffe2 = pkgs.callPackage ./nix/rocm-caffe2 {
-      eigen3 = pkgs.eigen3_3;
-      inherit (pkgs.python3Packages) python future six numpy pydot;
-      protobuf = pkgs.protobuf3_1;
-      python-protobuf = pkgs.python3Packages.protobuf3_1;
-      # Used only for image loading.
-      opencv3 = pkgs.opencv3WithoutCuda;
-      google-gflags = google-gflags-dyn;
-    };
-    rocm-caffe2-check = rocm-caffe2.override { doCheck = true; };
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
 
     zenstates = pkgs.callPackage ./nix/zenstates {};
@@ -238,8 +188,6 @@
     gtsamOld = pkgs.callPackage ./nix/gtsam {};
 
     cquery = pkgs.callPackage ./nix/cquery {};
-
-    cquerypp = pkgs.callPackage ./nix/cquery/cxx.nix {};
 
     libsimdpp = pkgs.callPackage ./nix/libsimdpp {};
 
