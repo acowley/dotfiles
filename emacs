@@ -117,7 +117,8 @@ single-quoted string."
 
 ;; (set-default-font "Hæck 14")
 (when (memq window-system '(mac ns))
-  (set-default-font "Monaco 14"))
+  ;; (set-default-font "Monaco 14")
+  (set-frame-font "Monaco 14"))
 
 (setq confirm-kill-emacs #'y-or-n-p)
 
