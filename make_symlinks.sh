@@ -13,3 +13,8 @@ if [ ! -d "${HOME}/.stack" ]; then
   mkdir "$HOME/.stack"
 fi
 ln -s "${DIR}/stack-config.yaml" "${HOME}/.stack/config.yaml"
+if [ ! -d "${HOME}/.config/nixpkgs" ]; then
+  mkdir -p "${HOME}/.config/nixpkgs"
+fi
+ln -s ${DIR}/config.nix "${HOME}/.config/nixpkgs/config.nix"
+ln -s ${DIR}/overlays.nix "${HOME}/.config/nixpkgs/overlays.nix"

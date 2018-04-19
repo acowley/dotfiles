@@ -122,7 +122,7 @@ single-quoted string."
 (setq confirm-kill-emacs #'y-or-n-p)
 
 (tool-bar-mode -1)
-(when window-system (set-frame-size (selected-frame) 40 28))
+(when (and window-system (not (memq window-system '(mac ns)))) (set-frame-size (selected-frame) 40 28))
 
 ;; Enable ligatures for fonts that provide them (e.g. hæck)
 ;; This may cause slowdown
@@ -413,8 +413,8 @@ end tell" uri)))
 ;;; Diminish
 (use-package diminish :ensure t)
 ;;; Themes
-(use-package darkokai-theme :defer t)
-(use-package monokai-theme :defer t)
+;; (use-package darkokai-theme :defer t)
+;; (use-package monokai-theme :defer t)
 (use-package apropospriate-theme
   ;; :load-path "~/Documents/Projects/apropospriate-theme"
   :config
@@ -925,10 +925,10 @@ under the current project's root directory."
 
 (ido-mode -1)
 
-(use-package imenu-anywhere
-  :defer t
-  :config
-  (setq imenu-anywhere-buffer-filter-functions (list #'imenu-anywhere-same-project-p)))
+;; (use-package imenu-anywhere
+;;   :defer t
+;;   :config
+;;   (setq imenu-anywhere-buffer-filter-functions (list #'imenu-anywhere-same-project-p)))
 
 ;;; god-mode
 

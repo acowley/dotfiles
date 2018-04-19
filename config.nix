@@ -19,9 +19,6 @@
       };
     };
   };
-  overlays = if builtins.pathExists (builtins.toPath "/System/Library")
-             then []
-             else [ (import ./rocm.nix) ];
   packageOverrides = pkgs: rec {
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
 
@@ -32,35 +29,6 @@
       use-package = self.melpaPackages.use-package;
       diminish = self.melpaPackages.diminish;
     });
-    myEmacsPackages = emacs: super: self: {
-      inherit (self.melpaPackages) use-package diminish recentf-remove-sudo-tramp-prefix visual-fill-column apropospriate-theme projectile yasnippet dashboard impatient-mode esup org-bullets org-sticky-header org-table-sticky-header ox-tufte ob-ipython org-noter outorg outshine ox-clip org-mime olivetti company company-lsp helm helm-company helm-swoop helm-dash helm-tramp docker-tramp helm-projectile helm-gtags god-mode spaceline multiple-cursors buffer-move flycheck nix-mode haskell-mode hindent dante lsp-mode lsp-ui clang-format mixed-pitch magit erc-terminal-notifier erc-hl-nicks znc twittering-mode corral rust-mode cargo flycheck-rust racer purescript-mode paredit yaml-mode redprl osx-dictionary graphviz-dot-mode nix-buffer toml-mode markdown-mode smartparens logview ag;
-
-      inherit (super) pdf-tools;
-      structured-haskell-mode = self.melpaBuild {
-        pname = "shm";
-        version = "20170523";
-        src = ~/src/structured-haskell-mode;
-        packageRequires = [ self.haskell-mode ];
-        fileSpecs = [ "elisp/*.el" ];
-        propagatedUserEnvPkgs = [ pkgs.haskellPackages.structured-haskell-mode ];
-        meta = {
-          description = "Structured editing Emacs mode for Haskell";
-          license = pkgs.lib.licenses.bsd3;
-          platforms = pkgs.haskellPackages.structured-haskell-mode.meta.platforms;
-        };
-      };
-      intero = self.melpaBuild {
-        pname = "intero";
-        version = "20180219";
-        src = ~/src/intero;
-        fileSpecs = [ "elisp/*.el" ];
-        packageRequires = [ self.company emacs self.flycheck self.haskell-mode ];
-        meta = {
-          homepage = "https://melpa.org/#/intero";
-          license = pkgs.lib.licenses.free;
-        };
-      };
-    };
 
     # An emacs with packages provided by nixpkgs. Pros: patches and
     # overrides have a place to live (i.e. in myEmacsPackage); Cons:
@@ -69,93 +37,6 @@
     # up much (perhaps 0.2s) and my autoloads via use-package are
     # apparently not all correct. It is easier to let package.el find
     # the autoloads and very similar in speed.
-    emacsNix = ((pkgs.emacsPackagesNgGen pkgs.emacs25Macport).overrideScope (myEmacsPackages pkgs.emacs25Macport)).emacsWithPackages (epkgs: with epkgs; [
-      epkgs.pdf-tools
-      use-package
-      diminish
-      recentf-remove-sudo-tramp-prefix
-      visual-fill-column
-      apropospriate-theme
-      projectile
-      yasnippet
-      dashboard
-      impatient-mode
-      esup
-
-      # org packages
-      orgPackages.org-plus-contrib
-      org-bullets
-      org-sticky-header
-      org-table-sticky-header
-      ox-tufte
-      ob-ipython
-      org-noter
-      outorg
-      outshine
-      ox-clip
-      org-mime
-
-      #
-      olivetti
-      company
-      company-lsp
-
-      helm
-      helm-company
-      helm-swoop
-      helm-dash
-      helm-tramp
-      docker-tramp
-      helm-projectile
-      helm-gtags
-
-      # imenu-anywhere
-      god-mode
-      spaceline
-      multiple-cursors
-      buffer-move
-      flycheck
-      nix-mode
-
-      haskell-mode
-      hindent
-      dante
-      structured-haskell-mode
-      intero
-
-      lsp-mode
-      lsp-ui
-
-      # cmake-mode
-      clang-format
-      mixed-pitch
-      magit
-
-      erc-terminal-notifier
-      erc-hl-nicks
-      znc
-
-      twittering-mode
-      corral
-
-      rust-mode
-      cargo
-      flycheck-rust
-      racer
-
-      purescript-mode
-      paredit
-      yaml-mode
-      redprl
-      osx-dictionary
-      graphviz-dot-mode
-      nix-buffer
-      toml-mode
-      markdown-mode
-      smartparens
-      logview
-      ag
-    ]);
     emacs = emacsMacPackagesNg.emacsWithPackages (epkgs:
       with epkgs.melpaPackages; [
         epkgs.pdf-tools
