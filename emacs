@@ -1852,6 +1852,9 @@ store to load and configure the cquery lsp client."
 (use-package toml-mode :defer t)
 ;;; markdown-mode
 (use-package markdown-mode :defer t)
+;;; glsl
+(use-package glsl-mode
+  :mode "\\.(vert|frag|geom)\\'")
 ;;; smartparens-mode
 (use-package smartparens
   :defer t
