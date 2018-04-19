@@ -1133,9 +1133,16 @@ under the current project's root directory."
             (lambda ()
               (let ((msg (newest-subject)))
                 (unless (string-equal ": " msg)
-                  (shell-command
-                   (concat "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message "
-                           (quote-shell-string msg)))))))
+
+                  (if (memq window-system '(mac ns))
+                      (shell-command
+                       (concat "terminal-notifier -title \"mu4e\" -sender \"org.gnu.Emacs\" -message "
+                               (quote-shell-string msg)))
+                    (start-process "notify-send"
+                                   "*notify-send*"
+                                   "notify-send"
+                                   "mu4e"
+                                   (quote-shell-string (format "%s" msg))))))))
 
 ;;;; Additional SMTP Accounts
   ;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
