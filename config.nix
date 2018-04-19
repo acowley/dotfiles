@@ -37,11 +37,11 @@
     # up much (perhaps 0.2s) and my autoloads via use-package are
     # apparently not all correct. It is easier to let package.el find
     # the autoloads and very similar in speed.
-    emacs = emacsMacPackagesNg.emacsWithPackages (epkgs:
-      with epkgs.melpaPackages; [
-        epkgs.pdf-tools
-      ]
-    );
+    # emacs = emacsMacPackagesNg.emacsWithPackages (epkgs:
+    #   with epkgs.melpaPackages; [
+    #     epkgs.pdf-tools
+    #   ]
+    # );
 
     # Overrides I usually want: local vinyl version
     haskell = pkgs.haskell // {

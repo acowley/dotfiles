@@ -1,5 +1,6 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = super: self: super.melpaPackages // {
+    inherit (super) pdf-tools;
     cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
       patchPhase = ''
         sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
@@ -90,6 +91,7 @@ self: nixpkgs: {
     buffer-move
     flycheck
     nix-mode
+    glsl-mode
 
     haskell-mode
     hindent
@@ -131,5 +133,9 @@ self: nixpkgs: {
     logview
     ag
   ];
-  emacsNix = ((nixpkgs.emacsPackagesNgGen nixpkgs.emacs25Macport).overrideScope self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
+  myEmacsPackagesNg =
+    if nixpkgs.stdenv.isDarwin
+    then nixpkgs.emacsPackagesNgGen nixpkgs.emacs25Macport
+    else nixpkgs.emacsPackagesNg;
+  emacs = (self.myEmacsPackagesNg.overrideScope self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
