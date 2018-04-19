@@ -7,4 +7,5 @@
 [(import ~/dotfiles/emacs.nix)]
 ++ (if builtins.pathExists (builtins.toPath "/System/Library")
     then []
-    else [(import ~/dotfiles/rocm.nix)])
+    else [ (import ~/src/nixos-rocm/default.nix)
+           (import ~/dotfiles/rocm.nix) ])
