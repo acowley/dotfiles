@@ -689,7 +689,7 @@ of code to whatever theme I'm using's background"
   ;;         (search . " %i %-12:c")))
 
   (use-package org-ref
-    :defer t
+    ;; :defer t
     :config
     (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
     (setq
@@ -792,9 +792,9 @@ entire source file is loaded."
 
 ;; Copy from an Org buffer to the system clipboard after converting
 ;; the Org content to rich text format.
-(use-package ox-clip
-  :defer t
-  :commands (ox-clip-formatted-copy))
+;; (use-package ox-clip
+;;   :defer t
+;;   :commands (ox-clip-formatted-copy))
 
 ;;;; Project Task Capture
 
