@@ -65,6 +65,9 @@ self: nixpkgs: {
     ox-clip
     org-mime
     org-ref
+    biblio biblio-core
+    helm-bibtex
+    parsebib
 
     #
     olivetti
