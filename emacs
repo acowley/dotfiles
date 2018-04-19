@@ -1497,6 +1497,27 @@ sorted block."
   :config
   (setq xref-prompt-for-identifier (append xref-prompt-for-identifier '(xref-find-references))))
 
+(defun in-docker-p ()
+  "Returns a non-nil value if we are running in a docker container"
+  (eq (call-process-shell-command "grep -q docker /proc/1/cgroup") 0))
+
+(defun cquery-mode ()
+  "Start all cquery-related modes"
+  (interactive)
+  (when (let ((ext (file-name-extension (or (buffer-file-name) ""))))
+          (and (not (null ext))
+               (or (string-equal ext "cpp")
+                   (string-equal ext "cc")
+                   (string-equal ext "hpp"))))
+
+    (flycheck-mode)
+    (lsp-cquery-enable)
+    (yas-minor-mode)
+    (helm-gtags-mode -1)
+    (diminish 'company-mode)
+    (diminish 'flyspell-mode)
+    (local-set-key (kbd "M-.") #'xref-find-definitions)))
+
 (defun cquery-nix-shell ()
   "Find a cquery executable in a nix-shell associated with the
 directory containig the current file if that file’s extension is
