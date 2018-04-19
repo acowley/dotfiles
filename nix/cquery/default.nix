@@ -1,47 +1,30 @@
-{ stdenv, writeTextFile, fetchFromGitHub, cmake, llvmPackages, ncurses }:
-let flagToLib = flag:
-  let name = builtins.elemAt (stdenv.lib.splitString "_" flag) 1;
-  in "lib${name}.a";
-in llvmPackages.stdenv.mkDerivation rec {
+{ stdenv, writeTextFile, fetchFromGitHub, cmake, llvmPackages_6, ncurses }:
+llvmPackages_6.stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-03-26";
+  version = "2018-04-17";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "310bb882677086f61745369729378ad09d92abb2";
-    sha256 = "174w2n31ay46pw0zvrj2hv3c3acx96viv5bixgfgk12gmjxfa4sv";
+    rev = "8a8f926081e604d95686a56ceadc3f9c0da94420";
+    sha256 = "123ns139rn9jb70c0gyfdgkx3hjmldhw8hmjnfm7gi3bkg6rkd06";
     fetchSubmodules = true;
+    # date = 2018-04-17T21:36:47-07:00;
   };
 
   nativeBuildInputs = [ cmake ];
   buildInputs = [
-    llvmPackages.llvm llvmPackages.clang llvmPackages.libclang.out
-    llvmPackages.libclang.lib ncurses
+    llvmPackages_6.llvm llvmPackages_6.clang llvmPackages_6.libclang.out
+    llvmPackages_6.libclang.lib llvmPackages_6.libcxx ncurses
   ];
 
   # We don't have a `FindClang.cmake`, so we explicitly set all the
   # variables it would provide.
   cmakeFlags = [
     "-DSYSTEM_CLANG=ON"
-    "-DCLANG_CXX=ON"
-    "-DClang_LIBRARY=${llvmPackages.libclang.lib}/lib/libclang.so"
-    "-DClang_INCLUDE_DIR=${llvmPackages.libclang.out}/include"
-  ] ++ (map (inc: "-D${inc}=${llvmPackages.libclang.out}/include")
-            [ "Clang_clangFormat_INCLUDE_DIR"
-            "Clang_clangToolingCore_INCLUDE_DIR"
-            "Clang_clangRewrite_INCLUDE_DIR"
-            "Clang_clangAST_INCLUDE_DIR"
-            "Clang_clangLex_INCLUDE_DIR"
-            "Clang_clangBasic_INCLUDE_DIR"
-  ]) ++ (map (lib: "-D${lib}=${llvmPackages.libclang.out}/lib/${flagToLib lib}")
-             [ "Clang_clangLex_LIBRARY"
-             "Clang_clangFormat_LIBRARY"
-             "Clang_clangToolingCore_LIBRARY"
-             "Clang_clangRewrite_LIBRARY"
-             "Clang_clangAST_LIBRARY"
-             "Clang_clangBasic_LIBRARY"
-  ]);
+    "-DClang_LIBRARY=${llvmPackages_6.libclang.lib}/lib/libclang.so"
+    "-DClang_INCLUDE_DIR=${llvmPackages_6.libclang.out}/include"
+  ];
 
   # This helper is provided to help pass include directories nix
   # communicates in the environment and via wrapper scripts to cquery
