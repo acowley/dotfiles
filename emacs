@@ -118,6 +118,19 @@ single-quoted string."
 
 ;;;; Miscellaneous Settings
 
+;; A short mode line that is going to be tweaked with moody
+(setq-default mode-line-format
+      '("%e"
+        mode-line-modified
+        mode-line-buffer-identification
+        "   "
+        mode-line-position
+        (vc-mode vc-mode)
+        "  "
+        mode-line-modes
+        mode-line-misc-info
+        mode-line-end-spaces))
+
 ;; (set-default-font "Hæck 14")
 (when (memq window-system '(mac ns))
   ;; (set-default-font "Monaco 14")
@@ -1228,8 +1241,118 @@ predicate returns true."
         (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
                 my-mu4e-account-alist)))
 
+
+;;; minions
+(use-package minions
+  :config (minions-mode 1))
+
+;;; moody
+(use-package moody
+  :config
+  (defun my-moody-wrap (string &optional width direction type)
+    "A copy of moody-wrap that colors the left slant of the
+element based on the god-local-mode predicate."
+    (unless type
+      (setq type 'tab))
+    (unless direction
+      (setq direction 'down))
+    (let* ((base  (if (moody-window-active-p)
+                      'mode-line
+                    'mode-line-inactive))
+           (outer (face-attribute base :background))
+           (line  (face-attribute base :underline))
+           (line  (if (eq line 'unspecified) outer line))
+           (inner (if (eq type 'ribbon)
+                      (face-attribute base :underline)
+                    (face-attribute 'default :background)))
+           (slant (if (eq direction 'down)
+                      (list outer line inner)
+                    (list inner line outer)))
+           (god-bg (if (bound-and-true-p god-local-mode)
+                       "#dddd00"
+                     (face-attribute 'mode-line :background)))
+           (face-left (if (eq direction 'down)
+                          (list :overline (and (eq type 'ribbon) line)
+                                :underline god-bg
+                                :foreground god-bg
+                                :background god-bg)
+                        (list :overline line
+                              :underline (and (or (eq type 'ribbon)
+                                                  (not (window-at-side-p nil 'bottom)))
+                                              line)
+                              :background inner)))
+           (face  (if (eq direction 'down)
+                      (list :overline (and (eq type 'ribbon) line)
+                            :underline line
+                            :background inner)
+                    (list :overline line
+                          :underline (and (or (eq type 'ribbon)
+                                              (not (window-at-side-p nil 'bottom)))
+                                          line)
+                          :background inner)))
+           (pad   (max (- (or width 0) (length string)) 2)))
+      (setq string
+            (concat (make-string (ceiling pad 2) ?\s)
+                    (substring string 0)
+                    (make-string (floor pad 2) ?\s)))
+      (add-face-text-property 0 (length string) face nil string)
+      (list
+       (propertize " " 'face face-left 'display
+                   (apply moody-slant-function
+                          (if (eq direction 'down) 'down 'up)
+                          (list god-bg god-bg inner)))
+       string
+       (propertize " " 'face face 'display
+                   (apply moody-slant-function
+                          (pcase (list type direction)
+                            (`(tab    down) (cons 'up   slant))
+                            (`(tab    up)   (cons 'down slant))
+                            (`(ribbon down) (cons 'down (reverse slant)))
+                            (`(ribbon up)   (cons 'up   (reverse slant)))))))))
+
+  (defvar god-moody-buffer-identification
+    '(:eval
+      (my-moody-wrap
+       (format-mode-line (propertized-buffer-identification "%b"))
+       20 'down 'tab)))
+
+  (put 'god-moody-buffer-identification 'risky-local-variable t)
+
+  (defvar god-modified-mode-line
+    '(:eval
+      (let* ((string (if (buffer-modified-p) " * " " - "))
+             (god-face (if (bound-and-true-p god-local-mode)
+                           '(:background "#dddd00" :foreground "#373737")
+                         `(:background ,(face-attribute 'mode-line :background)
+                                       :foreground ,(face-attribute 'mode-line :foreground)))))
+        (list (propertize string 'face god-face))))
+    "Mode line format for god-mode and buffer-modified status")
+
+  (put 'god-modified-mode-line 'risky-local-variable t)
+
+  (defun moody-god-replace-mode-line-buffer-identification (&optional reverse)
+    (interactive "P")
+    (moody-replace-element 'mode-line-buffer-identification
+                           'god-moody-buffer-identification
+                           reverse))
+
+  (defun moody-god-buffer-modified (&optional reverse)
+    (interactive "P")
+    (moody-replace-element 'mode-line-modified
+                           'god-modified-mode-line
+                           reverse))
+
+  ;; ("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification moody-mode-line-buffer-identification "   " mode-line-position
+  ;;  (vc-mode moody-vc-mode)
+  ;;  "  " minions-mode-line-modes mode-line-misc-info mode-line-end-spaces)
+  (moody-god-buffer-modified)
+  (setq x-underline-at-descent-line t)
+  (moody-god-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode))
+
 ;;; spaceline
 (use-package spaceline
+  :disabled
   :config
   (require 'spaceline-config)
   (spaceline-emacs-theme)

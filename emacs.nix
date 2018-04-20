@@ -87,6 +87,8 @@ self: nixpkgs: {
     # imenu-anywhere
     god-mode
     spaceline
+    moody
+    minions
     multiple-cursors
     buffer-move
     flycheck
