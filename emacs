@@ -1728,42 +1728,6 @@ store to load and configure the cquery lsp client."
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
 
-;; (use-package irony
-;;   :defer t
-;;   :load-path "/Users/acowley/src/irony-mode"
-;;   :commands irony-mode
-;;   :config
-;;   (use-package company-irony
-;;     :defer t
-;;     :config
-;;     (add-to-list 'company-backends 'company-irony))
-
-;;   (defun my-irony-mode-hook ()
-;;     (define-key irony-mode-map [remap completion-at-point]
-;;       'irony-completion-at-point-async)
-;;     (define-key irony-mode-map [remap complete-symbol]
-;;       'irony-completion-at-point-async)
-;;     (company-irony-setup-begin-commands))
-;;   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-;;   (use-package flycheck-irony
-;;     :defer t
-;;     :init
-;;     (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
-;;     (add-hook 'irony-mode-hook #'flycheck-mode)))
-
-;; (eval-and-compile
-;;   (defun rtags-site-load-path ()
-;;     (concat (string-trim (shell-command-to-string "nix-build --no-out-link '<nixpkgs>' -A rtags")) "/share/emacs/site-lisp/rtags")))
-
-;; (use-package rtags
-;;   :defer t
-;;   :load-path (lambda () (rtags-site-load-path))
-;;   :config
-;;   (setq rtags-use-bookmarks nil))
-
-
 ;;; mixed-pitch
 (use-package mixed-pitch
   :ensure t
@@ -1783,12 +1747,8 @@ store to load and configure the cquery lsp client."
 (add-hook 'python-mode-hook #'ac/python-hook)
 
 ;;; File mode associtions
-(autoload 'glsl-mode "glsl-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
 
-; OpenCL code uses c-mode
+;; OpenCL code uses c-mode
 (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
 
 ; QML mode
@@ -1852,25 +1812,16 @@ store to load and configure the cquery lsp client."
     :config
     (add-to-list 'erc-modules 'hl-nicks)))
 ;;; znc
-
 (use-package znc
   :defer t
   :config
   (let ((password (let ((auth (auth-source-search :host "rasznc.local")))
-                     (cond
-                      ((null auth) (error "Couldn't find rasznc authinfo"))
-                      (t (funcall (plist-get (car auth) :secret)))))))
+                    (cond
+                     ((null auth) (error "Couldn't find rasznc authinfo"))
+                     (t (funcall (plist-get (car auth) :secret)))))))
     (set-variable
      'znc-servers
      `(("raspberrypi.local" 1234 t ((rasznc "acowley/freenode" ,password)))))))
-;; (eval-after-load "znc"
-;;   '(let ((password (let ((auth (auth-source-search :host "rasznc.local")))
-;;                      (cond
-;;                       ((null auth) (error "Couldn't find rasznc authinfo"))
-;;                       (t (funcall (plist-get (car auth) :secret)))))))
-;;     (set-variable
-;;      'znc-servers
-;;      `(("raspberrypi.local" 1234 t ((rasznc "acowley/freenode" ,password)))))))
 
 ;;; twittering-mode
 (use-package twittering-mode
@@ -1938,14 +1889,12 @@ store to load and configure the cquery lsp client."
     (turn-on-purescript-indentation))
   (add-hook 'purescript-mode-hook #'my/purescript-hook))
 ;;; elisp
-
 (use-package paredit
   :commands paredit-mode
   :init
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode))
 
 ;;; PlatformIO
-
 ;; From github user @pashky
 (add-hook 'projectile-mode-hook
           (lambda ()
@@ -2012,6 +1961,20 @@ store to load and configure the cquery lsp client."
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
   (load "~/.emacsPrivate.el"))
+
+;;; Mode-line cleanup
+(setq mode-line-position
+      '((line-number-mode ("%l" (column-number-mode ":%2c")))))
+
+(setq-default mode-line-format
+      (cl-reduce #'cl-remove
+                 (list 'mode-line-front-space
+                       'mode-line-mule-info
+                       'mode-line-client
+                       'mode-line-remote
+                       'mode-line-frame-identification)
+                 :initial-value mode-line-format
+                 :from-end t))
 
 ;;; Customize
 
@@ -2297,15 +2260,15 @@ store to load and configure the cquery lsp client."
  '(tramp-shell-prompt-pattern
    "\\(?:^\\|\\)[^]#$%>
 ]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(lsp-face-highlight-textual ((t (:background "#757500"))))
- '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
- '(org-block ((t (:slant normal))))
- '(variable-pitch ((t (:family "Fira Sans")))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(lsp-face-highlight-textual ((t (:background "#757500"))))
+   '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
+   '(org-block ((t (:slant normal))))
+   '(variable-pitch ((t (:family "Fira Sans")))))
 
 
 ;;; File Local Variables
