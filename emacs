@@ -1512,7 +1512,7 @@ element based on the god-local-mode predicate."
     )
   (use-package intero
     :load-path "~/src/intero/elisp"
-    :commands (intero-mode intero-mode-whitelist)
+    :commands (intero-mode intero-global-mode)
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
            ;; :map intero-mode-map
@@ -1546,7 +1546,7 @@ element based on the god-local-mode predicate."
     (electric-indent-local-mode -1)
     (electric-pair-local-mode -1)
     (electric-quote-local-mode -1)
-    (intero-mode-whitelist))
+    (intero-mode))
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (defun haskell-find-pragmas ()
     "Return a sorted list of Haskell language pragmas specified
