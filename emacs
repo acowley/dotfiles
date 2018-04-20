@@ -512,7 +512,6 @@ end tell" uri)))
 
 ;;;; General Org Configuration
 (use-package org
-  :defer 10
   :ensure org-plus-contrib
   :pin org
   :bind (("C-c l" . org-store-link)
@@ -566,7 +565,12 @@ end tell" uri)))
     (setq org-tags-exclude-from-inheritance (quote ("crypt")))
     ;; GPG key to use for encryption
     ;; Either the Key ID or set to nil to use symmetric encryption.
-    (setq org-crypt-key "D50A574B"))
+    (setq org-crypt-key "D50A574B")
+
+    ;; org-ref is very slow to load, so we defer it upon emacs
+    ;; startup, but pull it in when org-mode is first started
+    (require 'org-ref))
+
   (add-hook 'org-mode-hook #'my-org-hook)
 
   (use-package ob-ipython
@@ -708,7 +712,7 @@ of code to whatever theme I'm using's background"
   ;;         (search . " %i %-12:c")))
 
   (use-package org-ref
-    ;; :defer t
+    :defer t
     :config
     (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
     (setq
