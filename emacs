@@ -104,7 +104,7 @@ dash) transpose chunks around that. Otherwise transpose sexps."
       (insert (concat "#ifndef " guard "\n#define " guard "\n\n\n"))
       (goto-char (point-max))
       (insert "\n#endif"))
-    (goto-line 4)))
+    (forward-line 4)))
 
 (defun quote-shell-string (str)
     "Safely embed a string in single-quotes.
