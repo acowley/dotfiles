@@ -11,6 +11,7 @@ llvmPackages_6.stdenv.mkDerivation rec {
     fetchSubmodules = true;
   };
 
+  enableParallelBuilding = true;
   nativeBuildInputs = [ cmake ];
   buildInputs = [
     llvmPackages_6.llvm llvmPackages_6.libclang.out
