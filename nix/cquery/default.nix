@@ -1,21 +1,20 @@
 { stdenv, writeTextFile, fetchFromGitHub, cmake, llvmPackages_6, ncurses }:
 llvmPackages_6.stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-04-17";
+  version = "2018-04-18";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "8a8f926081e604d95686a56ceadc3f9c0da94420";
-    sha256 = "123ns139rn9jb70c0gyfdgkx3hjmldhw8hmjnfm7gi3bkg6rkd06";
+    rev = "af8997e58964cea4fdd6986b9ee9bcd2c51d23fe";
+    sha256 = "10jmxl7gd84xg7y2l00dfv0lr87al05c6i772aidfynmi90mg5w4";
     fetchSubmodules = true;
-    # date = 2018-04-17T21:36:47-07:00;
   };
 
   nativeBuildInputs = [ cmake ];
   buildInputs = [
-    llvmPackages_6.llvm llvmPackages_6.clang llvmPackages_6.libclang.out
-    llvmPackages_6.libclang.lib llvmPackages_6.libcxx ncurses
+    llvmPackages_6.llvm llvmPackages_6.libclang.out
+    llvmPackages_6.libclang.lib ncurses
   ];
 
   # We don't have a `FindClang.cmake`, so we explicitly set all the
