@@ -26,6 +26,9 @@
 ;; (require 'diminish)
 (require 'bind-key)
 
+;; Show a message whenever a package takes longer than 0.1s to load
+(setq use-package-verbose t)
+
 ;;; General emacs configuration
 
 ;;;; Elisp Helpers
