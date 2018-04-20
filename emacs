@@ -219,7 +219,7 @@ single-quoted string."
 (global-set-key (kbd "C-x a r") 'align-regexp)
 
 ;; Start the emacs server if possible
-(when (fboundp 'server-mode) (funcall 'server-mode 1))
+;; (when (fboundp 'server-mode) (funcall 'server-mode 1))
 
 ;; Revert buffers whose files have changed on disk
 (global-auto-revert-mode t)
@@ -437,6 +437,9 @@ end tell" uri)))
   :config
   (load-theme 'apropospriate-dark t))
 
+;;; emacs server
+(use-package server :config (and (fboundp 'server-mode)
+                                 (or (server-running-p) (server-mode))))
 ;;; company-mode
 (use-package company
   ;; :load-path "~/src/company-mode/company-0.9.4"
