@@ -1275,7 +1275,8 @@ element based on the god-local-mode predicate."
            (slant (if (eq direction 'down)
                       (list outer line inner)
                     (list inner line outer)))
-           (god-bg (if (bound-and-true-p god-local-mode)
+           (god-bg (if (and (moody-window-active-p)
+                            (bound-and-true-p god-local-mode))
                        "#dddd00"
                      (face-attribute 'mode-line :background)))
            (face-left (if (eq direction 'down)
@@ -1328,7 +1329,8 @@ element based on the god-local-mode predicate."
   (defvar god-modified-mode-line
     '(:eval
       (let* ((string (if (buffer-modified-p) " * " " - "))
-             (god-face (if (bound-and-true-p god-local-mode)
+             (god-face (if (and (moody-window-active-p)
+                                (bound-and-true-p god-local-mode))
                            '(:background "#dddd00" :foreground "#373737")
                          `(:background ,(face-attribute 'mode-line :background)
                                        :foreground ,(face-attribute 'mode-line :foreground)))))
