@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, cmake, pkgconfig, hcc, hip, libunwind
 , rocm-cmake, rocr, rocminfo, rocblas
 , doCheck ? false
-, boost, gtest, liblapack_3_8, gfortran }:
+, boost, gtest, lapack_3_8, gfortran }:
 stdenv.mkDerivation rec {
   name = "hipBLAS";
   version = "0.10.2.0";
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   };
   nativeBuildInputs = [ cmake rocm-cmake pkgconfig ];
   buildInputs = [ libunwind hcc hip rocminfo rocr rocblas ]
-    ++ stdenv.lib.optionals doCheck [ gfortran boost gtest liblapack_3_8 ];
+    ++ stdenv.lib.optionals doCheck [ gfortran boost gtest lapack_3_8 ];
   cmakeFlags = [
     "-DCMAKE_CXX_COMPILER=${hcc}/bin/hcc"
     "-DCMAKE_INSTALL_INCLUDEDIR=include"

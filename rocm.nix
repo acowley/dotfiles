@@ -54,4 +54,5 @@ self: super:
     google-gflags = self.google-gflags-dyn;
   };
   rocm-caffe2-check = self.rocm-caffe2.override { doCheck = true; };
+  lapack_3_8 = super.callPackage ./nix/liblapack/3.8.nix {};
 }

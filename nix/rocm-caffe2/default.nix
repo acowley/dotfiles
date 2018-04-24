@@ -69,8 +69,10 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "ROCmSoftwarePlatform";
     repo = "rocm-caffe2";
-    rev = "62652543077efe27928dd6c32d797327e9fc9c21";
-    sha256 = "0hz4xbran0arxp8q71gra95g5iwziwligi5jz2fhyr5h6hkqsna2";
+    # rev = "62652543077efe27928dd6c32d797327e9fc9c21";
+    # sha256 = "0hz4xbran0arxp8q71gra95g5iwziwligi5jz2fhyr5h6hkqsna2";
+    rev = "e464cde8840c49c95bb093ebd79368705738e7dd";
+    sha256 = "0fxjpzv67y2h3p7kxyscv4gagm8nxf88pr3cddk0bncd8a2qz304";
   };
 
   outputs = [ "bin" "out" ];
