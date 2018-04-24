@@ -134,6 +134,7 @@ self: nixpkgs: {
     smartparens
     logview
     ag
+    xterm-color
   ];
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin

@@ -1969,6 +1969,17 @@ store to load and configure the cquery lsp client."
                                                 (timestamp . ("HH:mm:ss")))))))
 ;;; ag
 (use-package ag :defer t)
+;;; xterm-color
+(use-package xterm-color
+  :commands xterm-color-filter
+  :init
+  (setq comint-output-filter-functions
+        (remove 'ansi-color-process-output comint-output-filter-functions))
+  (add-hook 'shell-mode-hook
+            (lambda ()
+              (add-hook 'comint-preoutput-filter-functions
+                        'xterm-color-filter nil t))))
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
