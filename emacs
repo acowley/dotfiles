@@ -1434,6 +1434,9 @@ element based on the god-local-mode predicate."
   :init
   (add-hook 'prog-mode-hook #'multiple-cursors-mode)
   :config
+  (setq ;mc/always-repeat-command t
+        ;mc/always-run-for-all t
+        mc/cmds-to-run-once '(god-mode-all))
   (defun ac/insert-numbers1 ()
     "Insert a number at each cursor counting up from 1."
     (interactive)
