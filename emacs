@@ -1659,8 +1659,6 @@ sorted block."
     (lsp-cquery-enable)
     (yas-minor-mode)
     (helm-gtags-mode -1)
-    (diminish 'company-mode)
-    (diminish 'flyspell-mode)
     (local-set-key (kbd "M-.") #'xref-find-definitions)))
 
 (defun cquery-nix-shell ()
@@ -1673,7 +1671,11 @@ store to load and configure the cquery lsp client."
                (or (string-equal ext "cpp")
                    (string-equal ext "cc")
                    (string-equal ext "hpp"))))
-    (let ((nix-shell
+    (if (in-docker-p)
+        (progn
+          (message "Using locally-built cquery in docker container")
+          (setq-local cquery-executable "/home/acowley/src/cquery/docker-build/cquery"))
+      (let ((nix-shell
            (concat (locate-dominating-file (or load-file-name buffer-file-name)
                                            "shell.nix")
                    "shell.nix")))
@@ -1693,18 +1695,23 @@ store to load and configure the cquery lsp client."
           (message "cquery-root: %s" cquery-root)
           ;; (require 'cquery)
           (setq clang-format-executable clang-format-exe)
-          (setq-local cquery-executable cquery-exe)
+          (setq-local cquery-executable cquery-exe)))) )
 
-          ;; (setq cquery-extra-args '("--log-all-to-stderr" "--log-file" "cquery.log"))
 
-          ; (require 'lsp-flycheck)
-          (flycheck-mode)
-          (lsp-cquery-enable)
-          (yas-minor-mode)
-          (helm-gtags-mode -1)
-          (diminish 'company-mode)
-          (diminish 'flyspell-mode)
-          (local-set-key (kbd "M-.") #'xref-find-definitions))))))
+    ;; General setup
+
+    ;; (setq cquery-extra-args '("--log-all-to-stderr" "--log-file" "cquery.log"))
+    (setq cquery-extra-args '("--log-all-to-stderr"))
+    ;; (flycheck-mode)
+    ;; (lsp-cquery-enable)
+    ;; (yas-minor-mode)
+    ;; (helm-gtags-mode -1)
+    ;; (diminish 'company-mode)
+    ;; (diminish 'flyspell-mode)
+    ;; (local-set-key (kbd "M-.") #'xref-find-definitions)
+    (cquery-mode)
+    ))
+
 ;;; C++
 
 (use-package cmake-mode
@@ -2131,114 +2138,16 @@ store to load and configure the cquery lsp client."
  '(racer-cmd "racer")
  '(safe-local-variable-values
    (quote
-    ((eval outshine-hook-function)
+    ((eval if
+           (memq window-system
+                 (quote
+                  (mac ns)))
+           (cquery-nix-shell)
+           (setq cquery-executable "/home/acowley/Projects/rcquery")
+           (cquery-mode))
+     (eval outshine-hook-function)
      (eval cquery-nix-shell)
-     (eval let
-           ((dir
-             (find-nix-shell)))
-           (when dir
-             (setq-default rtags-path
-                           (string-trim
-                            (shell-command-to-string
-                             (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
-             (add-to-list
-              (quote load-path)
-              (concat
-               (file-name-directory
-                (directory-file-name rtags-path))
-               "share/emacs/site-lisp/rtags"))
-             (when
-                 (let
-                     ((ext
-                       (file-name-extension
-                        (buffer-file-name))))
-                   (or
-                    (string-equal ext "cpp")
-                    (string-equal ext "hpp")))
-               (require
-                (quote rtags))
-               (setq rtags-use-bookmarks nil)
-               (setq-local rtags-process-flags
-                           (concat "-c "
-                                   (file-name-directory dir)
-                                   ".rdmrc -W"))
-               (rtags-start-process-unless-running)
-               (setq-local rtags-autostart-diagnostics t)
-               (add-to-list
-                (quote company-backends)
-                (quote company-rtags))
-               (require
-                (quote flycheck-rtags))
-               (flycheck-select-checker
-                (quote rtags))
-               (setq-local flycheck-highlighting-mode nil)
-               (setq-local flycheck-check-syntax-automatically nil)
-               (flycheck-mode)
-               (setq-local rtags-use-helm t)
-               (local-set-key
-                (kbd "C-c C-t")
-                (function rtags-symbol-type))
-               (local-set-key
-                (kbd "C-c C-f")
-                (function rtags-fixit))
-               (local-set-key
-                (kbd "C-c r f")
-                (function rtags-find-symbol))
-               (local-set-key
-                (kbd "C-c r n")
-                (function rtags-next-match))
-               (local-set-key
-                (kbd "C-c r p")
-                (function rtags-previous-match)))))
-     (eval let
-           ((dir
-             (find-nix-shell)))
-           (when dir
-             (setq-default rtags-path
-                           (string-trim
-                            (shell-command-to-string
-                             (concat "nix-shell " dir " --run 'dirname $(which rdm)'"))))
-             (add-to-list
-              (quote load-path)
-              (concat
-               (file-name-directory
-                (directory-file-name rtags-path))
-               "share/emacs/site-lisp/rtags"))
-             (require
-              (quote rtags))
-             (setq rtags-use-bookmarks nil)
-             (setq-local rtags-process-flags
-                         (concat "-c "
-                                 (file-name-directory dir)
-                                 ".rdmrc -W"))
-             (rtags-start-process-unless-running)
-             (setq-local rtags-autostart-diagnostics t)
-             (add-to-list
-              (quote company-backends)
-              (quote company-rtags))
-             (require
-              (quote flycheck-rtags))
-             (flycheck-select-checker
-              (quote rtags))
-             (setq-local flycheck-highlighting-mode nil)
-             (setq-local flycheck-check-syntax-automatically nil)
-             (flycheck-mode)
-             (setq-local rtags-use-helm t)
-             (local-set-key
-              (kbd "C-c C-t")
-              (function rtags-symbol-type))
-             (local-set-key
-              (kbd "C-c C-f")
-              (function rtags-fixit))
-             (local-set-key
-              (kbd "C-c r f")
-              (function rtags-find-symbol))
-             (local-set-key
-              (kbd "C-c r n")
-              (function rtags-next-match))
-             (local-set-key
-              (kbd "C-c r p")
-              (function rtags-previous-match))))
+
      (org-time-stamp-format quote
                             ("<%Y-%m-%d>" . "<%Y-%m-%d>"))
      (org-html-htmlize-output-type . css)
@@ -2265,15 +2174,16 @@ store to load and configure the cquery lsp client."
  '(tramp-shell-prompt-pattern
    "\\(?:^\\|\\)[^]#$%>
 ]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*"))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(lsp-face-highlight-textual ((t (:background "#757500"))))
-   '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
-   '(org-block ((t (:slant normal))))
-   '(variable-pitch ((t (:family "Fira Sans")))))
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(lsp-face-highlight-textual ((t (:background "#757500"))))
+ '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
+ '(org-block ((t (:slant normal))))
+ '(variable-pitch ((t (:family "Fira Sans")))))
 
 
 ;;; File Local Variables
