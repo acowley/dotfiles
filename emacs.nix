@@ -1,6 +1,23 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = super: self: super.melpaPackages // {
     inherit (super) pdf-tools;
+    lsp-ui = super.melpaBuild {
+      pname = "lsp-ui";
+      version = "20180314.556";
+      src = ~/src/lsp-ui;
+      packageRequires = with super; [
+        dash
+        dash-functional
+        emacs
+        flycheck
+        lsp-mode
+        markdown-mode
+      ];
+      meta = {
+        homepage = "https://melpa.org/#/lsp-ui";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
     cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
       patchPhase = ''
         sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
