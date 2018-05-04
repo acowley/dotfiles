@@ -75,6 +75,7 @@ self: nixpkgs: {
     org-bullets
     org-sticky-header
     org-table-sticky-header
+    org-journal
     ox-tufte
     ob-ipython
     org-noter
@@ -109,6 +110,7 @@ self: nixpkgs: {
     multiple-cursors
     buffer-move
     flycheck
+    flycheck-color-mode-line
     nix-mode
     glsl-mode
 
