@@ -1,12 +1,12 @@
 { stdenv, fetchFromGitHub, writeText }:
 stdenv.mkDerivation {
   name = "rocm-thrust";
-  version = "2018-04-02";
+  version = "2018-04-25";
   src = fetchFromGitHub {
     owner = "ROCmSoftwarePlatform";
     repo = "Thrust";
-    rev = "991a1aa6c027c3465825ad1c879dc4427a873568";
-    sha256 = "0xfz1gb4zfhv5pd6ysphrxbnvqcq292vh4giwncj4rz0b3y283y6";
+    rev = "d42fef5505455bba451dea07c046c7b7ee050c2e";
+    sha256 = "1knprnwnvj3z96ilb89hgrar79nwc6iair0sbv1f63yxb27fz08n";
   };
   cub = fetchFromGitHub {
     owner = "ROCmSoftwarePlatform";
