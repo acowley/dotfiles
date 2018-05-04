@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, SDL2, pkgconfig, doxygen, mesa, darwin}:
+{ stdenv, fetchFromGitHub, cmake, SDL2, pkgconfig, doxygen, libGLU_combined, darwin}:
 stdenv.mkDerivation rec {
   name = "SDL2_gpu-${version}";
   version = "2018-01-09";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ SDL2 ] ++
     [(if stdenv.isDarwin
       then darwin.apple_sdk.frameworks.OpenGL
-      else mesa)];
+      else libGLU_combined)];
   cmakeFlags = stdenv.lib.optionals stdenv.isDarwin ["-DSDL_gpu_BUILD_FRAMEWORK=OFF"];
   meta = {
     description = "High-performance, modern 2D graphics with SDL";
