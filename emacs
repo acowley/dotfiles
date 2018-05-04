@@ -1053,8 +1053,10 @@ under the current project's root directory."
   :config
   (setq
    mu4e-maildir "~/.mail"
-   mu4e-html2text-command  "/Users/acowley/.nix-profile/bin/w3m -T text/html"
-   mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
+   ;; mu4e-html2text-command  "/Users/acowley/.nix-profile/bin/w3m -T text/html"
+   ;; mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
+   mu4e-html2text-command "w3m -T text/html"
+   mu4e-get-mail-command "mbsync gmail-inbox gmail-trash"
 
    ;; gmail folder setup
                                         ;mu4e-drafts-folder "/gmail/drafts"
@@ -1128,9 +1130,12 @@ under the current project's root directory."
                                         ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
 
   (defun my/mu4e-view-hook ()
-    (turn-on-visual-line-mode)
+    ; (turn-on-visual-line-mode)
     ;; (variable-pitch-mode)
-    (setq buffer-face-mode-face '(:family "Avenir Next"))
+    (setq buffer-face-mode-face (if (memq window-system '(mac ns) )
+                                    '(:family "Avenir Next")
+                                  '(:family "Cantarell")))
+    (olivetti-mode)
     (buffer-face-mode)
     (text-scale-adjust 1))
 
