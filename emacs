@@ -33,6 +33,25 @@
 
 ;;;; Elisp Helpers
 (require 'subr-x)
+(defun insert-after (x y xs)
+  "`(insert-after x y list)` inserts `y` after `x` in `list`. If
+`x` is not found, `list` is returned unchanged. This is a
+non-destructive operation."
+  (let ((rest xs)
+        (result))
+    (while rest
+      (cond
+       ((eq (car rest) x)
+        (setq result (append (reverse (cons (car rest) result))
+                             (cons y (cdr rest))))
+        (setq rest nil))
+       ((null (cdr rest))
+        (setq rest nil)
+        (setq result xs))
+       (t (setq result (cons (car rest) result))
+          (setq rest (cdr rest)))))
+    result))
+
 (defun fill-list (xs &optional separator prefix suffix)
   "Format a list to respect the fill column.
 
@@ -1462,7 +1481,30 @@ element based on the god-local-mode predicate."
          ("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)
          ;; ("M-?" . flycheck-display-error-at-point)
-         ))
+         )
+  :config
+  (use-package flycheck-color-mode-line
+    :commands flycheck-color-mode-line-mode
+    :init
+    (add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode)
+    :config
+    ;; (face-spec-set
+    ;;  'flycheck-color-mode-line-error-face
+    ;;  `((t :background
+    ;;       ,(face-attribute 'flycheck-fringe-error :foreground nil 'default)))
+    ;;  'face-defface-spec)
+    ;; (face-spec-set
+    ;;  'flycheck-color-mode-line-warning-face
+    ;;  `((t :background
+    ;;       ,(face-attribute 'flycheck-fringe-warning :foreground nil 'default)))
+    ;;  'face-defface-spec)
+    (setq flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
+    ;; (setq flycheck-color-mode-line-face-to-color 'mode-line)
+    )
+  (setq-default mode-line-format
+                (insert-after 'mode-line-position
+                              'flycheck-mode-line
+                              mode-line-format)))
 ;;; nix
 
 (use-package nix-mode
