@@ -603,18 +603,49 @@ evaluation may begin anew."
     (mapc #'kill-buffer '("*Python*" "*ob-ipython-client-driver*"
                           "*ob-ipython-kernel-default*"))))
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((haskell . t)
-     ;; (ditaa . t)
-     (shell . t)
-     (emacs-lisp . t)
-     (octave . t)
-     ;; (C . t)
-     ;; (js . t)
-     ;; (maxima . t)
-     (latex . t)
-     (dot . t)))
+
+  ;; (org-babel-do-load-languages
+  ;;  'org-babel-load-languages
+  ;;  '((haskell . t)
+  ;;    ;; (ditaa . t)
+  ;;    (shell . t)
+  ;;    (emacs-lisp . t)
+  ;;    (octave . t)
+  ;;    ;; (C . t)
+  ;;    ;; (js . t)
+  ;;    ;; (maxima . t)
+  ;;    (latex . t)
+  ;;    (dot . t)))
+  (use-package ob-shell
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:sh
+               org-babel-expand-body:sh
+               org-babel-execute:bash
+               org-babel-expand-body:bash))
+  (use-package ob-haskell
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:haskell org-babel-expand-body:haskell))
+  (use-package ob-emacs-lisp
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:elisp
+               org-babel-expand-body:elisp
+               org-babel-execute:emacs-lisp
+               org-babel-expand-body:emacs_lisp))
+  (use-package ob-octave
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:octave org-babel-expand-body:octave))
+  (use-package ob-latex
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:latex org-babel-expand-body:latex))
+  (use-package ob-dot
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:dot org-babel-expand-body:dot))
 
   ;; Syntax highlight dot source blocks
   ; (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
