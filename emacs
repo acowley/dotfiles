@@ -912,6 +912,23 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                        do (setq headline (replace-regexp-in-string "TODO \\|DONE " "" headline))
                        do (setcar (nthcdr 1 entry) headline)))
   (org-clocktable-write-default ipos tables params))
+;;;; org-journal
+(use-package org-journal
+  :defer t
+  :commands (org-journal-new-entry
+             org-journal-mode
+             org-journal-new-date-entry
+             org-journal-new-scheduled-entry
+             org-journal-list-dates
+             org-journal-mark-entries
+             org-journal-read-entry
+             org-journal-display-entry
+             org-journal-read-or-display-entry
+             org-journal-next-entry
+             org-journal-previous-entry
+             org-journal-search)
+  :bind (("C-c C-j" . org-journal-new-entry)))
+
 
 ;;; olivetti-mode
 (use-package olivetti)
