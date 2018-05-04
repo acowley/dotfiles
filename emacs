@@ -945,7 +945,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (pdf-tools-install))
 ;;; Helm
 (use-package helm
-  :defer nil
+  :defer t
   :diminish helm-mode
   :commands (helm-find-files helm-mini helm-M-x helm-imenu)
   :bind (("M-x" . helm-M-x)
