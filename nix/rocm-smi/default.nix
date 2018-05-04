@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub, python3 }:
 stdenv.mkDerivation rec {
   name = "rocm-smi";
-  version = "1.7.1";
+  version = "1.7.2";
   tag = "roc-${version}";
   src = fetchFromGitHub {
     owner = "RadeonOpenCompute";
