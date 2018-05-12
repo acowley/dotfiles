@@ -1647,7 +1647,7 @@ element based on the god-local-mode predicate."
     (electric-indent-local-mode -1)
     (electric-pair-local-mode -1)
     (electric-quote-local-mode -1)
-    (intero-mode))
+    (intero-global-mode))
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (defun haskell-find-pragmas ()
     "Return a sorted list of Haskell language pragmas specified
