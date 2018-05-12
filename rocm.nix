@@ -31,7 +31,6 @@ self: super:
   rocfft-check = self.callPackage ./nix/rocfft { doCheck = true; };
   rocfft = self.callPackage ./nix/rocfft {};
   rocm-smi = self.callPackage ./nix/rocm-smi {};
-  rocm-cmake = self.callPackage ./nix/rocm-cmake {};
   clang-ocl = self.callPackage ./nix/clang-ocl {};
 
   miopengemm = self.callPackage ./nix/miopengemm {};
