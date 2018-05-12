@@ -2254,7 +2254,6 @@ store to load and configure the cquery lsp client."
            (cquery-mode))
      (eval outshine-hook-function)
      (eval cquery-nix-shell)
-
      (org-time-stamp-format quote
                             ("<%Y-%m-%d>" . "<%Y-%m-%d>"))
      (org-html-htmlize-output-type . css)
@@ -2290,7 +2289,7 @@ store to load and configure the cquery lsp client."
  '(lsp-face-highlight-textual ((t (:background "#757500"))))
  '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
  '(org-block ((t (:slant normal))))
- '(variable-pitch ((t (:family "Fira Sans")))))
+ '(variable-pitch ((t (:family "Fira Sans Light")))))
 
 
 ;;; File Local Variables
