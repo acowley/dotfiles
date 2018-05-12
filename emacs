@@ -927,7 +927,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
              org-journal-next-entry
              org-journal-previous-entry
              org-journal-search)
-  :bind (("C-c C-j" . org-journal-new-entry)))
+  :bind (("C-c C-j" . org-journal-new-entry)
+         ("C-c j" . org-journal-new-entry)))
 
 
 ;;; olivetti-mode
