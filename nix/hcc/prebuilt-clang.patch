@@ -1,7 +1,7 @@
 diff -ruN a/CMakeLists.txt b/CMakeLists.txt
---- a/CMakeLists.txt	2018-04-06 13:58:38.170878227 -0400
-+++ b/CMakeLists.txt	2018-04-06 14:00:14.048608959 -0400
-@@ -310,78 +310,10 @@
+--- a/CMakeLists.txt	2018-05-11 21:23:43.553695407 -0400
++++ b/CMakeLists.txt	2018-05-11 21:26:23.948053965 -0400
+@@ -310,79 +310,11 @@
  set(LLVM_EXTERNAL_COMPILER_RT_SOURCE_DIR "${PROJECT_SOURCE_DIR}/compiler-rt")
  set(LLVM_EXTERNAL_LLD_SOURCE_DIR "${PROJECT_SOURCE_DIR}/lld")
  
@@ -25,7 +25,8 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
 -endif()
 -
 -add_subdirectory(${CLANG_SRC_DIR})
--
+-get_directory_property(CLANG_VERSION DIRECTORY clang DEFINITION CLANG_VERSION)
+ 
 -install(PROGRAMS $<TARGET_FILE:llvm-as>
 -                 $<TARGET_FILE:llvm-dis>
 -                 $<TARGET_FILE:llvm-link>
@@ -44,7 +45,7 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
 -  set(RT_BUILTIN_SUFFIX ${CMAKE_SYSTEM_PROCESSOR})
 -endif()
 -add_custom_command(TARGET clang_links POST_BUILD
--  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CLANG_BIN_DIR}/lib/clang/6.0.0/lib/linux/libclang_rt.builtins-${RT_BUILTIN_SUFFIX}.a ${PROJECT_BINARY_DIR}/lib/libclang_rt.builtins-${RT_BUILTIN_SUFFIX}.a
+-  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CLANG_BIN_DIR}/lib/clang/${CLANG_VERSION}/lib/linux/libclang_rt.builtins-${RT_BUILTIN_SUFFIX}.a ${PROJECT_BINARY_DIR}/lib/libclang_rt.builtins-${RT_BUILTIN_SUFFIX}.a
 -  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CLANG_BIN_DIR}/bin/clang ${PROJECT_BINARY_DIR}/bin/clang
 -  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CLANG_BIN_DIR}/bin/clang++ ${PROJECT_BINARY_DIR}/bin/clang++
 -  COMMAND ${CMAKE_COMMAND} -E create_symlink ${CLANG_BIN_DIR}/bin/hcc ${PROJECT_BINARY_DIR}/bin/hcc
@@ -69,7 +70,7 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
  # force library install path to lib
  set(CMAKE_INSTALL_LIBDIR "lib" CACHE INTERNAL "Installation directory for libraries" FORCE)
  
--install(FILES ${CLANG_BIN_DIR}/lib/clang/6.0.0/lib/linux/libclang_rt.builtins-${RT_BUILTIN_SUFFIX}.a
+-install(FILES ${CLANG_BIN_DIR}/lib/clang/${CLANG_VERSION}/lib/linux/libclang_rt.builtins-${RT_BUILTIN_SUFFIX}.a
 -        DESTINATION  ${CMAKE_INSTALL_LIBDIR}
 -        COMPONENT compiler)
 -
@@ -81,7 +82,7 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
  
  # move headers to build dir before building rocdl and hcc lib
  add_subdirectory(include)
-@@ -476,7 +408,6 @@
+@@ -477,7 +410,6 @@
  add_subdirectory(tests)
  add_subdirectory(amp-conformance)
  add_subdirectory(stl-test)

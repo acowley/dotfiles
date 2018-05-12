@@ -5,7 +5,7 @@ let
 in
 llvmPackages.stdenv.mkDerivation rec {
   name = "hcc-clang";
-  version = "1.7.1";
+  version = "1.8.0";
   tag = "roc-${version}";
   src = fetchFromGitHub (import ./hcc-sources.nix);
   nativeBuildInputs = [ cmake pkgconfig python git ];
