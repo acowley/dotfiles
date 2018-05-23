@@ -148,13 +148,21 @@
         AVFoundation Cocoa QTKit VideoDecodeAcceleration;
     };
 
-    opencv3 = pkgs.callPackage ./nix/opencv/3.x.nix {
+    # opencv3 = pkgs.callPackage ./nix/opencv/3.x.nix {
+    #   enableContrib = true;
+    #   enableEigen = true;
+    #   enableFfmpeg = true;
+    #   enablePython = true;
+    #   inherit (pkgs.darwin.apple_sdk.frameworks)
+    #     AVFoundation Cocoa QTKit VideoDecodeAcceleration;
+    # };
+    opencv3 = pkgs.opencv3.override {
       enableContrib = true;
       enableEigen = true;
       enableFfmpeg = true;
       enablePython = true;
-      inherit (pkgs.darwin.apple_sdk.frameworks)
-        AVFoundation Cocoa QTKit VideoDecodeAcceleration;
+    };
+
     };
 
     # We can try to build only those packages whose APIs use C++
