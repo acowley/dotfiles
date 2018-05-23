@@ -1832,6 +1832,7 @@ store to load and configure the cquery lsp client."
   (setq company-backends (delete 'company-clang (delete 'company-semantic company-backends)))
   (which-function-mode)
   (set-face-foreground 'which-func "LightSkyBlue")
+  (yas-minor-mode-on)
   (helm-gtags-mode 1))
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
