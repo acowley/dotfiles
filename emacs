@@ -2063,7 +2063,7 @@ store to load and configure the cquery lsp client."
                                                       (trace       "TRACE"))))
         logview-additional-submodes '(("ICP" . ((format . "TIMESTAMP LEVEL ")
                                                 (levels . "ICP")
-                                                (timestamp . ("HH:mm:ss")))))))
+                                                (timestamp . ("HH:mm:ss" "HH:mm:ss.SSS")))))))
 ;;; ag
 (use-package ag :defer t)
 ;;; xterm-color
