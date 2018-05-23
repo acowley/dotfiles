@@ -8,8 +8,9 @@ stdenv.mkDerivation rec {
     owner = "ROCm-Developer-Tools";
     repo = "HIP";
     # rev = tag;
-    rev = "5d4e14011fa80e44298ffa36ff36400cab82da69";
-    sha256 = "1pzwaaf246q529ksil8s2gmy8rgh50z9rhsn032adjvg3vvjpaib";
+
+    rev = "323a6226b0a6ed43b43918b351fd64bb03d53c98";
+    sha256 = "1wxxqsgrg01arzig69vf9m3g9kvpfky0ispdgccmrg44h623j418";
   };
   propagatedBuildInputs = [ hcc roct ];
   buildInputs = [ rocminfo ];
