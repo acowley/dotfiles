@@ -1805,8 +1805,7 @@ store to load and configure the cquery lsp client."
     ;; (diminish 'company-mode)
     ;; (diminish 'flyspell-mode)
     ;; (local-set-key (kbd "M-.") #'xref-find-definitions)
-    (cquery-mode)
-    ))
+    (cquery-mode)))
 
 ;;; C++
 
