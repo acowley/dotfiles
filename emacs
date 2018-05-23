@@ -1894,7 +1894,8 @@ store to load and configure the cquery lsp client."
   :defer t
   :config
   (setq erc-fill-function 'erc-fill-static
-        erc-fill-static-center 18)
+        erc-fill-static-center 18
+        erc-fill-column 72)
   ;; (setq erc-fill-function 'erc-fill-variable)
 
   (use-package erc-terminal-notifier
