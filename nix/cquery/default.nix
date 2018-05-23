@@ -1,13 +1,15 @@
 { stdenv, writeTextFile, fetchFromGitHub, cmake, llvmPackages_6, ncurses }:
 llvmPackages_6.stdenv.mkDerivation rec {
   name = "cquery-${version}";
-  version = "2018-04-18";
+  version = "2018-05-21";
 
   src = fetchFromGitHub {
     owner = "jacobdufault";
     repo = "cquery";
-    rev = "af8997e58964cea4fdd6986b9ee9bcd2c51d23fe";
-    sha256 = "10jmxl7gd84xg7y2l00dfv0lr87al05c6i772aidfynmi90mg5w4";
+
+    rev = "bde76bd9a2bef9dff9682c33be6703efaae5843b";
+    sha256 = "0dwlzigayhki35lgfsw0wxncfwylb50l8n6fya61arlq9q0s14c6";
+
     fetchSubmodules = true;
   };
 
