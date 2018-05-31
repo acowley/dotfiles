@@ -1637,8 +1637,8 @@ element based on the god-local-mode predicate."
                                              "HoclSuite"
                                              "yaml-light-lens"
                                              "hpp"))
-                                   ;; (mapcar (lambda (p) (concat "~/Projects/" p))
-                                   ;;         '("MotionCT"))
+                                   (mapcar (lambda (p) (concat "~/Projects/" p))
+                                           '("MotionCT" "hpp" "Frames" "Vinyl"))
                                    )))
   (use-package hindent)
 
