@@ -18,6 +18,21 @@ self: nixpkgs: {
         license = nixpkgs.lib.licenses.free;
       };
     };
+    company-lsp = super.melpaBuild {
+      pname = "company-lsp";
+      version = "20180518";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "tigersoldier";
+        repo = "company-lsp";
+        rev = "88155b0d7cd29f95b0a20c134d28d68ef03c640d";
+        sha256 = "0fdq3yl10znx6nq50bvxyp87mikapsjv5vj94mprbkw2xib0arhv";
+      };
+      packageRequires = with super; [ company dash emacs lsp-mode s ];
+      meta = {
+        homepage = "https://melpa.org/#/company-lsp";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
     cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
       patchPhase = ''
         sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
