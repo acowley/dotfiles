@@ -667,8 +667,8 @@ evaluation may begin anew."
             'append)
 
   (add-to-list 'org-agenda-files
-               "~/Documents/Projects/roshask/roshask-notes.org"
-               "~/Documents/Projects/MAST/IROS/mast-iros-notes.org")
+               "~/Projects/roshask/roshask-notes.org"
+               "~/Projects/MAST/mast-iros-notes.org")
 
   (defun my/org-babel-next-src-block ()
     "Move point to the next babel src block. Returns the new point
