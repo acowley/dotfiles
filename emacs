@@ -2031,11 +2031,19 @@ store to load and configure the cquery lsp client."
   (setq redprl-command "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"
         flycheck-redprl-executable "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"))
 
-;;; osx-dictionary
+;;; dictionary
 (use-package osx-dictionary
+  :if (memq window-system '(mac ns))
   :bind (("C-c d" . osx-dictionary-search-pointer))
   :config
   (setq osx-dictionary-dictionary-choice '("Dictionary" "Thesaurus")))
+
+;;;; dict
+(use-package dict-lookup
+  :if (not (memq window-system '(mac ns)))
+  :load-path "~/Projects/dict-lookup"
+  :bind (("C-c d" . dict-lookup-search-pointer)))
+
 ;;; graphviz-dot-mode
 (use-package graphviz-dot-mode :defer t)
 ;;; nix-buffer
