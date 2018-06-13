@@ -1,13 +1,14 @@
 { stdenv, fetchFromGitHub, cmake, python }:
+
 stdenv.mkDerivation rec {
   name = "catch-${version}";
-  version = "2.2.2";
+  version = "2.2.3";
 
   src = fetchFromGitHub {
     owner = "catchorg";
-    repo = "Catch";
+    repo = "Catch2";
     rev = "v${version}";
-    sha256 = "0lrbfd00kp567ldanxfg37hx4zzc8ra4xi7h8zc55cdynbmml8ag";
+    sha256 = "1v7j7rd2i79qaij0izvidjvcjximxp6drimc1ih7sinv2194j1f8";
   };
 
   nativeBuildInputs = [ cmake ] ++ stdenv.lib.optional doCheck python;
