@@ -2,20 +2,17 @@ self: super:
 {
   hcc-clang-unwrapped = super.callPackage ./nix/hcc/clang.nix {};
   hcc-env = let hccself = {
-    clang = super.ccWrapperFun {
+    clang = super.wrapCCWith {
       cc = self.hcc-clang-unwrapped;
-      inherit (super.stdenv.cc) bintools libc nativeTools nativeLibc;
-      extraPackages = [ super.libstdcxxHook ];
+      bintools = super.binutils;
+      libc = super.binutils.libc;
       extraBuildCommands = ''
         mkdir -p $out/include
         ln -s ${self.hcc-clang-unwrapped}/include $out/include/hcc
         ln -s $out/bin/clang++ $out/bin/hcc
       '';
     };
-    stdenv = super.stdenv.override (drv: {
-      allowedRequisites = null;
-      cc = hccself.clang;
-    });
+    stdenv = super.stdenvAdapters.overrideCC super.stdenv hccself.clang;
   }; in hccself;
   hcc-clang = self.hcc-env.clang;
   hcc = self.callPackage ./nix/hcc/hcc.nix {};
