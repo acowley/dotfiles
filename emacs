@@ -1011,6 +1011,7 @@ under the current project's root directory."
       (setq helm-dash-docsets-path (concat (projectile-project-root) "docsets"))
       (message (format "Loaded docsets for %s" (projectile-project-name)))))
   (use-package helm-tramp
+    :defer t
     :config
     (use-package docker-tramp))
   (use-package helm-projectile
