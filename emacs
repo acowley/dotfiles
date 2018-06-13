@@ -2003,7 +2003,8 @@ store to load and configure the cquery lsp client."
 (use-package paredit
   :commands paredit-mode
   :init
-  (add-hook 'emacs-lisp-mode-hook #'paredit-mode))
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  (add-hook 'ielm-mode-hook #'paredit-mode))
 
 ;;; PlatformIO
 ;; From github user @pashky
