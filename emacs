@@ -158,7 +158,8 @@ single-quoted string."
 (setq confirm-kill-emacs #'y-or-n-p)
 
 (tool-bar-mode -1)
-(when (and window-system (not (memq window-system '(mac ns)))) (set-frame-size (selected-frame) 40 28))
+(when (and window-system (not (memq window-system '(mac ns))))
+  (set-frame-size (selected-frame) 80 56))
 
 ;; Enable ligatures for fonts that provide them (e.g. hæck)
 ;; This may cause slowdown
