@@ -74,21 +74,7 @@
 
     SDL2_gpu = pkgs.callPackage ./nix/SDL_gpu {};
 
-    python27 = pkgs.python27.override {
-      packageOverrides = self: super: {
-        pyserial = super.pyserial.overridePythonAttrs {
-          doCheck = false;
-        };
-      };
-    };
-    python27Packages = python27.pkgs;
-
     loguru = pkgs.callPackage ./nix/loguru {};
-
-    nixBufferBuilders = import (<nixpkgs> + /pkgs/build-support/emacs/buffer.nix) {
-      inherit (pkgs) lib writeText;
-      inherit (emacsMacPackagesNg) inherit-local;
-    };
 
     mygnused = pkgs.stdenv.mkDerivation {
       name = "mygnused";
@@ -157,77 +143,13 @@
     #   inherit (pkgs.darwin.apple_sdk.frameworks)
     #     AVFoundation Cocoa QTKit VideoDecodeAcceleration;
     # };
-    opencv3 = pkgs.opencv3.override {
+    opencv3contrib = pkgs.opencv3.override {
       enableContrib = true;
       enableEigen = true;
       enableFfmpeg = true;
       enablePython = true;
+      enableGtk3 = if (!pkgs.stdenv.isDarwin) then true else false;
     };
-
-    };
-
-    # We can try to build only those packages whose APIs use C++
-    # stdlib types against libc++. Then we can mix and match things
-    # compiled against libstd++ and libc++. The downside is that
-    # figuring out which libraries need special handling requires
-    # getting all the way to a linker failure.
-    boostclang = pkgs.boost.override {
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-    };
-    eigenclang = pkgs.eigen.override {
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-    };
-    gtsamclang = gtsam.override {
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-      eigen = eigenclang;
-      boost = boostclang;
-    };
-    vtkclang = pkgs.vtk.override {
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-    };
-    pclclang = pkgs.pcl.override {
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-      eigen = eigenclang;
-      boost = boostclang;
-      vtk = vtkclang;
-    };
-    libyamlcppclang = pkgs.libyamlcpp.override {
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-    };
-    protobufclang = pkgs.lib.overrideDerivation (pkgs.callPackage (<nixpkgs> + /pkgs/development/libraries/protobuf/generic-v3.nix) {
-      version = "3.4.0";
-      sha256 = "0385j54kgr71h0cxh5vqr81qs57ack2g2k9mcdbq188v4ckjacyx";
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-    }) (attrs: { NIX_CFLAGS_COMPILE = "-Wno-error"; });
-
-    opencv3clang = pkgs.callPackage ./nix/opencv/3.x.nix {
-      stdenv = pkgs.llvmPackages.libcxxStdenv;
-      protobuf = protobufclang;
-      enableContrib = true;
-      enableEigen = true;
-      enableFfmpeg = true;
-      enablePython = true;
-      inherit (pkgs.darwin.apple_sdk.frameworks)
-        AVFoundation Cocoa QTKit VideoDecodeAcceleration;
-    };
-
-    # opencv3 = pkgs.opencv3.override {
-    #   enableContrib = true;
-    #   enableEigen = true;
-    #   enableFfmpeg = true;
-    #   enablePython = true;
-    # };
-
-    opencv3nix = pkgs.opencv3;
-
-    # opencv3x = pkgs.callPackage ./nix/opencv/331.nix {
-    #   # enableContrib = true;
-    #   # enableEigen = true;
-    #   enableFfmpeg = true;
-    #   # enablePython = true;
-    #   inherit (pkgs.darwin.apple_sdk.frameworks)
-    #     AVFoundation Cocoa QTKit VideoDecodeAcceleration;
-    # };
 
     ignition = pkgs.ignition // {
       transport2 = pkgs.callPackage ./nix/ignition-transport/2.1.0.nix {
