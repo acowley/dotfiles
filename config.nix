@@ -21,6 +21,7 @@
   };
   packageOverrides = pkgs: rec {
     catch2 = pkgs.callPackage ./nix/catch2 {};
+    versor = pkgs.callPackage ./nix/versor {};
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
 
     zenstates = pkgs.callPackage ./nix/zenstates {};
