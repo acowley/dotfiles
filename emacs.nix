@@ -3,7 +3,8 @@ self: nixpkgs: {
     inherit (super) pdf-tools;
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
-      version = "20180314.556";
+      # version = "20180314.556";
+      version = "20180618";
       src = ~/src/lsp-ui;
       packageRequires = with super; [
         dash
