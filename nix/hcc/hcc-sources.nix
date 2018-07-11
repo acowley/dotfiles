@@ -3,8 +3,8 @@
   repo = "hcc";
 
   # 1.8.x branch
-  rev = "6e93604c7ba45047855c5b1f710d27ad3c88c610";
-  sha256 = "1h5rzbb51mcl1h2196n94a16qi9pk5riypqk298wzb0669ww2iwf";
+  rev = "47899bc8475b3762e2165016a0c9916547a90670";
+  sha256 = "0v3xy33dd2bbg88lx55vssqgr8aqg9dfid2krihpqm8qcbz4gw91";
 
   fetchSubmodules = true;
   leaveDotGit = true;
