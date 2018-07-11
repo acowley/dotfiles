@@ -1896,7 +1896,7 @@ store to load and configure the cquery lsp client."
   :config
   (setq erc-fill-function 'erc-fill-static
         erc-fill-static-center 18
-        erc-fill-column 72)
+        erc-fill-column 71)
   ;; (setq erc-fill-function 'erc-fill-variable)
 
   (use-package erc-terminal-notifier
