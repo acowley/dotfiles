@@ -1644,6 +1644,10 @@ element based on the god-local-mode predicate."
                                    )))
   (use-package hindent)
 
+  (use-package lsp-haskell
+    :defer t
+    :commands lsp-haskell-enable)
+
   (defun my-haskell-mode-hook ()
     (structured-haskell-mode)
     (electric-indent-local-mode -1)

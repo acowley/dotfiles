@@ -153,6 +153,7 @@ self: nixpkgs: {
 
     lsp-mode
     lsp-ui
+    lsp-haskell
 
     cmake-mode
     clang-format
