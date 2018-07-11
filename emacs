@@ -1320,9 +1320,14 @@ predicate returns true."
 
   (setq mu4e-user-mail-address-list
         (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
-                my-mu4e-account-alist)))
+                my-mu4e-account-alist))
+  ;; (use-package mu4e-conversation
+  ;;   :defer t
+  ;;   :commands global-mu4e-conversation-mode)
+  ;; (global-mu4e-conversation-mode)
+)
 
-(use-package mu4e-conversation :defer t)
+
 
 ;;; minions
 (use-package minions
