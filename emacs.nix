@@ -1,6 +1,20 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = super: self: super.melpaPackages // {
     inherit (super) pdf-tools;
+    mu4e-conversation = super.melpaBuild {
+      pname = "mu4e-conversation";
+      version = "20180711";
+      src = nixpkgs.fetchgit {
+        url = https://gitlab.com/ambrevar/mu4e-conversation.git;
+        rev = "6690d730aaf912b7a2f17caa1e18513c5ee3560e";
+        sha256 = "1nx9q0d1fk14hfwim456sb1gidmarislf1vlwdkp8mgh5rywxk1q";
+      };
+      packageRequires = [];
+      meta = {
+        homepage = https://gitlab.com/ambrevar/mu4e-conversation;
+        license = nixpkgs.lib.licenses.gpl3;
+      };
+    };
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       # version = "20180314.556";
@@ -85,6 +99,7 @@ self: nixpkgs: {
     dashboard
     impatient-mode
     esup
+    mu4e-conversation
 
     # org packages
     orgPackages.org-plus-contrib

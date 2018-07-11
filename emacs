@@ -446,7 +446,6 @@ end tell" uri)))
 ;; (add-to-list 'tramp-default-proxies-alist
 ;;              '((regexp-quote (system-name)) nil nil))
 
-
 ;;; Diminish
 (use-package diminish :ensure t)
 ;;; Themes
@@ -555,7 +554,7 @@ end tell" uri)))
 
   ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
 
-  (setq org-image-actual-width 600)
+  (setq org-image-actual-width 400)
   (setq org-latex-prefer-user-labels t)
 
   (use-package org-bullets)
@@ -1323,6 +1322,7 @@ predicate returns true."
         (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
                 my-mu4e-account-alist)))
 
+(use-package mu4e-conversation :defer t)
 
 ;;; minions
 (use-package minions
