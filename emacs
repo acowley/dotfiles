@@ -1907,6 +1907,7 @@ store to load and configure the cquery lsp client."
   (use-package ercn
     :if (not (memq window-system '(mac ns)))
     :config
+    (require 's)
     (defun do-notify (nickname message)
       (let* ((channel (buffer-name))
              (title (if (string-match-p (concat "^" nickname) channel)
