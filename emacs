@@ -1735,6 +1735,27 @@ sorted block."
   (require 'lsp-ui)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
+;;; ccls
+(use-package ccls
+  :defer t
+  :commands lsp-ccls-enable
+  :config
+  (setq ccls-sem-highlight-method 'overlay)
+  (defun project-ccls ()
+    (flycheck-mode)
+    (yas-minor-mode)
+    (setq-local ccls-executable
+              (let ((nix-shell (concat
+                                (locate-dominating-file (or load-file-name
+                                                            buffer-file-name)
+                                                        "shell.nix")
+                                      "shell.nix")))
+                (string-trim
+                 (shell-command-to-string
+                  (concat
+                   "nix-shell " nix-shell " --run 'which ccls'"))))))
+  (advice-add 'lsp-ccls-enable :before #'project-ccls))
+
 ;;; cquery
 (use-package cquery
   :load-path "~/Projects/emacs-cquery"

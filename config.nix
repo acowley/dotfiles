@@ -70,6 +70,8 @@
     gtsam = pkgs.callPackage ./nix/gtsam {};
 
     cquery = pkgs.callPackage ./nix/cquery {};
+    ccls = pkgs.callPackage ./nix/ccls {};
+    ccls-project = pkgs.callPackage ./nix/ccls/nixAware.nix {};
 
     libsimdpp = pkgs.callPackage ./nix/libsimdpp {};
 

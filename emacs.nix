@@ -1,6 +1,26 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = super: self: super.melpaPackages // {
     inherit (super) pdf-tools;
+    ccls = super.melpaBuild {
+      pname = "ccls";
+      version = "20180708.2207";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "MaskRay";
+        repo = "emacs-ccls";
+        rev = "4c8f377f7aa957a33a0097dc212e765246f799db";
+        sha256 = "09gll0c1jy0ljv2jb7qmpgyh0n4jdm4xhj10lcny0xx32nyfa86y";
+      };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
+        sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
+        name = "recipe";
+      };
+      packageRequires = with super; [dash emacs lsp-mode];
+      meta = {
+        homepage = "https://melpa.org/#/ccls";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
     mu4e-conversation = super.melpaBuild {
       pname = "mu4e-conversation";
       version = "20180711";
@@ -154,6 +174,7 @@ self: nixpkgs: {
     lsp-mode
     lsp-ui
     lsp-haskell
+    ccls
 
     cmake-mode
     clang-format
