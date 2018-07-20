@@ -9,8 +9,8 @@ stdenv.mkDerivation rec {
     repo = "HIP";
     # rev = tag;
 
-    rev = "323a6226b0a6ed43b43918b351fd64bb03d53c98";
-    sha256 = "1wxxqsgrg01arzig69vf9m3g9kvpfky0ispdgccmrg44h623j418";
+    rev = "505a12754c6258b192941d91db0916da96a2b051";
+    sha256 = "0f103cn1z7l6jwgqfl9dba8i52sbdhcxgkbr3k0cn6f5spr4rbr6";
   };
   propagatedBuildInputs = [ hcc roct ];
   buildInputs = [ rocminfo ];
