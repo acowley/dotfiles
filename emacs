@@ -1765,6 +1765,7 @@ sorted block."
   (defun project-ccls ()
     (flycheck-mode)
     (yas-minor-mode)
+    (helm-gtags-mode -1)
     (setq-local ccls-executable
               (let ((nix-shell (concat
                                 (locate-dominating-file (or load-file-name
