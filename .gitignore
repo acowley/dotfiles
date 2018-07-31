@@ -2,3 +2,5 @@
 /pinentry/Main.o
 /pinentry/hpinentry
 *~
+/nix/pcl_demo/build
+/nix/pcl_demo/compile_commands.json
