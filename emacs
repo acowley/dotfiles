@@ -33,6 +33,27 @@
 
 ;;;; Elisp Helpers
 (require 'subr-x)
+
+(defun split-third ()
+  "Split the frame into two windows split vertically with the one
+on the left taking up 2/3rds of the width."
+  (interactive)
+  (delete-other-windows)
+  (split-window-horizontally)
+  (split-window-horizontally)
+  (balance-windows)
+  (delete-window))
+
+(defun go-fullscreen ()
+  "If the current frame is not already full screen, disable the
+menu bar, set the frame to full screen, and vertically split the
+window into a 2:1 ratio."
+  (interactive)
+  (unless (eq (frame-parameter nil 'fullscreen) 'fullboth)
+    (menu-bar-mode -1)
+    (toggle-frame-fullscreen)
+    (split-third)))
+
 (defun insert-after (x y xs)
   "`(insert-after x y list)` inserts `y` after `x` in `list`. If
 `x` is not found, `list` is returned unchanged. This is a
