@@ -1,0 +1,25 @@
+diff --git a/elisp/intero.el b/elisp/intero.el
+index a0ffda9..607a29f 100644
+--- a/elisp/intero.el
++++ b/elisp/intero.el
+@@ -2441,12 +2441,14 @@ This is a standard process sentinel function."
+ 
+ (defun intero-executable-path (stack-yaml)
+   "The path for the intero executable."
+-  (intero-with-temp-buffer
+-    (cl-case (save-excursion
+-               (intero-call-stack
+-                nil (current-buffer) t intero-stack-yaml "path" "--compiler-tools-bin"))
+-      (0 (replace-regexp-in-string "[\r\n]+$" "/intero" (buffer-string)))
+-      (1 "intero"))))
++"intero"
++  ;; (intero-with-temp-buffer
++  ;;   (cl-case (save-excursion
++  ;;              (intero-call-stack
++  ;;               nil (current-buffer) t intero-stack-yaml "path" "--compiler-tools-bin"))
++  ;;     (0 (replace-regexp-in-string "[\r\n]+$" "/intero" (buffer-string)))
++  ;;     (1 "intero")))
++  )
+ 
+ (defun intero-installed-p ()
+   "Return non-nil if intero (of the right version) is installed in the stack environment."

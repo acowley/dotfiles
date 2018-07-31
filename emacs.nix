@@ -87,6 +87,7 @@ self: nixpkgs: {
       version = "20180219";
       src = ~/src/intero;
       fileSpecs = [ "elisp/*.el" ];
+      patches = [ ./nix/intero-no-compiler-tools.patch ];
       packageRequires = [ super.company super.flycheck super.haskell-mode ];
       meta = {
         homepage = "https://melpa.org/#/intero";
