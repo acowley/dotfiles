@@ -3,12 +3,12 @@ self: nixpkgs: {
     inherit (super) pdf-tools;
     ccls = super.melpaBuild {
       pname = "ccls";
-      version = "20180708.2207";
+      version = "20180729";
       src = nixpkgs.fetchFromGitHub {
         owner = "MaskRay";
         repo = "emacs-ccls";
-        rev = "4c8f377f7aa957a33a0097dc212e765246f799db";
-        sha256 = "09gll0c1jy0ljv2jb7qmpgyh0n4jdm4xhj10lcny0xx32nyfa86y";
+        rev = "d9f35403fb23c35ab069ff42987a1e98d3470db3";
+        sha256 = "116ls6hwsh3bjxv4vdasb58qxr0dll8mi4l2byfs9bdpspr9qbn0";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
