@@ -2215,7 +2215,7 @@ store to load and configure the cquery lsp client."
  '(org-footnote-auto-label (quote plain))
  '(org-format-latex-options
    (quote
-    (:foreground default :background default :scale 1.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+    (:foreground default :background default :scale 4.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-html-validation-link "")
  '(org-imenu-depth 3)
