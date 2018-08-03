@@ -21,58 +21,58 @@ self: nixpkgs: {
         license = nixpkgs.lib.licenses.free;
       };
     };
-    mu4e-conversation = super.melpaBuild {
-      pname = "mu4e-conversation";
-      version = "20180711";
-      src = nixpkgs.fetchgit {
-        url = https://gitlab.com/ambrevar/mu4e-conversation.git;
-        rev = "6690d730aaf912b7a2f17caa1e18513c5ee3560e";
-        sha256 = "1nx9q0d1fk14hfwim456sb1gidmarislf1vlwdkp8mgh5rywxk1q";
-      };
-      packageRequires = [];
-      meta = {
-        homepage = https://gitlab.com/ambrevar/mu4e-conversation;
-        license = nixpkgs.lib.licenses.gpl3;
-      };
-    };
-    lsp-ui = super.melpaBuild {
-      pname = "lsp-ui";
-      # version = "20180314.556";
-      version = "20180618";
-      src = ~/src/lsp-ui;
-      packageRequires = with super; [
-        dash
-        dash-functional
-        emacs
-        flycheck
-        lsp-mode
-        markdown-mode
-      ];
-      meta = {
-        homepage = "https://melpa.org/#/lsp-ui";
-        license = nixpkgs.lib.licenses.free;
-      };
-    };
-    company-lsp = super.melpaBuild {
-      pname = "company-lsp";
-      version = "20180518";
-      src = nixpkgs.fetchFromGitHub {
-        owner = "tigersoldier";
-        repo = "company-lsp";
-        rev = "88155b0d7cd29f95b0a20c134d28d68ef03c640d";
-        sha256 = "0fdq3yl10znx6nq50bvxyp87mikapsjv5vj94mprbkw2xib0arhv";
-      };
-      packageRequires = with super; [ company dash emacs lsp-mode s ];
-      meta = {
-        homepage = "https://melpa.org/#/company-lsp";
-        license = nixpkgs.lib.licenses.free;
-      };
-    };
-    cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
-      patchPhase = ''
-        sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
-      '';
-    });
+    # mu4e-conversation = super.melpaBuild {
+    #   pname = "mu4e-conversation";
+    #   version = "20180711";
+    #   src = nixpkgs.fetchgit {
+    #     url = https://gitlab.com/ambrevar/mu4e-conversation.git;
+    #     rev = "6690d730aaf912b7a2f17caa1e18513c5ee3560e";
+    #     sha256 = "1nx9q0d1fk14hfwim456sb1gidmarislf1vlwdkp8mgh5rywxk1q";
+    #   };
+    #   packageRequires = [];
+    #   meta = {
+    #     homepage = https://gitlab.com/ambrevar/mu4e-conversation;
+    #     license = nixpkgs.lib.licenses.gpl3;
+    #   };
+    # };
+    # lsp-ui = super.melpaBuild {
+    #   pname = "lsp-ui";
+    #   # version = "20180314.556";
+    #   version = "20180618";
+    #   src = ~/src/lsp-ui;
+    #   packageRequires = with super; [
+    #     dash
+    #     dash-functional
+    #     emacs
+    #     flycheck
+    #     lsp-mode
+    #     markdown-mode
+    #   ];
+    #   meta = {
+    #     homepage = "https://melpa.org/#/lsp-ui";
+    #     license = nixpkgs.lib.licenses.free;
+    #   };
+    # };
+    # company-lsp = super.melpaBuild {
+    #   pname = "company-lsp";
+    #   version = "20180518";
+    #   src = nixpkgs.fetchFromGitHub {
+    #     owner = "tigersoldier";
+    #     repo = "company-lsp";
+    #     rev = "88155b0d7cd29f95b0a20c134d28d68ef03c640d";
+    #     sha256 = "0fdq3yl10znx6nq50bvxyp87mikapsjv5vj94mprbkw2xib0arhv";
+    #   };
+    #   packageRequires = with super; [ company dash emacs lsp-mode s ];
+    #   meta = {
+    #     homepage = "https://melpa.org/#/company-lsp";
+    #     license = nixpkgs.lib.licenses.free;
+    #   };
+    # };
+    # cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
+    #   patchPhase = ''
+    #     sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
+    #   '';
+    # });
     apropospriate-theme =
       # Note: \x27 is a single quote character. This is a way of
       # escaping those characters within the sed command string.
@@ -93,6 +93,11 @@ self: nixpkgs: {
         homepage = "https://melpa.org/#/intero";
         license = nixpkgs.lib.licenses.free;
       };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/1b56ca344ad944e03b669a9974e9b734b5b445bb/recipes/intero";
+        sha256 = "15n7ipsq8ylmq4blsycpszkx034j9sb92vqvaz30j5v307fmvs99";
+        name = "recipe";
+      };
     };
     structured-haskell-mode = super.melpaBuild {
       pname = "shm";
@@ -101,6 +106,11 @@ self: nixpkgs: {
       packageRequires = [ super.haskell-mode ];
       fileSpecs = [ "elisp/*.el" ];
       propagatedUserEnvPkgs = [ nixpkgs.haskellPackages.structured-haskell-mode ];
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/68a2fddb7e000487f022b3827a7de9808ae73e2a/recipes/shm";
+        sha256 = "1qmp8cc83dcz25xbyqd4987i0d8ywvh16wq2wfs4km3ia8a2vi3c";
+        name = "recipe";
+      };
       meta = {
         description = "Structured editing Emacs mode for Haskell";
         license = nixpkgs.lib.licenses.bsd3;
