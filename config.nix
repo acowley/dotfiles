@@ -130,6 +130,14 @@
                   in [ p.setuptools p.pip p.bottle p.platformio ];
     }).env;
 
+    vtk8 = pkgs.callPackage ./nix/vtk/8.nix {
+      inherit (pkgs.darwin) cf-private libobjc;
+      inherit (pkgs.darwin.apple_sdk.libs) xpc;
+      inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa CoreServices DiskArbitration
+        IOKit CFNetwork Security ApplicationServices
+        CoreText IOSurface ImageIO OpenGL GLUT;
+    };
+
     opencv32 = pkgs.callPackage ./nix/opencv/3.2.nix {
       enableContrib = true;
       enableEigen = true;
