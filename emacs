@@ -499,6 +499,8 @@ end tell" uri)))
 
 ;;; Projectile
 (use-package projectile
+  :init
+  (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
   (setq projectile-enable-caching t
         projectile-global-mode t
