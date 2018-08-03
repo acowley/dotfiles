@@ -206,6 +206,7 @@ self: nixpkgs: {
     racer
 
     purescript-mode
+    psc-ide
     paredit
     yaml-mode
     redprl
