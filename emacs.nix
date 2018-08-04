@@ -68,11 +68,11 @@ self: nixpkgs: {
     #     license = nixpkgs.lib.licenses.free;
     #   };
     # };
-    # cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
-    #   patchPhase = ''
-    #     sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
-    #   '';
-    # });
+    cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
+      patchPhase = ''
+        sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
+      '';
+    });
     apropospriate-theme =
       # Note: \x27 is a single quote character. This is a way of
       # escaping those characters within the sed command string.
@@ -130,7 +130,7 @@ self: nixpkgs: {
     dashboard
     impatient-mode
     esup
-    mu4e-conversation
+    # mu4e-conversation
 
     # org packages
     orgPackages.org-plus-contrib
@@ -222,7 +222,7 @@ self: nixpkgs: {
   ];
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin
-    then nixpkgs.emacsPackagesNgGen nixpkgs.emacs25Macport
+    then nixpkgs.emacsPackagesNgGen nixpkgs.emacsMacport
     else nixpkgs.emacsPackagesNg;
   emacs = (self.myEmacsPackagesNg.overrideScope self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
