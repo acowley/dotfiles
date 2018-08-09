@@ -589,6 +589,8 @@ end tell" uri)))
   ;; This is slow to load
   (use-package ox-tufte :defer t)
 
+  (use-package ox-gfm)
+
   (defun my-org-hook ()
     (org-bullets-mode 1)
     (org-table-sticky-header-mode)

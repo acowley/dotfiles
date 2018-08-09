@@ -139,6 +139,7 @@ self: nixpkgs: {
     org-table-sticky-header
     org-journal
     ox-tufte
+    ox-gfm
     ob-ipython
     org-noter
     outorg
