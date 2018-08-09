@@ -671,6 +671,13 @@ evaluation may begin anew."
     :defer t
     :ensure org-plus-contrib
     :commands (org-babel-execute:dot org-babel-expand-body:dot))
+  (use-package ob-C
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:C org-babel-expand-body:C
+               org-babel-execute:C++ org-babel-expand-body:C++)
+    :config
+    (setq org-babel-C++-compiler "clang++"))
 
   ;; Syntax highlight dot source blocks
   ; (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
