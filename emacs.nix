@@ -130,6 +130,7 @@ self: nixpkgs: {
     dashboard
     impatient-mode
     esup
+    direnv
     # mu4e-conversation
 
     # org packages

@@ -2110,6 +2110,10 @@ store to load and configure the cquery lsp client."
 
 ;;; graphviz-dot-mode
 (use-package graphviz-dot-mode :defer t)
+;;; direnv
+(use-package direnv
+  :config
+  (direnv-mode))
 ;;; nix-buffer
 (use-package nix-buffer
   :defer t
