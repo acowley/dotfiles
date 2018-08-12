@@ -15,7 +15,12 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [ hcc roct ];
   buildInputs = [ rocminfo ];
   nativeBuildInputs = [ cmake git ];
-  cmakeFlags = [ "-DHSA_PATH=${rocr}" "-DHCC_HOME=${hcc}" "-DCMAKE_CURRENT_SOURCE_DIR=${src}" ];
+  cmakeFlags = [
+    "-DHSA_PATH=${rocr}"
+    "-DHCC_HOME=${hcc}"
+    "-DCMAKE_CURRENT_SOURCE_DIR=${src}"
+    "-DHIP_PLATFORM='hcc'"
+  ];
   patchPhase = ''
     for f in $(find bin -type f); do
       sed -e 's,#!/usr/bin/perl,#!${perl}/bin/perl,' \
@@ -27,6 +32,10 @@ stdenv.mkDerivation rec {
         -e 's,^\([[:space:]]*$HCC_HOME=\).*$,\1"${hcc}";,' \
         -i bin/hipcc
     sed -i 's,\([[:space:]]*$HCC_HOME=\).*$,\1"${hcc}";,' -i bin/hipconfig
+  '';
+  postInstall = ''
+    mkdir -p $out/share
+    mv $out/lib/cmake $out/share/
   '';
 
   setupHook = writeText "setupHook.sh" ''
