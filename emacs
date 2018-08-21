@@ -589,7 +589,9 @@ end tell" uri)))
   ;; This is slow to load
   (use-package ox-tufte :defer t)
 
-  (use-package ox-gfm)
+  ;; This is also slow to load
+  (use-package ox-gfm
+    :commands (org-gfm-export-to-markdown org-gfm-export-as-markdown))
 
   (defun my-org-hook ()
     (org-bullets-mode 1)
