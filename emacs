@@ -473,7 +473,6 @@ end tell" uri)))
 ;; (use-package darkokai-theme :defer t)
 ;; (use-package monokai-theme :defer t)
 (use-package apropospriate-theme
-  ;; :load-path "~/Documents/Projects/apropospriate-theme"
   :config
   (load-theme 'apropospriate-dark t))
 
@@ -567,15 +566,36 @@ end tell" uri)))
          ("S-<up>" . nil)
          ("S-<down>" . nil))
   :config
-  (setq org-src-fontify-natively t
-        org-use-speed-commands t
+  (setq org-src-fontify-natively 't
+        org-use-speed-commands 't
         org-html-doctype "html5"
         org-directory "~/org"
+        org-default-notes-file "~/org/home.org"
+        org-agenda-dim-blocked-tasks 'invisible
+        org-enforce-todo-dependencies 't
+        org-priority-faces '((?A . (:foreground "green" :weight bold))
+                             (?B . (:foreground "slate gray"))
+                             (?C . (:foreground "dim gray")))
         ;; For leuven-theme
         ;; Fontify the whole line for headings (with a background color).
-        org-fontify-whole-heading-line t)
+        org-fontify-whole-heading-line 't)
 
   ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
+
+  ;; From https://emacs.stackexchange.com/a/33077/6537
+  (defun color-org-header (tag backcolor forecolor)
+    "Apply coloring to lines based on presence of a tag"
+    (goto-char (point-min))
+    (while (re-search-forward tag nil t)
+      (message "Applying color for %s" tag)
+      (add-text-properties (point-at-bol) (point-at-eol) `(face (:foreground ,forecolor)))))
+
+  (defun my-agenda-colors ()
+    (save-excursion
+      (color-org-header (rx "[#B]") "black" "slate gray")
+      (color-org-header (rx "[#C]") "black" "dim gray")))
+
+  (add-hook 'org-agenda-finalize-hook #'my-agenda-colors)
 
   (setq org-image-actual-width 400)
   (setq org-latex-prefer-user-labels t)
@@ -2227,7 +2247,6 @@ store to load and configure the cquery lsp client."
  '(hl-sexp-background-color "#efebe9")
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
- '(org-default-notes-file "~/org/home.org")
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-footnote-auto-label (quote plain))
  '(org-format-latex-options
