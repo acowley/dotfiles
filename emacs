@@ -835,6 +835,57 @@ of code to whatever theme I'm using's background"
               (file-name-sans-extension path)
               desc))))
 
+  (defun my/blog-get-article-slug ()
+    "Return an Org item based on the current buffer suitable for
+insertion into the blog's index."
+    (if (not (eq major-mode 'org-mode))
+        (message "Only works in an Org buffer")
+      (let* ((title (substring-no-properties (car (plist-get (org-export-get-environment) :title))))
+             (rel-path (progn
+                         (string-match ".*?/articles/\\(.*?\\)$" (buffer-file-name))
+                         (match-string 1 (buffer-file-name)))))
+        (concat "* " title "\n"
+                "#+include: \"" rel-path "\"::Slug\n\n"
+                "[[blog:" rel-path "][read more]]"))))
+
+  (defun buffer-for-file (filename)
+    "Return an existing buffer visiting `FILENAME`, or open a new
+buffer visiting `FILENAME` if none exists."
+    (or (get-file-buffer filename) (find-file filename)))
+
+  (defun my/blog-add-article-to-index ()
+    "Add the current Org buffer as an entry in the blog's index."
+    (interactive)
+    (save-current-buffer
+      (let* ((entry (my/blog-get-article-slug))
+             (index-dir (locate-dominating-file (buffer-file-name) "index.org"))
+             (index-buf (buffer-for-file (concat index-dir "index.org"))))
+        (with-current-buffer index-buf
+          (save-excursion
+            (goto-char (point-min))
+            (search-forward-regexp "^*")
+            (forward-line -1)
+            (insert "\n" entry "\n"))))))
+
+  (defun new-blog-article (arg title)
+    "Produce the boilerplate at the start of every blog article after
+prompting for the article's title."
+    (interactive "P\nMtitle: ")
+    (let* ((date (format-time-string "%Y-%m-%d" (current-time)))
+           (txt (mapconcat #'identity
+                           (list (concat "#+TITLE: " title)
+                                 (concat "#+DATE: <" date ">")
+                                 "#+OPTIONS: html-postamble:nil num:nil toc:nil"
+                                 ""
+                                 "#+BEGIN_EXPORT html"
+                                 (concat "<p class=\"date\">" date "</p>")
+                                 "#+END_EXPORT"
+                                 ""
+                                 "* Slug :ignore:"
+                                 "")
+                           "\n")))
+      (insert txt)))
+
   (org-link-set-parameters
    "blog"
    :follow #'org-custom-link-blog-follow
