@@ -477,8 +477,9 @@ end tell" uri)))
   (load-theme 'apropospriate-dark t))
 
 ;;; emacs server
-(use-package server :config (and (fboundp 'server-mode)
-                                 (or (server-running-p) (server-mode))))
+(use-package server
+  :config (and (fboundp 'server-mode)
+               (or (server-running-p) (server-mode))))
 ;;; company-mode
 (use-package company
   ;; :load-path "~/src/company-mode/company-0.9.4"
@@ -507,7 +508,7 @@ end tell" uri)))
         projectile-globally-ignored-directories
         '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")
         projectile-project-root-files
-        '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "*.cabal" "compile_commands.json" "shell.nix"))
+        '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "compile_commands.json" "shell.nix" "*.cabal"))
   (projectile-mode))
 
 ;;; yasnippet
@@ -640,15 +641,15 @@ end tell" uri)))
   (add-hook 'org-mode-hook #'my-org-hook)
 
   (use-package ob-ipython
-  :defer t
-  :config
-  (defun kill-ihaskell ()
-    "IHaskell dies after a few evaluations of a big notebook due
+    :defer t
+    :config
+    (defun kill-ihaskell ()
+      "IHaskell dies after a few evaluations of a big notebook due
 to keeping too many files open. This cleans things up so
 evaluation may begin anew."
-    (interactive)
-    (mapc #'kill-buffer '("*Python*" "*ob-ipython-client-driver*"
-                          "*ob-ipython-kernel-default*"))))
+      (interactive)
+      (mapc #'kill-buffer '("*Python*" "*ob-ipython-client-driver*"
+                            "*ob-ipython-kernel-default*"))))
 
 
   ;; (org-babel-do-load-languages
@@ -719,10 +720,6 @@ evaluation may begin anew."
   (add-hook 'org-babel-after-execute-hook
             'org-display-inline-images
             'append)
-
-  (add-to-list 'org-agenda-files
-               "~/Projects/roshask/roshask-notes.org"
-               "~/Projects/MAST/mast-iros-notes.org")
 
   (defun my/org-babel-next-src-block ()
     "Move point to the next babel src block. Returns the new point
