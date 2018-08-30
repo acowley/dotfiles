@@ -1084,9 +1084,10 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                                helm-source-recentf
                                helm-source-buffer-not-found
                                helm-source-locate))
-  (when (memq window-system '(mac ns))
-    (setq helm-locate-command
-          "mdfind -onlyin $HOME -name %s %s | grep -E -v '/dist/|/Caches/'"))
+  (if (memq window-system '(mac ns))
+      (setq helm-locate-command
+            "mdfind -onlyin $HOME -name %s %s | grep -E -v '/dist/|/Caches/'")
+    (setq helm-locate-command "/run/current-system/sw/bin/locate %s -e -A --regex %s"))
 
 
   ;; ido offers a nicer UI for switching between open buffers
