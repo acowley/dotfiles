@@ -2198,6 +2198,7 @@ store to load and configure the cquery lsp client."
 ;;; direnv
 (use-package direnv
   :config
+  (setq direnv-always-show-summary nil)
   (direnv-mode))
 ;;; nix-buffer
 (use-package nix-buffer
