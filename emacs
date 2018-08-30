@@ -1101,11 +1101,20 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (use-package helm-company
     :defer t
     :bind (:map company-mode-map
-           ("C-:" . helm-company)))
+                ("C-:" . helm-company)))
+
+  (defun my/search-forward (prefix)
+    "Calls `helm-swoop` unless a prefix argument is given, in which case it calls `isearch-forward`"
+    (interactive "P")
+    (if (null prefix)
+        (helm-swoop)
+      (isearch-forward)))
+
   (use-package helm-swoop
     :defer t
     :commands helm-swoop
     :bind (("M-i" . helm-swoop)
+           ("C-s" . my/search-forward)
            ("M-I" . helm-swoop-back-to-last-point)))
   (use-package helm-dash
     :defer t
@@ -1181,8 +1190,6 @@ under the current project's root directory."
 
   :bind (("<escape>" . god-mode-all)
          ("C-x C-o" . other-window) ;; Easier to use with god-mode
-         ("C-s" . helm-swoop)       ;; instead of isearch-forward
-
          ;; I swap these becuase I use switch-to-buffer much more frequently
          ;; and prefer it to have the simpler binding.
          ("C-x b" . list-buffers)
