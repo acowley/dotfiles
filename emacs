@@ -892,14 +892,20 @@ prompting for the article's title."
    :export #'org-custom-link-blog-export)
 
   (setq org-rss-use-entry-url-as-guid nil)
+  (defvar my/blog-directory
+    (let ((d1 "~/Documents/Projects/Blog")
+          (d2 "~/Projects/Blog"))
+      (if (file-exists-p d1) d1 d2))
+    "Local directory for blog files")
+
   (defun my/blog-copy-index-to-rss (_)
-    (shell-command "(cd ~/Documents/Projects/Blog/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")"))
+    (shell-command (format "(cd %s/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")" my/blog-directory)))
   (defun my/blog-sync-assets (_)
-    (shell-command "rsync -a  ~/Documents/Projects/Blog/blog/assets/basedir/ ~/Documents/Projects/Blog/blog"))
+    (shell-command (format "rsync -a %s/blog/assets/basedir/ %s/blog" my/blog-directory my/blog-directory)))
   (setq org-publish-project-alist
-        '(("blog-content"
-           :base-directory "~/Documents/Projects/Blog/articles/"
-           :publishing-directory "~/Documents/Projects/Blog/blog/"
+        `(("blog-content"
+           :base-directory ,(concat my/blog-directory "/articles/")
+           :publishing-directory ,(concat my/blog-directory "/blog/")
            :publishing-function org-html-publish-to-html
            :export-babel-evaluate nil
            :recursive t
@@ -918,8 +924,8 @@ prompting for the article's title."
            :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../core-style.css\" />"
            :html-postamble "")
           ("blog-rss"
-           :base-directory "~/Documents/Projects/Blog/articles/"
-           :publishing-directory "~/Documents/Projects/Blog/blog"
+           :base-directory ,(concat my/blog-directory "/articles/")
+           :publishing-directory ,(concat my/blog-directory "/blog")
            :publishing-function (org-rss-publish-to-rss)
            :html-link-home "http://www.arcadianvisions.com/blog/"
            :completion-function my/blog-copy-index-to-rss
@@ -932,11 +938,11 @@ prompting for the article's title."
            :section-numbers nil)
           ("blog-assets"
            ;; Static content like images and CSS
-           :base-directory "~/Documents/Projects/Blog/assets"
+           :base-directory ,(concat my/blog-directory "/assets")
            :base-extension any
            :include ("basedir/.htaccess")
            :recursive t
-           :publishing-directory "~/Documents/Projects/Blog/blog/assets"
+           :publishing-directory ,(concat my/blog-directory "/blog/assets")
            :publishing-function org-publish-attachment
            :completion-function my/blog-sync-assets)
           ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
