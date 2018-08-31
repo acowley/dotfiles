@@ -467,6 +467,29 @@ end tell" uri)))
 ;; (add-to-list 'tramp-default-proxies-alist
 ;;              '((regexp-quote (system-name)) nil nil))
 
+;;;; cparens
+(defun cparens ()
+  "Parenthesize the C expression in region"
+  (interactive)
+  (if (region-active-p)
+      (let* ((exp (buffer-substring (region-beginning) (region-end)))
+             (tmp (make-temp-file "cparens-input")))
+        (unwind-protect
+            (progn
+              (write-region (region-beginning) (region-end) tmp)
+              (let ((res (with-temp-buffer
+                           (cons
+                            (call-process "cparens" tmp (current-buffer) nil)
+                            (buffer-substring-no-properties
+                             (point-min) (point-max))))))
+                (if (eq (car res) 0)
+                    (progn
+                      (delete-region (region-beginning) (region-end))
+                      (insert (cdr res)))
+                  (error (cdr res)))))
+            (delete-file tmp)))))
+
+
 ;;; Diminish
 (use-package diminish :ensure t)
 ;;; Themes

@@ -25,6 +25,8 @@
     versor = pkgs.callPackage ./nix/versor {};
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
 
+    cparens = pkgs.haskellPackages.callPackage ~/Projects/cparens {};
+
     zenstates = pkgs.callPackage ./nix/zenstates {};
     global = pkgs.callPackage ./nix/global {};
     # emacs = pkgs.emacs25Macport;
