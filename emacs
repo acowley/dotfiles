@@ -2025,7 +2025,9 @@ store to load and configure the cquery lsp client."
   (add-hook 'text-mode-hook #'mixed-pitch-mode)
   ;; Depending on your specific setup, you may want to adjust the height of
   ;; variable pitch fonts:
-  (set-face-attribute 'variable-pitch nil :height 160)
+  (set-face-attribute 'variable-pitch nil :height 100 :family "Noto Serif")
+  ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
+
   )
 
 ;;; python
