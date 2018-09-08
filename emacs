@@ -188,6 +188,8 @@ single-quoted string."
 ;; (add-hook 'prog-mode-hook (lambda () (auto-composition-mode -1)))
 ;; (add-hook 'text-mode-hook (lambda () (auto-composition-mode -1)))
 
+(setq display-line-numbers-type 'relative)
+
 ;; Disable electric-quote-mode everywhere
 (add-hook 'after-change-major-mode-hook
           (lambda () (electric-quote-mode -1)))
