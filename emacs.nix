@@ -3,21 +3,70 @@ self: nixpkgs: {
     inherit (super) pdf-tools;
     ccls = super.melpaBuild {
       pname = "ccls";
-      version = "20180729";
+      version = "20180903";
       src = nixpkgs.fetchFromGitHub {
         owner = "MaskRay";
         repo = "emacs-ccls";
-        rev = "d9f35403fb23c35ab069ff42987a1e98d3470db3";
-        sha256 = "116ls6hwsh3bjxv4vdasb58qxr0dll8mi4l2byfs9bdpspr9qbn0";
+        rev = "2b2d5a27ec739b59458e03aa30bb0eb612e727b6";
+        sha256 = "018xwfq3kmcp7dpb5cbrcy2cvssywabp6a7qrwnzm3pryvzfrqxd";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
         sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
         name = "recipe";
       };
-      packageRequires = with super; [dash emacs lsp-mode];
+      packageRequires = with super; [dash emacs self.lsp-mode];
       meta = {
         homepage = "https://melpa.org/#/ccls";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
+    lsp-mode = super.melpaBuild {
+      pname = "lsp-mode";
+      ename = "lsp-mode";
+      version = "20180830";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "emacs-lsp";
+        repo = "lsp-mode";
+        rev = "6eadc0c2a0762b35440a2f6eb6ba27a528334b22";
+        sha256 = "0xz5cpmgfgyiakzfa21nqx2xq41kdg4aggahi3qgcn910fp09bi2";
+      };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
+        sha256 = "0cklwllqxzsvs4wvvvsc1pqpmp9w99m8wimpby6v6wlijfg6y1m9";
+        name = "recipe";
+      };
+      packageRequires = with self; [ emacs ];
+      meta = {
+        homepage = "https://melpa.org/#/lsp-mode";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
+    lsp-ui = super.melpaBuild {
+      pname = "lsp-ui";
+      ename = "lsp-ui";
+      version = "20180904";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "emacs-lsp";
+        repo = "lsp-ui";
+        rev = "564840a8556ac332cb622f6b743f4471cfabd5dc";
+        sha256 = "1a3zfdzfa43b75cypkk6yf4bn9s46mdgajzkswwv005yx0jh5nbr";
+      };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
+        sha256 = "00y5i44yd79z0v00a9lvgixb4mrx9nq5vcgmib70h41ffffaq42j";
+        name = "recipe";
+      };
+      packageRequires = with self; [
+        dash
+        dash-functional
+        emacs
+        flycheck
+        lsp-mode
+        markdown-mode
+      ];
+      meta = {
+        homepage = "https://melpa.org/#/lsp-ui";
         license = nixpkgs.lib.licenses.free;
       };
     };
