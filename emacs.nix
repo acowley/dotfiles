@@ -274,6 +274,6 @@ self: nixpkgs: {
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin
     then nixpkgs.emacsPackagesNgGen nixpkgs.emacsMacport
-    else nixpkgs.emacsPackagesNg;
+    else nixpkgs.emacsPackagesNgGen (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
   emacs = (self.myEmacsPackagesNg.overrideScope self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
