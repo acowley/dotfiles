@@ -623,7 +623,7 @@ end tell" uri)))
 
   (add-hook 'org-agenda-finalize-hook #'my-agenda-colors)
 
-  (setq org-image-actual-width 400)
+  (setq org-image-actual-width 800)
   (setq org-latex-prefer-user-labels t)
 
   (use-package org-bullets)
