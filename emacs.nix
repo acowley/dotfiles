@@ -235,6 +235,7 @@ self: nixpkgs: {
     docker-tramp
     helm-projectile
     helm-gtags
+    helm-org-rifle
 
     # imenu-anywhere
     god-mode

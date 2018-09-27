@@ -1158,13 +1158,13 @@ under the current project's root directory."
     (use-package docker-tramp))
   (use-package helm-projectile
     :defer t))
-
 (ido-mode -1)
 
-;; (use-package imenu-anywhere
-;;   :defer t
-;;   :config
-;;   (setq imenu-anywhere-buffer-filter-functions (list #'imenu-anywhere-same-project-p)))
+;;; helm-org-rifle
+(use-package helm-org-rifle
+  :defer t
+  :commands (helm-org-rifle helm-org-rifle-agenda-files)
+  :bind (("C-c r" . helm-org-rifle-agenda-files)))
 
 ;;; god-mode
 
