@@ -599,7 +599,7 @@ end tell" uri)))
         org-default-notes-file "~/org/home.org"
         org-agenda-dim-blocked-tasks 'invisible
         org-enforce-todo-dependencies 't
-        org-priority-faces '((?A . (:foreground "green" :weight bold))
+        org-priority-faces '((?A . (:foreground "forest green" :weight bold))
                              (?B . (:foreground "slate gray"))
                              (?C . (:foreground "dim gray")))
         ;; For leuven-theme
