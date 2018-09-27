@@ -2501,8 +2501,7 @@ store to load and configure the cquery lsp client."
  ;; If there is more than one, they won't work right.
  '(lsp-face-highlight-textual ((t (:background "#757500"))))
  '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
- '(org-block ((t (:slant normal))))
- '(variable-pitch ((t (:family "Fira Sans Light")))))
+ '(org-block ((t (:slant normal)))))
 
 
 ;;; File Local Variables
