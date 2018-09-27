@@ -1,7 +1,7 @@
-diff -ruN a/CMakeLists.txt b/CMakeLists.txt
---- a/CMakeLists.txt	2018-05-11 21:23:43.553695407 -0400
-+++ b/CMakeLists.txt	2018-05-11 21:26:23.948053965 -0400
-@@ -310,79 +310,11 @@
+diff -Naur a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	1969-12-31 19:00:01.000000000 -0500
++++ b/CMakeLists.txt	2018-09-17 11:51:02.731199915 -0400
+@@ -310,78 +310,10 @@
  set(LLVM_EXTERNAL_COMPILER_RT_SOURCE_DIR "${PROJECT_SOURCE_DIR}/compiler-rt")
  set(LLVM_EXTERNAL_LLD_SOURCE_DIR "${PROJECT_SOURCE_DIR}/lld")
  
@@ -26,7 +26,7 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
 -
 -add_subdirectory(${CLANG_SRC_DIR})
 -get_directory_property(CLANG_VERSION DIRECTORY clang DEFINITION CLANG_VERSION)
- 
+-
 -install(PROGRAMS $<TARGET_FILE:llvm-as>
 -                 $<TARGET_FILE:llvm-dis>
 -                 $<TARGET_FILE:llvm-link>
@@ -58,11 +58,10 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
 -                 $<TARGET_FILE:LLVMCore>
 -                 $<TARGET_FILE:LLVMSupport>
 -                 $<TARGET_FILE:LLVMCpuRename>
--                 $<TARGET_FILE:LLVMDirectFuncCall>
 -                 $<TARGET_FILE:LLVMSelectAcceleratorCode>
+-                 $<TARGET_FILE:LLVMPromotePointerKernArgsToGlobal>
 -                 $<TARGET_FILE:LLVMHello>
 -                 $<TARGET_FILE:LLVMTileUniform>
--                 $<TARGET_FILE:LLVMWrapperGen>
 -        DESTINATION lib
 -        COMPONENT compiler
 -)
@@ -82,7 +81,7 @@ diff -ruN a/CMakeLists.txt b/CMakeLists.txt
  
  # move headers to build dir before building rocdl and hcc lib
  add_subdirectory(include)
-@@ -477,7 +410,6 @@
+@@ -477,7 +409,6 @@
  add_subdirectory(tests)
  add_subdirectory(amp-conformance)
  add_subdirectory(stl-test)

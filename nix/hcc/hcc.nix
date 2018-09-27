@@ -2,7 +2,7 @@
   hcc-clang, hcc-clang-unwrapped, rocr, file, rocminfo }:
 stdenv.mkDerivation rec {
   name = "hcc";
-  version = "1.8.0";
+  version = "1.9.0";
   tag = "roc-${version}";
   src = fetchFromGitHub (import ./hcc-sources.nix);
   propagatedBuildInputs = [ file rocr rocminfo ];

@@ -2,15 +2,13 @@
   hcc, rocr, roct, rocminfo }:
 stdenv.mkDerivation rec {
   name = "hip";
-  version = "1.8.0";
+  version = "1.9.0";
   tag = "roc-${version}";
   src = fetchFromGitHub {
     owner = "ROCm-Developer-Tools";
     repo = "HIP";
-    # rev = tag;
-
-    rev = "505a12754c6258b192941d91db0916da96a2b051";
-    sha256 = "0f103cn1z7l6jwgqfl9dba8i52sbdhcxgkbr3k0cn6f5spr4rbr6";
+    rev = "bbabadd9784503e7a0f885a6883084a95d6df199";
+    sha256 = "0rr91524cg5arbxcxs9mhl4ampl2shvswwbqskq7821rhzqcxp8n";
   };
   propagatedBuildInputs = [ hcc roct ];
   buildInputs = [ rocminfo ];
