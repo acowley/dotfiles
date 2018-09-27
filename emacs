@@ -1887,12 +1887,15 @@ sorted block."
 (use-package ccls
   :defer t
   :commands lsp-ccls-enable
-  :init
-  (bind-key "C-c C-n" (lambda () (interactive) (ccls-navigate "D")) lsp-ui-mode-map)
-  (bind-key "C-c C-p" (lambda () (interactive) (ccls-navigate "U")) lsp-ui-mode-map)
-  (bind-key "C-c C-b" (lambda () (interactive) (ccls-navigate "L")) lsp-ui-mode-map)
-  (bind-key "C-c C-f" (lambda () (interactive) (ccls-navigate "R")) lsp-ui-mode-map)
   :config
+  (bind-key "C-c C-n"
+            (lambda () (interactive) (ccls-navigate "D")) lsp-ui-mode-map)
+  (bind-key "C-c C-p"
+            (lambda () (interactive) (ccls-navigate "U")) lsp-ui-mode-map)
+  (bind-key "C-c C-b"
+            (lambda () (interactive) (ccls-navigate "L")) lsp-ui-mode-map)
+  (bind-key "C-c C-f"
+            (lambda () (interactive) (ccls-navigate "R")) lsp-ui-mode-map)
   (setq ccls-sem-highlight-method 'overlay)
   (defun project-ccls ()
     (flycheck-mode)
