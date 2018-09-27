@@ -117,7 +117,7 @@
       suitesparse = pkgs.suitesparse;
       jdk = null;
     };
-    fltk = pkgs.callPackage ./nix/fltk {};
+    # fltk = pkgs.callPackage ./nix/fltk {};
 
     mu = pkgs.mu.overrideAttrs (old: {
        # This patch causes the mu4e-view-mode-hook to be called on
