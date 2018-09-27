@@ -2274,6 +2274,12 @@ store to load and configure the cquery lsp client."
               (add-hook 'comint-preoutput-filter-functions
                         'xterm-color-filter nil t))))
 
+;;; highlight-indent-guides
+(use-package highlight-indent-guides
+  :defer t
+  :commands highlight-indent-guides-mode
+  :config
+  (setq highlight-indent-guides-method 'character))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")

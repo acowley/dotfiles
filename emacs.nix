@@ -1,6 +1,27 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = super: self: super.melpaPackages // {
     inherit (super) pdf-tools;
+    highlight-indent-guides = super.melpaBuild {
+        pname = "highlight-indent-guides";
+        ename = "highlight-indent-guides";
+        version = "20180910";
+        src = nixpkgs.fetchFromGitHub {
+          owner = "DarthFennec";
+          repo = "highlight-indent-guides";
+          rev = "e46356487d4b19144af3025cf16f1b1bd174a450";
+          sha256 = "1fm13mx7qcwr0jnwknaja4qg92l2yq1f303hx4fjqm609s5vm1hz";
+        };
+        recipe = nixpkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/milkypostman/melpa/c8acca65a5c134d4405900a43b422c4f4e18b586/recipes/highlight-indent-guides";
+          sha256 = "00ghp677qgb5clxhdjarfl8ab3mbp6v7yfsldm9bn0s14lyaq5pm";
+          name = "recipe";
+        };
+        packageRequires = with super; [ emacs ];
+        meta = {
+          homepage = "https://melpa.org/#/highlight-indent-guides";
+          license = nixpkgs.lib.licenses.free;
+        };
+      };
     ccls = super.melpaBuild {
       pname = "ccls";
       version = "20180903";
@@ -270,6 +291,7 @@ self: nixpkgs: {
     logview
     ag
     xterm-color
+    highlight-indent-guides
   ];
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin
