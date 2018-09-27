@@ -1294,6 +1294,7 @@ under the current project's root directory."
       (:from          .  22)
       (:subject       .  nil)) ;; alternatively, use :thread-subject
    )
+  (set-face-foreground 'mu4e-flagged-face "orange")
 
   ;; Auto-complete contact email addresses
   ;; We don't want line breaks added to emails we compose
