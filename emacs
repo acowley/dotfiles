@@ -700,6 +700,11 @@ evaluation may begin anew."
     :defer t
     :ensure org-plus-contrib
     :commands (org-babel-execute:haskell org-babel-expand-body:haskell))
+  (defun org-babel-execute:runhaskell (body params)
+    (org-babel-eval "runhaskell"
+                    (org-babel-expand-body:generic body params)))
+  (add-to-list 'org-src-lang-modes '("runhaskell" . haskell))
+
   (use-package ob-emacs-lisp
     :defer t
     :ensure org-plus-contrib
@@ -1141,6 +1146,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
     :bind (("M-i" . helm-swoop)
            ("C-s" . my/search-forward)
            ("M-I" . helm-swoop-back-to-last-point)))
+
   (use-package helm-dash
     :defer t
     :commands (projectile-helm-dash)
