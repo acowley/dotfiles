@@ -20,6 +20,17 @@
     };
   };
   packageOverrides = pkgs: rec {
+    clang-format = pkgs.callPackage ({ stdenv, writeText, libclang }:
+    stdenv.mkDerivation {
+      name = "clang-format";
+      buildInputs = [ libclang ];
+      builder = writeText "builder.sh" ''
+        source $stdenv/setup
+        mkdir -p $out/bin
+        ln -s ${libclang.out}/bin/clang-format $out/bin/clang-format
+      '';
+      }) { inherit (pkgs.llvmPackages_6) libclang; };
+
     handbrake = pkgs.handbrake.override { useFfmpeg = true; ffmpeg = pkgs.ffmpeg-full; };
     catch2 = pkgs.callPackage ./nix/catch2 {};
     versor = pkgs.callPackage ./nix/versor {};
