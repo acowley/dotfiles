@@ -1,19 +1,19 @@
-{ stdenv, fetchurl,# fetchFromGitHub,
+{ stdenv, fetchurl, fetchFromGitHub,
 bc, kernel }:
 stdenv.mkDerivation rec {
   # version = "1.0.0";
   version = "5.2.5.1";
   name = "rtl8821ce-${version}-${kernel.version}";
-  # src = fetchFromGitHub {
-  #   owner = "tomaspinho";
-  #   repo = "rtl8821ce";
-  #   rev = "6ba8930b5894d653592df298ef39e6a35ac5d33a";
-  #   sha256 = "1pwjx6g0cqcrmx1m52rnl7l4982mfnfhpqyd63pbm61ykam0lc0n";
-  # };
-  src = fetchurl {
-    url = "https://bugs.launchpad.net/ubuntu/+source/linux-oem/+bug/1740231/+attachment/5034985/+files/rtl8821CE_WiFi_linux_v5.2.5.1_26055.20180108_COEX20170310-1212.tar.gz";
-    sha256 = "1xa2mdxqqld444k4ng5h17813p0gjawb2xpavfbyzaxc5vv3p7pa";
+  src = fetchFromGitHub {
+    owner = "tomaspinho";
+    repo = "rtl8821ce";
+    rev = "47cbf27635ed428d3b1cb6974ffb9f35ca7924dd";
+    sha256 = "0csdg7njwa59bf61y9ijx7c5r8djcqd47g1gywy1cy1xzml1hpw1";
   };
+  # src = fetchurl {
+  #   url = "https://bugs.launchpad.net/ubuntu/+source/linux-oem/+bug/1740231/+attachment/5034985/+files/rtl8821CE_WiFi_linux_v5.2.5.1_26055.20180108_COEX20170310-1212.tar.gz";
+  #   sha256 = "1xa2mdxqqld444k4ng5h17813p0gjawb2xpavfbyzaxc5vv3p7pa";
+  # };
   hardeningDisable = [ "pic" "format" ];
   nativeBuildInputs = [bc] ++ kernel.moduleBuildDependencies;
 
@@ -26,10 +26,16 @@ stdenv.mkDerivation rec {
   # https://github.com/endlessm/linux/commit/6978e0d629bdaf67729879bac4d3a853ea107f08
 
 #        -e 's,CONFIG_POWER_SAVING = y,CONFIG_POWER_SAVING = n,' \
+
   patchPhase = ''
     sed -e 's,KSRC := /lib/modules/$(KVER)/build,KSRC := ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build,' \
         -i Makefile
-  ''#  + stdenv.lib.optionalString (stdenv.lib.versionOlder kernel.version "4.15") ''
+  ''#  + stdenv.lib.optionalString (stdenv.lib.versionAtLeast kernel.version "4.15") ''
+  #   patch -p5 < ''${patches[0]}
+  # ''
+
+
+  #  + stdenv.lib.optionalString (stdenv.lib.versionOlder kernel.version "4.15") ''
   #   patch -p5 -R < ''${patches[0]}
   # ''
   ;
