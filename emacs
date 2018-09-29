@@ -2036,7 +2036,9 @@ store to load and configure the cquery lsp client."
   (add-hook 'text-mode-hook #'mixed-pitch-mode)
   ;; Depending on your specific setup, you may want to adjust the height of
   ;; variable pitch fonts:
-  (set-face-attribute 'variable-pitch nil :height 100 :family "Noto Serif")
+  (set-face-attribute 'variable-pitch nil
+                      :height (if (memq window-system '(mac ns)) 150 100)
+                      :family (if (memq window-system '(mac ns)) "Baskerville" "Noto Serif"))
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
 
   )
@@ -2363,9 +2365,8 @@ store to load and configure the cquery lsp client."
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-footnote-auto-label (quote plain))
  '(org-format-latex-options
-   (quote
-    (:foreground default :background default :scale 3.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
-                 ("begin" "$1" "$" "$$" "\\(" "\\["))))
+   `(:foreground default :background default :scale ,(if (memq window-system '(mac ns)) 1.0 3.0) :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+                 ("begin" "$1" "$" "$$" "\\(" "\\[")))
  '(org-html-validation-link "")
  '(org-imenu-depth 3)
  '(org-latex-default-packages-alist
