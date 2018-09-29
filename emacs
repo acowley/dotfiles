@@ -2494,7 +2494,7 @@ store to load and configure the cquery lsp client."
  '(tabbar-background-color "#353535")
  '(tramp-shell-prompt-pattern
    "\\(?:^\\|\\)[^]#$%>
-]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*"))
+]*#?[]#$%>].* *\\(\\[[0-9;]*[a-zA-Z] *\\)*" nil (tramp)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
