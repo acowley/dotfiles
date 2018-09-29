@@ -40,24 +40,6 @@
 
     zenstates = pkgs.callPackage ./nix/zenstates {};
     global = pkgs.callPackage ./nix/global {};
-    # emacs = pkgs.emacs25Macport;
-    emacsMacPackagesNg = (pkgs.emacsPackagesNgGen pkgs.emacs25Macport).overrideScope (super: self: {
-      use-package = self.melpaPackages.use-package;
-      diminish = self.melpaPackages.diminish;
-    });
-
-    # An emacs with packages provided by nixpkgs. Pros: patches and
-    # overrides have a place to live (i.e. in myEmacsPackage); Cons:
-    # emacs package updates are tied to nixpkgs. Another hope was
-    # faster startup times, but I found that it did not speed things
-    # up much (perhaps 0.2s) and my autoloads via use-package are
-    # apparently not all correct. It is easier to let package.el find
-    # the autoloads and very similar in speed.
-    # emacs = emacsMacPackagesNg.emacsWithPackages (epkgs:
-    #   with epkgs.melpaPackages; [
-    #     epkgs.pdf-tools
-    #   ]
-    # );
 
     # Overrides I usually want: local vinyl version
     haskell = pkgs.haskell // {
