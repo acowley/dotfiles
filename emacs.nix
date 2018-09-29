@@ -1,5 +1,5 @@
 self: nixpkgs: {
-  myEmacsPackageOverrides = super: self: super.melpaPackages // {
+  myEmacsPackageOverrides = self: super: super.melpaPackages // {
     inherit (super) pdf-tools;
     highlight-indent-guides = super.melpaBuild {
         pname = "highlight-indent-guides";
@@ -298,5 +298,5 @@ self: nixpkgs: {
     if nixpkgs.stdenv.isDarwin
     then nixpkgs.emacsPackagesNgGen nixpkgs.emacsMacport
     else nixpkgs.emacsPackagesNgGen (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
-  emacs = (self.myEmacsPackagesNg.overrideScope self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
+  emacs = (self.myEmacsPackagesNg.overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
