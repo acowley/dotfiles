@@ -1717,6 +1717,7 @@ element based on the god-local-mode predicate."
 ;;; nix
 
 (use-package nix-mode
+  :mode "\\.nix\\'"
   :config
   (require 'nix-update "~/src/nix-update-el/nix-update.el"))
 
