@@ -1768,7 +1768,7 @@ element based on the god-local-mode predicate."
     (set-face-background 'shm-quarantine-face "#550505")
     )
   (use-package intero
-    :load-path "~/src/intero/elisp"
+    ;; :load-path "~/src/intero/elisp"
     :commands (intero-mode intero-global-mode)
     :bind (("M-n" . flycheck-next-error)
            ("M-p" . flycheck-previous-error)
