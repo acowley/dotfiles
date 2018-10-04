@@ -7,8 +7,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "tomaspinho";
     repo = "rtl8821ce";
-    rev = "47cbf27635ed428d3b1cb6974ffb9f35ca7924dd";
-    sha256 = "0csdg7njwa59bf61y9ijx7c5r8djcqd47g1gywy1cy1xzml1hpw1";
+    rev = "7cde2e70771dc15f07070b5ab9cb7fe74d6ae04d";
+    sha256 = "17xd0dpbsjm7xqq9daxsnj38pkl5c6ysvlqplk5dhd5zblqq18zr";
+    # date = 2018-09-20T16:14:52+01:00;
   };
   # src = fetchurl {
   #   url = "https://bugs.launchpad.net/ubuntu/+source/linux-oem/+bug/1740231/+attachment/5034985/+files/rtl8821CE_WiFi_linux_v5.2.5.1_26055.20180108_COEX20170310-1212.tar.gz";
