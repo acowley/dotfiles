@@ -1741,7 +1741,8 @@ element based on the god-local-mode predicate."
   :init
   (setq inferior-haskell-find-project-root nil
         haskell-process-type 'cabal-repl
-        haskell-process-args-cabal-repl '("--ghc-options=-ferror-spans -fno-ghci-sandbox"))
+        ;; haskell-process-args-cabal-repl '("--ghc-options=-ferror-spans -fno-ghci-sandbox")
+        )
   :bind (:map haskell-mode-map
          ("C-x C-d" . nil)
          ("C-c C-z" . haskell-interactive-switch)
@@ -1803,11 +1804,12 @@ element based on the god-local-mode predicate."
     :commands lsp-haskell-enable)
 
   (defun my-haskell-mode-hook ()
-    (structured-haskell-mode)
-    (electric-indent-local-mode -1)
-    (electric-pair-local-mode -1)
-    (electric-quote-local-mode -1)
-    (intero-global-mode))
+    ;; (structured-haskell-mode)
+    ;; (electric-indent-local-mode -1)
+    ;; (electric-pair-local-mode -1)
+    ;; (electric-quote-local-mode -1)
+    ;; (intero-global-mode)
+    )
   (add-hook 'haskell-mode-hook #'my-haskell-mode-hook)
   (defun haskell-find-pragmas ()
     "Return a sorted list of Haskell language pragmas specified
@@ -2065,7 +2067,6 @@ store to load and configure the cquery lsp client."
 ;; imaxima installation
 (autoload 'imaxima "imaxima" "Image support for Maxima." t)
 (autoload 'imath-mode "imath" "Interactive Math minor mode." t)
-
 
 ;;; git
 (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
