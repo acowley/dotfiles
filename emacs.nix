@@ -288,6 +288,7 @@ self: nixpkgs: {
     nix-buffer
     toml-mode
     markdown-mode
+    web-mode
     smartparens
     logview
     ag
