@@ -2187,7 +2187,9 @@ store to load and configure the cquery lsp client."
   :config
   ;(use-package flycheck-purescript)
   ;; (add-hook 'purescript-mode-hook #'flycheck-mode)
-  (use-package psc-ide)
+  (use-package psc-ide
+    :config
+    (setq psc-ide-use-npm-bin t))
   (defun my/purescript-hook ()
     (psc-ide-mode)
     (company-mode t)
