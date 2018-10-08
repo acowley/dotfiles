@@ -1311,7 +1311,9 @@ under the current project's root directory."
     (turn-off-auto-fill)
     ;; (variable-pitch-mode)
     (turn-on-visual-line-mode)
-    (setq buffer-face-mode-face '(:family "Avenir Next"))
+    (setq buffer-face-mode-face (if (memq window-system '(mac ns) )
+                                    '(:family "Avenir Next")
+                                  '(:family "Cantarell")))
     (buffer-face-mode))
 
   (add-hook 'mu4e-compose-mode-hook #'my/mu4e-compose-hook)
@@ -2042,7 +2044,11 @@ store to load and configure the cquery lsp client."
   ;; variable pitch fonts:
   (set-face-attribute 'variable-pitch nil
                       :height (if (memq window-system '(mac ns)) 150 100)
-                      :family (if (memq window-system '(mac ns)) "Baskerville" "Noto Serif"))
+                      :family (if (memq window-system '(mac ns))
+                                  "Baskerville"
+                                "Noto Serif"
+                                ;; "ETBembo"
+                                ))
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
 
   )
@@ -2139,7 +2145,9 @@ store to load and configure the cquery lsp client."
             (lambda ()
               (variable-pitch-mode)
               (turn-on-visual-line-mode)
-              (setq buffer-face-mode-face '(:family "Avenir Next"))
+              (setq buffer-face-mode-face (if (memq window-system '(mac ns))
+                                              '(:family "Avenir Next")
+                                            '(:family "Cantarell")))
               (buffer-face-mode)
               (text-scale-adjust 1)))
   (add-hook 'twittering-edit-mode-hook 'flyspell-mode)
