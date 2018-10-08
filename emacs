@@ -640,6 +640,8 @@ end tell" uri)))
     :commands (org-gfm-export-to-markdown org-gfm-export-as-markdown))
 
   (defun my-org-hook ()
+    (setq line-spacing 0.2)
+    (setq header-line-format " ")
     (org-bullets-mode 1)
     (org-table-sticky-header-mode)
     (org-sticky-header-mode)
