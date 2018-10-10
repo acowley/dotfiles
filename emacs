@@ -709,6 +709,17 @@ evaluation may begin anew."
                     (org-babel-expand-body:generic body params)))
   (add-to-list 'org-src-lang-modes '("runhaskell" . haskell))
 
+  (defun org-babel-execute:nix-shell (body params)
+    (let* ((pkgs (if (null (assq :packages params))
+                     ""
+                   (concat " -p " (cdr (assq :packages params)))))
+           (cmd (concat "nix-shell" pkgs " --run")))
+      (message "Going to run: %s %s" cmd (quote-shell-string (org-babel-expand-body:generic body params)))
+      (org-babel-eval (concat "nix-shell" pkgs " --run bash")
+                       (org-babel-expand-body:generic body params))))
+
+  (add-to-list 'org-src-lang-modes '("nix-shell" . sh))
+
   (use-package ob-emacs-lisp
     :defer t
     :ensure org-plus-contrib
