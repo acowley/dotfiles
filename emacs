@@ -2393,8 +2393,16 @@ store to load and configure the cquery lsp client."
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-footnote-auto-label (quote plain))
  '(org-format-latex-options
-   `(:foreground default :background default :scale ,(if (memq window-system '(mac ns)) 1.0 3.0) :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
-                 ("begin" "$1" "$" "$$" "\\(" "\\[")))
+   (\`
+    (:foreground default :background default :scale
+                 (\,
+                  (if
+                      (memq window-system
+                            (quote
+                             (mac ns)))
+                      1.0 3.0))
+                 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+                 ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-html-validation-link "")
  '(org-imenu-depth 3)
  '(org-latex-default-packages-alist
