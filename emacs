@@ -639,6 +639,8 @@ end tell" uri)))
   (use-package ox-gfm
     :commands (org-gfm-export-to-markdown org-gfm-export-as-markdown))
 
+  (require 'ox-koma-letter)
+
   (defun my-org-hook ()
     (setq line-spacing 0.2)
     (setq header-line-format " ")
