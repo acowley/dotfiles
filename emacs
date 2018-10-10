@@ -627,9 +627,9 @@ end tell" uri)))
   (setq org-latex-prefer-user-labels t)
 
   (use-package org-bullets)
-  (use-package org-table-sticky-header
-    :diminish org-table-sticky-header-mode)
-  (use-package org-sticky-header)
+  ;; (use-package org-table-sticky-header
+  ;;   :diminish org-table-sticky-header-mode)
+  ;; (use-package org-sticky-header)
 
 
   ;; This is slow to load
@@ -643,8 +643,8 @@ end tell" uri)))
     (setq line-spacing 0.2)
     (setq header-line-format " ")
     (org-bullets-mode 1)
-    (org-table-sticky-header-mode)
-    (org-sticky-header-mode)
+    ;; (org-table-sticky-header-mode)
+    ;; (org-sticky-header-mode)
 
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines))
