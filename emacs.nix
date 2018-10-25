@@ -201,6 +201,7 @@ self: nixpkgs: {
     impatient-mode
     esup
     direnv
+    dired-du
     # mu4e-conversation
 
     # org packages
