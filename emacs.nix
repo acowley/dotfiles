@@ -93,48 +93,22 @@ self: nixpkgs: {
     };
     # mu4e-conversation = super.melpaBuild {
     #   pname = "mu4e-conversation";
-    #   version = "20180711";
-    #   src = nixpkgs.fetchgit {
-    #     url = https://gitlab.com/ambrevar/mu4e-conversation.git;
-    #     rev = "6690d730aaf912b7a2f17caa1e18513c5ee3560e";
-    #     sha256 = "1nx9q0d1fk14hfwim456sb1gidmarislf1vlwdkp8mgh5rywxk1q";
+    #   ename = "mu4e-conversation";
+    #   version = "20181019.145";
+    #   src = nixpkgs.fetchFromGitLab {
+    #     owner = "ambrevar";
+    #     repo = "mu4e-conversation";
+    #     rev = "b81aff0a3ea7122a29df33ecb60ae23e1fe6adac";
+    #     sha256 = "1nrfyd7dqs8iyw7jcfxskkkrchc0mcr1bslsx7gnji06k1ysm7gr";
     #   };
-    #   packageRequires = [];
+    #   recipe = nixpkgs.fetchurl {
+    #     url = "https://raw.githubusercontent.com/milkypostman/melpa/7638aecc7a2cd4b1646c6e32fe83e18ef212bbaa/recipes/mu4e-conversation";
+    #     sha256 = "16vhjaxjhshw7ch9ihk35r99549xlbmvybwjx0p9mzyqi30dn3s6";
+    #     name = "recipe";
+    #   };
+    #   packageRequires = with self; [ emacs ];
     #   meta = {
-    #     homepage = https://gitlab.com/ambrevar/mu4e-conversation;
-    #     license = nixpkgs.lib.licenses.gpl3;
-    #   };
-    # };
-    # lsp-ui = super.melpaBuild {
-    #   pname = "lsp-ui";
-    #   # version = "20180314.556";
-    #   version = "20180618";
-    #   src = ~/src/lsp-ui;
-    #   packageRequires = with super; [
-    #     dash
-    #     dash-functional
-    #     emacs
-    #     flycheck
-    #     lsp-mode
-    #     markdown-mode
-    #   ];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/lsp-ui";
-    #     license = nixpkgs.lib.licenses.free;
-    #   };
-    # };
-    # company-lsp = super.melpaBuild {
-    #   pname = "company-lsp";
-    #   version = "20180518";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "tigersoldier";
-    #     repo = "company-lsp";
-    #     rev = "88155b0d7cd29f95b0a20c134d28d68ef03c640d";
-    #     sha256 = "0fdq3yl10znx6nq50bvxyp87mikapsjv5vj94mprbkw2xib0arhv";
-    #   };
-    #   packageRequires = with super; [ company dash emacs lsp-mode s ];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/company-lsp";
+    #     homepage = "https://melpa.org/#/mu4e-conversation";
     #     license = nixpkgs.lib.licenses.free;
     #   };
     # };
