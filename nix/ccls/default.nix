@@ -1,18 +1,18 @@
-{ stdenv, fetchFromGitHub, cmake, llvmPackages_6 }:
-llvmPackages_6.stdenv.mkDerivation rec {
+{ stdenv, fetchFromGitHub, cmake, llvmPackages_7 }:
+llvmPackages_7.stdenv.mkDerivation rec {
   name = "ccls-${version}";
-  version = "20181003";
+  version = "20181016";
   src = fetchFromGitHub {
     owner = "MaskRay";
     repo = "ccls";
-    rev = "c7ee3d85f3fa181acb4b3f66fb9472b02b4823b6";
-    sha256 = "0npsbyj0x8bn6kpy831m2ajndlmiaa2zcycagjv9cyp198xfqnp2";
+    rev = "5f98d5b99374188bb5d64ec84971cbf61b52811f";
+    sha256 = "1bwsa05s4bij1dwcw76j0s78kd36gyvbji5fc87cd26acs83r9r4";
     fetchSubmodules = true;
   };
   enableParallelBuilding = true;
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ llvmPackages_6.llvm llvmPackages_6.libclang
-                  llvmPackages_6.libclang.out ];
+  buildInputs = [ llvmPackages_7.llvm llvmPackages_7.libclang
+                  llvmPackages_7.libclang.out ];
   cmakeFlags = [
     "-DSYSTEM_CLANG=ON"
     "-DUSE_SHARED_LLVM=ON"
