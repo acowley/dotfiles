@@ -24,12 +24,12 @@ self: nixpkgs: {
       };
     ccls = super.melpaBuild {
       pname = "ccls";
-      version = "20180903";
+      version = "20181022";
       src = nixpkgs.fetchFromGitHub {
         owner = "MaskRay";
         repo = "emacs-ccls";
-        rev = "1906dab7dfa1e59e7e0f9e6a3b3e2ab914b20214";
-        sha256 = "1qlwkkx6jc0qskq7azfi0561srszpzjndk95fn8sb3vd16yzaxkh";
+        rev = "7f0ad5d823703dba59bb2da07e0d153f37f7e26a";
+        sha256 = "1hp7pzvjgnb85byaw01sxg2c1asdnnz39kfv6c0zfdqbbdn17fbj";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
