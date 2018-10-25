@@ -28,8 +28,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "MaskRay";
         repo = "emacs-ccls";
-        rev = "2b2d5a27ec739b59458e03aa30bb0eb612e727b6";
-        sha256 = "018xwfq3kmcp7dpb5cbrcy2cvssywabp6a7qrwnzm3pryvzfrqxd";
+        rev = "1906dab7dfa1e59e7e0f9e6a3b3e2ab914b20214";
+        sha256 = "1qlwkkx6jc0qskq7azfi0561srszpzjndk95fn8sb3vd16yzaxkh";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
