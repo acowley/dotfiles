@@ -1506,7 +1506,13 @@ predicate returns true."
                 my-mu4e-account-alist))
   ;; (use-package mu4e-conversation
   ;;   :defer t
-  ;;   :commands global-mu4e-conversation-mode)
+  ;;   :commands global-mu4e-conversation-mode
+  ;;   ;; :custom-face
+  ;;   ;; (mu4e-conversation-sender-1 ((t (:foreground "SandyBrown"))))
+  ;;   ;; (mu4e-conversation-sender-2 ((t (:foreground "DeepSkyBlue"))))
+  ;;   ;; (mu4e-conversation-sender-3 ((t (:foreground "LightSalmon"))))
+  ;;   ;; (mu4e-conversation-sender-4 ((t (:foreground "DarkKhaki"))))
+  ;;   )
   ;; (global-mu4e-conversation-mode)
 )
 
