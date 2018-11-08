@@ -1286,6 +1286,7 @@ under the current project's root directory."
    mu4e-headers-skip-duplicates t
    mu4e-compose-dont-reply-to-self t
    mu4e-view-show-images t
+   mu4e-view-scroll-to-next nil
    mu4e-update-interval 600
 
    ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
