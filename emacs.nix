@@ -238,8 +238,8 @@ self: nixpkgs: {
     lsp-haskell
     ccls
 
-    cmake-mode
     cuda-mode
+    # cmake-mode
 
     clang-format
     mixed-pitch
