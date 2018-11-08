@@ -602,6 +602,16 @@ end tell" uri)))
         org-priority-faces '((?A . (:foreground "forest green" :weight bold))
                              (?B . (:foreground "slate gray"))
                              (?C . (:foreground "dim gray")))
+
+        org-format-latex-options `(:foreground default
+                                   :background default
+                                   :scale ,(if (memq window-system '(mac ns))
+                                               1.0 2.0)
+                                   :html-foreground "Black"
+                                   :html-background "Transparent"
+                                   :html-scale 1.0
+                                   :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
+
         ;; For leuven-theme
         ;; Fontify the whole line for headings (with a background color).
         org-fontify-whole-heading-line 't)
@@ -2405,17 +2415,6 @@ store to load and configure the cquery lsp client."
  '(magit-use-overlays nil)
  '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-footnote-auto-label (quote plain))
- '(org-format-latex-options
-   (\`
-    (:foreground default :background default :scale
-                 (\,
-                  (if
-                      (memq window-system
-                            (quote
-                             (mac ns)))
-                      1.0 3.0))
-                 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
-                 ("begin" "$1" "$" "$$" "\\(" "\\["))))
  '(org-html-validation-link "")
  '(org-imenu-depth 3)
  '(org-latex-default-packages-alist
