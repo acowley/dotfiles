@@ -112,11 +112,11 @@ self: nixpkgs: {
     #     license = nixpkgs.lib.licenses.free;
     #   };
     # };
-    cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
-      patchPhase = ''
-        sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
-      '';
-    });
+    # cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
+    #   patchPhase = ''
+    #     sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
+    #   '';
+    # });
     apropospriate-theme =
       # Note: \x27 is a single quote character. This is a way of
       # escaping those characters within the sed command string.
