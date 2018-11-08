@@ -227,9 +227,12 @@ self: nixpkgs: {
     haskell-mode
     hindent
     dante
+  ] ++ nixpkgs.lib.optionals (builtins.pathExists ~/src/intero) [
+    # This is a hacky way of not building these from source on
+    # machines where we do not expect to use them.
     structured-haskell-mode
     intero
-
+  ] ++ [
     lsp-mode
     lsp-ui
     lsp-haskell
