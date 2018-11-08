@@ -1929,7 +1929,10 @@ sorted block."
     (flycheck-mode)
     (yas-minor-mode)
     (helm-gtags-mode -1)
-    (setq company-lsp-cache-candidates nil)
+    ;; (setq ccls-extra-args '("--log-file=/tmp/cc.log"))
+    (setq company-lsp-cache-candidates nil
+          company-transformers nil
+          company-lsp-async t)
     (setq-local ccls-executable
               (let ((nix-shell (concat
                                 (locate-dominating-file (or load-file-name
