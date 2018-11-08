@@ -2300,6 +2300,9 @@ store to load and configure the cquery lsp client."
   :config
   (setq direnv-always-show-summary nil)
   (direnv-mode))
+;;; dired-du
+(use-package dired-du
+  :commands (dired-du-mode))
 ;;; nix-buffer
 (use-package nix-buffer
   :defer t
