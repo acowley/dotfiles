@@ -1358,8 +1358,8 @@ under the current project's root directory."
     (setq buffer-face-mode-face (if (memq window-system '(mac ns) )
                                     '(:family "Avenir Next")
                                   '(:family "Cantarell")))
-    (olivetti-mode)
-    (buffer-face-mode)
+    (olivetti-mode 1)
+    (buffer-face-mode 1)
     (text-scale-adjust 1))
 
   (add-hook 'mu4e-view-mode-hook #'my/mu4e-view-hook)
