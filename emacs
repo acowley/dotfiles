@@ -2057,6 +2057,8 @@ store to load and configure the cquery lsp client."
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
 
+;;; cuda-mode
+(use-package cuda-mode :defer t)
 ;;; mixed-pitch
 (use-package mixed-pitch
   :ensure t

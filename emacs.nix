@@ -236,6 +236,8 @@ self: nixpkgs: {
     ccls
 
     cmake-mode
+    cuda-mode
+
     clang-format
     mixed-pitch
     magit
