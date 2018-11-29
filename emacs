@@ -847,7 +847,7 @@ of code to whatever theme I'm using's background"
 
   ;; LaTeX export
   ;; (require 'ox-latex)
-  (setq org-latex-pdf-process '("latexmk -g -pdf -shell-escape %f -outdir=$(echo '%o' | sed 's|\\(.*\\)/$|\\1|g')"))
+  (setq org-latex-pdf-process '("latexmk -g -xelatex -shell-escape %f -outdir=$(echo '%o' | sed 's|\\(.*\\)/$|\\1|g')"))
   ;; (setq org-latex-listings 'minted)
   ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
   ;; (add-to-list 'org-latex-minted-langs '(haskell "haskell"))
