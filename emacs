@@ -199,8 +199,13 @@ single-quoted string."
 ;; present
 (setq use-package-always-ensure t)
 
-;; Clean trailing whitespace when saving a buffer
-(setq before-save-hook #'whitespace-cleanup)
+;; Clean trailing whitespace when saving a buffer.
+
+;; This is too dangerous: it makes producing minimal diffs harder than
+;; necessary, and can break things that expect a trailing whitespace
+;; (e.g. with a regex). It may be fine for my own code, but judgment
+;; should be applied before invoking it.
+;; (setq before-save-hook #'whitespace-cleanup)
 
 ;; Keep ediff UI in a single frame
 (setq ediff-window-setup-function #'ediff-setup-windows-plain)
