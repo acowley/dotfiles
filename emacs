@@ -2276,7 +2276,8 @@ store to load and configure the cquery lsp client."
   (add-hook 'yaml-mode-hook
             (lambda ()
               (outline-minor-mode)
-              (define-key yaml-mode-map (kbd "TAB") 'outline-toggle-children)
+              ;; (define-key yaml-mode-map (kbd "TAB") 'outline-toggle-children)
+              (define-key yaml-mode-map (kbd "TAB") 'yaml-indent-line)
               ;(setq outline-regexp "^ *\\([A-Za-z0-9_-]*: *[>|]?$\\|-\\b\\)")
               )))
 ;;; redprl
