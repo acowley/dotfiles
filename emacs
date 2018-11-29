@@ -1847,7 +1847,9 @@ element based on the god-local-mode predicate."
 
   (use-package lsp-haskell
     :defer t
-    :commands lsp-haskell-enable)
+    :commands lsp-haskell-enable
+    :config
+    (setq lsp-haskell-process-path-hie "hie"))
 
   (defun my-haskell-mode-hook ()
     ;; (structured-haskell-mode)
