@@ -1910,7 +1910,7 @@ sorted block."
 ;;; Language Server Protocol (LSP)
 (use-package lsp-mode
   :defer t
-  :commands lsp-mode
+  :commands lsp
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   (lsp-face-highlight-textual ((t (:background "#757500"))))
@@ -1937,7 +1937,6 @@ sorted block."
 ;;; ccls
 (use-package ccls
   :defer t
-  :commands lsp-ccls-enable
   :config
   (bind-key "C-c C-n"
             (lambda () (interactive) (ccls-navigate "D")) lsp-ui-mode-map)
@@ -1967,6 +1966,19 @@ sorted block."
                   (concat
                    "nix-shell " nix-shell " --run 'which ccls'"))))))
   (advice-add 'lsp-ccls-enable :before #'project-ccls))
+
+(defun lsp-ccls ()
+  "Enable LSP with the CCLS backend"
+  (interactive)
+  (require 'ccls)
+  (flycheck-mode)
+  (yas-minor-mode)
+  (helm-gtags-mode -1)
+  ;; (setq ccls-extra-args '("--log-file=/tmp/cc.log"))
+  (setq company-lsp-cache-candidates nil
+        company-transformers nil
+        company-lsp-async t)
+  (lsp))
 
 ;;; cquery
 (use-package cquery

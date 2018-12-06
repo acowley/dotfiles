@@ -28,15 +28,15 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "MaskRay";
         repo = "emacs-ccls";
-        rev = "7f0ad5d823703dba59bb2da07e0d153f37f7e26a";
-        sha256 = "1hp7pzvjgnb85byaw01sxg2c1asdnnz39kfv6c0zfdqbbdn17fbj";
+        rev = "4add34caf1b55f5543b87932729c79d95a0798e0";
+        sha256 = "0vf0f81n9bp260bb909rhb0v51013iar3xyjnx7n1nvy232i3y5i";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
         sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
         name = "recipe";
       };
-      packageRequires = with super; [dash emacs self.lsp-mode];
+      packageRequires = with super; [dash emacs self.lsp-mode ht spinner];
       meta = {
         homepage = "https://melpa.org/#/ccls";
         license = nixpkgs.lib.licenses.free;
@@ -49,8 +49,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "ef2dfbba55f0df643451f2a796f0097a2a231f94";
-        sha256 = "0b02lrl51w47dk3csz5fj693mhvgxsmzqdalac83r52ag931iarg";
+        rev = "4ba11899465307bef380b3c0ddd3cfd6b311f934";
+        sha256 = "0hb284b8ki72ycc9fx3r7l8qgnl08k3p9p7i80d7f7zba3vx3vyy";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -70,8 +70,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "05d17b31e7fe11ebeb0f14ee25d55c6d4d05186e";
-        sha256 = "1nxvn68zmzfjr2y39h1x7f3s06akzvdh77x54yqxzzxj4cz4g7v5";
+        rev = "e8f3e7b34f57fd45d89d8b25a4bb5445aec2af57";
+        sha256 = "1s6qq53jwlvm397g15l5b2h00jx0k4mnlnqdiz87wq45q014a69q";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -88,6 +88,27 @@ self: nixpkgs: {
       ];
       meta = {
         homepage = "https://melpa.org/#/lsp-ui";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
+    company-lsp = super.melpaBuild {
+      pname = "company-lsp";
+      ename = "company-lsp";
+      version = "20181202.844";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "tigersoldier";
+        repo = "company-lsp";
+        rev = "03cb58340bfb53d6931bc79887d842322d7f790c";
+        sha256 = "1cvwav1336p6da120afnd3q93f9ncvh0mjr64maxp7h0zp94ncvz";
+      };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/company-lsp";
+        sha256 = "09nbi6vxw8l26gfgsc1k3bx4m8i1px1b0jxaywszky5bv4fdy03l";
+        name = "recipe";
+      };
+      packageRequires = with self; [ company dash emacs lsp-mode s ];
+      meta = {
+        homepage = "https://melpa.org/#/company-lsp";
         license = nixpkgs.lib.licenses.free;
       };
     };
