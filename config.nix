@@ -158,35 +158,5 @@
       enablePython = true;
       enableGtk3 = if (!pkgs.stdenv.isDarwin) then true else false;
     };
-
-    ignition = pkgs.ignition // {
-      transport2 = pkgs.callPackage ./nix/ignition-transport/2.1.0.nix {
-        inherit (ignition) tools messages math2;
-      };
-      messages = pkgs.callPackage ./nix/ignition-messages/default.nix {
-        inherit (ignition) math2;
-      };
-      tools = pkgs.callPackage ./nix/ignition-tools/default.nix { };
-    };
-    kaldi = pkgs.callPackage ./nix/kaldi { };
-    sctk = pkgs.callPackage ./nix/sctk { };
-    openfst = pkgs.callPackage ./nix/openfst { };
-    sph2pipe = pkgs.callPackage ./nix/sph2pipe { };
-    atlas = pkgs.atlas.overrideDerivation (_: {
-      doCheck = false;
-    });
-
-    myPythonEnv = pkgs.python3.buildEnv.override {
-      extraLibs = with pkgs.python3Packages; [
-        numpy scipy matplotlib networkx jupyter_console notebook
-      ];};
-
-    myREnv = pkgs.rWrapper.override {
-      packages = with pkgs.rPackages;
-        [ ggplot2 reshape2 ];
-    };
-
-    myNodeEnv = with pkgs;
-      [ nodejs npm2nix ] ++ (with nodePackages; [ grunt-cli ]);
   };
 }
