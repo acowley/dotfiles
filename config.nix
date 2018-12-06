@@ -20,6 +20,7 @@
     };
   };
   packageOverrides = pkgs: rec {
+    vez = pkgs.callPackage ./nix/vez { buildSamples = true; };
     clang-format = pkgs.callPackage ({ stdenv, writeText, libclang }:
     stdenv.mkDerivation {
       name = "clang-format";
