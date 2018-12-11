@@ -1520,6 +1520,11 @@ predicate returns true."
     ;; (mu4e-conversation-sender-4 ((t (:foreground "DarkKhaki"))))
 
     :config
+(defun my/mu4e-conversation-hook ()
+  (unless (eq major-mode 'org-mode)
+    (mu4e-conversation-toggle-view))
+  (olivetti-mode 1))
+(setq mu4e-conversation-hook #'my/mu4e-conversation-hook)
 (defun contextual-time (ts-msg)
 "Format a date-time string emphasizing information relative to
 the curren time. If the date of the given time stamp is today,
@@ -1603,9 +1608,7 @@ the year, month, and day are included."
         (save-excursion
           (goto-char (car (org-get-property-block)))
           (forward-line -1)
-          (org-cycle))))))
-    
-    )
+          (org-cycle)))))))
   (global-mu4e-conversation-mode)
 )
 
