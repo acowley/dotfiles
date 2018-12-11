@@ -112,27 +112,28 @@ self: nixpkgs: {
         license = nixpkgs.lib.licenses.free;
       };
     };
-    # mu4e-conversation = super.melpaBuild {
-    #   pname = "mu4e-conversation";
-    #   ename = "mu4e-conversation";
-    #   version = "20181019.145";
-    #   src = nixpkgs.fetchFromGitLab {
-    #     owner = "ambrevar";
-    #     repo = "mu4e-conversation";
-    #     rev = "b81aff0a3ea7122a29df33ecb60ae23e1fe6adac";
-    #     sha256 = "1nrfyd7dqs8iyw7jcfxskkkrchc0mcr1bslsx7gnji06k1ysm7gr";
-    #   };
-    #   recipe = nixpkgs.fetchurl {
-    #     url = "https://raw.githubusercontent.com/milkypostman/melpa/7638aecc7a2cd4b1646c6e32fe83e18ef212bbaa/recipes/mu4e-conversation";
-    #     sha256 = "16vhjaxjhshw7ch9ihk35r99549xlbmvybwjx0p9mzyqi30dn3s6";
-    #     name = "recipe";
-    #   };
-    #   packageRequires = with self; [ emacs ];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/mu4e-conversation";
-    #     license = nixpkgs.lib.licenses.free;
-    #   };
-    # };
+    mu4e-conversation = super.melpaBuild {
+      pname = "mu4e-conversation";
+      ename = "mu4e-conversation";
+      version = "20181203.145";
+      src = nixpkgs.fetchFromGitLab {
+        owner = "ambrevar";
+        repo = "mu4e-conversation";
+        rev = "ae5ad4beed8aa69d1400f6f733f84f440ccfc1a7";
+        sha256 = "0cli4d3vxqx6j23rnzqx27aby14mdrwpi3aik79a9ig1jgd7kzn7";
+      };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/7638aecc7a2cd4b1646c6e32fe83e18ef212bbaa/recipes/mu4e-conversation";
+        sha256 = "16vhjaxjhshw7ch9ihk35r99549xlbmvybwjx0p9mzyqi30dn3s6";
+        name = "recipe";
+      };
+      packageRequires = with self; [ emacs ];
+      meta = {
+        homepage = "https://melpa.org/#/mu4e-conversation";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
+
     # cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
     #   patchPhase = ''
     #     sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
@@ -197,7 +198,7 @@ self: nixpkgs: {
     esup
     direnv
     dired-du
-    # mu4e-conversation
+    mu4e-conversation
 
     # org packages
     orgPackages.org-plus-contrib

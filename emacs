@@ -1509,19 +1509,104 @@ predicate returns true."
   (setq mu4e-user-mail-address-list
         (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
                 my-mu4e-account-alist))
-  ;; (use-package mu4e-conversation
-  ;;   :defer t
-  ;;   :commands global-mu4e-conversation-mode
-  ;;   ;; :custom-face
-  ;;   ;; (mu4e-conversation-sender-1 ((t (:foreground "SandyBrown"))))
-  ;;   ;; (mu4e-conversation-sender-2 ((t (:foreground "DeepSkyBlue"))))
-  ;;   ;; (mu4e-conversation-sender-3 ((t (:foreground "LightSalmon"))))
-  ;;   ;; (mu4e-conversation-sender-4 ((t (:foreground "DarkKhaki"))))
-  ;;   )
-  ;; (global-mu4e-conversation-mode)
+  (use-package mu4e-conversation
+    :defer t
+    :commands global-mu4e-conversation-mode
+    ;; :custom-face
+    ;; (mu4e-conversation-sender-1 ((t (:foreground "SandyBrown"))))
+    ;; (mu4e-conversation-sender-2 ((t (:foreground "DeepSkyBlue"))))
+    ;; (mu4e-conversation-sender-3 ((t (:foreground "LightSalmon"))))
+    ;; (mu4e-conversation-sender-4 ((t (:foreground "DarkKhaki"))))
+
+    :config
+(defun contextual-time (ts-msg)
+"Format a date-time string emphasizing information relative to
+the curren time. If the date of the given time stamp is today,
+then only the time is included. If it is another day of this
+year, only the month and day are included. If it is another year,
+the year, month, and day are included."
+  (let ((ts-now (current-time)))
+    (pcase (cons (decode-time ts-msg) (decode-time ts-now))
+      (`((,_ ,minute ,hour ,day ,month ,year . ,_) . (,_ ,_ ,_ ,today ,this-month ,this-year . ,_))
+       (format-time-string 
+        (if (= this-year year)
+            (if (and (= this-month month) (= today day))
+                "%R %p"
+              "%b %e")
+          "%F")
+        ts-msg))
+  (_ "unparsed date"))))
+
+(defun mu4e-conversation-print-tree (index thread-content thread-headers)
+  "Insert Org-formatted message found at INDEX in THREAD-CONTENT."
+  (let* ((msg (nth index thread-content))
+         (msg-header (nth index thread-headers))
+         (level (plist-get (mu4e-message-field msg-header :thread) :level))
+         (org-level (make-string (1+ level) ?*))
+         body-start)
+    ;; Header.
+    (insert (format "%s %s%s, %s %s\n"
+                    org-level
+                    (if (memq 'unread (mu4e-message-field msg :flags))
+                        "UNREAD "
+                      "")
+                    (mu4e-conversation--from-name msg)
+                    (contextual-time (mu4e-message-field msg :date))
+                    (mu4e-message-field msg :flags)))
+    ;; Body
+    (goto-char (point-max))
+    (setq body-start (point))
+    (insert (mu4e-message-body-text msg))
+    ;; Turn shr-url into Org links.
+    (goto-char body-start)
+    (let (begin end url text)
+      (while (and (not (eobp))
+                  (setq begin (next-single-char-property-change (point) 'shr-url))
+                  (get-text-property begin 'shr-url))
+        (goto-char begin)
+        (setq url (get-text-property (point) 'shr-url)
+              end (next-single-char-property-change (point) 'shr-url)
+              text (buffer-substring-no-properties begin end))
+        (delete-region begin end)
+        (insert (format "[[%s][%s]]" url text))))
+    ;; Prefix "*" at the beginning of lines with a space to prevent them
+    ;; from being interpreted as Org sections.
+    (goto-char body-start)
+    (while (re-search-forward (rx line-start "*") nil t) (replace-match " *"))
+    (goto-char body-start)
+    (if mu4e-conversation--use-org-quote-blocks
+        (mu4e-conversation--format-org-quote-blocks body-start)
+      (while (re-search-forward (rx line-start ">" (?  blank)) nil t) (replace-match ": ")))
+    (goto-char body-start)
+    (while (re-search-forward (concat "^" message-mark-insert-begin) nil t)
+      (replace-match "#+begin_src
+"))
+    (goto-char body-start)
+    (while (re-search-forward (concat "^" message-mark-insert-end) nil t)
+      (replace-match "#+end_src
+"))
+    (goto-char (point-max))
+    (org-set-property "Maildir" (mu4e-message-field msg :maildir))
+    (org-set-property "To" (mu4e-conversation--format-address-list
+                            (mu4e-message-field msg :to)))
+    (when (mu4e-message-field msg :cc)
+      (org-set-property "CC" (mu4e-conversation--format-address-list
+                              (mu4e-message-field msg :cc))))
+    (let ((attachments (mu4e~view-construct-attachments-header msg)))
+      ;; TODO: Propertize attachments.
+      (when attachments
+        (org-set-property "Attachments" (replace-regexp-in-string "\n$" "" attachments)))
+      (when (and (< (length (mu4e-message-field msg :to)) 2)
+                 (not (mu4e-message-field msg :cc))
+                 (not attachments))
+        (save-excursion
+          (goto-char (car (org-get-property-block)))
+          (forward-line -1)
+          (org-cycle))))))
+    
+    )
+  (global-mu4e-conversation-mode)
 )
-
-
 
 ;;; minions
 (use-package minions
