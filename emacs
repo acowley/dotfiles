@@ -873,6 +873,7 @@ of code to whatever theme I'm using's background"
   ;;         (search . " %i %-12:c")))
 
   (use-package org-ref
+    :disabled
     :defer t
     :config
     (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
