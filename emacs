@@ -1559,7 +1559,7 @@ the year, month, and day are included."
        (format-time-string 
         (if (= this-year year)
             (if (and (= this-month month) (= today day))
-                "%R %p"
+                "%l:%M %p"
               "%b %e")
           "%F")
         ts-msg))
