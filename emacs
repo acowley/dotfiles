@@ -2021,11 +2021,15 @@ sorted block."
     :config
     (setq lsp-ui-sideline-delay 0.2))
   (require 'lsp-ui)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  )
 
 ;;; ccls
 (use-package ccls
   :defer t
+  :bind (:map flymake-mode-map
+              ("M-n" . flymake-goto-next-error)
+              ("M-p" . flymake-goto-prev-error))
   :config
   (bind-key "C-c C-n"
             (lambda () (interactive) (ccls-navigate "D")) lsp-ui-mode-map)
@@ -2035,122 +2039,129 @@ sorted block."
             (lambda () (interactive) (ccls-navigate "L")) lsp-ui-mode-map)
   (bind-key "C-c C-f"
             (lambda () (interactive) (ccls-navigate "R")) lsp-ui-mode-map)
+
   (setq ccls-sem-highlight-method 'overlay)
-  (defun project-ccls ()
-    (flycheck-mode)
-    (yas-minor-mode)
-    (helm-gtags-mode -1)
-    ;; (setq ccls-extra-args '("--log-file=/tmp/cc.log"))
-    (setq company-lsp-cache-candidates nil
-          company-transformers nil
-          company-lsp-async t)
-    (setq-local ccls-executable
-              (let ((nix-shell (concat
-                                (locate-dominating-file (or load-file-name
-                                                            buffer-file-name)
-                                                        "shell.nix")
-                                      "shell.nix")))
-                (string-trim
-                 (shell-command-to-string
-                  (concat
-                   "nix-shell " nix-shell " --run 'which ccls'"))))))
-  (advice-add 'lsp-ccls-enable :before #'project-ccls))
+  ;; (defun project-ccls ()
+  ;;   (flycheck-mode)
+  ;;   (yas-minor-mode)
+  ;;   (helm-gtags-mode -1)
+  ;;   ;; (setq ccls-extra-args '("--log-file=/tmp/cc.log"))
+  ;;   (setq company-lsp-cache-candidates nil
+  ;;         company-transformers nil
+  ;;         company-lsp-async t)
+  ;;   (setq-local ccls-executable
+  ;;             (let ((nix-shell (concat
+  ;;                               (locate-dominating-file (or load-file-name
+  ;;                                                           buffer-file-name)
+  ;;                                                       "shell.nix")
+  ;;                                     "shell.nix")))
+  ;;               (string-trim
+  ;;                (shell-command-to-string
+  ;;                 (concat
+  ;;                  "nix-shell " nix-shell " --run 'which ccls'"))))))
+  ;; (advice-add 'lsp-ccls-enable :before #'project-ccls)
+  )
 
 (defun lsp-ccls ()
   "Enable LSP with the CCLS backend"
   (interactive)
   (require 'ccls)
+  (require 'lsp-ui-flycheck)
+  (flymake-mode -1)
   (flycheck-mode)
   (yas-minor-mode)
   (helm-gtags-mode -1)
   ;; (setq ccls-extra-args '("--log-file=/tmp/cc.log"))
   (setq company-lsp-cache-candidates nil
         company-transformers nil
-        company-lsp-async t)
-  (lsp))
+        company-lsp-async t
+        lsp-enable-indentation nil)
+  (lsp)
+  (lsp-ui-flycheck-enable t)
+  )
 
 ;;; cquery
-(use-package cquery
-  :load-path "~/Projects/emacs-cquery"
-  :commands lsp-cquery-enable
-  :init
-  (setq cquery-sem-highlight-method 'overlay)
-  ;; (setq cquery-sem-highlight-method 'font-lock)
-  ;; (setq cquery-sem-highlight-method nil)
-  (setq-local cquery-extra-init-params
-              '(:indexBlacklist '("GPATH" "GRTAGS" "GTAGS")
-                                :cacheFormat "msgpack"))
-  :config
-  (setq xref-prompt-for-identifier (append xref-prompt-for-identifier '(xref-find-references))))
+;; (use-package cquery
+;;   :load-path "~/Projects/emacs-cquery"
+;;   :commands lsp-cquery-enable
+;;   :init
+;;   (setq cquery-sem-highlight-method 'overlay)
+;;   ;; (setq cquery-sem-highlight-method 'font-lock)
+;;   ;; (setq cquery-sem-highlight-method nil)
+;;   (setq-local cquery-extra-init-params
+;;               '(:indexBlacklist '("GPATH" "GRTAGS" "GTAGS")
+;;                                 :cacheFormat "msgpack"))
+;;   :config
+;;   (setq xref-prompt-for-identifier (append xref-prompt-for-identifier '(xref-find-references))))
 
 (defun in-docker-p ()
   "Returns a non-nil value if we are running in a docker container"
   (eq (call-process-shell-command "grep -q docker /proc/1/cgroup") 0))
 
-(defun cquery-mode ()
-  "Start all cquery-related modes"
-  (interactive)
-  (when (let ((ext (file-name-extension (or (buffer-file-name) ""))))
-          (and (not (null ext))
-               (or (string-equal ext "cpp")
-                   (string-equal ext "cc")
-                   (string-equal ext "hpp"))))
+;; (defun cquery-mode ()
+;;   "Start all cquery-related modes"
+;;   (interactive)
+;;   (when (let ((ext (file-name-extension (or (buffer-file-name) ""))))
+;;           (and (not (null ext))
+;;                (or (string-equal ext "cpp")
+;;                    (string-equal ext "cc")
+;;                    (string-equal ext "hpp"))))
 
-    (flycheck-mode)
-    (lsp-cquery-enable)
-    (yas-minor-mode)
-    (helm-gtags-mode -1)
-    (local-set-key (kbd "M-.") #'xref-find-definitions)))
+;;     (flycheck-mode)
+;;     (lsp-cquery-enable)
+;;     (yas-minor-mode)
+;;     (helm-gtags-mode -1)
+;;     (local-set-key (kbd "M-.") #'xref-find-definitions)))
 
-(defun cquery-nix-shell ()
-  "Find a cquery executable in a nix-shell associated with the
-directory containig the current file if that file’s extension is
-`cpp` or `hpp`. Use the location of that executable in the nix
-store to load and configure the cquery lsp client."
-  (when (let ((ext (file-name-extension (or (buffer-file-name) ""))))
-          (and (not (null ext))
-               (or (string-equal ext "cpp")
-                   (string-equal ext "cc")
-                   (string-equal ext "hpp"))))
-    (if (in-docker-p)
-        (progn
-          (message "Using locally-built cquery in docker container")
-          (setq-local cquery-executable "/home/acowley/src/cquery/docker-build/cquery"))
-      (let ((nix-shell
-           (concat (locate-dominating-file (or load-file-name buffer-file-name)
-                                           "shell.nix")
-                   "shell.nix")))
-      (when nix-shell
-        (let* ((exes
-                (split-string
-                 (string-trim
-                  (shell-command-to-string
-                   (concat "nix-shell " nix-shell
-                           " --run 'which cquery; which clang-format'")))
-                 "\n" t))
-               (cquery-exe (car exes))
-               (clang-format-exe (cadr exes))
-               (cquery-root (file-name-directory
-                             (directory-file-name
-                              (file-name-directory cquery-exe)))))
-          (message "cquery-root: %s" cquery-root)
-          ;; (require 'cquery)
-          (setq clang-format-executable clang-format-exe)
-          (setq-local cquery-executable cquery-exe)))) )
+;; (defun cquery-nix-shell ()
+;;   "Find a cquery executable in a nix-shell associated with the
+;; directory containig the current file if that file’s extension is
+;; `cpp` or `hpp`. Use the location of that executable in the nix
+;; store to load and configure the cquery lsp client."
+;;   (when (let ((ext (file-name-extension (or (buffer-file-name) ""))))
+;;           (and (not (null ext))
+;;                (or (string-equal ext "cpp")
+;;                    (string-equal ext "cc")
+;;                    (string-equal ext "hpp"))))
+;;     (if (in-docker-p)
+;;         (progn
+;;           (message "Using locally-built cquery in docker container")
+;;           (setq-local cquery-executable "/home/acowley/src/cquery/docker-build/cquery"))
+;;       (let ((nix-shell
+;;            (concat (locate-dominating-file (or load-file-name buffer-file-name)
+;;                                            "shell.nix")
+;;                    "shell.nix")))
+;;       (when nix-shell
+;;         (let* ((exes
+;;                 (split-string
+;;                  (string-trim
+;;                   (shell-command-to-string
+;;                    (concat "nix-shell " nix-shell
+;;                            " --run 'which cquery; which clang-format'")))
+;;                  "\n" t))
+;;                (cquery-exe (car exes))
+;;                (clang-format-exe (cadr exes))
+;;                (cquery-root (file-name-directory
+;;                              (directory-file-name
+;;                               (file-name-directory cquery-exe)))))
+;;           (message "cquery-root: %s" cquery-root)
+;;           ;; (require 'cquery)
+;;           (setq clang-format-executable clang-format-exe)
+;;           (setq-local cquery-executable cquery-exe)))) )
 
 
-    ;; General setup
+;;     ;; General setup
 
-    ;; (setq cquery-extra-args '("--log-all-to-stderr" "--log-file" "cquery.log"))
-    (setq cquery-extra-args '("--log-all-to-stderr"))
-    ;; (flycheck-mode)
-    ;; (lsp-cquery-enable)
-    ;; (yas-minor-mode)
-    ;; (helm-gtags-mode -1)
-    ;; (diminish 'company-mode)
-    ;; (diminish 'flyspell-mode)
-    ;; (local-set-key (kbd "M-.") #'xref-find-definitions)
-    (cquery-mode)))
+;;     ;; (setq cquery-extra-args '("--log-all-to-stderr" "--log-file" "cquery.log"))
+;;     (setq cquery-extra-args '("--log-all-to-stderr"))
+;;     ;; (flycheck-mode)
+;;     ;; (lsp-cquery-enable)
+;;     ;; (yas-minor-mode)
+;;     ;; (helm-gtags-mode -1)
+;;     ;; (diminish 'company-mode)
+;;     ;; (diminish 'flyspell-mode)
+;;     ;; (local-set-key (kbd "M-.") #'xref-find-definitions)
+;;     (cquery-mode)))
 
 ;;; C++
 
@@ -2624,36 +2635,7 @@ store to load and configure the cquery lsp client."
  '(pop-up-windows nil)
  '(python-shell-interpreter "python3")
  '(racer-cmd "racer")
- '(safe-local-variable-values
-   (quote
-    ((eval if
-           (memq window-system
-                 (quote
-                  (mac ns)))
-           (cquery-nix-shell)
-           (setq cquery-executable "/home/acowley/Projects/rcquery")
-           (cquery-mode))
-     (eval outshine-hook-function)
-     (eval cquery-nix-shell)
-     (org-time-stamp-format quote
-                            ("<%Y-%m-%d>" . "<%Y-%m-%d>"))
-     (org-html-htmlize-output-type . css)
-     (org-html-postamble-format
-      ("en" "<p class=\"date\">Published: %d</p>"))
-     (org-html-postamble-format quote
-                                (("en" "<p class=\"date\">Published: %d</p>")))
-     (org-html-postamble . t)
-     (org-export-with-creator)
-     (org-export-with-email)
-     (org-html-postamble)
-     (org-export-babel-evaluate . t)
-     (org-image-actual-width . 500)
-     (org-confirm-babel-evaluate)
-     (org-confirm-babel-evaluate lambda
-                                 (lang body)
-                                 (not
-                                  (string= lang "emacs-lisp")))
-     (eval org-overview))))
+ '(safe-local-variable-values (quote ((eval org-overview) (eval outshine-hook-function))))
  '(show-paren-mode t)
  '(sml/pre-modes-separator (propertize " " (quote face) (quote sml/modes)))
  '(swift-repl-executable "xcrun swift -target x86_64-macosx10.11")
