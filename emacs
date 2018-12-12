@@ -54,6 +54,28 @@ window into a 2:1 ratio."
     (toggle-frame-fullscreen)
     (split-third)))
 
+(defun increment-number-aux (offset)
+  "Increment the number point is in or adjacent to. If a prefix
+argument is given, its numeric value is added to the number
+rather than the default of 1."
+  (interactive "P")
+  (let ((n (number-at-point)))
+    (when n
+      (replace-match (format "%d" (+ n (or offset 1)))))))
+
+(defun increment-number (offset)
+  "Increment the number point is in or adjacent to. If a prefix
+argument is given, its numeric value is added to the number
+rather than the default of 1. This is a wrapper for
+`increment-number-aux' that is multiple-cursor aware.
+
+If you are using helm, ensure that `helm-M-x' is in your
+`mc/cmds-to-run-once' list (often set in ~/.mc-lists.el)."
+  (interactive "P")
+  (if (> (or (mc/num-cursors) 1) 1)
+      (mc/execute-command-for-all-cursors #'increment-number-aux)
+    (funcall #'increment-number-aux offset)))
+
 (defun insert-after (x y xs)
   "`(insert-after x y list)` inserts `y` after `x` in `list`. If
 `x` is not found, `list` is returned unchanged. This is a
