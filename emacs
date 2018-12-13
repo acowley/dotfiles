@@ -2118,6 +2118,7 @@ sorted block."
         lsp-enable-indentation nil)
   (lsp)
   (lsp-ui-flycheck-enable t)
+  (flymake-mode -1)
   )
 
 ;;; cquery
