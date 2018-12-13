@@ -1534,6 +1534,7 @@ predicate returns true."
                 my-mu4e-account-alist))
   (use-package mu4e-conversation
     :defer t
+    :disabled
     :commands global-mu4e-conversation-mode
     ;; :custom-face
     ;; (mu4e-conversation-sender-1 ((t (:foreground "SandyBrown"))))
@@ -1545,7 +1546,8 @@ predicate returns true."
 (defun my/mu4e-conversation-hook ()
   (unless (eq major-mode 'org-mode)
     (mu4e-conversation-toggle-view))
-  (olivetti-mode 1))
+  ;; (olivetti-mode 1)
+  )
 
 (defun my/mu4e-conversation-after (thread &optional print-function)
 "Expand all trees, but collapse all drawers (e.g. PROPERTIES)."
