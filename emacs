@@ -1546,7 +1546,15 @@ predicate returns true."
   (unless (eq major-mode 'org-mode)
     (mu4e-conversation-toggle-view))
   (olivetti-mode 1))
+
+(defun my/mu4e-conversation-after (thread &optional print-function)
+"Expand all trees, but collapse all drawers (e.g. PROPERTIES)."
+  (outline-show-all)
+  (run-hook-with-args 'org-cycle-hook 'all))
+
 (setq mu4e-conversation-hook #'my/mu4e-conversation-hook)
+(advice-add #'mu4e-conversation--print :after #'my/mu4e-conversation-after)
+
 (defun contextual-time (ts-msg)
 "Format a date-time string emphasizing information relative to
 the curren time. If the date of the given time stamp is today,
