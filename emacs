@@ -1563,7 +1563,15 @@ the year, month, and day are included."
               "%b %e")
           "%F")
         ts-msg))
-  (_ "unparsed date"))))
+      (_ "unparsed date"))))
+
+(defun strip-email-address (sender)
+  "Remove the email address part of an email sender string,
+leaving only the sender's name."
+  (let ((pre-address (string-match " <" sender)))
+    (if (and pre-address (> pre-address 0))
+        (substring sender 0 pre-address)
+      sender)))
 
 (defun mu4e-conversation-print-tree (index thread-content thread-headers)
   "Insert Org-formatted message found at INDEX in THREAD-CONTENT."
@@ -1578,7 +1586,7 @@ the year, month, and day are included."
                     (if (memq 'unread (mu4e-message-field msg :flags))
                         "UNREAD "
                       "")
-                    (mu4e-conversation--from-name msg)
+                    (strip-email-address (mu4e-conversation--from-name msg))
                     (contextual-time (mu4e-message-field msg :date))
                     (mu4e-message-field msg :flags)))
     ;; Body
