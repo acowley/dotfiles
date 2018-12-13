@@ -1649,7 +1649,7 @@ leaving only the sender's name."
           (goto-char (car (org-get-property-block)))
           (forward-line -1)
           (org-cycle)))))))
-  (global-mu4e-conversation-mode)
+  ;; (global-mu4e-conversation-mode)
 )
 
 ;;; minions
