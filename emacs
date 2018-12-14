@@ -2487,14 +2487,17 @@ sorted block."
 (use-package logview
   :defer t
   :config
-  (setq logview-additional-level-mappings '(("ICP" . ((error       "ERROR")
-                                                      (warning     "WARNING")
-                                                      (information "INFO")
-                                                      (debug       "DEBUG")
-                                                      (trace       "TRACE"))))
+  (setq datetime-timezone 'UTC
+        logview-additional-level-mappings '(("ICP"
+                                             (error       "ERROR")
+                                             (warning     "WARNING")
+                                             (information "INFO")
+                                             (debug       "DEBUG")
+                                             (trace       "TRACE")))
+        logview-additional-timestamp-formats '(("easyloggingpp" (java-pattern . "HH:mm:ss,SSS")))
         logview-additional-submodes '(("ICP" . ((format . "TIMESTAMP LEVEL ")
                                                 (levels . "ICP")
-                                                (timestamp . ("HH:mm:ss" "HH:mm:ss.SSS")))))))
+                                                (timestamp . ("easyloggingpp")))))))
 ;;; ag
 (use-package ag :defer t)
 ;;; xterm-color
