@@ -132,10 +132,10 @@
     #   configureFlags = ["--disable-doc"];
     # });
 
-    platformio = (pkgs.python27.buildEnv.override {
-      extraLibs = let p = pkgs.python27Packages;
-                  in [ p.setuptools p.pip p.bottle p.platformio ];
-    }).env;
+    # platformio = (pkgs.python27.buildEnv.override {
+    #   extraLibs = let p = pkgs.python27Packages;
+    #               in [ p.setuptools p.pip p.bottle p.platformio ];
+    # }).env;
 
     vtk8 = pkgs.callPackage ./nix/vtk/8.nix {
       inherit (pkgs.darwin) cf-private libobjc;
