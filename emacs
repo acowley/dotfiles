@@ -2044,7 +2044,7 @@ sorted block."
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   (lsp-face-highlight-textual ((t (:background "#757500"))))
   :config
-  (setq lsp-highlight-symbol-at-point nil)
+  (setq lsp-prefer-flymake nil)
   (use-package company-lsp
     :config
     (setq company-lsp-enable-snippet t)
@@ -2107,7 +2107,6 @@ sorted block."
   (interactive)
   (require 'ccls)
   (require 'lsp-ui-flycheck)
-  (flymake-mode -1)
   (flycheck-mode)
   (yas-minor-mode)
   (helm-gtags-mode -1)
