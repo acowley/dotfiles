@@ -280,6 +280,7 @@ self: nixpkgs: {
     flycheck-rust
     racer
 
+    dhall-mode
     purescript-mode
     psc-ide
     paredit

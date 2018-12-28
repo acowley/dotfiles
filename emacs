@@ -757,6 +757,8 @@ evaluation may begin anew."
 
   (add-to-list 'org-src-lang-modes '("nix-shell" . sh))
 
+  (add-to-list 'org-src-lang-modes '("dhall" . dhall))
+
   (use-package ob-emacs-lisp
     :defer t
     :ensure org-plus-contrib
