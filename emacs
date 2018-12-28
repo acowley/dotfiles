@@ -2372,6 +2372,7 @@ sorted block."
 (use-package rust-mode
   :defer t
   :config
+  (setq rust-indent-offset 2)
   (use-package cargo)
   (use-package flycheck-rust
     :config
