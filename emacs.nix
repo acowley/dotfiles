@@ -28,8 +28,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "MaskRay";
         repo = "emacs-ccls";
-        rev = "9ba016542ccd9da7b182965ec1589163de58daa9";
-        sha256 = "0bh4cdgh22mwch8r6rx4vxxw0m3ii3f3y0mqdw24bzlw9vphgzdg";
+        rev = "8345c08d1d8fb784d3cc8b35bfbaedfa1861cc2e";
+        sha256 = "1bs4jx36vrkrdfr6ah6hcy19fyv73d39dgrl8w6j555ahswk2c9h";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
@@ -45,12 +45,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20181210";
+      version = "20190103";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "04a90172e8c3c4e1935dd465c597d1eddd88048a";
-        sha256 = "1qydnxl74lscx101h0magr9d3j9lhxy1hhrf1ygkcvb6kx2365vw";
+        rev = "2c1755d76387bed7c96a9c827753b6dcd9cf1a2c";
+        sha256 = "10fk3mfyrvg706547nwhxrvimqsdpsmxipigmk9n2n8cmjr5k52l";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -66,12 +66,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20181024";
+      version = "20190103";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "aa9a59c4b9b6801de59ab9bba085ee51a0eda6ae";
-        sha256 = "00y6kpim6kvsgv3ampn4h6pw6gnnbqaxzg2x897zbmbs51q4knlh";
+        rev = "786290f832c1c1dd9bd4645568f9624818a25adf";
+        sha256 = "0n46ll8hznrmv5b2vr2nqzkfwa8n0wqbd81wkjw582qxr3lv0f32";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -94,12 +94,12 @@ self: nixpkgs: {
     company-lsp = super.melpaBuild {
       pname = "company-lsp";
       ename = "company-lsp";
-      version = "20181202.844";
+      version = "20181226.844";
       src = nixpkgs.fetchFromGitHub {
         owner = "tigersoldier";
         repo = "company-lsp";
-        rev = "03cb58340bfb53d6931bc79887d842322d7f790c";
-        sha256 = "1cvwav1336p6da120afnd3q93f9ncvh0mjr64maxp7h0zp94ncvz";
+        rev = "7167fa4547a83d6e07196ebf0b05c384b0a9a2c6";
+        sha256 = "1gxcj8mir4mdf4m4hh9napjaszcps00iyxq1rp01hnhq71iqzsms";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/company-lsp";
