@@ -1,6 +1,7 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
     inherit (super) pdf-tools;
+    inherit (super) emacs-libvterm;
     highlight-indent-guides = super.melpaBuild {
         pname = "highlight-indent-guides";
         ename = "highlight-indent-guides";
@@ -297,6 +298,7 @@ self: nixpkgs: {
     ag
     xterm-color
     highlight-indent-guides
+    emacs-libvterm
   ];
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin

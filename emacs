@@ -2519,6 +2519,12 @@ sorted block."
   :commands highlight-indent-guides-mode
   :config
   (setq highlight-indent-guides-method 'character))
+;;; emacs-libvterm
+(use-package vterm
+  :defer t
+  :commands (vterm vterm-other-window)
+  :bind (:map vterm-mode-map
+         ("<escape>" . nil)))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
