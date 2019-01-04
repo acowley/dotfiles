@@ -1977,8 +1977,8 @@ element based on the god-local-mode predicate."
   (use-package hindent)
 
   (use-package lsp-haskell
-    :defer t
-    :commands lsp-haskell-enable
+    ;; :defer t
+    ;; :commands lsp-haskell-enable
     :config
     (setq lsp-haskell-process-path-hie "hie"))
 

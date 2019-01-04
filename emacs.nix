@@ -149,6 +149,28 @@ self: nixpkgs: {
         '';
       });
 
+    lsp-haskell = super.melpaBuild {
+      pname = "lsp-haskell";
+      ename = "lsp-haskell";
+      version = "20181223.2357";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "emacs-lsp";
+        repo = "lsp-haskell";
+        rev = "533970d5552c4820aa45901ba89565f3419d991c";
+        sha256 = "0xah24q8c62kk0m5ivhx51a3h46vlc626qsh8rlysdsdv59121sa";
+      };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/lsp-haskell";
+        sha256 = "0pdcxnfp8ng24bfk695wpx5wcdqnjrjsfpks0xicih3mcdm1x9l8";
+        name = "recipe";
+      };
+      packageRequires = with self; [ haskell-mode lsp-mode ];
+      meta = {
+        homepage = "https://melpa.org/#/lsp-haskell";
+        license = nixpkgs.lib.licenses.free;
+        };
+      };
+
     intero = super.melpaBuild {
       pname = "intero";
       version = "20180219";
