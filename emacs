@@ -2514,7 +2514,13 @@ sorted block."
   :defer t
   :commands (vterm vterm-other-window)
   :bind (:map vterm-mode-map
-         ("<escape>" . nil)))
+              ("<escape>" . nil)
+              ("M-w" . nil)
+              ("C-y" . nil)))
+;;; dhall-mode
+(use-package dhall-mode
+  :defer t
+  :commands (dhall-mode))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
