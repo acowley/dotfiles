@@ -16,8 +16,8 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
-(package-initialize)
 (setq package-enable-at-startup nil)
+;; (package-initialize)
 
 ; (require 'use-package)
 (eval-when-compile
@@ -219,7 +219,7 @@ single-quoted string."
 
 ;; Cause use-package to install packages automatically if not already
 ;; present
-(setq use-package-always-ensure t)
+; (setq use-package-always-ensure t)
 
 ;; Clean trailing whitespace when saving a buffer.
 
@@ -520,7 +520,7 @@ end tell" uri)))
 
 
 ;;; Diminish
-(use-package diminish :ensure t)
+(use-package diminish)
 ;;; Themes
 ;; (use-package darkokai-theme :defer t)
 ;; (use-package monokai-theme :defer t)
@@ -606,7 +606,7 @@ end tell" uri)))
 
 ;;;; General Org Configuration
 (use-package org
-  :ensure org-plus-contrib
+  ; :ensure org-plus-contrib
   :pin org
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
@@ -732,14 +732,14 @@ evaluation may begin anew."
   ;;    (dot . t)))
   (use-package ob-shell
     :defer t
-    :ensure org-plus-contrib
+    ; :ensure org-plus-contrib
     :commands (org-babel-execute:sh
                org-babel-expand-body:sh
                org-babel-execute:bash
                org-babel-expand-body:bash))
   (use-package ob-haskell
     :defer t
-    :ensure org-plus-contrib
+    ; :ensure org-plus-contrib
     :commands (org-babel-execute:haskell org-babel-expand-body:haskell))
   (defun org-babel-execute:runhaskell (body params)
     (org-babel-eval "runhaskell"
@@ -761,26 +761,26 @@ evaluation may begin anew."
 
   (use-package ob-emacs-lisp
     :defer t
-    :ensure org-plus-contrib
+    ; :ensure org-plus-contrib
     :commands (org-babel-execute:elisp
                org-babel-expand-body:elisp
                org-babel-execute:emacs-lisp
                org-babel-expand-body:emacs_lisp))
   (use-package ob-octave
     :defer t
-    :ensure org-plus-contrib
+    ; :ensure org-plus-contrib
     :commands (org-babel-execute:octave org-babel-expand-body:octave))
   (use-package ob-latex
     :defer t
-    :ensure org-plus-contrib
+    ; :ensure org-plus-contrib
     :commands (org-babel-execute:latex org-babel-expand-body:latex))
   (use-package ob-dot
     :defer t
-    :ensure org-plus-contrib
+    ; :ensure org-plus-contrib
     :commands (org-babel-execute:dot org-babel-expand-body:dot))
   (use-package ob-C
     :defer t
-    :ensure org-plus-contrib
+    ; :ensure org-plus-contrib
     :commands (org-babel-execute:C org-babel-expand-body:C
                org-babel-execute:C++ org-babel-expand-body:C++)
     :config
@@ -1129,6 +1129,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 ;;; pdf-tools
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
+  :defer nil
   :config
   ;; If pdf-tools is installed using emacsWithPackage in nix, then the
   ;; `epdfinfo` binary is installed alongside the elisp package.
@@ -1141,7 +1142,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 (use-package helm
   :defer t
   :diminish helm-mode
-  :commands (helm-find-files helm-mini helm-M-x helm-imenu)
+  :commands (helm-find-files helm-mini helm-M-x helm-imenu helm-mode)
   :bind (("M-x" . helm-M-x)
          ("C-c h" . helm-mini)
          ("C-c i" . helm-imenu)
@@ -1176,18 +1177,6 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
          ((file-exists-p "/run/current-system/sw/bin/locate")
           "/run/current-system/sw/bin/locate %s -e -A --regex %s")
          (t "mlocate %s -e -A --regex %s")))
-  ;; (if (memq window-system '(mac ns))
-  ;;     (setq helm-locate-command
-  ;;           "mdfind -onlyin $HOME -name %s %s | grep -E -v '/dist/|/Caches/'")
-  ;;   (setq helm-locate-command "/run/current-system/sw/bin/locate %s -e -A --regex %s"))
-
-
-  ;; ido offers a nicer UI for switching between open buffers
-  ;; (add-hook 'helm-mode-hook
-  ;;           (lambda ()
-  ;;             (add-to-list 'helm-completing-read-handlers-alist
-  ;;                          '(switch-to-buffer . ido))))
-  (helm-mode t)
 
   (require 'helm-command)
   (use-package helm-company
@@ -1306,7 +1295,7 @@ under the current project's root directory."
 
 (use-package mu4e
   :load-path "~/.nix-profile/share/emacs/site-lisp/mu4e"
-  :ensure nil
+  ; :ensure nil
   :defer t
   :commands (mu4e)
   :config
@@ -1409,7 +1398,7 @@ under the current project's root directory."
   (use-package gnus-dired
     ;; make the `gnus-dired-mail-buffers' function also work on
     ;; message-mode derived modes, such as mu4e-compose-mode
-    :ensure nil
+    ; :ensure nil
     :config
     (defun gnus-dired-mail-buffers ()
       "Return a list of active message buffers."
@@ -1568,7 +1557,7 @@ the year, month, and day are included."
   (let ((ts-now (current-time)))
     (pcase (cons (decode-time ts-msg) (decode-time ts-now))
       (`((,_ ,minute ,hour ,day ,month ,year . ,_) . (,_ ,_ ,_ ,today ,this-month ,this-year . ,_))
-       (format-time-string 
+       (format-time-string
         (if (= this-year year)
             (if (and (= this-month month) (= today day))
                 "%l:%M %p"
@@ -2213,6 +2202,7 @@ sorted block."
 (use-package helm-gtags
   :defer t
   :diminish helm-gtags-mode
+  :commands (helm-gtags-mode)
   :bind (:map helm-gtags-mode-map
          ("M-." . helm-gtags-find-tag)
          ("M-*" . helm-gtags-pop-stack))
@@ -2238,7 +2228,6 @@ sorted block."
 (use-package cuda-mode :defer t)
 ;;; mixed-pitch
 (use-package mixed-pitch
-  :ensure t
   :diminish mixed-pitch-mode
   :config
   ;; If you want it in all text modes:
@@ -2283,6 +2272,7 @@ sorted block."
 (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
 (use-package magit
   :defer t
+  :commands (magit-status)
   :config
   (add-hook 'magit-log-edit-mode-hook 'turn-on-auto-fill)
   (setq magit-last-seen-setup-instructions "1.4.0")
@@ -2681,9 +2671,7 @@ sorted block."
      ("n" "#+BEGIN_NOTES
 ?
 #+END_NOTES" ""))))
- '(package-selected-packages
-   (quote
-    (ercn org-sticky-header org-table-sticky-header org-bullets org-ref org-noter znc yaml-mode use-package twittering-mode toml-mode spaceline smartparens shm redprl recentf-remove-sudo-tramp-prefix racer purescript-mode paredit osx-dictionary nix-mode nix-buffer multiple-cursors mixed-pitch magit lsp-ui logview intero hindent helm-tramp helm-swoop helm-projectile helm-gtags helm-dash helm-company graphviz-dot-mode god-mode flycheck-rust erc-terminal-notifier erc-hl-nicks docker-tramp dante corral company-lsp clang-format cargo buffer-move ag yasnippet visual-fill-column ox-tufte ox-clip outshine org-plus-contrib olivetti monokai-theme impatient-mode imenu-anywhere esup diminish dashboard darkokai-theme cmake-mode apropospriate-theme)))
+ '(package-selected-packages nil)
  '(pop-up-windows nil)
  '(python-shell-interpreter "python3")
  '(racer-cmd "racer")
