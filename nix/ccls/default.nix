@@ -1,14 +1,14 @@
 { stdenv, fetchFromGitHub, cmake, llvmPackages_7 }:
 llvmPackages_7.stdenv.mkDerivation rec {
   name = "ccls-${version}";
-  version = "20190102";
+  version = "20190116";
   src = fetchFromGitHub {
     owner = "MaskRay";
     repo = "ccls";
-    rev = "9f3305157f0f8d64dcebcc0ad362df71c3eb91f7";
-    sha256 = "024qli2dm179drl969rf8i0zy4z0gzyy7lv0ml905ylbsykgzzrv";
+    rev = "7a79ed92b25f78f402410c37e39b755c5f8a3f81";
+    sha256 = "0q98wcrwrmjsg0yzgw5ak1hd6h2zkbr6wh84i2b5w2slrnxs6zpa";
     fetchSubmodules = true;
-    # date = 2019-01-03T00:37:10+08:00;
+    # date = 2019-01-16T00:04:24+08:00;
   };
   enableParallelBuilding = true;
   nativeBuildInputs = [ cmake ];
