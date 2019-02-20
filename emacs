@@ -2267,9 +2267,6 @@ sorted block."
 ;; OpenCL code uses c-mode
 (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
 
-; QML mode
-(add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode))
-
 (add-to-list 'auto-mode-alist '("\\.launch\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.machine\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.chs\\'" . haskell-mode))
@@ -2278,6 +2275,11 @@ sorted block."
 ;; imaxima installation
 (autoload 'imaxima "imaxima" "Image support for Maxima." t)
 (autoload 'imath-mode "imath" "Interactive Math minor mode." t)
+
+;;; QML mode
+(use-package qml-mode
+  :defer t
+  :mode "\\.qml\\'")
 
 ;;; git
 (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
