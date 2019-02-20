@@ -1134,7 +1134,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 ;;; pdf-tools
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
-  :defer nil
+  :defer t
   :config
   ;; If pdf-tools is installed using emacsWithPackage in nix, then the
   ;; `epdfinfo` binary is installed alongside the elisp package.
