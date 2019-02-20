@@ -741,6 +741,11 @@ evaluation may begin anew."
     :defer t
     ; :ensure org-plus-contrib
     :commands (org-babel-execute:haskell org-babel-expand-body:haskell))
+
+  (use-package ob-js
+    :defer t
+    :commands (org-babel-execute:js org-babel-expand-body:js))
+  
   (defun org-babel-execute:runhaskell (body params)
     (org-babel-eval "runhaskell"
                     (org-babel-expand-body:generic body params)))
