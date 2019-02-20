@@ -1053,7 +1053,7 @@ entire source file is loaded."
 
 (use-package outshine
   :defer t
-  :commands (outshine-hook-function)
+  :commands (outshine-mode)
   ;; :init
   ;; (add-hook 'outline-minor-mode-hook #'outshine-hook-function)
   ;; (add-hook 'prog-mode-hook #'outline-minor-mode)
