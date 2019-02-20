@@ -17,7 +17,7 @@
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
 (setq package-enable-at-startup nil)
-;; (package-initialize)
+(package-initialize)
 
 ; (require 'use-package)
 (eval-when-compile
