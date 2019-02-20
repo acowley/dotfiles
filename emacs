@@ -2372,10 +2372,12 @@ sorted block."
   (global-set-key (kbd "M-}") #'corral-braces-forward)
   (global-set-key (kbd "M-[") #'corral-brackets-backward)
   (global-set-key (kbd "M-]") #'corral-brackets-forward))
+(require 'corral)
 
 ;;; rust
 (use-package rust-mode
   :defer t
+  :commands (rust-mode)
   :config
   (setq rust-indent-offset 2)
   (use-package cargo)
