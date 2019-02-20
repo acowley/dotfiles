@@ -2443,12 +2443,6 @@ sorted block."
               (define-key yaml-mode-map (kbd "TAB") 'yaml-indent-line)
               ;(setq outline-regexp "^ *\\([A-Za-z0-9_-]*: *[>|]?$\\|-\\b\\)")
               )))
-;;; redprl
-(use-package redprl
-  :config
-  (setq redprl-command "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"
-        flycheck-redprl-executable "/nix/store/p0m23jnrpgypin961spa4c3gn0xmd3x1-redprl-2016-09-22/bin/redprl"))
-
 ;;; dictionary
 (use-package osx-dictionary
   :if (memq window-system '(mac ns))
