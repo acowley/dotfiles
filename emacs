@@ -1183,6 +1183,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
           "/run/current-system/sw/bin/locate %s -e -A --regex %s")
          (t "mlocate %s -e -A --regex %s")))
 
+  (require 'helm-imenu)
   (require 'helm-command)
   (use-package helm-company
     :defer t
@@ -1220,6 +1221,8 @@ under the current project's root directory."
     (use-package docker-tramp))
   (use-package helm-projectile
     :defer t))
+(require 'helm)
+(helm-mode 1)
 (ido-mode -1)
 
 ;;; helm-org-rifle
