@@ -2397,7 +2397,8 @@ sorted block."
   (defun my/rust-hook ()
     (flycheck-rust-setup)
     (flycheck-mode)
-    (racer-mode))
+    ;; (racer-mode)
+    )
   (add-hook 'rust-mode-hook #'my/rust-hook))
 
 ;;; purescript
