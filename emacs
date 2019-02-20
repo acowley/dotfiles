@@ -2532,6 +2532,11 @@ sorted block."
 (use-package dhall-mode
   :defer t
   :commands (dhall-mode))
+;;; docker
+;; (use-package docker :defer t)
+(use-package dockerfile-mode
+  :defer t
+  :mode "\\Dockerfile\\'")
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
