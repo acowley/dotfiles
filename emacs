@@ -2612,7 +2612,6 @@ sorted block."
  '(hl-sexp-background-color "#efebe9")
  '(magit-popup-use-prefix-argument (quote default))
  '(magit-use-overlays nil)
- '(org-ditaa-jar-path "/usr/local/Cellar/ditaa/0.9/libexec/ditaa0_9.jar")
  '(org-footnote-auto-label (quote plain))
  '(org-html-validation-link "")
  '(org-imenu-depth 3)
