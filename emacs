@@ -2537,6 +2537,12 @@ sorted block."
 (use-package dockerfile-mode
   :defer t
   :mode "\\Dockerfile\\'")
+;;; emojify
+(use-package emojify
+  :defer t
+  :commands (emojify-mode global-emojify-mode)
+  :config
+  (emojify-set-emoji-styles '(github unicode)))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
