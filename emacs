@@ -2488,6 +2488,7 @@ sorted block."
 ;;; logview
 (use-package logview
   :defer t
+  :commands (logview-mode)
   :config
   (setq datetime-timezone 'UTC
         logview-additional-level-mappings '(("ICP"
