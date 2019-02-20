@@ -2640,7 +2640,11 @@ sorted block."
  '(pop-up-windows nil)
  '(python-shell-interpreter "python3")
  '(racer-cmd "racer")
- '(safe-local-variable-values (quote ((eval org-overview) (eval outshine-hook-function))))
+ '(safe-local-variable-values
+   (quote
+    ((eval outshine-cycle-buffer)
+     (eval org-overview)
+     (eval outshine-hook-function))))
  '(show-paren-mode t)
  '(sml/pre-modes-separator (propertize " " (quote face) (quote sml/modes)))
  '(swift-repl-executable "xcrun swift -target x86_64-macosx10.11")
@@ -2663,6 +2667,6 @@ sorted block."
 ;; Local Variables:
 ;; mode: emacs-lisp
 ;; eval: (outline-minor-mode)
-;; eval: (outshine-hook-function)
-;; eval: (org-overview)
+;; eval: (outshine-mode)
+;; eval: (outshine-cycle-buffer)
 ;; End:
