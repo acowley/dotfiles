@@ -2636,68 +2636,6 @@ sorted block."
  '(org-reveal-root "reveal.js")
  '(org-src-preserve-indentation t)
  '(org-src-window-setup (quote other-window))
- '(org-structure-template-alist
-   (quote
-    (("s" "#+BEGIN_SRC ?
-
-#+END_SRC" "<src lang=\"?\">
-
-</src>")
-     ("e" "#+BEGIN_EXAMPLE
-?
-#+END_EXAMPLE" "<example>
-?
-</example>")
-     ("q" "#+BEGIN_QUOTE
-?
-#+END_QUOTE" "<quote>
-?
-</quote>")
-     ("v" "#+BEGIN_VERSE
-?
-#+END_VERSE" "<verse>
-?
-</verse>")
-     ("V" "#+BEGIN_VERBATIM
-?
-#+END_VERBATIM" "<verbatim>
-?
-</verbatim>")
-     ("c" "#+BEGIN_CENTER
-?
-#+END_CENTER" "<center>
-?
-</center>")
-     ("l" "#+BEGIN_EXPORT LaTeX
-?
-#+END_EXPORT" "<literal style=\"latex\">
-?
-</literal>")
-     ("L" "#+LaTeX: " "<literal style=\"latex\">?</literal>")
-     ("h" "#+BEGIN_EXPORT html
-?
-#+END_EXPORT" "<literal style=\"html\">
-?
-</literal>")
-     ("H" "#+HTML: " "<literal style=\"html\">?</literal>")
-     ("a" "#+BEGIN_ASCII
-?
-#+END_ASCII" "")
-     ("A" "#+ASCII: " "")
-     ("i" "#+INDEX: ?" "#+INDEX: ?")
-     ("I" "#+INCLUDE: %file ?" "<include file=%file markup=\"?\">")
-     ("eq" "\\begin{equation*}
-?
-\\end{equation*}" "")
-     ("Eq" "\\begin{equation}
-?
-\\end{equation}" "")
-     ("al" "\\begin{align*}
-?
-\\end{align*}" "")
-     ("n" "#+BEGIN_NOTES
-?
-#+END_NOTES" ""))))
  '(package-selected-packages nil)
  '(pop-up-windows nil)
  '(python-shell-interpreter "python3")
