@@ -2204,7 +2204,10 @@ sorted block."
 
 ;;; C++
 
+;; I get this from melpa because the nix package ends up wanting to
+;; build cmake itself.
 (use-package cmake-mode
+  :ensure t
   :mode "\\CMakeLists.txt\\’")
 
 (use-package helm-gtags
