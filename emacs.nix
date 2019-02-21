@@ -2,6 +2,22 @@ self: nixpkgs: {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
     inherit (super) pdf-tools;
     inherit (super) emacs-libvterm;
+    disk-usage = super.elpaBuild {
+      pname = "disk-usage";
+      ename = "disk-usage";
+      version = "20190220";
+      src = (nixpkgs.fetchFromGitLab {
+        owner = "ambrevar";
+        repo = "emacs-disk-usage";
+        rev = "7b148294a2807ce770b37bb6a7c54080be459990";
+        sha256 = "1fk0bj9n70zsvm07r5c02fqh0sz19kjsjic92764dzz2gva06xq9";
+      }) + /disk-usage.el;
+      packageRequires = [ super.emacs ];
+      meta = {
+        homepage = "https://elpa.gnu.org/packages/disk-usage.html";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
     highlight-indent-guides = super.melpaBuild {
         pname = "highlight-indent-guides";
         ename = "highlight-indent-guides";

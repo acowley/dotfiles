@@ -2543,6 +2543,11 @@ sorted block."
   :commands (emojify-mode global-emojify-mode)
   :config
   (emojify-set-emoji-styles '(github unicode)))
+;;; disk-usage
+(use-package disk-usage
+  :defer t
+  :commands (disk-usage disk-usage-here disk-usage-dired-at-point))
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
