@@ -43,7 +43,7 @@
       '';
       }) { inherit (pkgs.llvmPackages_6) libclang; };
 
-    handbrake = pkgs.handbrake.override { useFfmpeg = true; ffmpeg = pkgs.ffmpeg-full; };
+    # handbrake = pkgs.handbrake.override { useFfmpeg = true; ffmpeg = pkgs.ffmpeg-full; };
     catch2 = pkgs.callPackage ./nix/catch2 {};
     versor = pkgs.callPackage ./nix/versor {};
     liblapack_3_8 = pkgs.callPackage ./nix/liblapack/3.8.nix {};
