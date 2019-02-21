@@ -88,8 +88,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "2c1755d76387bed7c96a9c827753b6dcd9cf1a2c";
-        sha256 = "10fk3mfyrvg706547nwhxrvimqsdpsmxipigmk9n2n8cmjr5k52l";
+        rev = "9b5511dbf187348d00be8815d5b7533732f164d6";
+        sha256 = "1bn9vdd8s12n2nx3k8qdhq266lgzzkdqri6vy88ykq1dxc4y7wlw";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -109,8 +109,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "786290f832c1c1dd9bd4645568f9624818a25adf";
-        sha256 = "0n46ll8hznrmv5b2vr2nqzkfwa8n0wqbd81wkjw582qxr3lv0f32";
+        rev = "48599a0d9bc8a8fabb98b8462df6d5a835541e5e";
+        sha256 = "1m9iw15p696g64rjm0rp3z9qqz7ym0zvzjk5pszj9zxx6x5jh5kq";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -178,6 +178,7 @@ self: nixpkgs: {
     #     sed '2s/.*/;; Version: 0.0/' -i Auxiliary/cmake-mode.el
     #   '';
     # });
+
     apropospriate-theme =
       # Note: \x27 is a single quote character. This is a way of
       # escaping those characters within the sed command string.
@@ -359,6 +360,10 @@ self: nixpkgs: {
     xterm-color
     highlight-indent-guides
     emacs-libvterm
+    dockerfile-mode
+    qml-mode
+    emojify
+    disk-usage
   ];
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin
