@@ -18,3 +18,5 @@ if [ ! -d "${HOME}/.config/nixpkgs" ]; then
 fi
 ln -s ${DIR}/config.nix "${HOME}/.config/nixpkgs/config.nix"
 ln -s ${DIR}/overlays.nix "${HOME}/.config/nixpkgs/overlays.nix"
+ln -s ${DIR}/yasnippets/ "${HOME}/.emacs.d/snippets"
+
