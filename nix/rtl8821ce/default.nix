@@ -2,14 +2,14 @@
 bc, kernel }:
 stdenv.mkDerivation rec {
   # version = "1.0.0";
-  version = "5.2.5.1";
+  version = "5.2.5.1.20180108.1";
   name = "rtl8821ce-${version}-${kernel.version}";
   src = fetchFromGitHub {
     owner = "tomaspinho";
     repo = "rtl8821ce";
-    rev = "5eee0cf6190f5e6dae3ad5a32ed3cd0a1971fbb5";
-    sha256 = "1hgxh8yyvm5jfy3pyab5b7ls2q9qrg0kam5kfrdf671a1z1q21nr";
-    # date = 2018-12-17T11:13:29+00:00;
+    rev = "800f9284855284b47eb0ed354b225ce0b32bb7ba";
+    sha256 = "0ga5al9f0slqilzmmgskhnix55dl33jxjzkvmwqq00h7w1f3n4cq";
+    # date = 2019-03-07T17:03:37+00:00;
   };
   # src = fetchurl {
   #   url = "https://bugs.launchpad.net/ubuntu/+source/linux-oem/+bug/1740231/+attachment/5034985/+files/rtl8821CE_WiFi_linux_v5.2.5.1_26055.20180108_COEX20170310-1212.tar.gz";
