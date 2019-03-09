@@ -20,6 +20,9 @@
     };
   };
   packageOverrides = pkgs: rec {
+    wattmangtk = pkgs.python3Packages.callPackage ./nix/wattmangtk {
+    matplotlib = pkgs.python3Packages.matplotlib.override { enableGtk3 = true; };
+    };
     vez = pkgs.callPackage ./nix/vez { buildSamples = true; };
     powerline-go = pkgs.powerline-go.overrideAttrs (old: {
       postPatch = ''
