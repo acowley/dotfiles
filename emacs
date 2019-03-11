@@ -554,8 +554,14 @@ end tell" uri)))
   :init
   (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
+(defun my/projectile-mode-line ()
+  "Simplified projectile mode line that does not determine the
+project's type."
+  (format "%s[%s]" projectile-mode-line-prefix (projectile-project-name)))
+
   (setq projectile-enable-caching t
         projectile-global-mode t
+        projectile-mode-line-function #'my/projectile-mode-line
         projectile-ignored-projects '("~/")
         projectile-globally-ignored-directories
         '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")
