@@ -685,7 +685,11 @@ project's type."
   (use-package ox-gfm
     :commands (org-gfm-export-to-markdown org-gfm-export-as-markdown))
 
-  (require 'ox-koma-letter)
+  (use-package ox-koma-letter
+     :defer t
+     :commands (org-koma-letter-export-to-pdf 
+                org-koma-letter-export-as-latex 
+                org-koma-letter-export-to-latex))
 
   (defun my-org-hook ()
     (setq line-spacing 0.2)
@@ -1047,7 +1051,7 @@ prompting for the article's title."
           ("blog" :components ("blog-content" "blog-rss" "blog-assets"))))
 
   ;;; org-noter
-  (use-package org-noter)
+  (use-package org-noter :defer t :commands (org-noter))
   )
 
 (use-package outorg
