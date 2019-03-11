@@ -607,7 +607,10 @@ project's type."
 
 
 ;;; esup
-(use-package esup :defer t :commands esup)
+(use-package esup
+  :defer t
+  :commands esup
+  :config (setq esup-user-init-file (file-truename "~/dotfiles/emacs")))
 ;;; Org-mode
 
 ;;;; General Org Configuration
