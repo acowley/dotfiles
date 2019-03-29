@@ -1228,10 +1228,10 @@ under the current project's root directory."
       (interactive)
       (setq helm-dash-docsets-path (concat (projectile-project-root) "docsets"))
       (message (format "Loaded docsets for %s" (projectile-project-name)))))
-  (use-package helm-tramp
-    :defer t
-    :config
-    (use-package docker-tramp))
+  ;; (use-package helm-tramp
+  ;;   :defer t
+  ;;   :config
+  ;;   (use-package docker-tramp))
   (use-package helm-projectile
     :defer t))
 (require 'helm)
@@ -2237,6 +2237,14 @@ sorted block."
 
 (use-package clang-format)
 
+;; From https://stackoverflow.com/a/21656063/277078
+(defun my/merged-imenu ()
+  "Use both `imenu-default-create-index-function' and `imenu-generic-expression' for generating an imenu list"
+  (interactive)
+  (let ((mode-imenu (imenu-default-create-index-function))
+        (custom-imenu (imenu--generic-function imenu-generic-expression)))
+    (append mode-imenu custom-imenu)))
+
 (defun my/c++-mode-hook ()
   (electric-indent-mode t)
   (electric-pair-mode t)
@@ -2244,6 +2252,18 @@ sorted block."
   (which-function-mode)
   (set-face-foreground 'which-func "LightSkyBlue")
   (yas-minor-mode-on)
+  ;; Make imenu work with OpenCL, CUDA, and HIP compute kernels
+  (add-to-list 'imenu-generic-expression
+               `("Kernels"
+                 ,(concat
+                   ;"^[a-zA-Z0-9_]+[ \t]?"		; Type specs; there can be no
+                   (rx (or "__global__" "__device__" "__host__") space)
+                   "\\([a-zA-Z0-9_*]+[ \t]+\\)"	; more than 3 tokens, right?
+                   "\\([a-zA-Z0-9_*]+[ \t]+\\)?"
+                   "\\([*&]+[ \t]*\\)?"			; Pointer.
+                   "\\([a-zA-Z0-9_*]+\\)[ \t]*("	; Name.
+                   ) 4))
+  (setq imenu-create-index-function #'my/merged-imenu)
   (helm-gtags-mode 1))
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
