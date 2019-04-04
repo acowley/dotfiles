@@ -554,10 +554,13 @@ end tell" uri)))
   :init
   (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
-(defun my/projectile-mode-line ()
-  "Simplified projectile mode line that does not determine the
+  (setq projectile-other-file-alist
+        (append '(("hpp" "h" "ipp" "cpp" "cc" "cu") ("cu" "h" "hpp"))
+                projectile-other-file-alist))
+  (defun my/projectile-mode-line ()
+    "Simplified projectile mode line that does not determine the
 project's type."
-  (format "%s[%s]" projectile-mode-line-prefix (projectile-project-name)))
+    (format "%s[%s]" projectile-mode-line-prefix (projectile-project-name)))
 
   (setq projectile-enable-caching t
         projectile-global-mode t
