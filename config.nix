@@ -44,7 +44,7 @@
         mkdir -p $out/bin
         ln -s ${libclang.out}/bin/clang-format $out/bin/clang-format
       '';
-      }) { inherit (pkgs.llvmPackages_6) libclang; };
+      }) { inherit (pkgs.llvmPackages_8) libclang; };
 
     # handbrake = pkgs.handbrake.override { useFfmpeg = true; ffmpeg = pkgs.ffmpeg-full; };
     catch2 = pkgs.callPackage ./nix/catch2 {};
