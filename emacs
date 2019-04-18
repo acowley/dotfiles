@@ -2270,6 +2270,7 @@ sorted block."
   (helm-gtags-mode 1))
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
+(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 
 ;;; mixed-pitch
 (use-package mixed-pitch
