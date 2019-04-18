@@ -1,6 +1,6 @@
-{ stdenv, llvmPackages_7, ccls, makeWrapper }:
+{ stdenv, llvmPackages_8, ccls, makeWrapper }:
 { buildInputs }:
-llvmPackages_7.stdenv.mkDerivation {
+llvmPackages_8.stdenv.mkDerivation {
   name = "project-ccls";
   buildInputs = buildInputs ++ [ ccls makeWrapper ];
   phases = ["installPhase"];
