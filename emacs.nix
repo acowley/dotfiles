@@ -247,24 +247,24 @@ self: nixpkgs: {
         name = "recipe";
       };
     };
-    structured-haskell-mode = super.melpaBuild {
-      pname = "shm";
-      version = "20170523";
-      src = ~/src/structured-haskell-mode;
-      packageRequires = [ super.haskell-mode ];
-      fileSpecs = [ "elisp/*.el" ];
-      propagatedUserEnvPkgs = [ nixpkgs.haskellPackages.structured-haskell-mode ];
-      recipe = nixpkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/milkypostman/melpa/68a2fddb7e000487f022b3827a7de9808ae73e2a/recipes/shm";
-        sha256 = "1qmp8cc83dcz25xbyqd4987i0d8ywvh16wq2wfs4km3ia8a2vi3c";
-        name = "recipe";
-      };
-      meta = {
-        description = "Structured editing Emacs mode for Haskell";
-        license = nixpkgs.lib.licenses.bsd3;
-        platforms = nixpkgs.haskellPackages.structured-haskell-mode.meta.platforms;
-      };
-    };
+    # structured-haskell-mode = super.melpaBuild {
+    #   pname = "shm";
+    #   version = "20170523";
+    #   src = ~/src/structured-haskell-mode;
+    #   packageRequires = [ super.haskell-mode ];
+    #   fileSpecs = [ "elisp/*.el" ];
+    #   propagatedUserEnvPkgs = [ nixpkgs.haskellPackages.structured-haskell-mode ];
+    #   recipe = nixpkgs.fetchurl {
+    #     url = "https://raw.githubusercontent.com/milkypostman/melpa/68a2fddb7e000487f022b3827a7de9808ae73e2a/recipes/shm";
+    #     sha256 = "1qmp8cc83dcz25xbyqd4987i0d8ywvh16wq2wfs4km3ia8a2vi3c";
+    #     name = "recipe";
+    #   };
+    #   meta = {
+    #     description = "Structured editing Emacs mode for Haskell";
+    #     license = nixpkgs.lib.licenses.bsd3;
+    #     platforms = nixpkgs.haskellPackages.structured-haskell-mode.meta.platforms;
+    #   };
+    # };
   };
   myEmacsPackages = epkgs: with epkgs; [
     pdf-tools
@@ -334,7 +334,7 @@ self: nixpkgs: {
   ] ++ nixpkgs.lib.optionals (builtins.pathExists ~/src/intero) [
     # This is a hacky way of not building these from source on
     # machines where we do not expect to use them.
-    structured-haskell-mode
+    # structured-haskell-mode
     intero
   ] ++ [
     lsp-mode
