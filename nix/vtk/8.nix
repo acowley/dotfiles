@@ -1,4 +1,6 @@
-{ stdenv, fetchurl, cmake, libGLU_combined, libX11, xproto, libXt
+{ stdenv, fetchurl, cmake, libGLU_combined, libX11 
+# , xproto
+, libXt
 , qtLib ? null
 , pythonWrapping ? true, python
 # Darwin support
@@ -23,7 +25,7 @@ stdenv.mkDerivation rec {
 
   buildInputs =
     if !stdenv.isDarwin
-    then [ cmake libGLU_combined libX11 xproto libXt ] ++ optional (qtLib != null) qtLib ++ optional pythonWrapping python
+    then [ cmake libGLU_combined libX11 libXt ] ++ optional (qtLib != null) qtLib ++ optional pythonWrapping python
     else [ cmake qtLib xpc CoreServices DiskArbitration IOKit cf-private
            CFNetwork Security ApplicationServices CoreText IOSurface ImageIO
            OpenGL GLUT ];
