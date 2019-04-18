@@ -41,12 +41,12 @@ self: nixpkgs: {
       };
     ccls = super.melpaBuild {
       pname = "ccls";
-      version = "20190225";
+      version = "20190414";
       src = nixpkgs.fetchFromGitHub {
         owner = "MaskRay";
         repo = "emacs-ccls";
-        rev = "93c18aee1e0b07392c4dc3d0462d6a9d918b9728";
-        sha256 = "03znjx8irq97s8677l0bz63ma18r7fack59bmanr5rhan59s0bq9";
+        rev = "3f7a981658ccd71d2e09b9ad2b31a1038e55dcd4";
+        sha256 = "1pc0zchwwjdx8n4p1y3s0w9jv2blq7p2ymm9218nrghjjmj2fxnl";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
@@ -84,12 +84,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20190327";
+      version = "20190416";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "a91cedfa2923e5261c59b02f620c6206d39e9c3e";
-        sha256 = "0hljz792501rsm7d44wphh92d6rk949a07rvrvzgnmyq5kfxyfgd";
+        rev = "466bfbc1c53d36b1caf877e3e5c3f9314f05519e";
+        sha256 = "1vil5049dp8pr2ryjv1psgfzkw1y9hgizw36j14hv0c5p9jbdd19";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -105,12 +105,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20190318";
+      version = "20190413";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "8d855dba9bb06405b62c474f6d753d85a33ae469";
-        sha256 = "0bmkj0kn8z0lhizxqpz677v4jzjak5fykh9v53znvlpp2kixd3vy";
+        rev = "e48c80cf1122fe6136a07fc7f3aa6ad5412bef53";
+        sha256 = "09akqp82xymrqap2n7apnk2vnj9smvh65k30r8vq7iqpqjq70fcm";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -342,7 +342,6 @@ self: nixpkgs: {
     lsp-haskell
     ccls
 
-    cuda-mode
     # cmake-mode
 
     clang-format

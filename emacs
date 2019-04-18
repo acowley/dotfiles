@@ -2271,8 +2271,6 @@ sorted block."
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
 
-;;; cuda-mode
-;; (use-package cuda-mode :defer t)
 ;;; mixed-pitch
 (use-package mixed-pitch
   :diminish mixed-pitch-mode
