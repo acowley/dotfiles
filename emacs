@@ -535,7 +535,6 @@ end tell" uri)))
                (or (server-running-p) (server-mode))))
 ;;; company-mode
 (use-package company
-  ;; :load-path "~/src/company-mode/company-0.9.4"
   :defer nil
   :commands (company-mode)
   :init
@@ -676,7 +675,7 @@ project's type."
   (setq org-image-actual-width '(800))
   (setq org-latex-prefer-user-labels t)
 
-  (use-package org-bullets)
+  (use-package org-bullets :commands (org-bullets-mode))
   ;; (use-package org-table-sticky-header
   ;;   :diminish org-table-sticky-header-mode)
   ;; (use-package org-sticky-header)
@@ -1147,7 +1146,9 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 
 
 ;;; olivetti-mode
-(use-package olivetti)
+(use-package olivetti 
+  :commands (olivetti-mode)
+  :defer t)
 ;;; pdf-tools
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
@@ -1844,7 +1845,6 @@ element based on the god-local-mode predicate."
 
 ;; multiple-cursors setup
 (use-package multiple-cursors
-  :defer nil
   :commands (multiple-cursors-mode)
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
@@ -2239,7 +2239,8 @@ sorted block."
         helm-gtags-auto-update t
         helm-gtags-ignore-case t))
 
-(use-package clang-format)
+(use-package clang-format
+  :commands (clang-format-buffer clang-format-region))
 
 ;; From https://stackoverflow.com/a/21656063/277078
 (defun my/merged-imenu ()
@@ -2398,18 +2399,16 @@ sorted block."
 
 ;;; corral
 (use-package corral
-  :defer nil
+  :defer t
+  :bind (("M-9" . corral-parentheses-backward)
+         ("M-0" . corral-parentheses-forward)
+         ("M-\"" .  corral-double-quotes-backward)
+         ("M-{" . corral-braces-backward)
+         ("M-}" . corral-braces-forward)
+         ("M-[" . corral-brackets-backward)
+         ("M-]" . corral-brackets-forward))
   :config
-  (setq corral-preserve-point t)
-  (global-set-key (kbd "M-9") #'corral-parentheses-backward)
-  (global-set-key (kbd "M-0") #'corral-parentheses-forward)
-  (global-set-key (kbd "M-\"") #'corral-double-quotes-backward)
-  (global-set-key (kbd "M-{") #'corral-braces-backward)
-  (global-set-key (kbd "M-}") #'corral-braces-forward)
-  (global-set-key (kbd "M-[") #'corral-brackets-backward)
-  (global-set-key (kbd "M-]") #'corral-brackets-forward))
-(require 'corral)
-
+  (setq corral-preserve-point t))
 ;;; rust
 (use-package rust-mode
   :defer t
@@ -2510,8 +2509,10 @@ sorted block."
 (use-package toml-mode :defer t)
 ;;; markdown-mode
 (use-package markdown-mode :defer t)
-;;; web-mod
-(use-package web-mode)
+;;; web-mode
+(use-package web-mode
+  :mode "\\.html\\'"
+  :commands (web-mode))
 ;;; glsl
 (use-package glsl-mode
   :mode "\\.\\(vert\\|frag\\|geom\\|comp\\)\\'")
