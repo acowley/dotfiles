@@ -521,7 +521,7 @@ end tell" uri)))
 
 
 ;;; Diminish
-(use-package diminish)
+(use-package diminish :disabled t)
 ;;; Themes
 ;; (use-package darkokai-theme :defer t)
 ;; (use-package monokai-theme :defer t)
@@ -1164,7 +1164,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 ;;; Helm
 (use-package helm
   :defer t
-  :diminish helm-mode
+  ;; :diminish helm-mode
   :commands (helm-find-files helm-mini helm-M-x helm-imenu helm-mode)
   :bind (("M-x" . helm-M-x)
          ("C-c h" . helm-mini)
@@ -2229,7 +2229,7 @@ sorted block."
 
 (use-package helm-gtags
   :defer t
-  :diminish helm-gtags-mode
+  ;; :diminish helm-gtags-mode
   :commands (helm-gtags-mode)
   :bind (:map helm-gtags-mode-map
          ("M-." . helm-gtags-find-tag)
@@ -2276,7 +2276,8 @@ sorted block."
 
 ;;; mixed-pitch
 (use-package mixed-pitch
-  :diminish mixed-pitch-mode
+  :commands (mixed-pitch-mode)
+  ;; :diminish mixed-pitch-mode
   :config
   ;; If you want it in all text modes:
   (add-hook 'text-mode-hook #'mixed-pitch-mode)
