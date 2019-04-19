@@ -1,6 +1,8 @@
 (require 'package)
 
 ;;; Before everything else
+(setq gc-cons-threshold 100000000) ; ie 100mb, default is 800kb
+(add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
 
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
@@ -306,8 +308,6 @@ single-quoted string."
 
 (put 'dired-find-alternate-file 'disabled nil)
 (setq wdired-allow-to-change-permissions t)
-
-(setq gc-cons-threshold 100000000) ; ie 100mb, default is 800kb
 
 ;; When `'which-function` output is too long, it can interfere with
 ;; modeline rendering
