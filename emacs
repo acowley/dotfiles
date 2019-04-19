@@ -2513,7 +2513,7 @@ sorted block."
 (use-package web-mode)
 ;;; glsl
 (use-package glsl-mode
-  :mode "\\.(vert|frag|geom)\\'")
+  :mode "\\.\\(vert\\|frag\\|geom\\|comp\\)\\'")
 ;;; smartparens-mode
 (use-package smartparens
   :defer t
