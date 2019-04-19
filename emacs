@@ -30,6 +30,7 @@
 
 ;; Show a message whenever a package takes longer than 0.1s to load
 (setq use-package-verbose t)
+(setq use-package-compute-statistics t)
 
 ;;; General emacs configuration
 
