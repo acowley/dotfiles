@@ -7,7 +7,7 @@
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
 
-(add-to-list 'load-path "/Users/acowley/.nix-profile/share/emacs/site-lisp")
+;; (add-to-list 'load-path "/Users/acowley/.nix-profile/share/emacs/site-lisp")
 
 ;;; Package setup
 
