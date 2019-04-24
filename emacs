@@ -1169,6 +1169,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   :bind (("M-x" . helm-M-x)
          ("C-c h" . helm-mini)
          ("C-c i" . helm-imenu)
+         ("C-s" . my/search-forward)
          ("C-x C-f" . helm-find-files)
          :map helm-map
          ;; use TAB for action
@@ -1178,6 +1179,12 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
          ;; list actions
          ("C-z" . helm-select-action))
   :config
+  (defun my/search-forward (prefix)
+    "Calls `helm-occur` unless a prefix argument is given, in which case it calls `isearch-forward`"
+    (interactive "P")
+    (if (null prefix)
+        (helm-occur)
+      (isearch-forward)))
   (setq
    helm-candidate-number-limit 100
    helm-quick-update t
@@ -1207,20 +1214,6 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
     :defer t
     :bind (:map company-mode-map
                 ("C-:" . helm-company)))
-
-  (defun my/search-forward (prefix)
-    "Calls `helm-swoop` unless a prefix argument is given, in which case it calls `isearch-forward`"
-    (interactive "P")
-    (if (null prefix)
-        (helm-swoop)
-      (isearch-forward)))
-
-  (use-package helm-swoop
-    :defer t
-    :commands helm-swoop
-    :bind (("M-i" . helm-swoop)
-           ("C-s" . my/search-forward)
-           ("M-I" . helm-swoop-back-to-last-point)))
 
   (use-package helm-dash
     :defer t
