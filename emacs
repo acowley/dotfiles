@@ -2271,9 +2271,10 @@ sorted block."
 (use-package mixed-pitch
   :commands (mixed-pitch-mode)
   ;; :diminish mixed-pitch-mode
-  :config
+  :init
   ;; If you want it in all text modes:
   (add-hook 'text-mode-hook #'mixed-pitch-mode)
+  :config
   ;; Depending on your specific setup, you may want to adjust the height of
   ;; variable pitch fonts:
   (set-face-attribute 'variable-pitch nil
