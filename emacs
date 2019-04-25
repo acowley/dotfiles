@@ -1231,7 +1231,10 @@ under the current project's root directory."
   ;;   :config
   ;;   (use-package docker-tramp))
   (use-package helm-projectile
-    :defer t))
+    :defer t)
+  (use-package wgrep-helm
+    :commands (wgrep-change-to-wgrep-mode wgrep-finish-edit))
+)
 (require 'helm)
 (helm-mode 1)
 (ido-mode -1)

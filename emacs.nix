@@ -292,6 +292,7 @@ self: nixpkgs: {
     helm-projectile
     helm-gtags
     helm-org-rifle
+    wgrep-helm
 
     # imenu-anywhere
     god-mode
