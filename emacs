@@ -1233,8 +1233,30 @@ under the current project's root directory."
   (use-package helm-projectile
     :defer t)
   (use-package wgrep-helm
-    :commands (wgrep-change-to-wgrep-mode wgrep-finish-edit))
-)
+    :commands (wgrep-change-to-wgrep-mode wgrep-finish-edit)
+    :bind (:map wgrep-mode-map
+                ("C-x C-s" . my/wgrep-save)
+                ("C-c C-e" . my/wgrep-save)
+                ("C-c C-k" . my/wgrep-discard))
+    :config
+    (defun my/wgrep-save ()
+      "Kill the buffer if it was a helm-occur result"
+      (interactive)
+      (wgrep-finish-edit)
+      (when (eq major-mode 'helm-occur-mode)
+        (kill-this-buffer)))
+    (defun my/wgrep-discard ()
+      "Kill the buffer if it was a helm-occur result"
+      (interactive)
+      (wgrep-abort-changes)
+      (when (eq major-mode 'helm-occur-mode)
+        (kill-this-buffer)))
+    (defun my/helm-occur-hook ()
+      "Switch the by-default read-only helm-occur buffer to editable"
+      (interactive)
+      (wgrep-change-to-wgrep-mode))
+    (add-hook 'helm-occur-mode-hook #'my/helm-occur-hook))
+  )
 (require 'helm)
 (helm-mode 1)
 (ido-mode -1)
