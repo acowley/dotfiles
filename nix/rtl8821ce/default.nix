@@ -2,48 +2,30 @@
 bc, kernel }:
 stdenv.mkDerivation rec {
   # version = "1.0.0";
-  version = "5.2.5.1.20180108.1";
+  version = "5.2.5.1.20190521";
   name = "rtl8821ce-${version}-${kernel.version}";
   src = fetchFromGitHub {
     owner = "tomaspinho";
     repo = "rtl8821ce";
-    rev = "800f9284855284b47eb0ed354b225ce0b32bb7ba";
-    sha256 = "0ga5al9f0slqilzmmgskhnix55dl33jxjzkvmwqq00h7w1f3n4cq";
-    # date = 2019-03-07T17:03:37+00:00;
+    rev = "ca4abd85d86c76d6e772ed90095ae490e3a34f48";
+    sha256 = "1np65ik77xwnd4110bjwhjyiivy1iy9kgrcqwaxjddmpfqb3ai0d";
   };
-  # src = fetchurl {
-  #   url = "https://bugs.launchpad.net/ubuntu/+source/linux-oem/+bug/1740231/+attachment/5034985/+files/rtl8821CE_WiFi_linux_v5.2.5.1_26055.20180108_COEX20170310-1212.tar.gz";
-  #   sha256 = "1xa2mdxqqld444k4ng5h17813p0gjawb2xpavfbyzaxc5vv3p7pa";
-  # };
-  hardeningDisable = [ "pic" "format" ];
-  nativeBuildInputs = [bc] ++ kernel.moduleBuildDependencies;
 
-  # patches = [ ./kernel-4_15-compat.patch ];
+  hardeningDisable = [ "pic" ];
 
-  # The driver source here includes a patch to build with the 4.15
-  # kernel. If we are building with something older (e.g. 4.13), we
-  # apply the reverse of that patch.
-  # Here is the commit that added 4.15 compatibility:
-  # https://github.com/endlessm/linux/commit/6978e0d629bdaf67729879bac4d3a853ea107f08
+  nativeBuildInputs = [ bc ];
+  buildInputs = kernel.moduleBuildDependencies;
 
-#        -e 's,CONFIG_POWER_SAVING = y,CONFIG_POWER_SAVING = n,' \
+  prePatch = ''
+    substituteInPlace ./Makefile \
+      --replace /lib/modules/ "${kernel.dev}/lib/modules/" \
+      --replace '$(shell uname -r)' "${kernel.modDirVersion}" \
+      --replace /sbin/depmod \# \
+      --replace '$(MODDESTDIR)' "$out/lib/modules/${kernel.modDirVersion}/kernel/net/wireless/"
+  '';
 
-  patchPhase = ''
-    sed -e 's,KSRC := /lib/modules/$(KVER)/build,KSRC := ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build,' \
-        -i Makefile
-  ''#  + stdenv.lib.optionalString (stdenv.lib.versionAtLeast kernel.version "4.15") ''
-  #   patch -p5 < ''${patches[0]}
-  # ''
-
-
-  #  + stdenv.lib.optionalString (stdenv.lib.versionOlder kernel.version "4.15") ''
-  #   patch -p5 -R < ''${patches[0]}
-  # ''
-  ;
-  installPhase = ''
-    binDir="$out/lib/modules/${kernel.modDirVersion}/kernel/net/wireless/"
-    mkdir -p "$binDir"
-    cp 8821ce.ko "$binDir"
+  preInstall = ''
+    mkdir -p "$out/lib/modules/${kernel.modDirVersion}/kernel/net/wireless/"
   '';
 
   meta = {
