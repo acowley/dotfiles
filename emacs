@@ -722,11 +722,10 @@ project's type."
     (setq org-tags-exclude-from-inheritance (quote ("crypt")))
     ;; GPG key to use for encryption
     ;; Either the Key ID or set to nil to use symmetric encryption.
-    (setq org-crypt-key "D50A574B")
+    (setq org-crypt-key "D50A574B"))
 
-    ;; org-ref is very slow to load, so we defer it upon emacs
-    ;; startup, but pull it in when org-mode is first started
-    (require 'org-ref))
+  (use-package org-ref
+    :bind ("C-c C-r" . org-ref-helm-insert-cite-link))
 
   (add-hook 'org-mode-hook #'my-org-hook)
 
@@ -1160,7 +1159,6 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 ;;; pdf-tools
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
-  :defer t
   :config
   ;; If pdf-tools is installed using emacsWithPackage in nix, then the
   ;; `epdfinfo` binary is installed alongside the elisp package.
