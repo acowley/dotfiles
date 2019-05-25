@@ -2171,6 +2171,20 @@ sorted block."
   (flymake-mode -1)
   )
 
+(defun docker-ccls ()
+  (require 'lsp)
+  (require 'ccls)
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-tramp-connection '("/home/acowley/src/ccls/Release/ccls" "-v=3" "-log-file=/tmp/cc.log"))
+    :major-modes '(c-mode c++-mode cuda-mode)
+    :remote? t
+    :server-id 'rocm-ros3a
+    :notification-handlers
+    (lsp-ht ("$ccls/publishSkippedRanges" #'ccls--publish-skipped-ranges)
+            ("$ccls/publishSemanticHighlight" #'ccls--publish-semantic-highlight))))
+  )
+
 ;;; cquery
 ;; (use-package cquery
 ;;   :load-path "~/Projects/emacs-cquery"
