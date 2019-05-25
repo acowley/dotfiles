@@ -2608,6 +2608,8 @@ sorted block."
   :defer t
   :commands (disk-usage disk-usage-here disk-usage-dired-at-point))
 
+;;; speed-type
+(use-package speed-type :commands (speed-type-text))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")

@@ -362,6 +362,7 @@ self: nixpkgs: {
     qml-mode
     emojify
     disk-usage
+    speed-type
   ];
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin
