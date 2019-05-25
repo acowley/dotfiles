@@ -62,12 +62,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20190416";
+      version = "20190430";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "466bfbc1c53d36b1caf877e3e5c3f9314f05519e";
-        sha256 = "1vil5049dp8pr2ryjv1psgfzkw1y9hgizw36j14hv0c5p9jbdd19";
+        rev = "8c5be7b5fca0788acd5c9ad55ca8c3556dc13419";
+        sha256 = "1c35ywrfi4f7lx1i2li06i258lqnvdpzkvvp1zfrr9i97wayv8s4";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -83,12 +83,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20190413";
+      version = "20190428";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "e48c80cf1122fe6136a07fc7f3aa6ad5412bef53";
-        sha256 = "09akqp82xymrqap2n7apnk2vnj9smvh65k30r8vq7iqpqjq70fcm";
+        rev = "9f468c52687e9db2da098d0840b959e1c41b5cdf";
+        sha256 = "09wa8ama08m8d8ql2cqw34f4804h3lmm4wiq1lphff2gyg5g81zd";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -309,12 +309,12 @@ self: nixpkgs: {
     haskell-mode
     hindent
     dante
-  ] ++ nixpkgs.lib.optionals (builtins.pathExists ~/src/intero) [
-    # This is a hacky way of not building these from source on
-    # machines where we do not expect to use them.
-    # structured-haskell-mode
-    intero
-  ] ++ [
+  # ] ++ nixpkgs.lib.optionals (builtins.pathExists ~/src/intero) [
+  #   # This is a hacky way of not building these from source on
+  #   # machines where we do not expect to use them.
+  #   # structured-haskell-mode
+  #   intero
+  # ] ++ [
     lsp-mode
     lsp-ui
     lsp-haskell
