@@ -1240,7 +1240,8 @@ under the current project's root directory."
   (use-package helm-projectile
     :defer t)
   (use-package wgrep-helm
-    :commands (wgrep-change-to-wgrep-mode wgrep-finish-edit)
+    :commands (wgrep-change-to-wgrep-mode wgrep-finish-edit wgrep-helm-setup)
+    :hook ((helm-moccur-mode-hook helm-grep-mode-hook) . wgrep-helm-setup)
     :bind (:map wgrep-mode-map
                 ("C-x C-s" . my/wgrep-save)
                 ("C-c C-e" . my/wgrep-save)
