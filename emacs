@@ -642,6 +642,10 @@ project's type."
         org-default-notes-file "~/org/home.org"
         org-agenda-dim-blocked-tasks 'invisible
         org-enforce-todo-dependencies 't
+        ;; Don't let you edit invisible areas (i.e. after ellipsis)
+        org-catch-invisible-edits 'show-and-error
+        ;; Hide blank lines between headings in collapsed view
+        org-cycle-separator-lines 0
         org-priority-faces '((?A . (:foreground "forest green" :weight bold))
                              (?B . (:foreground "slate gray"))
                              (?C . (:foreground "dim gray")))
@@ -709,7 +713,7 @@ project's type."
     (ox-extras-activate '(ignore-headlines))
 
     ;; electric quotes turn single quotes (') into smart single quotes
-    ;; that can greak things in src blocks
+    ;; that can break things in src blocks
     (electric-quote-local-mode -1)
 
     ; Encryption
