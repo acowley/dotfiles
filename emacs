@@ -250,6 +250,8 @@ single-quoted string."
 (global-set-key (kbd "<s-up>") 'beginning-of-buffer)
 (global-set-key (kbd "<s-down>") 'end-of-buffer)
 
+(global-set-key (kbd "C-x C-k") #'kill-buffer)
+
 ;; Make bookmark jumping easier
 (global-set-key (kbd "C-c b") #'bookmark-jump)
 
@@ -1169,6 +1171,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   :bind (("M-x" . helm-M-x)
          ("C-c h" . helm-mini)
          ("C-c i" . helm-imenu)
+         ("C-c C-i" . helm-imenu)
          ("C-s" . my/search-forward)
          ("C-x C-f" . helm-find-files)
          :map helm-map
