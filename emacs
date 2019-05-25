@@ -2104,6 +2104,15 @@ sorted block."
     (setq lsp-ui-sideline-delay 0.2))
   (require 'lsp-ui)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (flycheck-mode)
+  (yas-minor-mode)
+  (helm-gtags-mode -1)
+  (setq company-lsp-cache-candidates nil
+        company-transformers nil
+        company-lsp-async t
+        lsp-enable-indentation nil)
+  (lsp-ui-flycheck-enable t)
+  (flymake-mode -1)
   )
 
 ;;; ccls
