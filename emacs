@@ -350,7 +350,9 @@ last double colon is truncated to 20 characters."
   (defun recent-buffer (b &rest _)
     (let ((file (buffer-file-name (get-buffer b))))
       (unless (null file) (recentf-add-file file))))
-  (advice-add 'switch-to-buffer :after #'recent-buffer))
+  (advice-add 'switch-to-buffer :after #'recent-buffer)
+  :config
+  (setq recentf-max-saved-items 100))
 
 ;; Another options is
 ;; (require 'recentf)
