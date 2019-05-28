@@ -2169,9 +2169,10 @@ sorted block."
   (flycheck-mode)
   (yas-minor-mode)
   (helm-gtags-mode -1)
-  ;; (setq ccls-extra-args '("--log-file=/tmp/cc.log"))
+  ;(setq ccls-extra-args '("--log-file=/tmp/cc.log"))
   (setq company-lsp-cache-candidates nil
         company-transformers nil
+        ccls-args '("-v=2" "-log-file=/tmp/cc.log")
         company-lsp-async t
         lsp-enable-indentation nil)
   (lsp)
