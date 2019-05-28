@@ -59,6 +59,28 @@ self: nixpkgs: {
         license = nixpkgs.lib.licenses.free;
       };
     };
+    # Fix an incompatibility with newer helm that breaks helm-swoop--edit
+    helm-swoop = super.melpaBuild {
+      pname = "helm-swoop";
+      ename = "helm-swoop";
+      version = "20190103.000";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "ashiklom";
+        repo = "helm-swoop";
+        rev = "6a881d81fbd1ff550ff22a118be18141d808f91c";
+        sha256 = "07vgzykv4p7kbbxj06pjqychh62grm0c5d42073c6z4097dpdim4";
+      };
+      recipe = nixpkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/milkypostman/melpa/855ea20024b606314f8590129259747cac0bcc97/recipes/helm-swoop";
+        sha256 = "1b3nyh4h5kcvwam539va4gzxa3rl4a0rdcriif21yq340yifjbdx";
+        name = "recipe";
+      };
+      packageRequires = with super; [ emacs helm ];
+      meta = {
+        homepage = "https://melpa.org/#/helm-swoop";
+        license = nixpkgs.lib.licenses.free;
+      };
+    };
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
@@ -286,6 +308,7 @@ self: nixpkgs: {
 
     helm
     helm-company
+    helm-swoop
     helm-dash
     helm-tramp
     docker-tramp
