@@ -1193,7 +1193,15 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
         (helm-occur)
       (isearch-forward)))
   (setq
+   helm-always-two-windows t
    helm-candidate-number-limit 100
+
+   ;; This sometimes looks slick, but the new frame doesn't stand out
+   ;; from the existing frame very well, and having the frame pop up
+   ;; at point means that you need to be looking at point rather than
+   ;; at a window split.
+   ;; helm-display-function #'helm-display-buffer-in-own-frame
+
    helm-quick-update t
    helm-M-x-requires-pattern 3        ; Require at least one character
    helm-ff-file-name-history-use-recentf t
