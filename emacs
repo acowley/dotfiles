@@ -37,6 +37,16 @@
 ;;;; Elisp Helpers
 (require 'subr-x)
 
+(defun backward-skip-alpha (&optional pt)
+  "Move point backward until the last contiguous alpha character
+
+Used as part of yas-key-syntaxes to expand snippets immediately
+preceded by a dollar sign character `$' as encountered when
+entering LaTeX math mode."
+  (re-search-backward (rx (not (any alpha))))
+  (when (not (null (match-beginning 0)))
+    (right-char)))
+
 (defun split-third ()
   "Split the frame into two windows split vertically with the one
 on the left taking up 2/3rds of the width."
@@ -577,7 +587,9 @@ project's type."
   (projectile-mode))
 
 ;;; yasnippet
-(use-package yasnippet)
+(use-package yasnippet
+  :config
+  (add-to-list 'yas-key-syntaxes #'backward-skip-alpha))
 
 ;;; Dashboard
 (use-package dashboard
