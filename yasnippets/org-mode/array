@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: array
+# key: arr
+# --
+\begin{array}{$1}
+$0
+\end{array}
