@@ -115,6 +115,7 @@ List elements are separated by SEPARATOR. The formatted list is
 prefixed by PREFIX, and terminated by SUFFIX. If the list is
 wrapped across multiple lines, lines after the first are indented
 by a number of spaces equal to the length of PREFIX."
+  (require 'cl)
   (let ((sep (or separator ", "))
         (prefix-len (if prefix (length prefix) 0)))
     (with-temp-buffer
