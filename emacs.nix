@@ -169,12 +169,12 @@ self: nixpkgs: {
     lsp-haskell = super.melpaBuild {
       pname = "lsp-haskell";
       ename = "lsp-haskell";
-      version = "20181223.2357";
+      version = "20190602";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-haskell";
-        rev = "533970d5552c4820aa45901ba89565f3419d991c";
-        sha256 = "0xah24q8c62kk0m5ivhx51a3h46vlc626qsh8rlysdsdv59121sa";
+        rev = "8f2dbb6e827b1adce6360c56f795f29ecff1d7f6";
+        sha256 = "00j6d5rpsi7h5jz54zpjmbpg38fda4xy67xc4x67r834493ldzlq";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/lsp-haskell";
