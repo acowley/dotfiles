@@ -20,6 +20,15 @@
     };
   };
   packageOverrides = pkgs: rec {
+    mylatex = pkgs.texlive.combine {
+     inherit (pkgs.texlive) scheme-small algorithms cm-super
+             collection-binextra collection-context
+             collection-fontsrecommended collection-fontutils
+             collection-mathscience collection-formatsextra
+             collection-pictures subfigure web supertabular
+             wrapfig capt-of footmisc subdepth preview
+             minifp lettrine titling titlesec fontspec;
+    };
     wattmangtk = pkgs.python3Packages.callPackage ./nix/wattmangtk {
     matplotlib = pkgs.python3Packages.matplotlib.override { enableGtk3 = true; };
     };
