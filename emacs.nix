@@ -62,12 +62,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20190430";
+      version = "20190604";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "8c5be7b5fca0788acd5c9ad55ca8c3556dc13419";
-        sha256 = "1c35ywrfi4f7lx1i2li06i258lqnvdpzkvvp1zfrr9i97wayv8s4";
+        rev = "a07f703693ceffbf75e61bfa1786a991215bf463";
+        sha256 = "1bk0nbfwjk73jlrg4lbgir7rvh9mfd9dxrn776a9p08qfkshhqv0";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -83,12 +83,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20190428";
+      version = "20190523";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "9f468c52687e9db2da098d0840b959e1c41b5cdf";
-        sha256 = "09wa8ama08m8d8ql2cqw34f4804h3lmm4wiq1lphff2gyg5g81zd";
+        rev = "3ccc3e3386732c3ee22c151e6b5215a0e4c99173";
+        sha256 = "1k51lwrd3qy1d0afszg1i041cm8a3pz4qqdj7561sncy8m0szrwk";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -111,12 +111,12 @@ self: nixpkgs: {
     company-lsp = super.melpaBuild {
       pname = "company-lsp";
       ename = "company-lsp";
-      version = "20190326";
+      version = "20190524";
       src = nixpkgs.fetchFromGitHub {
         owner = "tigersoldier";
         repo = "company-lsp";
-        rev = "4218f180688eb3ecba454d00b0e68931a0aef5c9";
-        sha256 = "0pq4zxviy1cxp28dfnnrxxsi57g0d91chg1pshdhgcpcd7rb53rh";
+        rev = "cd1a41583f2d71baef44604a14ea71f49b280bf0";
+        sha256 = "0qxwl5w9l3bab35r9d8g2yfrykj6gzn8jz2b8h2rfkzd36k7zv11";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/company-lsp";
