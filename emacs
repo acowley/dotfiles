@@ -1722,6 +1722,7 @@ leaving only the sender's name."
 
 ;;; moody
 (use-package moody
+  :disabled
   :config
   (defun my-moody-wrap (string &optional width direction type)
     "A copy of moody-wrap that colors the left slant of the
@@ -1826,6 +1827,11 @@ element based on the god-local-mode predicate."
   (moody-god-replace-mode-line-buffer-identification)
   (moody-replace-vc-mode))
 
+;;; doom-modeline
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-buffer-encoding nil))
 ;;; spaceline
 (use-package spaceline
   :disabled
@@ -2674,18 +2680,18 @@ sorted block."
   (load "~/.emacsPrivate.el"))
 
 ;;; Mode-line cleanup
-(setq mode-line-position
-      '((line-number-mode ("%l" (column-number-mode ":%2c")))))
+;; (setq mode-line-position
+;;       '((line-number-mode ("%l" (column-number-mode ":%2c")))))
 
-(setq-default mode-line-format
-      (cl-reduce #'cl-remove
-                 (list 'mode-line-front-space
-                       'mode-line-mule-info
-                       'mode-line-client
-                       'mode-line-remote
-                       'mode-line-frame-identification)
-                 :initial-value mode-line-format
-                 :from-end t))
+;; (setq-default mode-line-format
+;;       (cl-reduce #'cl-remove
+;;                  (list 'mode-line-front-space
+;;                        'mode-line-mule-info
+;;                        'mode-line-client
+;;                        'mode-line-remote
+;;                        'mode-line-frame-identification)
+;;                  :initial-value mode-line-format
+;;                  :from-end t))
 
 ;;; Customize
 

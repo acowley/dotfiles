@@ -1,0 +1,38 @@
+diff -ruN orig/doom-modeline.el patched/doom-modeline.el
+--- orig/doom-modeline.el	1969-12-31 19:00:01.000000000 -0500
++++ patched/doom-modeline.el	2019-06-27 15:34:47.817133851 -0400
+@@ -99,7 +99,7 @@
+   '(objed-state misc-info fancy-battery irc-buffers debug lsp minor-modes input-method indent-info buffer-encoding major-mode process checker))
+ 
+ (doom-modeline-def-modeline 'project
+-  '(bar window-number buffer-default-directory)
++  '(bar window-number modals buffer-default-directory)
+   '(misc-info fancy-battery mu4e github debug major-mode process))
+ 
+ (doom-modeline-def-modeline 'package
+diff -ruN orig/doom-modeline-segments.el patched/doom-modeline-segments.el
+--- orig/doom-modeline-segments.el	1969-12-31 19:00:01.000000000 -0500
++++ patched/doom-modeline-segments.el	2019-06-27 11:20:54.403058628 -0400
+@@ -1489,10 +1489,18 @@
+ 
+ (defsubst doom-modeline--god ()
+   "The current god state. Requires `god-mode' to be enabled."
+-  (when (bound-and-true-p god-local-mode)
+-    (propertize " <G> " 'face (if (doom-modeline--active)
+-                                  'doom-modeline-evil-normal-state
+-                                'mode-line-inactive))))
++  (when (boundp god-local-mode)
++    ;; (propertize " Γ " 'face (if (doom-modeline--active)
++    ;;                               (if god-local-mode
++    ;;                                   'doom-modeline-evil-normal-state
++    ;;                                 'doom-modeline-evil-insert-state)
++    ;;                             'mode-line-inactive))
++    (all-the-icons-faicon "circle" :face (if (doom-modeline--active)
++                                             (if god-local-mode
++                                                 'all-the-icons-green
++                                               'all-the-icons-red)
++                                           'all-the-icons-silver))
++    ))
+ 
+ (defsubst doom-modeline--ryo ()
+   "The current ryo-modal state. Requires `ryo-modal-mode' to be enabled."

@@ -166,6 +166,11 @@ self: nixpkgs: {
         '';
       });
 
+    doom-modeline =
+      super.melpaPackages.doom-modeline.overrideAttrs (_: {
+        patches = [./god-segment.patch];
+    });
+
     lsp-haskell = super.melpaBuild {
       pname = "lsp-haskell";
       ename = "lsp-haskell";
@@ -298,6 +303,7 @@ self: nixpkgs: {
     god-mode
     spaceline
     moody
+    doom-modeline
     minions
     multiple-cursors
     buffer-move
