@@ -2122,7 +2122,9 @@ sorted block."
            ("M-n" . lsp-ui-peek--select-next)
            ("M-p" . lsp-ui-peek--select-prev))
     :config
-    (setq lsp-ui-sideline-delay 0.2))
+    (setq lsp-ui-sideline-delay 0.2)
+    (set-face-foreground 'lsp-ui-peek-highlight "yellow")
+    )
   (require 'lsp-ui)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (flycheck-mode)
