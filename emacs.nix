@@ -363,6 +363,7 @@ self: nixpkgs: {
     emojify
     disk-usage
     speed-type
+    synosaurus
   ];
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin

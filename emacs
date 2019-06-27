@@ -2662,6 +2662,12 @@ sorted block."
 
 ;;; speed-type
 (use-package speed-type :commands (speed-type-text))
+;;; synosaurus
+(use-package synosaurus 
+  :commands (synosaurus-mode 
+             synosaurus-lookup 
+             synosaurus-choose-and-replace 
+             synosaurus-choose-and-insert))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
