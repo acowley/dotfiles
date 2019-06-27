@@ -369,6 +369,7 @@ self: nixpkgs: {
     emojify
     disk-usage
     speed-type
+    pomidor
     synosaurus
   ];
   myEmacsPackagesNg =
