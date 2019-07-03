@@ -208,9 +208,17 @@ single-quoted string."
         mode-line-end-spaces))
 
 ;; (set-default-font "Hæck 14")
-(when (memq window-system '(mac ns))
+(if (memq window-system '(mac ns))
   ;; (set-default-font "Monaco 14")
-  (set-frame-font "Monaco 14"))
+    (set-frame-font "Monaco 14")
+  (set-frame-font "Victor Mono-11:weight=demi")
+  ;; (set-frame-font "Inter-12:weight=light")
+  ;; (set-frame-font "DejaVu Sans Mono-12")
+  ;; (set-frame-font "Fira Sans-12:weight=light")
+  ;; (set-frame-font "Hack-10")
+)
+;; (set-face-attribute 'font-lock-doc-face nil :slant 'italic)
+;; (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
 
 (setq confirm-kill-emacs #'y-or-n-p)
 
@@ -447,7 +455,7 @@ end tell" uri)))
   ;; (setq variable-pitch-face '(:family "Avenir Next"))
   ;; (setq buffer-face-mode-face '(:family "Montserrat"))
   ;; (buffer-face-mode)
-  (text-scale-adjust 1.5)
+  ;; (text-scale-adjust 1.5)
   ;; (text-mode-hook-identify)
   )
 (add-hook 'text-mode-hook #'my/text-mode-hook)
@@ -1426,6 +1434,10 @@ under the current project's root directory."
       (:subject       .  nil)) ;; alternatively, use :thread-subject
    )
   (set-face-foreground 'mu4e-flagged-face "orange")
+  (set-face-attribute 'mu4e-view-body-face nil :family "Montserrat" :weight 'light)
+  (set-face-attribute 'mu4e-header-face nil :family "Victor Mono" :weight 'demi)
+  (set-face-attribute 'mu4e-header-key-face nil :family "Victor Mono" :slant 'italic)
+  (set-face-attribute 'mu4e-header-value-face nil :foreground "Green" :weight 'normal)
 
   ;; Auto-complete contact email addresses
   ;; We don't want line breaks added to emails we compose
@@ -2000,6 +2012,7 @@ element based on the god-local-mode predicate."
          ("C-c C-d" . nil))
   :config
   ;; (electric-indent-local-mode -1)
+  (set-face-attribute 'haskell-keyword-face nil :slant 'italic)
   (company-mode)
   (use-package shm
     :bind (("M-A" . shm/goto-parent-end))
@@ -2364,12 +2377,16 @@ sorted block."
   ;; Depending on your specific setup, you may want to adjust the height of
   ;; variable pitch fonts:
   (set-face-attribute 'variable-pitch nil
-                      :height (if (memq window-system '(mac ns)) 150 100)
+                      ;; :height (if (memq window-system '(mac ns)) 150 150)
                       :family (if (memq window-system '(mac ns))
                                   "Baskerville"
-                                "Noto Serif"
+                                ;; "Noto Serif"
+                                "Montserrat"
                                 ;; "ETBembo"
-                                ))
+                                )
+                      :height 140
+                      :weight 'light)
+
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
 
   )
@@ -2799,7 +2816,6 @@ sorted block."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(lsp-face-highlight-textual ((t (:background "#757500"))))
- '(mu4e-header-value-face ((t (:inherit font-lock-doc-face :foreground "Green"))))
  '(org-block ((t (:slant normal)))))
 
 

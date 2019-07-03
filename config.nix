@@ -29,6 +29,10 @@
              wrapfig capt-of footmisc subdepth preview
              minifp lettrine titling titlesec fontspec;
     };
+
+    # An monospace font with cursive italics
+    victor-mono = pkgs.callPackage ./nix/victor-mono.nix {};
+    montserrat = pkgs.callPackage ./nix/montserrat.nix {};
     wattmangtk = pkgs.python3Packages.callPackage ./nix/wattmangtk {
     matplotlib = pkgs.python3Packages.matplotlib.override { enableGtk3 = true; };
     };
