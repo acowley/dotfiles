@@ -1446,9 +1446,9 @@ under the current project's root directory."
     (turn-off-auto-fill)
     ;; (variable-pitch-mode)
     (turn-on-visual-line-mode)
-    (setq buffer-face-mode-face (if (memq window-system '(mac ns) )
-                                    '(:family "Avenir Next")
-                                  '(:family "Cantarell")))
+    ;; (setq buffer-face-mode-face (if (memq window-system '(mac ns) )
+    ;;                                 '(:family "Avenir Next")
+    ;;                               '(:family "Cantarell")))
     (buffer-face-mode))
 
   (add-hook 'mu4e-compose-mode-hook #'my/mu4e-compose-hook)
