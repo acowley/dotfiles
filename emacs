@@ -2606,7 +2606,9 @@ sorted block."
 ;;; toml
 (use-package toml-mode :defer t)
 ;;; markdown-mode
-(use-package markdown-mode :defer t)
+(use-package markdown-mode :defer t
+  :config
+  (set-face-attribute 'markdown-code-face nil :family "Victor Mono"))
 ;;; web-mode
 (use-package web-mode
   :mode "\\.html\\'"
