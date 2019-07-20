@@ -2226,7 +2226,7 @@ sorted block."
     :new-connection (lsp-tramp-connection '("/home/acowley/src/ccls/Release/ccls" "-v=3" "-log-file=/tmp/cc.log"))
     :major-modes '(c-mode c++-mode cuda-mode)
     :remote? t
-    :server-id 'rocm-ros3a
+    :server-id 'rocm-ros4
     :notification-handlers
     (lsp-ht ("$ccls/publishSkippedRanges" #'ccls--publish-skipped-ranges)
             ("$ccls/publishSemanticHighlight" #'ccls--publish-semantic-highlight))))
