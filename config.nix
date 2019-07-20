@@ -3,9 +3,10 @@
   allowBroken = true;
   perlPackageOverrides = pkgs: {
     FileRename = pkgs.perlPackages.buildPerlModule rec {
-      name = "File-Rename-0.20";
+      pname = "File-Rename";
+      version = "0.20";
       src = pkgs.fetchurl {
-        url = "mirror://cpan/authors/id/R/RM/RMBARKER/${name}.tar.gz";
+        url = "mirror://cpan/authors/id/R/RM/RMBARKER/${pname}-${version}.tar.gz";
         sha256 = "5eee75ea92a987930c5bec4a631ee0201f23c77908ba322e553df80845efc6b1";
       };
       # buildInputs = [ pkgs.perlPackages.ModuleBuild ];
