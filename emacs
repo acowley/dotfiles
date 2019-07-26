@@ -2206,6 +2206,8 @@ sorted block."
   (yas-minor-mode)
   (helm-gtags-mode -1)
   ;(setq ccls-extra-args '("--log-file=/tmp/cc.log"))
+  (when (file-exists-p "/etc/lsb-release")
+    (setq ccls-executable "/home/acowley/src/ccls/Release/ccls"))
   (setq company-lsp-cache-candidates nil
         company-transformers nil
         ccls-args '("-v=2" "-log-file=/tmp/cc.log")
