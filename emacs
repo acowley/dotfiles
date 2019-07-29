@@ -684,7 +684,10 @@ project's type."
 
         ;; For leuven-theme
         ;; Fontify the whole line for headings (with a background color).
-        org-fontify-whole-heading-line 't)
+        org-fontify-whole-heading-line 't
+
+        ;; Don't indent text to align with the headline
+        org-adapt-indentation nil)
 
   ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
 
