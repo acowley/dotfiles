@@ -2,13 +2,13 @@
 bc, kernel }:
 stdenv.mkDerivation rec {
   # version = "1.0.0";
-  version = "5.2.5.1.20190521";
+  version = "5.5.2_34066.20190614";
   name = "rtl8821ce-${version}-${kernel.version}";
   src = fetchFromGitHub {
     owner = "tomaspinho";
     repo = "rtl8821ce";
-    rev = "ca4abd85d86c76d6e772ed90095ae490e3a34f48";
-    sha256 = "1np65ik77xwnd4110bjwhjyiivy1iy9kgrcqwaxjddmpfqb3ai0d";
+    rev = "b67df78ebe3a13e6605ba5fe8d56c6d606f06caf";
+    sha256 = "10mkpar5m6llhjiqri5d3658y90p2lbwvdr11xqaasa4xd0cdjpc";
   };
 
   hardeningDisable = [ "pic" ];
