@@ -1,0 +1,13 @@
+diff -ruN old/company-lsp.el new/company-lsp.el
+--- old/company-lsp.el	2019-08-26 14:33:23.090399673 -0400
++++ new/company-lsp.el	2019-08-26 14:34:14.426553692 -0400
+@@ -487,7 +487,8 @@
+ If the CompletionItem of CANDIDATE has filterText field, return
+ the value of filterText. Otherwise return CANDIDATE itself."
+   (let* ((candidate-item (company-lsp--candidate-item candidate))
+-         (filter-text (gethash "filterText" candidate-item)))
++         (filter-text (when (hash-table-p candidate-item) 
++                        (gethash "filterText" candidate-item))))
+     (or filter-text candidate)))
+ 
+ (defun company-lsp--cleanup-cache (_)

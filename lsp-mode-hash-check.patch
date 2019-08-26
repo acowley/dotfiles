@@ -1,0 +1,18 @@
+diff -ruN old/lsp-mode.el new/lsp-mode.el
+--- old/lsp-mode.el	2019-08-26 14:35:30.266776289 -0400
++++ new/lsp-mode.el	2019-08-26 14:38:35.298299110 -0400
+@@ -3326,7 +3326,13 @@
+ 
+ (defun lsp--annotate (item)
+   "Annotate ITEM detail."
+-  (-let (((&hash "detail" "kind" kind-index) (plist-get (text-properties-at 0 item) 'lsp-completion-item))
++  (-let (((&hash "detail" "kind" kind-index) 
++          (let ((h (plist-get (text-properties-at 0 item) 'lsp-completion-item)))
++            (if (not (hash-table-p h))
++                (let ((h (make-hash-table)))
++                  (puthash "detail" item h)
++                  h)
++              h)))
+          kind)
+     ;; We need check index before call `aref'.
+     (when kind-index

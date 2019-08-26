@@ -75,6 +75,7 @@ self: nixpkgs: {
         name = "recipe";
       };
       packageRequires = with self; [ emacs ];
+      patches = [ ./lsp-mode-hash-check.patch ];
       meta = {
         homepage = "https://melpa.org/#/lsp-mode";
         license = nixpkgs.lib.licenses.free;
@@ -124,6 +125,7 @@ self: nixpkgs: {
         name = "recipe";
       };
       packageRequires = with self; [ company dash emacs lsp-mode s ];
+      patches = [ ./company-lsp-hash-check.patch ];
       meta = {
         homepage = "https://melpa.org/#/company-lsp";
         license = nixpkgs.lib.licenses.free;
