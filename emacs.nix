@@ -377,6 +377,20 @@ self: nixpkgs: {
   myEmacsPackagesNg =
     if nixpkgs.stdenv.isDarwin
     then nixpkgs.emacsPackagesNgGen nixpkgs.emacsMacport
-    else nixpkgs.emacsPackagesNgGen (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
+    # else nixpkgs.emacsPackagesNgGen (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
+    else nixpkgs.emacsPackagesNgGen ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (_: rec {
+      name = "emacs-${version}${versionModifier}";
+      version = "27.0";
+      versionModifier = ".50";
+      src = nixpkgs.fetchgit {
+        url = "git://git.sv.gnu.org/emacs.git";
+        sha256 = "1r456x3z9mira304ia7pnarv6qv201pcnjmaizz824fprpz63v4z";
+      };
+      patches = [];
+      prePatch = ''
+        sed 's/\([[:space:]]*\)\(LC_ALL=C $(RUN_TEMACS) -batch $(BUILD_DETAILS) -l loadup --temacs=dump\)/\1env -i \2/' -i src/Makefile.in
+        sed 's/\((tramp-compat-process-running-p "gvfs-fuse-daemon")\)/(tramp-compat-process-running-p ".gvfsd-fuse-wrapped") \1/' -i lisp/net/tramp-gvfs.el
+      '';
+    }));
   emacs = (self.myEmacsPackagesNg.overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
