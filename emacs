@@ -332,6 +332,8 @@ single-quoted string."
 
 (put 'dired-find-alternate-file 'disabled nil)
 (setq wdired-allow-to-change-permissions t)
+(setq dired-listing-switches "-alh"
+      dired-du-size-format t)
 
 ;; When `'which-function` output is too long, it can interfere with
 ;; modeline rendering
@@ -2224,12 +2226,13 @@ sorted block."
 (defun docker-ccls ()
   (require 'lsp)
   (require 'ccls)
+  ;; (setq lsp-session-file "/home/acowley/.emacs.d/.lsp-session-v1")
   (lsp-register-client
    (make-lsp-client
     :new-connection (lsp-tramp-connection '("/home/acowley/src/ccls/Release/ccls" "-v=3" "-log-file=/tmp/cc.log"))
     :major-modes '(c-mode c++-mode cuda-mode)
     :remote? t
-    :server-id 'rocm-ros4
+    :server-id 'rocm-ros5
     :notification-handlers
     (lsp-ht ("$ccls/publishSkippedRanges" #'ccls--publish-skipped-ranges)
             ("$ccls/publishSemanticHighlight" #'ccls--publish-semantic-highlight))))
