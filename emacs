@@ -1544,8 +1544,10 @@ under the current project's root directory."
        (smtpmail-smtp-server "smtp.gmail.com")
        (smtpmail-smtp-service 587)
        (smtpmail-stream-type starttls)
-       (smtpmail-auth-supported (login)))
-                                        ;(smtpmail-auth-supported '(cram-md5 plain login)))
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
+       ;; (smtpmail-auth-supported (login))
+)
+
       ("upenn"
        (user-mail-address "acowley@seas.upenn.edu")
        (smtpmail-default-smtp-server "smtp.seas.upenn.edu")
