@@ -1,15 +1,29 @@
 diff -ruN old/lsp-mode.el new/lsp-mode.el
 --- old/lsp-mode.el	2019-09-10 11:34:34.939981888 -0400
-+++ new/lsp-mode.el	2019-09-10 11:36:21.755039591 -0400
-@@ -5368,8 +5368,9 @@
++++ new/lsp-mode.el	2019-09-10 13:56:27.873396451 -0400
+@@ -5363,13 +5363,23 @@
+           (t nil)))
+     ('quit)))
+ 
++(defun lsp--files-same-host (f1 f2)
++  "Predicate on whether or not two files are on the same host."
++  (or (not (or (file-remote-p f1) (file-remote-p f2)))
++      (and (file-remote-p f1) 
++           (file-remote-p f2) 
++           (string-equal (tramp-file-name-host (tramp-dissect-file-name f1)) 
++                         (tramp-file-name-host (tramp-dissect-file-name f2))))))
++
++
+ (defun lsp-find-session-folder (session file-name)
+   "Look in the current SESSION for folder containing FILE-NAME."
    (let ((file-name-canonical (f-canonical file-name)))
      (->> session
           (lsp-session-folders)
 -         (--filter (or (f-same? it file-name-canonical)
 -                       (f-ancestor-of? it file-name-canonical)))
-+         (--filter (condition-case err (or (f-same? it file-name-canonical)
-+                                           (f-ancestor-of? it file-name-canonical))
-+                     (t nil)))
++         (--filter (and (lsp--files-same-host it file-name-canonical) 
++                        (or (f-same? it file-name-canonical)
++                            (f-ancestor-of? it file-name-canonical))))
           (--max-by (> (length it)
                        (length other))))))
  
