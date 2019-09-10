@@ -2143,6 +2143,7 @@ sorted block."
   (lsp-face-highlight-textual ((t (:background "#757500"))))
   :config
   (setq lsp-prefer-flymake nil)
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
   (use-package company-lsp
     :config
     (setq company-lsp-enable-snippet t)
