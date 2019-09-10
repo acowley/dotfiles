@@ -64,11 +64,17 @@ self: nixpkgs: {
       pname = "helm-swoop";
       ename = "helm-swoop";
       version = "20190103.000";
+      # src = nixpkgs.fetchFromGitHub {
+      #   owner = "ashiklom";
+      #   repo = "helm-swoop";
+      #   rev = "6a881d81fbd1ff550ff22a118be18141d808f91c";
+      #   sha256 = "07vgzykv4p7kbbxj06pjqychh62grm0c5d42073c6z4097dpdim4";
+      # };
       src = nixpkgs.fetchFromGitHub {
-        owner = "ashiklom";
+        owner = "emacsorphanage";
         repo = "helm-swoop";
-        rev = "6a881d81fbd1ff550ff22a118be18141d808f91c";
-        sha256 = "07vgzykv4p7kbbxj06pjqychh62grm0c5d42073c6z4097dpdim4";
+        rev = "3cc15383fae9063de817d320e87a1f868a46eb83";
+        sha256 = "1jm1yvwbfqhrj0256n5ihvxb1zxhhhqv07yfzkfg2pv6k71hpd9h";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/855ea20024b606314f8590129259747cac0bcc97/recipes/helm-swoop";
