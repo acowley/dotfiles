@@ -1,0 +1,15 @@
+diff -ruN old/lsp-mode.el new/lsp-mode.el
+--- old/lsp-mode.el	2019-09-10 11:34:34.939981888 -0400
++++ new/lsp-mode.el	2019-09-10 11:36:21.755039591 -0400
+@@ -5368,8 +5368,9 @@
+   (let ((file-name-canonical (f-canonical file-name)))
+     (->> session
+          (lsp-session-folders)
+-         (--filter (or (f-same? it file-name-canonical)
+-                       (f-ancestor-of? it file-name-canonical)))
++         (--filter (condition-case err (or (f-same? it file-name-canonical)
++                                           (f-ancestor-of? it file-name-canonical))
++                     (t nil)))
+          (--max-by (> (length it)
+                       (length other))))))
+ 

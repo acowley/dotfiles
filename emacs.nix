@@ -103,7 +103,7 @@ self: nixpkgs: {
         name = "recipe";
       };
       packageRequires = with self; [ emacs ];
-      patches = [ ./lsp-mode-hash-check.patch ];
+      patches = [ ./lsp-mode-hash-check.patch ./lsp-mode-unreadable-folders.patch ];
       meta = {
         homepage = "https://melpa.org/#/lsp-mode";
         license = nixpkgs.lib.licenses.free;
