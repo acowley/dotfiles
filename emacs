@@ -916,7 +916,7 @@ of code to whatever theme I'm using's background"
           (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s; overflow: scroll;} body { max-width: 600pt; margin: auto} </style>\n"
                   my-pre-bg my-pre-fg))))))
 
-  (add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
+  ;; (add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
 
   ;; Use fixed-width fonts where appropriate
   ;; From: https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/
