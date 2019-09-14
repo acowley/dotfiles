@@ -449,6 +449,12 @@ end tell" uri)))
 
 (use-package visual-fill-column :defer t)
 
+;; Put the visited file name in the frame title
+;; (setq-default frame-title-format '("%f [%m]"))
+(setq-default frame-title-format 
+              '((:eval (file-name-nondirectory (or (buffer-file-name) "")))
+                " [%m]"))
+
 ;;;; variable-pitch-mode
 (defun my/text-mode-hook ()
   (flyspell-mode)
