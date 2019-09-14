@@ -1057,6 +1057,7 @@ prompting for the article's title."
            :publishing-directory ,(concat my/blog-directory "/blog/")
            :publishing-function org-html-publish-to-html
            :export-babel-evaluate nil
+           :exclude "2019/subt"
            :recursive t
            ;; :auto-sitemap t
            ;; :sitemap-filename "index.html"
@@ -1072,6 +1073,24 @@ prompting for the article's title."
            :html-head-include-default-style nil
            :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../core-style.css\" />"
            :html-postamble "")
+          ("blog-tufte"
+           :base-directory ,(concat my/blog-directory "/articles")
+           :publishing-directory ,(concat my/blog-directory "/blog/")
+           :publishing-function org-html-publish-to-tufte-html
+           :org-tufte-include-footnotes-at-bottom nil
+           :recursive t
+           :exclude ,(rx line-start "201" (not (any ?9)) "/" (* not-newline))
+           :htmlized-source t
+           :with-creator nil
+           :with-date nil
+           :with-email nil
+           :with-timestamps nil
+           :with-toc nil
+           :section-numbers nil
+           :html-head-include-default-style nil
+           ;; :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"../core-style.css\" />"
+           ;; :html-postamble ""
+           )
           ("blog-rss"
            :base-directory ,(concat my/blog-directory "/articles/")
            :publishing-directory ,(concat my/blog-directory "/blog")
