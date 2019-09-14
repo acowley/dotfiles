@@ -1426,7 +1426,7 @@ under the current project's root directory."
    ;; mu4e-html2text-command  "/Users/acowley/.nix-profile/bin/w3m -T text/html"
    ;; mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
    mu4e-html2text-command "w3m -T text/html"
-   mu4e-get-mail-command "mbsync gmail-inbox gmail-trash"
+   mu4e-get-mail-command "mbsync gmail-inbox gmail-trash gmail-sent"
 
    ;; gmail folder setup
                                         ;mu4e-drafts-folder "/gmail/drafts"
