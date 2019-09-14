@@ -724,7 +724,9 @@ project's type."
 
 
   ;; This is slow to load
-  (use-package ox-tufte :defer t)
+  (use-package ox-tufte 
+    :load-path "~/src/ox-tufte"
+    :defer t)
 
   ;; This is also slow to load
   (use-package ox-gfm
