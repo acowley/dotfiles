@@ -1886,7 +1886,8 @@ element based on the god-local-mode predicate."
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :config
-  (setq doom-modeline-buffer-encoding nil))
+  (setq doom-modeline-buffer-encoding nil
+        doom-modeline-buffer-file-name-style 'truncate-all))
 ;;; spaceline
 (use-package spaceline
   :disabled
