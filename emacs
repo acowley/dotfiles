@@ -2187,6 +2187,11 @@ sorted block."
            ("M-p" . lsp-ui-peek--select-prev))
     :config
     (setq lsp-ui-sideline-delay 0.2)
+
+    ;; Make the lsp-ui-peek overlay stand out a bit better
+    (set-face-background 'lsp-ui-peek-peek "dark slate gray")
+
+    ;; Highlight the symbol we're looking for in yellow
     (set-face-foreground 'lsp-ui-peek-highlight "yellow")
     )
   (require 'lsp-ui)
