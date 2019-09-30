@@ -94,8 +94,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "c1f310cb589db13236e1bfccd986bbba92c7138e";
-        sha256 = "1liv3hnhirwrv76j5yy5wdxwsr1q0g9kpfypvhcjcx6ckgcjxdng";
+        rev = "86d3a8effd692c0a99dac0f88d93b58077b33daf";
+        sha256 = "1px0m7fajbkxqg4y41m5490vflrjs23l5wijjp4zlggdzvpvd0yl";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -103,7 +103,7 @@ self: nixpkgs: {
         name = "recipe";
       };
       packageRequires = with self; [ emacs ];
-      patches = [ ./lsp-mode-hash-check.patch ./lsp-mode-unreadable-folders.patch ];
+      # patches = [ ./lsp-mode-hash-check.patch ];
       meta = {
         homepage = "https://melpa.org/#/lsp-mode";
         license = nixpkgs.lib.licenses.free;
@@ -112,12 +112,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20190909";
+      version = "20190915";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "1592f108bcfd6533f3148feb49057a759837f838";
-        sha256 = "18yvac0587b0n6q6bp9wia9i93vh6qbbkkvdyqagjnsp7dd4hv6r";
+        rev = "c8fa40c0f9c65877d1cabe1739e5f787adb24898";
+        sha256 = "040qzkd1zvyb0q3yxs2vd4f3qp37c8anr3zcmx96bjvj1v7pmpmn";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
