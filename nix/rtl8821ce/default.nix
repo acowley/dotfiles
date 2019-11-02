@@ -1,20 +1,26 @@
-{ stdenv, fetchurl, fetchFromGitHub,
-bc, kernel }:
+{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, bc, kernel }:
 stdenv.mkDerivation rec {
   # version = "1.0.0";
-  version = "5.5.2_34066.20190614";
+  version = "5.5.2_34066.20190917";
   name = "rtl8821ce-${version}-${kernel.version}";
   src = fetchFromGitHub {
     owner = "tomaspinho";
     repo = "rtl8821ce";
-    rev = "b67df78ebe3a13e6605ba5fe8d56c6d606f06caf";
-    sha256 = "10mkpar5m6llhjiqri5d3658y90p2lbwvdr11xqaasa4xd0cdjpc";
+    rev = "55b90f46e203c6f46f731b039497b9aac8ea67ac";
+    sha256 = "16rl6gzhdkzb7b96ckyf9mvgcvj34a7h15v7b2ab4jw17c9kgjvn";
   };
 
   hardeningDisable = [ "pic" ];
 
   nativeBuildInputs = [ bc ];
   buildInputs = kernel.moduleBuildDependencies;
+
+  # Revert a patch adding in-tree build detection logic that fails with nix
+  patches = [ (fetchpatch {
+    url = "https://github.com/tomaspinho/rtl8821ce/commit/bde9b3208a509588d64816895b882b91358ac8bc.patch";
+    sha256 = "1c06b4gcsyvlxiz8aakyd5621vr8mw4a2r9kzrhjs6p3jn5bg8dl";
+    revert = true;
+  })];
 
   prePatch = ''
     substituteInPlace ./Makefile \
