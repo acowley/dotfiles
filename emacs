@@ -195,17 +195,17 @@ single-quoted string."
 ;;;; Miscellaneous Settings
 
 ;; A short mode line that is going to be tweaked with moody
-(setq-default mode-line-format
-      '("%e"
-        mode-line-modified
-        mode-line-buffer-identification
-        "   "
-        mode-line-position
-        (vc-mode vc-mode)
-        "  "
-        mode-line-modes
-        mode-line-misc-info
-        mode-line-end-spaces))
+;; (setq-default mode-line-format
+;;       '("%e"
+;;         mode-line-modified
+;;         mode-line-buffer-identification
+;;         "   "
+;;         mode-line-position
+;;         (vc-mode vc-mode)
+;;         "  "
+;;         mode-line-modes
+;;         mode-line-misc-info
+;;         mode-line-end-spaces))
 
 ;; (set-default-font "Hæck 14")
 (if (memq window-system '(mac ns))
@@ -289,8 +289,8 @@ single-quoted string."
 (add-to-list 'image-file-name-extensions "pdf")
 (setq imagemagick-types-inhibit (remove 'PDF imagemagick-types-inhibit))
 (add-to-list 'imagemagick-enabled-types 'PDF)
-(imagemagick-register-types)
-
+(add-hook 'emacs-startup-hook (lambda () 
+                                (imagemagick-register-types)))
 
 ;; (use-package session
 ;;   :commands (session-initialize)
@@ -460,6 +460,8 @@ end tell" uri)))
   (flyspell-mode)
   (turn-on-visual-line-mode)
   (variable-pitch-mode)
+  (setq left-margin-width 2
+        right-margin-width 2)
   ;; (setq buffer-face-mode-face '(:family "Helvetica Neue" :weight thin))
   ;; (setq buffer-face-mode-face '(:family "Avenir Next"))
   ;; (setq variable-pitch-face '(:family "Avenir Next"))
@@ -470,15 +472,13 @@ end tell" uri)))
   )
 (add-hook 'text-mode-hook #'my/text-mode-hook)
 
-
 ;;;; Ignored extensions
 (add-to-list 'completion-ignored-extensions ".hi")
 (add-to-list 'completion-ignored-extensions ".o")
-(add-hook 'ido-setup-hook (setq ido-ignore-extensions t))
-(add-hook 'ido-setup-hook (lambda ()
-                           (add-to-list 'ido-ignore-files "\\.hi")
-                           (add-to-list 'ido-ignore-files "\\.o")))
-
+;; (add-hook 'ido-setup-hook (setq ido-ignore-extensions t))
+;; (add-hook 'ido-setup-hook (lambda ()
+;;                            (add-to-list 'ido-ignore-files "\\.hi")
+;;                            (add-to-list 'ido-ignore-files "\\.o")))
 
 ;;;; Spell checking
 
@@ -584,6 +584,7 @@ end tell" uri)))
 
 ;;; Projectile
 (use-package projectile
+  :commands projectile-switch-project
   :init
   (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
@@ -607,6 +608,7 @@ project's type."
 
 ;;; yasnippet
 (use-package yasnippet
+  :commands (yas-global-mode yas-minor-mode yas-minor-mode-on)
   :config
   (add-to-list 'yas-key-syntaxes #'backward-skip-alpha))
 
