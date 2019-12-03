@@ -2191,7 +2191,10 @@ sorted block."
            ("M-n" . lsp-ui-peek--select-next)
            ("M-p" . lsp-ui-peek--select-prev))
     :config
-    (setq lsp-ui-sideline-delay 0.2)
+    (setq lsp-ui-sideline-delay 0.2
+          lsp-ui-sideline-ignore-duplicate t
+          ;; The child frame disappears almost immediately for me
+          lsp-ui-doc-use-childframe nil)
 
     ;; Make the lsp-ui-peek overlay stand out a bit better
     (set-face-background 'lsp-ui-peek-peek "dark slate gray")
