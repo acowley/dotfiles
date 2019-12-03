@@ -743,9 +743,11 @@ project's type."
   (defun my-org-hook ()
     (setq line-spacing 0.2)
     (setq header-line-format " ")
+    (yas-global-mode)
     (org-bullets-mode 1)
     ;; (org-table-sticky-header-mode)
     ;; (org-sticky-header-mode)
+    (setq org-hide-emphasis-markers t)
 
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines))
