@@ -692,6 +692,8 @@ project's type."
                                    :html-scale 1.0
                                    :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
 
+        org-latex-packages-alist '(("" "fontspec" nil))
+
         ;; For leuven-theme
         ;; Fontify the whole line for headings (with a background color).
         org-fontify-whole-heading-line 't
