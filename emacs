@@ -1,8 +1,17 @@
 (require 'package)
 
 ;;; Before everything else
-(setq gc-cons-threshold 100000000) ; ie 100mb, default is 800kb
-(add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 800000)))
+(defvar old--file-name-handler-alist file-name-handler-alist)
+
+(setq gc-cons-threshold 100000000; ie 100mb, default is 800kb
+      gc-cons-percentage 0.6
+      file-name-handler-alist nil) 
+
+;; (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 8000000)))
+(add-hook 'emacs-startup-hook 
+          #'(lambda () (setq gc-cons-threshold 16777216 ; 16mb
+                             gc-cons-percentage 0.1
+                             file-name-handler-alist old--file-name-handler-alist)))
 
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
