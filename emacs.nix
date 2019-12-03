@@ -414,7 +414,9 @@ self: nixpkgs: {
       versionModifier = ".50";
       src = nixpkgs.fetchgit {
         url = "git://git.sv.gnu.org/emacs.git";
-        sha256 = "1lgk5in0kz6fjirkvf1mkwnf9fk9mjj3x0ypq7ry1xaw38vwnxaj";
+
+        rev = "a76a1d0c0b5c63bbed4eeeb7aa87269621956559";
+        sha256 = "0cx7ahk18amqlivmpxvq9d3a9axbj5ag6disssxkbn8y7bib0s0i";
       };
       patches = [];
       prePatch = ''
