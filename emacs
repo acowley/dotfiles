@@ -1176,7 +1176,7 @@ entire source file is loaded."
 ;;;; org-mime
 
 (use-package org-mime
-  ;; :load-path "~/src/org-mime"
+  :defer t
   :commands (org-mime-org-buffer-htmlize org-mime-org-subtree-htmlize))
 
 ;;;; org-clock
