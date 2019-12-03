@@ -1228,7 +1228,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (pdf-tools-install))
 ;;; Helm
 (use-package helm
-  :defer t
+  :defer 1
   ;; :diminish helm-mode
   :commands (helm-find-files helm-mini helm-M-x helm-imenu helm-mode)
   :bind (("M-x" . helm-M-x)
@@ -1338,10 +1338,11 @@ under the current project's root directory."
       (interactive)
       (wgrep-change-to-wgrep-mode))
     (add-hook 'helm-occur-mode-hook #'my/helm-occur-hook))
+  (helm-mode 1)
   )
-(require 'helm)
-(helm-mode 1)
-(ido-mode -1)
+;; (require 'helm)
+;; (helm-mode 1)
+;; (ido-mode -1)
 
 ;;; helm-org-rifle
 (use-package helm-org-rifle
