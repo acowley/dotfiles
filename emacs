@@ -618,7 +618,9 @@ project's type."
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents  . 5)
                           (bookmarks . 5)
-                          (projects . 5))))
+                          (projects . 5))
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t))
 
 ;;; impatient-mode
 (use-package impatient-mode

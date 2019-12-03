@@ -289,6 +289,7 @@ self: nixpkgs: {
     projectile
     yasnippet
     dashboard
+    all-the-icons
     impatient-mode
     esup
     direnv
