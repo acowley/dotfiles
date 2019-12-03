@@ -1513,8 +1513,6 @@ under the current project's root directory."
                                         ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
 
   (defun my/mu4e-view-hook ()
-    ; (turn-on-visual-line-mode)
-    ;; (variable-pitch-mode)
     (setq buffer-face-mode-face (if (memq window-system '(mac ns) )
                                     '(:family "Avenir Next")
                                   '(:family "Cantarell")))

@@ -222,27 +222,27 @@ self: nixpkgs: {
         license = nixpkgs.lib.licenses.free;
         };
       };
-    clang-format = super.melpaBuild {
-      pname = "clang-format";
-      ename = "clang-format";
-      version = "20190211";
-      src = nixpkgs.fetchFromGitHub {
-        owner = "emacsmirror";
-        repo = "clang-format";
-        rev = "0535810160aa6d7b48535c7b5b64891d1033e1c0";
-        sha256 = "0036qabav8n2dbci0s608bfsb8nqvpfxifzswv8lp4xddh5avy4b";
-      };
-      recipe = nixpkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/melpa/melpa/master/recipes/clang-format";
-        sha256 = "0v8nvgjadzmsz088q6cgli5s99z45bz9qb508qln1yips42zn258";
-        name = "recipe";
-      };
-      packageRequires = with self; [ cl-lib ];
-      meta = {
-        homepage = "https://melpa.org/#/clang-format";
-        license = nixpkgs.lib.licenses.free;
-      };
-    };
+    # clang-format = super.melpaBuild {
+    #   pname = "clang-format";
+    #   ename = "clang-format";
+    #   version = "20190211";
+    #   src = nixpkgs.fetchFromGitHub {
+    #     owner = "emacsmirror";
+    #     repo = "clang-format";
+    #     rev = "0535810160aa6d7b48535c7b5b64891d1033e1c0";
+    #     sha256 = "0036qabav8n2dbci0s608bfsb8nqvpfxifzswv8lp4xddh5avy4b";
+    #   };
+    #   recipe = nixpkgs.fetchurl {
+    #     url = "https://raw.githubusercontent.com/melpa/melpa/master/recipes/clang-format";
+    #     sha256 = "0v8nvgjadzmsz088q6cgli5s99z45bz9qb508qln1yips42zn258";
+    #     name = "recipe";
+    #   };
+    #   packageRequires = with self; [ cl-lib ];
+    #   meta = {
+    #     homepage = "https://melpa.org/#/clang-format";
+    #     license = nixpkgs.lib.licenses.free;
+    #   };
+    # };
     intero = super.melpaBuild {
       pname = "intero";
       version = "20180219";
