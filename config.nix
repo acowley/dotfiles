@@ -62,15 +62,16 @@
       '';
     });
     clang-format = pkgs.callPackage ({ stdenv, writeText, libclang }:
-    stdenv.mkDerivation {
-      name = "clang-format";
-      buildInputs = [ libclang ];
-      builder = writeText "builder.sh" ''
-        source $stdenv/setup
-        mkdir -p $out/bin
-        ln -s ${libclang.out}/bin/clang-format $out/bin/clang-format
-      '';
+      stdenv.mkDerivation {
+        name = "clang-format";
+        buildInputs = [ libclang ];
+        builder = writeText "builder.sh" ''
+          source $stdenv/setup
+          mkdir -p $out/bin
+          ln -s ${libclang.out}/bin/clang-format $out/bin/clang-format
+        '';
       }) { inherit (pkgs.llvmPackages_9) libclang; };
+
     lz4json = pkgs.callPackage ./nix/lz4json {};
 
     # handbrake = pkgs.handbrake.override { useFfmpeg = true; ffmpeg = pkgs.ffmpeg-full; };
