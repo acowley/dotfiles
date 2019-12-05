@@ -2,6 +2,7 @@
   allowUnfree = true;
   allowBroken = true;
   rocmTargets = ["gfx803" "gfx900" "gfx906"];
+  android_sdk.accept_license = true;
   perlPackageOverrides = pkgs: {
     FileRename = pkgs.perlPackages.buildPerlModule rec {
       pname = "File-Rename";
