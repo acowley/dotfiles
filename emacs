@@ -574,7 +574,9 @@ end tell" uri)))
 ;;; emacs server
 (use-package server
   :config (and (fboundp 'server-mode)
-               (or (server-running-p) (server-mode))))
+               (add-hook 'emacs-startup-hook 
+                         (lambda () 
+                           (or (server-running-p) (server-mode))))))
 ;;; company-mode
 (use-package company
   :defer nil
