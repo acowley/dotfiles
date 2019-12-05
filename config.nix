@@ -61,6 +61,7 @@
         ln -s ${libclang.out}/bin/clang-format $out/bin/clang-format
       '';
       }) { inherit (pkgs.llvmPackages_9) libclang; };
+    lz4json = pkgs.callPackage ./nix/lz4json {};
 
     # handbrake = pkgs.handbrake.override { useFfmpeg = true; ffmpeg = pkgs.ffmpeg-full; };
     catch2 = pkgs.callPackage ./nix/catch2 {};
