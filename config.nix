@@ -1,6 +1,7 @@
 {
   allowUnfree = true;
   allowBroken = true;
+  rocmTargets = ["gfx803" "gfx900" "gfx906"];
   perlPackageOverrides = pkgs: {
     FileRename = pkgs.perlPackages.buildPerlModule rec {
       pname = "File-Rename";
