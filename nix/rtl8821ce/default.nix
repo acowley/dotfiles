@@ -6,8 +6,6 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "tomaspinho";
     repo = "rtl8821ce";
-    # rev = "55b90f46e203c6f46f731b039497b9aac8ea67ac";
-    # sha256 = "16rl6gzhdkzb7b96ckyf9mvgcvj34a7h15v7b2ab4jw17c9kgjvn";
     rev = "7c4f8274d3cd5e3e88a02fdaacee901cce43f81a";
     sha256 = "0i10n14x1q4rqhaqvj2hc2483jayz179kyhh0fqny9c8r7r0538k";
   };
@@ -16,13 +14,6 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ bc ];
   buildInputs = kernel.moduleBuildDependencies;
-
-  # Revert a patch adding in-tree build detection logic that fails with nix
-  # patches = [ (fetchpatch {
-  #   url = "https://github.com/tomaspinho/rtl8821ce/commit/bde9b3208a509588d64816895b882b91358ac8bc.patch";
-  #   sha256 = "1c06b4gcsyvlxiz8aakyd5621vr8mw4a2r9kzrhjs6p3jn5bg8dl";
-  #   revert = true;
-  # })];
 
   prePatch = ''
     substituteInPlace ./Makefile \
