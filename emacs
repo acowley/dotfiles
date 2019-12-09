@@ -562,6 +562,54 @@ end tell" uri)))
             (delete-file tmp)))))
 
 
+;;;; Firefox (or Chromium) session save/load
+;; From https://acidwords.com/posts/2019-12-04-handle-chromium-and-firefox-sessions-with-org-mode.html
+;; with more discussion on reddit https://www.reddit.com/r/emacs/comments/e6fxrf/handle_chromium_firefox_sessions_with_orgmode/
+
+(require 'cl-lib)
+(defun save-firefox-session ()
+  "Reads chromium current session and generates an org-mode heading with items."
+  (interactive)
+  (save-excursion
+    (let* ((dir "~/.mozilla/firefox/")
+           (dirs (directory-files dir))
+           (unique-dir (find-if (lambda (x) 
+                                  (and (string-match "\\.default" x)
+                                       (file-accessible-directory-p (concat dir x))))
+                                dirs))
+           (path (concat dir unique-dir "/sessionstore-backups/recovery.jsonlz4"))
+           (cmd (concat "nix run nixpkgs.lz4json -c lz4jsoncat " path 
+                        " | nix run nixpkgs.jq -c jq '.windows[].tabs[] | .entries[-1] | .url'"
+                        " | sed 's/\"//g' | sort | uniq"))
+           (ret (shell-command-to-string cmd)))
+      (insert
+       (concat "* "
+               (format-time-string "[%Y-%m-%d %H:%M:%S]")
+               "\n"
+               (mapconcat (lambda (x) (concat "  - " x)) 
+                          (remove-if (lambda (x) (or (null x)
+                                                     (string-blank-p x)
+                                                     (string= "null" x)))
+                                     (split-string ret "\n"))
+                          "\n"))))))
+
+(defun restore-firefox-session ()
+  "Restore web browser session by opening each link with `browse-url`. 
+
+Make sure to put cursor on date heading that contains a list of urls."
+
+  (interactive)
+  (save-excursion
+    (beginning-of-line)
+    (when (looking-at "^\\*")
+      (forward-line 1)
+      (while (looking-at "^[ ]+-[ ]+\\(http.?+\\)$")
+        (let* ((ln (thing-at-point 'line t))
+               (ln (replace-regexp-in-string "^[ ]+-[ ]+" "" ln))
+               (ln (replace-regexp-in-string "\n" "" ln)))
+          (browse-url ln))
+        (forward-line 1)))))
+
 ;;; Diminish
 (use-package diminish :disabled t)
 ;;; Themes
