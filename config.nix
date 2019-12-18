@@ -100,8 +100,6 @@
 
     clang-rf = pkgs.callPackage ./nix/clang-rf {};
 
-    glfw31 = pkgs.callPackage ./nix/glfw/3.1.nix {};
-
     pcl_demo = pkgs.callPackage ./nix/pcl_demo {};
 
     vkmark = pkgs.callPackage ./nix/vkmark {};
