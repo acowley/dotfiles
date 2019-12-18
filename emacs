@@ -718,6 +718,7 @@ project's type."
 (use-package org
   ; :ensure org-plus-contrib
   :pin org
+  :defer 1
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
@@ -761,6 +762,8 @@ project's type."
 
         ;; Don't indent text to align with the headline
         org-adapt-indentation nil)
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
 
   ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
 
@@ -812,8 +815,8 @@ project's type."
     ;; (org-sticky-header-mode)
     (setq org-hide-emphasis-markers t)
 
-    (require 'ox-extra)
-    (ox-extras-activate '(ignore-headlines))
+    ;; (require 'ox-extra)
+    ;; (ox-extras-activate '(ignore-headlines))
 
     ;; electric quotes turn single quotes (') into smart single quotes
     ;; that can break things in src blocks
@@ -1003,6 +1006,23 @@ of code to whatever theme I'm using's background"
   ;; LaTeX export
   ;; (require 'ox-latex)
   (setq org-latex-pdf-process '("latexmk -g -xelatex -shell-escape %f -outdir=$(echo '%o' | sed 's|\\(.*\\)/$|\\1|g')"))
+  ;; (setq org-latex-pdf-process '("latexmk -g -lualatex -shell-escape %f -outdir=$(echo '%o' | sed 's|\\(.*\\)/$|\\1|g')"))
+
+  ;; Remove the grffile package as it broke image inclusion for me
+  (setq org-latex-default-packages-alist '(("AUTO" "inputenc" t)
+                                           ("T1" "fontenc" t)
+                                           ;; ("" "fixltx2e" nil)
+                                           ("" "graphicx" t)
+                                           ("" "longtable" nil)
+                                           ("" "wrapfig" nil)
+                                           ("" "rotating" nil)
+                                           ("normalem" "ulem" t)
+                                           ("" "amsmath" t)
+                                           ("" "textcomp" t)
+                                           ("" "amssymb" t)
+                                           ("" "capt-of" nil)
+                                           ("colorlinks=true" "hyperref" nil)))
+
   ;; (setq org-latex-listings 'minted)
   ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
   ;; (add-to-list 'org-latex-minted-langs '(haskell "haskell"))
@@ -1026,19 +1046,6 @@ of code to whatever theme I'm using's background"
   ;;         (todo . " %i %b%-12:c")
   ;;         (tags . " %i %-12:c")
   ;;         (search . " %i %-12:c")))
-
-  (use-package org-ref
-    :disabled
-    :defer t
-    :config
-    (helm-delete-action-from-source "Add PDF to library" helm-source-bibtex)
-    (setq
-     reftex-default-bibliography '("~/Documents/MyPapers/mybib.bib")
-     ;; see org-ref for use of these variables
-     org-ref-bibliography-notes "~/Documents/MyPapers/bib-notes.org"
-     org-ref-default-bibliography '("~/Documents/MyPapers/mybib.bib")
-     org-ref-pdf-directory "~/Documents/MyPapers/references/"
-     bibtex-completion-bibliography '("~/Documents/MyPapers/mybib.bib")))
 
 ;;;; Blog Publishing
   (defun org-custom-link-blog-follow (path)
@@ -2897,21 +2904,6 @@ sorted block."
  '(org-footnote-auto-label 'plain)
  '(org-html-validation-link "")
  '(org-imenu-depth 3)
- '(org-latex-default-packages-alist
-   '(("AUTO" "inputenc" t)
-     ("T1" "fontenc" t)
-     ("" "fixltx2e" nil)
-     ("" "graphicx" t)
-     ("" "grffile" t)
-     ("" "longtable" nil)
-     ("" "wrapfig" nil)
-     ("" "rotating" nil)
-     ("normalem" "ulem" t)
-     ("" "amsmath" t)
-     ("" "textcomp" t)
-     ("" "amssymb" t)
-     ("" "capt-of" nil)
-     ("colorlinks=true" "hyperref" nil)))
  '(org-mobile-files '("~/org/home.org"))
  '(org-preview-latex-default-process 'imagemagick)
  '(org-reveal-root "reveal.js")
