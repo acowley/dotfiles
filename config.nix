@@ -81,6 +81,8 @@
 
     cparens = pkgs.haskellPackages.callPackage ~/Projects/cparens {};
 
+    openfoam = pkgs.callPackage ./nix/openfoam {};
+
     zenstates = pkgs.callPackage ./nix/zenstates {};
     global = pkgs.callPackage ./nix/global {};
 
@@ -114,10 +116,9 @@
     ccls-fun = buildInputs: pkgs.callPackage ./nix/ccls/nixAware.nix {} { 
       inherit buildInputs;
     };
+    ccls-nixpkgs = pkgs.ccls;
 
     libsimdpp = pkgs.callPackage ./nix/libsimdpp {};
-
-    SDL2_gpu = pkgs.callPackage ./nix/SDL_gpu {};
 
     loguru = pkgs.callPackage ./nix/loguru {};
 
