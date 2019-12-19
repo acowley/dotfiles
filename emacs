@@ -11,7 +11,15 @@
 (add-hook 'emacs-startup-hook 
           #'(lambda () (setq gc-cons-threshold 16777216 ; 16mb
                              gc-cons-percentage 0.1
-                             file-name-handler-alist old--file-name-handler-alist)))
+                             file-name-handler-alist old--file-name-handler-alist)
+              (my/set-font)))
+
+(defun my/set-font ()
+  (if (memq window-system '(mac ns))
+      (set-frame-font "Monaco 14")
+    (if (file-exists-p "/etc/lsb-release")
+        (set-frame-font "Victor Mono-15:weight=demi")
+      (set-frame-font "Victor Mono-11:weight=demi"))))
 
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
@@ -215,21 +223,6 @@ single-quoted string."
 ;;         mode-line-modes
 ;;         mode-line-misc-info
 ;;         mode-line-end-spaces))
-
-;; (set-default-font "Hæck 14")
-(if (memq window-system '(mac ns))
-  ;; (set-default-font "Monaco 14")
-    (set-frame-font "Monaco 14")
-  (if (file-exists-p "/etc/lsb-release")
-      (set-frame-font "Victor Mono-15:weight=demi")
-    (set-frame-font "Victor Mono-11:weight=demi"))
-  ;; (set-frame-font "Inter-12:weight=light")
-  ;; (set-frame-font "DejaVu Sans Mono-12")
-  ;; (set-frame-font "Fira Sans-12:weight=light")
-  ;; (set-frame-font "Hack-10")
-)
-;; (set-face-attribute 'font-lock-doc-face nil :slant 'italic)
-;; (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
 
 (setq confirm-kill-emacs #'y-or-n-p)
 
