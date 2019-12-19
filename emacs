@@ -755,6 +755,7 @@ project's type."
 
         ;; Don't indent text to align with the headline
         org-adapt-indentation nil)
+
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
 
@@ -1184,6 +1185,43 @@ prompting for the article's title."
 
   ;;; org-noter
   (use-package org-noter :defer t :commands (org-noter))
+
+;;;; org-clock
+
+(defun my-org-clocktable-notodo (ipos tables params)
+  "Remove the TODO and DONE keywords from clock table
+entries. From
+http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-done-from-clocktable-reports"
+  (cl-loop for tbl in tables
+           for entries = (nth 2 tbl)
+           do (cl-loop for entry in entries
+                       for headline = (nth 1 entry)
+                       do (setq headline (replace-regexp-in-string "TODO \\|DONE " "" headline))
+                       do (setcar (nthcdr 1 entry) headline)))
+  (org-clocktable-write-default ipos tables params))
+
+;;;; Project Task Capture
+
+;; I use a convention where projects have a ProjectName-notes.org file
+;; in the project root directory. This file is used for design notes
+;; and task lists. It can be good to setq `org-agenda-files' to
+;; include all your active projects so that the tasks show up in the
+;; org agenda view. I set this value in the
+;; [[%3B%3B%3B%20Private%20Configuration][Private Configuration]]
+;; section of this file.
+
+;; With the given configuration "C-c c p" adds a TODO item to the
+;; current project's notes file.
+(defun find-project-notes ()
+  "A project's notes file is defined as ProjectName-notes.org in
+  the project root directory."
+  (concat (projectile-project-root) "/" (projectile-project-name) "-notes.org"))
+
+  (setq org-capture-templates
+        '(("t" "Task" entry (file+headline org-default-notes-file "Tasks")
+           "* TODO %?\n  SCHEDULED: %t\n%i\n")
+          ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
+           "* TODO %?\n  %i\n  %a")))
   )
 
 (use-package outorg
@@ -1212,29 +1250,6 @@ entire source file is loaded."
 ;;   :defer t
 ;;   :commands (ox-clip-formatted-copy))
 
-;;;; Project Task Capture
-
-;; I use a convention where projects have a ProjectName-notes.org file
-;; in the project root directory. This file is used for design notes
-;; and task lists. It can be good to setq `org-agenda-files' to
-;; include all your active projects so that the tasks show up in the
-;; org agenda view. I set this value in the
-;; [[%3B%3B%3B%20Private%20Configuration][Private Configuration]]
-;; section of this file.
-
-;; With the given configuration "C-c c p" adds a TODO item to the
-;; current project's notes file.
-(defun find-project-notes ()
-  "A project's notes file is defined as ProjectName-notes.org in
-  the project root directory."
-  (concat (projectile-project-root) "/" (projectile-project-name) "-notes.org"))
-
-(setq org-capture-templates
-      '(("t" "Task" entry (file+headline org-default-notes-file "Tasks")
-         "* TODO %?\n  SCHEDULED: %t\n%i\n")
-        ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
-         "* TODO %?\n  %i\n  %a")))
-
 
 ;;;; org-mime
 
@@ -1242,19 +1257,6 @@ entire source file is loaded."
   :defer t
   :commands (org-mime-org-buffer-htmlize org-mime-org-subtree-htmlize))
 
-;;;; org-clock
-
-(defun my-org-clocktable-notodo (ipos tables params)
-  "Remove the TODO and DONE keywords from clock table
-entries. From
-http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-done-from-clocktable-reports"
-  (cl-loop for tbl in tables
-           for entries = (nth 2 tbl)
-           do (cl-loop for entry in entries
-                       for headline = (nth 1 entry)
-                       do (setq headline (replace-regexp-in-string "TODO \\|DONE " "" headline))
-                       do (setcar (nthcdr 1 entry) headline)))
-  (org-clocktable-write-default ipos tables params))
 ;;;; org-journal
 (use-package org-journal
   :defer t
