@@ -11,4 +11,7 @@
     else [])
 ++ (if builtins.pathExists (builtins.toPath "/System/Library")
     then []
-    else [ (import ~/src/nixos-rocm/pkgs/all-packages.nix) ])
+    else if builtins.pathExists ~/src/nixos-rocm
+	 then [ (import ~/src/nixos-rocm/default.nix) ]
+	 else [])
+
