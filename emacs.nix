@@ -90,12 +90,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20191007";
+      version = "20191222";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "52ccc83bc4a2537d35a528a1fe4825ed3a37263b";
-        sha256 = "0sahsr50arkv618m7rn02m859gvwfhqa2zpq4clp9d0s9d1kalav";
+        rev = "643e852b1b6fcc1b7442cb23bbbb3732caeacdc2";
+        sha256 = "0gyc1lsfzr15ki1ng06pkplll9dgg1wb8al1ppzl5baa6bs9m4bp";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -112,12 +112,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20190915";
+      version = "20191215";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "c8fa40c0f9c65877d1cabe1739e5f787adb24898";
-        sha256 = "040qzkd1zvyb0q3yxs2vd4f3qp37c8anr3zcmx96bjvj1v7pmpmn";
+        rev = "2ea980ed1f3a058afd361459c3d7094b4d2ec18f";
+        sha256 = "03c2l1fd5znainzf7vz5hvpmr9w6pgm354gwajv18zg6pnq0fryv";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -410,13 +410,15 @@ self: nixpkgs: {
     # else nixpkgs.emacsPackagesNgGen (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
     else nixpkgs.emacsPackagesNgGen ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (_: rec {
       name = "emacs-${version}${versionModifier}";
-      version = "27.0";
+      version = "28.0";
       versionModifier = ".50";
       src = nixpkgs.fetchgit {
         url = "git://git.sv.gnu.org/emacs.git";
 
-        rev = "a76a1d0c0b5c63bbed4eeeb7aa87269621956559";
-        sha256 = "0cx7ahk18amqlivmpxvq9d3a9axbj5ag6disssxkbn8y7bib0s0i";
+        # rev = "a76a1d0c0b5c63bbed4eeeb7aa87269621956559";
+        # sha256 = "0cx7ahk18amqlivmpxvq9d3a9axbj5ag6disssxkbn8y7bib0s0i";
+        rev = "ac7b2607735a64e657d65c87d8c9f73755ff3efa";
+        sha256 = "08zji5fhz4kjng45hxjxpmc464whrhr65jdg6d1bwz5ngnj7k8gv";
       };
       patches = [];
       prePatch = ''
