@@ -227,8 +227,8 @@ single-quoted string."
 (setq confirm-kill-emacs #'y-or-n-p)
 
 (tool-bar-mode -1)
-(when (and window-system (not (memq window-system '(mac ns))))
-  (set-frame-size (selected-frame) 80 56))
+;; (when (and window-system (not (memq window-system '(mac ns))))
+;;   (set-frame-size (selected-frame) 80 56))
 
 ;; Enable ligatures for fonts that provide them (e.g. hæck)
 ;; This may cause slowdown
@@ -620,7 +620,7 @@ Make sure to put cursor on date heading that contains a list of urls."
                            (or (server-running-p) (server-mode))))))
 ;;; company-mode
 (use-package company
-  :defer nil
+  ;; :defer nil
   :commands (company-mode)
   :init
   (add-hook 'prog-mode-hook 'company-mode)
