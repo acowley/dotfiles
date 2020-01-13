@@ -2,6 +2,10 @@
 # home directory.
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ln -s ${DIR}/emacs ${HOME}/.emacs
+if [ ! -d "${HOME}/.emacs.d" ]; then
+  mkdir "${HOME}/.emacs.d"
+fi
+ln -s ${DIR}/early-init.el ${HOME}/.emacs.d/early-init.el
 if [ -d "${HOME}/.gnupg" ]; then
   ln -s ${DIR}/gpg-agent.conf ${HOME}/.gnupg/gpg-agent.conf
 else

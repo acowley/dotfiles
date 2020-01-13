@@ -1,25 +1,30 @@
 (require 'package)
+(setq package-quickstart t)
 
 ;;; Before everything else
 (defvar old--file-name-handler-alist file-name-handler-alist)
 
-(setq gc-cons-threshold 100000000; ie 100mb, default is 800kb
-      gc-cons-percentage 0.6
-      file-name-handler-alist nil) 
+(setq ;; gc-cons-threshold 100000000; ie 100mb, default is 800kb
+      ;; gc-cons-percentage 0.6
+      file-name-handler-alist nil)
 
-;; (add-hook 'after-init-hook #'(lambda () (setq gc-cons-threshold 8000000)))
 (add-hook 'emacs-startup-hook 
           #'(lambda () (setq gc-cons-threshold 16777216 ; 16mb
                              gc-cons-percentage 0.1
                              file-name-handler-alist old--file-name-handler-alist)
-              (my/set-font)))
+              ;; (my/set-font)
+              ))
 
+;; It would be nice to include this logic in early-init.el, but
+;; `window-system' is not set up by the time that file is run during
+;; emacs startup.
 (defun my/set-font ()
   (if (memq window-system '(mac ns))
       (set-frame-font "Monaco 14")
     (if (file-exists-p "/etc/lsb-release")
         (set-frame-font "Victor Mono-15:weight=demi")
       (set-frame-font "Victor Mono-11:weight=demi"))))
+(my/set-font)
 
 ;; This has to be very early in initialization.
 (defvar outline-minor-mode-prefix "\M-#")
@@ -36,7 +41,7 @@
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
 (setq package-enable-at-startup nil)
-(package-initialize)
+;; (package-initialize)
 
 ; (require 'use-package)
 (eval-when-compile
@@ -226,7 +231,8 @@ single-quoted string."
 
 (setq confirm-kill-emacs #'y-or-n-p)
 
-(tool-bar-mode -1)
+;; (tool-bar-mode -1)
+
 ;; (when (and window-system (not (memq window-system '(mac ns))))
 ;;   (set-frame-size (selected-frame) 80 56))
 
