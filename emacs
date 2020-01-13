@@ -40,7 +40,6 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
-(setq package-enable-at-startup nil)
 ;; (package-initialize)
 
 ; (require 'use-package)
@@ -642,7 +641,7 @@ Make sure to put cursor on date heading that contains a list of urls."
 
 ;;; Projectile
 (use-package projectile
-  :commands projectile-switch-project
+  :commands (projectile-switch-project projectile-find-file)
   :init
   (setq projectile-keymap-prefix (kbd "C-c p"))
   :config
@@ -2112,6 +2111,7 @@ element based on the god-local-mode predicate."
 ; (add-to-list 'load-path "~/src/ghc-mod/elisp/")
 
 (use-package haskell-mode
+  :mode "\\.\\(hs\\|lhs\\)\\'"
   :init
   (setq inferior-haskell-find-project-root nil
         haskell-process-type 'cabal-repl
@@ -2599,6 +2599,7 @@ sorted block."
 ;;; znc
 (use-package znc
   :defer t
+  :commands (znc-all znc-erc)
   :config
   (let ((password (let ((auth (auth-source-search :host "rasznc.local")))
                     (cond
@@ -2611,6 +2612,7 @@ sorted block."
 ;;; twittering-mode
 (use-package twittering-mode
   :defer t
+  :commands (twittering-mode twit)
   :config
   (add-hook 'twittering-mode-hook
             (lambda ()
@@ -2641,6 +2643,7 @@ sorted block."
 (use-package rust-mode
   :defer t
   :commands (rust-mode)
+  :mode "\\.rs\\'"
   :config
   (setq rust-indent-offset 2)
   (use-package cargo)
@@ -2667,6 +2670,7 @@ sorted block."
 ;;; purescript
 (use-package purescript-mode
   :defer t
+  :mode "\\.purs\\'"
   :config
   ;(use-package flycheck-purescript)
   ;; (add-hook 'purescript-mode-hook #'flycheck-mode)
@@ -2697,6 +2701,7 @@ sorted block."
 ;;; yaml
 (use-package yaml-mode
   :defer t
+  :mode "\\.yaml\\'"
   :config
   ;; From https://github.com/yoshiki/yaml-mode/issues/25#issuecomment-250440342
   (add-hook 'yaml-mode-hook
@@ -2720,7 +2725,9 @@ sorted block."
   :bind (("C-c d" . dict-lookup-search-pointer)))
 
 ;;; graphviz-dot-mode
-(use-package graphviz-dot-mode :defer t)
+(use-package graphviz-dot-mode
+  :defer t
+  :mode "\\.dot\\'")
 ;;; direnv
 (use-package direnv
   :config
@@ -2734,9 +2741,12 @@ sorted block."
   :defer t
   :commands (nix-buffer))
 ;;; toml
-(use-package toml-mode :defer t)
+(use-package toml-mode 
+  :defer t 
+  :mode "\\.toml\\'")
 ;;; markdown-mode
 (use-package markdown-mode :defer t
+  :mode "\\.md\\'"
   :config
   (set-face-attribute 'markdown-code-face nil :family "Victor Mono"))
 ;;; web-mode
@@ -2798,12 +2808,15 @@ sorted block."
 ;;; dhall-mode
 (use-package dhall-mode
   :defer t
+  :mode "\\.dhall\\'"
   :commands (dhall-mode))
 ;;; docker
 ;; (use-package docker :defer t)
 (use-package dockerfile-mode
   :defer t
   :mode "\\Dockerfile\\'")
+
+(use-package docker-tramp)
 ;;; emojify
 (use-package emojify
   :defer t
