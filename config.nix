@@ -110,11 +110,13 @@
     gtsam = pkgs.callPackage ./nix/gtsam {};
 
     cquery = pkgs.callPackage ./nix/cquery {};
-    ccls = pkgs.callPackage ./nix/ccls {};
-    ccls-project = pkgs.callPackage ./nix/ccls/nixAware.nix {};
-    ccls-fun = buildInputs: pkgs.callPackage ./nix/ccls/nixAware.nix {} { 
-      inherit buildInputs;
+    ccls = pkgs.callPackage ./nix/ccls {
+      llvmPackages = pkgs.llvmPackages_latest;
     };
+    ccls-project = pkgs.callPackage ./nix/ccls/nixAware.nix {
+      llvmPackages = pkgs.llvmPackages_latest;
+    };
+    ccls-fun = buildInputs: ccls-project { inherit buildInputs; };
     ccls-nixpkgs = pkgs.ccls;
 
     libsimdpp = pkgs.callPackage ./nix/libsimdpp {};
