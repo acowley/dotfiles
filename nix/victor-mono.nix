@@ -1,12 +1,12 @@
 { fetchFromGitHub, lib }:
-let version = "1.2.1";
+let version = "1.3.1";
 in
 fetchFromGitHub {
   name = "victor-mono-${version}";
   owner = "rubjo";
   repo = "victor-mono";
   rev = "v${version}";
-  sha256 = "1xvx0b6y867xbhw8jr5mjdp747154f8kyvrw16lcl3n3yyrgnlfj";
+  sha256 = "0d69zqh3v41r4dq1dvy4qr532xycqs2jkmql52zixidi2kz73397";
   postFetch = ''
     tar xf $downloadedFile --strip=1
     unzip public/VictorMonoAll.zip
