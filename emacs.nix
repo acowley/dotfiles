@@ -199,7 +199,8 @@ self: nixpkgs: {
 
     doom-modeline =
       super.melpaPackages.doom-modeline.overrideAttrs (_: {
-        patches = [./god-segment.patch];
+        # patches = [./god-segment.patch];
+        patches = [./god-segment-project.patch];
     });
 
     lsp-haskell = super.melpaBuild {
