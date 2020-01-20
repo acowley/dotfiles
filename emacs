@@ -2300,14 +2300,15 @@ sorted block."
     (setq lsp-ui-sideline-delay 0.2
           lsp-ui-sideline-ignore-duplicate t
           ;; The child frame disappears almost immediately for me
-          lsp-ui-doc-use-childframe nil)
+          ;; lsp-ui-doc-use-childframe nil
+          lsp-ui-doc-position 'top
+          )
 
     ;; Make the lsp-ui-peek overlay stand out a bit better
     (set-face-background 'lsp-ui-peek-peek "dark slate gray")
 
     ;; Highlight the symbol we're looking for in yellow
-    (set-face-foreground 'lsp-ui-peek-highlight "yellow")
-    )
+    (set-face-foreground 'lsp-ui-peek-highlight "yellow"))
   (require 'lsp-ui)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (flycheck-mode)
