@@ -132,6 +132,7 @@ self: nixpkgs: {
         lsp-mode
         markdown-mode
       ];
+      patches = [ ./lsp-ui-window-change-no-hide.patch ];
       meta = {
         homepage = "https://melpa.org/#/lsp-ui";
         license = nixpkgs.lib.licenses.free;

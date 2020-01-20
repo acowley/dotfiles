@@ -1,0 +1,11 @@
+diff --exclude '*~' -ruN A/lsp-ui-doc.el B/lsp-ui-doc.el
+--- A/lsp-ui-doc.el	2020-01-14 13:57:34.011814824 -0500
++++ B/lsp-ui-doc.el	2020-01-14 13:58:47.924575075 -0500
+@@ -723,7 +723,6 @@
+ (advice-add #'select-window :around #'lsp-ui--hide-doc-frame-on-window-change)
+ 
+ (advice-add 'load-theme :before (lambda (&rest _) (lsp-ui-doc--delete-frame)))
+-(add-hook 'window-configuration-change-hook #'lsp-ui-doc--hide-frame)
+ 
+ (defun lsp-ui-doc--on-delete (frame)
+   "Function called when a FRAME is deleted."
