@@ -360,7 +360,7 @@ self: nixpkgs: {
     lsp-haskell
     ccls
 
-    # cmake-mode
+    cmake-mode
 
     clang-format
     mixed-pitch
