@@ -2320,7 +2320,12 @@ sorted block."
         lsp-enable-indentation nil)
   (lsp-ui-flycheck-enable t)
   (flymake-mode -1)
-  )
+  (defun lsp-format-defun ()
+    "Reformat the current function."
+    (interactive)
+    (save-mark-and-excursion
+      (mark-defun)
+      (call-interactively 'lsp-format-region))))
 
 ;;; ccls
 (use-package ccls
