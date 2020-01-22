@@ -860,13 +860,20 @@ project's type."
     (electric-quote-local-mode -1)
 
     ; Encryption
-    (require 'org-crypt)
-    (org-crypt-use-before-save-magic)
-    (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+    ;; (require 'org-crypt)
+    ;; (org-crypt-use-before-save-magic)
+    ;; (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+    ;; ;; GPG key to use for encryption
+    ;; ;; Either the Key ID or set to nil to use symmetric encryption.
+    ;; (setq org-crypt-key "D50A574B")
+)
+
+  (use-package org-crypt
     ;; GPG key to use for encryption
     ;; Either the Key ID or set to nil to use symmetric encryption.
-    (setq org-crypt-key "D50A574B"))
-
+    :custom (org-crypt-key "D50A574B")
+    :commands (org-crypt-use-before-save-magic)
+    :hook (org-mode . org-crypt-use-before-save-magic))
   (use-package org-ref
     :bind ("C-c C-r" . org-ref-helm-insert-cite-link))
 
