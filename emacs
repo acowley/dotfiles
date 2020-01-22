@@ -2166,7 +2166,7 @@ element based on the god-local-mode predicate."
   :bind (:map haskell-mode-map
          ("C-x C-d" . nil)
          ("C-c C-z" . haskell-interactive-switch)
-         ("C-c C-l" . haskell-process-load-or-reload)
+         ("C-c C-l" . haskell-process-load-file)
          ("C-c C-b" . haskell-interactive-switch)
          ("C-c C-n C-t" . haskell-process-do-type)
          ("C-c C-n C-i" . haskell-process-do-info)
@@ -2179,6 +2179,7 @@ element based on the god-local-mode predicate."
   (set-face-attribute 'haskell-keyword-face nil :slant 'italic)
   (company-mode)
   (use-package shm
+    :disabled
     :bind (("M-A" . shm/goto-parent-end))
     :config
     ;; Appropriate for light themes
@@ -2190,6 +2191,7 @@ element based on the god-local-mode predicate."
     (set-face-background 'shm-quarantine-face "#550505")
     )
   (use-package intero
+    :disabled
     ;; :load-path "~/src/intero/elisp"
     :commands (intero-mode intero-global-mode)
     :bind (("M-n" . flycheck-next-error)
