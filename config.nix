@@ -31,7 +31,7 @@
              collection-pictures subfigure web supertabular
              wrapfig capt-of footmisc subdepth preview
              minifp lettrine titling titlesec fontspec todonotes
-             doublestroke;
+             doublestroke comment;
     };
 
     # Apply a patch that makes nix-shell take a `-o` flag with which
