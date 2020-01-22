@@ -408,7 +408,7 @@ self: nixpkgs: {
     synosaurus
   ];
   myEmacsPackagesNg =
-    if nixpkgs.stdenv.isDarwin
+    if (false && nixpkgs.stdenv.isDarwin)
     then nixpkgs.emacsPackagesNgGen nixpkgs.emacsMacport
     # else nixpkgs.emacsPackagesNgGen (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
     else nixpkgs.emacsPackagesNgGen ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (_: rec {
@@ -420,8 +420,10 @@ self: nixpkgs: {
 
         # rev = "a76a1d0c0b5c63bbed4eeeb7aa87269621956559";
         # sha256 = "0cx7ahk18amqlivmpxvq9d3a9axbj5ag6disssxkbn8y7bib0s0i";
-        rev = "ac7b2607735a64e657d65c87d8c9f73755ff3efa";
-        sha256 = "08zji5fhz4kjng45hxjxpmc464whrhr65jdg6d1bwz5ngnj7k8gv";
+        # rev = "ac7b2607735a64e657d65c87d8c9f73755ff3efa";
+        # sha256 = "08zji5fhz4kjng45hxjxpmc464whrhr65jdg6d1bwz5ngnj7k8gv";
+        rev = "46fefb09745abbcdb4b56d80cd2bbd545afc39e1";
+        sha256 = "1mmha7lp5bn7snf6d5mjs9979cbsav0h59rxsn5myyplg194pn6f";
       };
       patches = [];
       prePatch = ''
