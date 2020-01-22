@@ -675,9 +675,11 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; Projectile
 (use-package projectile
   :commands (projectile-switch-project projectile-find-file)
-  :init
-  (setq projectile-keymap-prefix (kbd "C-c p"))
+  ;; :init
+  ;; (setq projectile-keymap-prefix (kbd "C-c p"))
+  ;; 
   :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (setq projectile-other-file-alist
         (append '(("hpp" "h" "ipp" "cpp" "cc" "cu") ("cu" "h" "hpp"))
                 projectile-other-file-alist))
@@ -708,7 +710,7 @@ project's type."
   ;; :commands dashboard-insert-startupify-lists
   :config
   (dashboard-setup-startup-hook)
-  (setq dashboard-items '((recents  . 5)
+  (setq dashboard-items '((recents  . 10)
                           (bookmarks . 5)
                           (projects . 5))
         dashboard-set-heading-icons t
@@ -716,6 +718,7 @@ project's type."
 
 ;;; impatient-mode
 (use-package impatient-mode
+  :disabled
   :defer t
   :config
   ;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
@@ -796,6 +799,8 @@ project's type."
 
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
+  (use-package ox-reveal
+    :defer t)
 
   ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
 

@@ -304,6 +304,7 @@ self: nixpkgs: {
     org-sticky-header
     org-table-sticky-header
     org-journal
+    ox-reveal
     ox-tufte
     ox-gfm
     ob-ipython
