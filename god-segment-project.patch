@@ -1,6 +1,6 @@
 diff --exclude '*~' -ruN A/doom-modeline.el B/doom-modeline.el
---- A/doom-modeline.el	2020-01-13 15:58:28.439645863 -0500
-+++ B/doom-modeline.el	2020-01-13 16:03:03.532895369 -0500
+--- A/doom-modeline.el	2020-01-22 15:14:49.807989832 -0500
++++ B/doom-modeline.el	2020-01-22 15:17:34.851829447 -0500
 @@ -102,7 +102,7 @@
    '(objed-state misc-info battery irc-buffers debug minor-modes input-method indent-info buffer-encoding major-mode process))
  
@@ -10,3 +10,12 @@ diff --exclude '*~' -ruN A/doom-modeline.el B/doom-modeline.el
    '(misc-info battery irc mu4e gnus github debug major-mode process))
  
  (doom-modeline-def-modeline 'vcs
+@@ -114,7 +114,7 @@
+   '(misc-info major-mode process))
+ 
+ (doom-modeline-def-modeline 'info
+-  '(bar window-number buffer-info info-nodes buffer-position parrot selection-info)
++  '(bar window-number modals buffer-info info-nodes buffer-position parrot selection-info)
+   '(misc-info buffer-encoding major-mode))
+ 
+ (doom-modeline-def-modeline 'media
