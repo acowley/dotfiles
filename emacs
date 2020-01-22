@@ -2503,7 +2503,8 @@ sorted block."
 ;; I get this from melpa because the nix package ends up wanting to
 ;; build cmake itself.
 (use-package cmake-mode
-  :ensure t
+  ;; :ensure t
+  :commands (cmake-mode)
   :mode "\\CMakeLists.txt\\’")
 
 (use-package helm-gtags
