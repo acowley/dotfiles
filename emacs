@@ -2566,12 +2566,7 @@ sorted block."
   ;; variable pitch fonts:
   (set-face-attribute 'variable-pitch nil
                       ;; :height (if (memq window-system '(mac ns)) 150 150)
-                      :family (if (memq window-system '(mac ns))
-                                  "Baskerville"
-                                ;; "Noto Serif"
-                                "Montserrat"
-                                ;; "ETBembo"
-                                )
+                      :family "Montserrat"
                       :height 140
                       :weight 'light)
 
