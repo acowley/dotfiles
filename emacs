@@ -2520,7 +2520,7 @@ sorted block."
 (use-package cmake-mode
   ;; :ensure t
   :commands (cmake-mode)
-  :mode "\\CMakeLists.txt\\’")
+  :mode "CMakeLists.txt\\'")
 
 (use-package helm-gtags
   :defer t
