@@ -675,6 +675,10 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; Projectile
 (use-package projectile
   :commands (projectile-switch-project projectile-find-file)
+  :custom
+  (projectile-project-root-files-functions
+   '(projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring))
+  (projectile-completion-system 'helm)
   ;; :init
   ;; (setq projectile-keymap-prefix (kbd "C-c p"))
   ;; 
@@ -693,7 +697,7 @@ project's type."
         projectile-mode-line-function #'my/projectile-mode-line
         projectile-ignored-projects '("~/")
         projectile-globally-ignored-directories
-        '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work")
+        '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work" "build")
         projectile-project-root-files
         '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "compile_commands.json" "shell.nix" "*.cabal"))
   (projectile-mode))
