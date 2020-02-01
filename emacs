@@ -800,6 +800,15 @@ project's type."
 
         ;; Don't indent text to align with the headline
         org-adapt-indentation nil)
+  (add-to-list 'org-latex-classes
+               '("upennphd" "\\documentclass[12pt]{upennphd}"
+                 ;; ("\\part{%s}" . "\\part*{%s}")
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ;; ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ))
 
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
@@ -1069,7 +1078,9 @@ of code to whatever theme I'm using's background"
                                            ("" "textcomp" t)
                                            ("" "amssymb" t)
                                            ("" "capt-of" nil)
-                                           ("colorlinks=true" "hyperref" nil)))
+                                           ;; ("colorlinks=true" "hyperref" nil)
+                                           ("" "hyperref" nil)
+                                           ))
 
   ;; (setq org-latex-listings 'minted)
   ;; (add-to-list 'org-latex-packages-alist '("" "minted"))
