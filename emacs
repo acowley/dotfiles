@@ -799,16 +799,9 @@ project's type."
         org-fontify-whole-heading-line 't
 
         ;; Don't indent text to align with the headline
-        org-adapt-indentation nil)
-  (add-to-list 'org-latex-classes
-               '("upennphd" "\\documentclass[12pt]{upennphd}"
-                 ;; ("\\part{%s}" . "\\part*{%s}")
-                 ("\\chapter{%s}" . "\\chapter*{%s}")
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ;; ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ))
+        org-adapt-indentation nil
+
+        org-todo-keywords '((sequence "TODO" "|" "DONE" "ABANDONED")))
 
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
