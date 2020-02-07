@@ -957,11 +957,24 @@ evaluation may begin anew."
   (use-package ob-latex
     :defer t
     ; :ensure org-plus-contrib
-    :commands (org-babel-execute:latex org-babel-expand-body:latex))
+    :commands (org-babel-execute:latex org-babel-expand-body:latex)
+    :config
+    (add-to-list 'org-latex-classes
+                 '("upennphd" "\\documentclass[12pt]{upennphd}"
+                   ;; ("\\part{%s}" . "\\part*{%s}")
+                   ("\\chapter{%s}" . "\\chapter*{%s}")
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ;; ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   )))
   (use-package ob-dot
     :defer t
     ; :ensure org-plus-contrib
     :commands (org-babel-execute:dot org-babel-expand-body:dot))
+  (use-package ob-R
+    :defer t
+    :commands (org-babel-execute:R org-babel-expand-body:R))
   (use-package ob-C
     :defer t
     ; :ensure org-plus-contrib
@@ -2871,6 +2884,8 @@ sorted block."
   :defer t
   :mode "\\.dhall\\'"
   :commands (dhall-mode))
+;;; ESS (R)
+(use-package ess-site :mode (("\\.[rR]\\'" . R-mode)) :commands R)
 ;;; docker
 ;; (use-package docker :defer t)
 (use-package dockerfile-mode

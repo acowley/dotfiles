@@ -346,6 +346,7 @@ self: nixpkgs: {
     flycheck-color-mode-line
     nix-mode
     glsl-mode
+    ess
 
     haskell-mode
     hindent
