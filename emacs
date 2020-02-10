@@ -19,9 +19,10 @@
 ;; `window-system' is not set up by the time that file is run during
 ;; emacs startup.
 (defun my/set-font ()
-  (if (memq window-system '(mac ns))
+  (if (and nil (memq window-system '(mac ns)))
       (set-frame-font "Monaco 14")
-    (if (file-exists-p "/etc/lsb-release")
+    (if (or (memq window-system '(mac ns)) 
+            (file-exists-p "/etc/lsb-release"))
         (set-frame-font "Victor Mono-15:weight=demi")
       (set-frame-font "Victor Mono-11:weight=demi"))))
 (my/set-font)
