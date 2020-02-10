@@ -32,7 +32,7 @@
              wrapfig capt-of footmisc subdepth preview
              minifp lettrine titling titlesec fontspec todonotes
              doublestroke comment multirow cancel doi import ifoddpage
-             subfiles biblatex logreq;
+             subfiles biblatex logreq was;
     };
 
     # Apply a patch that makes nix-shell take a `-o` flag with which
