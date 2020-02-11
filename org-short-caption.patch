@@ -1,0 +1,27 @@
+diff -ruN A/org-element.el B/org-element.el
+--- A/org-element.el	2019-12-03 10:28:06.000000000 -0500
++++ B/org-element.el	2020-02-11 14:47:45.564452900 -0500
+@@ -4018,14 +4018,15 @@
+ 	       (parsed? (member kwd org-element-parsed-keywords))
+ 	       ;; Find main value for any keyword.
+ 	       (value
+-		(let ((beg (match-end 0))
+-		      (end (save-excursion
+-			     (end-of-line)
+-			     (skip-chars-backward " \t")
+-			     (point))))
+-		  (if parsed?
+-		      (org-element--parse-objects beg end nil restrict)
+-		    (org-trim (buffer-substring-no-properties beg end)))))
++                (save-match-data 
++		  (let ((beg (match-end 0))
++		        (end (save-excursion
++			       (end-of-line)
++			       (skip-chars-backward " \t")
++			       (point))))
++		    (if parsed?
++		        (org-element--parse-objects beg end nil restrict)
++		      (org-trim (buffer-substring-no-properties beg end))))))
+ 	       ;; If KWD is a dual keyword, find its secondary value.
+ 	       ;; Maybe parse it.
+ 	       (dual? (member kwd org-element-dual-keywords))

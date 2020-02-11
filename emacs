@@ -756,7 +756,7 @@ project's type."
 ;;;; General Org Configuration
 (use-package org
   ; :ensure org-plus-contrib
-  :pin org
+  ;; :pin org
   :defer 1
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
@@ -1295,7 +1295,22 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
           ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
            "* TODO %?\n  %i\n  %a")))
   )
+;;;; org-roam
+(use-package org-roam
+  :defer t
+  :after org
+  :hook (org-mode . org-roam-mode)
+  :custom
+  (org-roam-directory "~/org/roam")
+  (org-roam-link-representation 'title)
+  :bind
+  ("C-c n l" . org-roam)      
+  ("C-c n t" . org-roam-today)
+  ("C-c n f" . org-roam-find-file)
+  ("C-c n i" . org-roam-insert)
+  ("C-c n g" . org-roam-show-graph))
 
+;;;; outorg
 (use-package outorg
   :defer t
   :commands (outorg-edit-as-org)
@@ -1306,6 +1321,7 @@ entire source file is loaded."
     (interactive)
     (outorg-edit-as-org '(4))))
 
+;;;; outshine
 (use-package outshine
   :defer t
   :commands (outshine-mode)

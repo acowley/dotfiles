@@ -2,6 +2,37 @@ self: nixpkgs: {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
     inherit (super) pdf-tools;
     inherit (super) emacs-libvterm;
+    orgPackages = {
+      org = super.orgPackages.org.overrideAttrs (old : {
+        patches = (old.patches or []) ++ [ ./org-short-caption.patch ];
+        fixupPhase = ''
+          cd $out/share/emacs/site-lisp/elpa/org* && patch -p1 < $patches
+          cd $out/share/emacs/site-lisp/elpa/org* && emacs --batch -Q --eval "(byte-recompile-directory \"$PWD\" 0)"
+        '';
+      });
+      org-plus-contrib = super.orgPackages.org-plus-contrib.overrideAttrs (old: {
+        patches = (old.patches or []) ++ [ ./org-short-caption.patch ];
+        fixupPhase = ''
+          cd $out/share/emacs/site-lisp/elpa/org* && patch -p1 < $patches
+          cd $out/share/emacs/site-lisp/elpa/org* && emacs --batch -Q --eval "(byte-recompile-directory \"$PWD\" 0)"
+       '';
+      });
+    };
+    org-roam = super.melpaBuild {
+      pname = "org-roam";
+      version = "2020-02-11";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "jethrokuan";
+        repo = "org-roam";
+        rev = "cdf344c18969e475998bb829f2f8725b423e965f";
+        sha256 = "17v3c1x6pxq08nxiqda6bizpjvcs8h0i12kzcfxvb7f6iawjz8xn";
+      };
+      packageRequires = [ self.f self.dash ];
+      recipe = nixpkgs.writeText "recipe" ''
+        (org-roam :repo "jethrokuan/org-roam" :fetcher github :files ("org-roam.el"))
+      '';
+      fileSpecs = [ "*.el" ];
+    };
     disk-usage = super.elpaBuild {
       pname = "disk-usage";
       ename = "disk-usage";
@@ -314,6 +345,7 @@ self: nixpkgs: {
     ox-clip
     org-mime
     org-ref
+    org-roam
     biblio biblio-core
     helm-bibtex
     parsebib
