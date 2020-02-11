@@ -440,11 +440,11 @@ self: nixpkgs: {
     pomidor
     synosaurus
   ];
-  myEmacsPackagesNg =
+  myEmacsPackagesFor =
     if (false && nixpkgs.stdenv.isDarwin)
-    then nixpkgs.emacsPackagesNgGen nixpkgs.emacsMacport
-    # else nixpkgs.emacsPackagesNgGen (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
-    else nixpkgs.emacsPackagesNgGen ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (_: rec {
+    then nixpkgs.emacsPackagesFor nixpkgs.emacsMacport
+    # else nixpkgs.emacsPackagesFor (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
+    else nixpkgs.emacsPackagesFor ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (_: rec {
       name = "emacs-${version}${versionModifier}";
       version = "28.0";
       versionModifier = ".50";
@@ -465,5 +465,5 @@ self: nixpkgs: {
         sed 's/error ("Attempt to shape unibyte text");/;/g' -i src/composite.c
       '';
     }));
-  emacs = (self.myEmacsPackagesNg.overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
+  emacs = (self.myEmacsPackagesFor.overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
