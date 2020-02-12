@@ -2,6 +2,8 @@ self: nixpkgs: {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
     inherit (super) pdf-tools;
     inherit (super) emacs-libvterm;
+    org = self.orgPackages.org;
+    org-plus-contrib = self.orgPackages.org-plus-contrib;
     orgPackages = {
       org = super.orgPackages.org.overrideAttrs (old : {
         patches = (old.patches or []) ++ [ ./org-short-caption.patch ];
