@@ -982,7 +982,8 @@ evaluation may begin anew."
     :commands (org-babel-execute:C org-babel-expand-body:C
                org-babel-execute:C++ org-babel-expand-body:C++)
     :config
-    (setq org-babel-C++-compiler "clang++"))
+    (when (memq window-system '(mac ns))
+      (setq org-babel-C++-compiler "clang++")))
 
   ;; Syntax highlight dot source blocks
   ; (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
