@@ -2945,7 +2945,9 @@ sorted block."
   :commands (synosaurus-mode 
              synosaurus-lookup 
              synosaurus-choose-and-replace 
-             synosaurus-choose-and-insert))
+             synosaurus-choose-and-insert)
+  :config
+  (require 'synosaurus-wordnet))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
