@@ -496,6 +496,21 @@ end tell" uri)))
               '((:eval (file-name-nondirectory (or (buffer-file-name) "")))
                 " [%m]"))
 
+;; Add Byte as a unit to `calc`
+;; From /u/politza https://www.reddit.com/r/emacs/comments/31xezm/common_byte_units_in_calc/cq6ef06?utm_source=share&utm_medium=web2x
+(setq math-additional-units '(
+  (GiB "1024 * MiB" "Giga Byte")
+  (MiB "1024 * KiB" "Mega Byte")
+  (KiB "1024 * B" "Kilo Byte")
+  (B nil "Byte")
+  (Gib "1024 * Mib" "Giga Bit")
+  (Mib "1024 * Kib" "Mega Bit")
+  (Kib "1024 * b" "Kilo Bit")
+  (b "B / 8" "Bit")))
+
+;; Reset calc's cache
+(setq math-units-table nil)
+
 ;;;; variable-pitch-mode
 (defun my/text-mode-hook ()
   (flyspell-mode)
