@@ -506,7 +506,8 @@ end tell" uri)))
   (Gib "1024 * Mib" "Giga Bit")
   (Mib "1024 * Kib" "Mega Bit")
   (Kib "1024 * b" "Kilo Bit")
-  (b "B / 8" "Bit")))
+  (b "B / 8" "Bit")
+  (FLOP nil "FLOP")))
 
 ;; Reset calc's cache
 (setq math-units-table nil)
