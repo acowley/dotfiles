@@ -35,6 +35,9 @@
              subfiles biblatex logreq was;
     };
 
+    alglib = pkgs.callPackage ./nix/alglib {};
+    hdrmerge = pkgs.qt5.callPackage ./nix/hdrmerge {};
+
     # Apply a patch that makes nix-shell take a `-o` flag with which
     # one can specify an output directory. This lets you test the
     # installPhase of a package since it does not write to the store.
