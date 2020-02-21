@@ -975,17 +975,7 @@ evaluation may begin anew."
   (use-package ob-latex
     :defer t
     ; :ensure org-plus-contrib
-    :commands (org-babel-execute:latex org-babel-expand-body:latex)
-    :config
-    (add-to-list 'org-latex-classes
-                 '("upennphd" "\\documentclass[12pt]{upennphd}"
-                   ;; ("\\part{%s}" . "\\part*{%s}")
-                   ("\\chapter{%s}" . "\\chapter*{%s}")
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ;; ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   )))
+    :commands (org-babel-execute:latex org-babel-expand-body:latex))
   (use-package ob-dot
     :defer t
     ; :ensure org-plus-contrib
