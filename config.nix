@@ -32,7 +32,8 @@
              wrapfig capt-of footmisc subdepth preview
              minifp lettrine titling titlesec fontspec todonotes
              doublestroke comment multirow cancel doi import ifoddpage
-             subfiles biblatex logreq was;
+             subfiles biblatex logreq biber was minted fvextra xstring
+             framed;
     };
 
     alglib = pkgs.callPackage ./nix/alglib {};
