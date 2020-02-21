@@ -2458,8 +2458,10 @@ sorted block."
     :server-id 'rocm-ros5
     :notification-handlers
     (lsp-ht ("$ccls/publishSkippedRanges" #'ccls--publish-skipped-ranges)
-            ("$ccls/publishSemanticHighlight" #'ccls--publish-semantic-highlight))))
-  )
+            ("$ccls/publishSemanticHighlight" #'ccls--publish-semantic-highlight))
+    :multi-root nil
+    :library-folders-fn nil
+    :initialization-options (lambda () ccls-initialization-options))))
 
 ;;; cquery
 ;; (use-package cquery
