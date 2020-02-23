@@ -1593,7 +1593,7 @@ under the current project's root directory."
    ;; mu4e-html2text-command  "/Users/acowley/.nix-profile/bin/w3m -T text/html"
    ;; mu4e-get-mail-command "~/.nix-profile/bin/mbsync gmail-inbox gmail-trash"
    mu4e-html2text-command "w3m -T text/html"
-   mu4e-get-mail-command "mbsync gmail-inbox gmail-trash gmail-sent"
+   mu4e-get-mail-command "mbsync gmail-inbox gmail-trash gmail-sent seas-inbox seas-trash seas-sent"
 
    ;; gmail folder setup
                                         ;mu4e-drafts-folder "/gmail/drafts"
@@ -1608,7 +1608,7 @@ under the current project's root directory."
    mu4e-update-interval 600
 
    ;; don't save message to Sent Messages, Gmail/IMAP takes care of this
-   mu4e-sent-messages-behavior 'delete
+   ;; mu4e-sent-messages-behavior 'delete
 
    ;; setup some handy shortcuts
    ;; you can quickly switch to your Inbox -- press ``ji''
@@ -1617,7 +1617,8 @@ under the current project's root directory."
    mu4e-maildir-shortcuts '( ("/gmail/Inbox"   . ?i)
                              ("/gmail/sent"    . ?s)
                              ("/gmail/trash"   . ?t)
-                             ("/gmail/archive" . ?a))
+                             ("/gmail/archive" . ?a)
+                             ("/seas/Inbox"    . ?u))
 
    ;; something about ourselves
    user-mail-address "acowley@gmail.com"
@@ -1709,7 +1710,7 @@ under the current project's root directory."
   ;; the index changed.
   (defun newest-subject ()
     (let* ((mu-res (concat "(list "
-                           (shell-command-to-string "mu find maildir:'/gmail/Inbox' flag:unread --format=sexp")
+                           (shell-command-to-string "mu find maildir:'/gmail/Inbox' flag:unread --format=sexp; mu find maildir:'/seas/Inbox' flag:unread --format=sexp")
                            ")"))
            (msgs (last (car (read-from-string mu-res)))))
       (mapconcat (lambda (msg)
@@ -1743,18 +1744,34 @@ under the current project's root directory."
        (smtpmail-smtp-server "smtp.gmail.com")
        (smtpmail-smtp-service 587)
        (smtpmail-stream-type starttls)
-       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
+       (smtpmail-smtp-user "acowley@gmail.com")
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@gmail.com" nil)))
+       (mu4e-sent-folder "/gmail/sent")
+       (smtpmail-auth-credentials
+        '(("smtp.gmail.com" 587 "acowley@gmail.com" nil)))
        ;; (smtpmail-auth-supported (login))
-)
-
+       )
       ("upenn"
        (user-mail-address "acowley@seas.upenn.edu")
-       (smtpmail-default-smtp-server "smtp.seas.upenn.edu")
-       (smtpmail-smtp-server "smtp.seas.upenn.edu")
-                                        ;(smtpmail-smtp-service 578)
-       (smtpmail-smtp-service 465)
-       (smtpmail-stream-type ssl)
-       (smtpmail-auth-supported (login)))))
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-service 587)
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-user "acowley@seas.upenn.edu")
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil)))
+       (mu4e-sent-folder "/seas/sent")
+       (smtpmail-auth-credentials
+        '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil))))
+
+      ;; ("upenn"
+      ;;  (user-mail-address "acowley@seas.upenn.edu")
+      ;;  (smtpmail-default-smtp-server "smtp.seas.upenn.edu")
+      ;;  (smtpmail-smtp-server "smtp.seas.upenn.edu")
+      ;;                                   ;(smtpmail-smtp-service 578)
+      ;;  (smtpmail-smtp-service 465)
+      ;;  (smtpmail-stream-type ssl)
+      ;;  (smtpmail-auth-supported (login)))
+      ))
 
   (defun my-ensure-list (x)
     "If the given value is a list, leave it alone. If it isn't,
