@@ -92,18 +92,6 @@
     zenstates = pkgs.callPackage ./nix/zenstates {};
     global = pkgs.callPackage ./nix/global {};
 
-    # Overrides I usually want: local vinyl version
-    haskell = pkgs.haskell // {
-      packages = pkgs.haskell.packages // {
-        ghc822 = pkgs.haskell.packages.ghc822.override {
-          overrides = self: super: {
-            vinyl = pkgs.haskell.lib.dontCheck (super.callPackage ~/Documents/Projects/VinylRecords/Vinyl {});
-            intero = pkgs.haskell.lib.dontCheck (super.callPackage ~/src/intero {});
-          };
-        };
-      };
-    };
-
     clang-rf = pkgs.callPackage ./nix/clang-rf {};
 
     pcl_demo = pkgs.callPackage ./nix/pcl_demo {};
