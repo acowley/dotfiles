@@ -2238,7 +2238,10 @@ element based on the god-local-mode predicate."
          ("C-c M-." . nil)
          ("C-c C-d" . nil))
   :config
+  (setq haskell-hoogle-command "hoogle")
   ;; (electric-indent-local-mode -1)
+  (use-package haskell-doc
+    :commands (haskell-doc-current-info))
   (set-face-attribute 'haskell-keyword-face nil :slant 'italic)
   (company-mode)
   (use-package shm
