@@ -2382,6 +2382,10 @@ sorted block."
           ;; The child frame disappears almost immediately for me
           ;; lsp-ui-doc-use-childframe nil
           lsp-ui-doc-position 'top
+
+          ;; Without this, the search term is not highlighted in the
+          ;; peek popup
+          lsp-ui-peek-fontify 'always
           )
 
     ;; Make the lsp-ui-peek overlay stand out a bit better
