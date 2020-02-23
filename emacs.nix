@@ -445,19 +445,18 @@ self: nixpkgs: {
     if (false && nixpkgs.stdenv.isDarwin)
     then nixpkgs.emacsPackagesFor nixpkgs.emacsMacport
     # else nixpkgs.emacsPackagesFor (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
-    else nixpkgs.emacsPackagesFor ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (_: rec {
+    else nixpkgs.emacsPackagesFor ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (old: rec {
       name = "emacs-${version}${versionModifier}";
       version = "28.0";
       versionModifier = ".50";
       src = nixpkgs.fetchgit {
         url = "git://git.sv.gnu.org/emacs.git";
 
-        # rev = "a76a1d0c0b5c63bbed4eeeb7aa87269621956559";
-        # sha256 = "0cx7ahk18amqlivmpxvq9d3a9axbj5ag6disssxkbn8y7bib0s0i";
-        # rev = "ac7b2607735a64e657d65c87d8c9f73755ff3efa";
-        # sha256 = "08zji5fhz4kjng45hxjxpmc464whrhr65jdg6d1bwz5ngnj7k8gv";
         rev = "46fefb09745abbcdb4b56d80cd2bbd545afc39e1";
         sha256 = "1mmha7lp5bn7snf6d5mjs9979cbsav0h59rxsn5myyplg194pn6f";
+
+        # rev = "41450a8ea5a156a34f6641a0768cadb174fa261c";
+        # sha256 = "1mprbwbbacnmh620416ysfmpdzgglvix6znf8yrj1vyx9z8y7784";
       };
       patches = [];
       prePatch = ''
@@ -465,6 +464,7 @@ self: nixpkgs: {
         sed 's/\((tramp-compat-process-running-p "gvfs-fuse-daemon")\)/(tramp-compat-process-running-p ".gvfsd-fuse-wrapped") \1/' -i lisp/net/tramp-gvfs.el
         sed 's/error ("Attempt to shape unibyte text");/;/g' -i src/composite.c
       '';
+      buildInputs = (old.buildInputs or []) ++ [nixpkgs.jansson];
     }));
   emacs = (self.myEmacsPackagesFor.overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
