@@ -22,28 +22,27 @@ self: nixpkgs: {
     };
     org-roam = super.melpaBuild {
       pname = "org-roam";
-      version = "2020-02-11";
+      version = "20200219";
       src = nixpkgs.fetchFromGitHub {
         owner = "jethrokuan";
         repo = "org-roam";
-        rev = "cdf344c18969e475998bb829f2f8725b423e965f";
-        sha256 = "17v3c1x6pxq08nxiqda6bizpjvcs8h0i12kzcfxvb7f6iawjz8xn";
+        rev = "0346d3b16c42e6a05e34daa2fb91dddf8cfe714b";
+        sha256 = "0v4wlw5q7nbc1659miyzxgdgrbirbbh9p3qk4d1gazbqc1k52wbz";
       };
       packageRequires = [ self.f self.dash ];
       recipe = nixpkgs.writeText "recipe" ''
-        (org-roam :repo "jethrokuan/org-roam" :fetcher github :files ("org-roam.el"))
+        (org-roam :repo "jethrokuan/org-roam" :fetcher github)
       '';
-      fileSpecs = [ "*.el" ];
     };
     disk-usage = super.elpaBuild {
       pname = "disk-usage";
       ename = "disk-usage";
-      version = "20190220";
+      version = "20190422";
       src = (nixpkgs.fetchFromGitLab {
         owner = "ambrevar";
         repo = "emacs-disk-usage";
-        rev = "7b148294a2807ce770b37bb6a7c54080be459990";
-        sha256 = "1fk0bj9n70zsvm07r5c02fqh0sz19kjsjic92764dzz2gva06xq9";
+        rev = "b0fb8af34291a49b041eab8b5570e7bc8433a8d8";
+        sha256 = "0hv2gsd8k5fbjgckgiyisq4rn1i7y4rchbjy8kmixjv6mx563bll";
       }) + /disk-usage.el;
       packageRequires = [ super.emacs ];
       meta = {
@@ -96,7 +95,7 @@ self: nixpkgs: {
     helm-swoop = super.melpaBuild {
       pname = "helm-swoop";
       ename = "helm-swoop";
-      version = "20190927";
+      version = "20200121";
       # src = nixpkgs.fetchFromGitHub {
       #   owner = "ashiklom";
       #   repo = "helm-swoop";
@@ -106,8 +105,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacsorphanage";
         repo = "helm-swoop";
-        rev = "ee725284199f7be4171d460ae3c0f766e914e84b";
-        sha256 = "1wxp6irlhwl3pv7vbf55qgr7144q7zfaxsiwf2mii206a03kl0pq";
+        rev = "9324d8c196ab2a86fde7142f159e081b87a4d277";
+        sha256 = "1nznfrnzfbxa5qlwbddjma96k93f9hr7jv9sqx3krc0i1061nbg8";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/855ea20024b606314f8590129259747cac0bcc97/recipes/helm-swoop";
@@ -123,12 +122,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20200111";
+      version = "20200217";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "4c7fd8a5a51128039475deacae1e28bd3f750db8";
-        sha256 = "193bh65b3hpyq2vyyd28v8ga7yd6qly8vrcmdk64lfvn2kk26z8s";
+        rev = "0bfd69651ba2273469a888e4c04aea6257de1478";
+        sha256 = "1jbd22fqjpwmf1icjvyrq1bzcxxh01mrzqbwv2v335j35i8gr179";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -145,12 +144,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20200106";
+      version = "20200217";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "01f89e40f473032376f70a90e33831356832f084";
-        sha256 = "0avi8hfyh61gjrv0c8aj28y8nx8qw1vvsb3l15v9xzblvdrx7v5x";
+        rev = "e8200e3b72ecb203a854224eaf73a2194cb4ba46";
+        sha256 = "0zipz7rpd39cjyyl9mz3lvlk09jq9yrb728awamp5f7mm0xmj18l";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -239,12 +238,12 @@ self: nixpkgs: {
     lsp-haskell = super.melpaBuild {
       pname = "lsp-haskell";
       ename = "lsp-haskell";
-      version = "20190602";
+      version = "20191230";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-haskell";
-        rev = "8f2dbb6e827b1adce6360c56f795f29ecff1d7f6";
-        sha256 = "00j6d5rpsi7h5jz54zpjmbpg38fda4xy67xc4x67r834493ldzlq";
+        rev = "6d481f97e62b0fd2455e8f7a36429981277445b1";
+        sha256 = "0ljflzdjzsafgqqq9fdajrcm0rk4xaki2h5gbsbkgn8z65a2xh6h";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/lsp-haskell";
