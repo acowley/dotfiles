@@ -80,3 +80,83 @@ Channel gmail-inbox
 Channel gmail-sent
 Channel gmail-flagged
 Channel gmail-archive
+
+#################################################
+IMAPAccount seas
+# Address to connect to
+Host imap.gmail.com
+User acowley@seas.upenn.edu
+PassCmd "pass google@seas-mail"
+# Use SSL
+# UseIMAPS yes
+SSLType IMAPS
+AuthMechs LOGIN
+# CertificateFile "~/.nix-profile/etc/ca-bundle.crt"
+
+IMAPStore seas-remote
+Account seas
+
+MaildirStore seas-local
+# The trailing "/" is important
+Path ~/.mail/seas/
+Inbox ~/.mail/seas/Inbox
+
+# A problem with setting a MaxSize is that the message never
+# appears. Would prefer if attachments were dropped, but the message
+# was somehow copied into the local store.
+# MaxSize 5M
+
+Channel seas-trash
+Master ":seas-remote:[Gmail]/Trash"
+Slave ":seas-local:trash"
+Create Both
+SyncState *
+ExpireUnread yes
+
+Channel seas-archive
+Master ":seas-remote:[Gmail]/All Mail"
+Slave ":seas-local:archive"
+Create Both
+SyncState *
+# MaxMessages 100
+ExpireUnread no
+
+Channel seas-inbox
+Master ":seas-remote:INBOX"
+Slave ":seas-local:INBOX"
+Create Both
+SyncState *
+
+# Channel gmail-drafts
+# Master ":gmail-remote:[Gmail]/Drafts"
+# Slave ":gmail-local:drafts"
+# Create Both
+# SyncState *
+
+Channel seas-sent
+Master ":seas-remote:[Gmail]/Sent Mail"
+Slave ":seas-local:sent"
+Create Both
+SyncState *
+# MaxMessages 100
+
+Channel seas-flagged
+Master ":seas-remote:[Gmail]/Starred"
+Slave ":seas-local:flagged"
+Create Both
+SyncState *
+
+Channel seas-folders
+Master ":seas-remote:"
+Slave ":seas-local:"
+Patterns * ![Gmail]* !trash !archive !drafts !flagged !Inbox !sent
+Create Both
+SyncState *
+
+Group seas
+Channel seas-trash
+Channel seas-inbox
+# Channel gmail-drafts
+Channel seas-sent
+Channel seas-flagged
+Channel seas-archive
