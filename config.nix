@@ -142,14 +142,6 @@
     };
     # fltk = pkgs.callPackage ./nix/fltk {};
 
-    mu = pkgs.mu.overrideAttrs (old: {
-       # This patch causes the mu4e-view-mode-hook to be called on
-       # unread messages.  See https://github.com/djcb/mu/issues/1192
-       postPatch = old.postPatch or "" + ''
-         sed "s/(unless mode-enabled (run-mode-hooks 'mu4e-view-mode-hook))/(run-mode-hooks 'mu4e-view-mode-hook)/" -i mu4e/mu4e-view.el
-       '';
-    });
-
     # pip2nix = pkgs.callPackage ~/Documents/Projects/pip2nix {
     #   inherit (pkgs.pythonPackages) buildPythonApplication pip;
     #   inherit (pkgs) nix cacert;
