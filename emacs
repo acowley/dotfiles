@@ -1373,9 +1373,9 @@ entire source file is loaded."
 
 
 ;;; olivetti-mode
-(use-package olivetti 
+(use-package olivetti
   :commands (olivetti-mode)
-  :custom (olivetti-body-width 80)
+  :custom (olivetti-body-width 90)
   :defer t)
 ;;; pdf-tools
 (use-package pdf-tools
