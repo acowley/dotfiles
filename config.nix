@@ -165,30 +165,5 @@
     #   extraLibs = let p = pkgs.python27Packages;
     #               in [ p.setuptools p.pip p.bottle p.platformio ];
     # }).env;
-
-    opencv32 = pkgs.callPackage ./nix/opencv/3.2.nix {
-      enableContrib = true;
-      enableEigen = true;
-      enableFfmpeg = true;
-      enablePython = true;
-      inherit (pkgs.darwin.apple_sdk.frameworks)
-        AVFoundation Cocoa QTKit VideoDecodeAcceleration;
-    };
-
-    # opencv3 = pkgs.callPackage ./nix/opencv/3.x.nix {
-    #   enableContrib = true;
-    #   enableEigen = true;
-    #   enableFfmpeg = true;
-    #   enablePython = true;
-    #   inherit (pkgs.darwin.apple_sdk.frameworks)
-    #     AVFoundation Cocoa QTKit VideoDecodeAcceleration;
-    # };
-    opencv3contrib = pkgs.opencv3.override {
-      enableContrib = true;
-      enableEigen = true;
-      enableFfmpeg = true;
-      enablePython = true;
-      enableGtk3 = if (!pkgs.stdenv.isDarwin) then true else false;
-    };
   };
 }
