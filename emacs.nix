@@ -329,6 +329,7 @@ self: nixpkgs: {
     direnv
     dired-du
     mu4e-conversation
+    ace-window
 
     # org packages
     orgPackages.org-plus-contrib

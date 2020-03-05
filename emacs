@@ -3026,6 +3026,12 @@ sorted block."
              synosaurus-choose-and-insert)
   :config
   (require 'synosaurus-wordnet))
+;;; ace-window
+(use-package ace-window
+  :defer t
+  :bind (("M-o" . ace-window))
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
