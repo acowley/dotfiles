@@ -1754,7 +1754,7 @@ under the current project's root directory."
   ;; the index changed.
   (defun newest-subject ()
     (let* ((mu-res (concat "(list "
-                           (shell-command-to-string "mu find maildir:'/gmail/Inbox' flag:unread --format=sexp; mu find maildir:'/seas/Inbox' flag:unread --format=sexp")
+                           (shell-command-to-string "mu find maildir:'/gmail/Inbox' flag:unread --format=sexp 2>/dev/null; mu find maildir:'/seas/Inbox' flag:unread --format=sexp 2>/dev/null")
                            ")"))
            (msgs (last (car (read-from-string mu-res)))))
       (mapconcat (lambda (msg)
