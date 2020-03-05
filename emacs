@@ -2405,12 +2405,13 @@ sorted block."
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   (lsp-face-highlight-textual ((t (:background "#757500"))))
   :config
-  (setq lsp-prefer-flymake nil)
+  (setq lsp-prefer-flymake nil
+        lsp-prefer-capf t)
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
-  (use-package company-lsp
-    :config
-    (setq company-lsp-enable-snippet t)
-    (add-to-list 'company-backends 'company-lsp))
+  ;; (use-package company-lsp
+  ;;   :config
+  ;;   (setq company-lsp-enable-snippet t)
+  ;;   (add-to-list 'company-backends 'company-lsp))
   (use-package lsp-ui
     :commands lsp-ui-mode
     :bind (:map lsp-ui-mode-map
