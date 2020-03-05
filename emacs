@@ -93,6 +93,18 @@
 ;;;; Elisp Helpers
 (require 'subr-x)
 
+(defun my/eval-last-sexp (raw-prefix)
+  "A wrapper around `eval-last-sexp' that modifies the behavior when called with a prefix argument to insert the result of evaluating the sexp before point after inserting an arrow. The result is the original sexp is left in the buffer, followed by an arrow, followed by the result of evaluation. If no prefix is given, the result is shown in the minibuffer as with `eval-last-sexp'."
+  (interactive "P")
+  (if (null raw-prefix)
+      (eval-last-sexp raw-prefix)
+    (let ((val (eval (macroexpand-all
+                      (eval-sexp-add-defvars (elisp--preceding-sexp)))
+                     lexical-binding)))
+      (insert (format " ⇒ %s" val)))))
+
+(global-set-key (kbd "C-x C-e") 'my/eval-last-sexp)
+
 (defun backward-skip-alpha (&optional pt)
   "Move point backward until the last contiguous alpha character
 
