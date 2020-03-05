@@ -2950,6 +2950,8 @@ sorted block."
                                                 (timestamp . ("easyloggingpp")))))))
 ;;; ag
 (use-package ag :defer t)
+;;; ripgrep
+(use-package ripgrep :defer t)
 ;;; xterm-color
 (use-package xterm-color
   :commands xterm-color-filter

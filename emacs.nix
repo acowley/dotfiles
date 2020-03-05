@@ -430,6 +430,7 @@ self: nixpkgs: {
     smartparens
     logview
     ag
+    ripgrep
     xterm-color
     highlight-indent-guides
     emacs-libvterm
