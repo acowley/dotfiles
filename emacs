@@ -805,6 +805,7 @@ project's type."
         org-default-notes-file "~/org/home.org"
         org-agenda-dim-blocked-tasks 'invisible
         org-enforce-todo-dependencies 't
+        org-hide-emphasis-markers t
         ;; Don't let you edit invisible areas (i.e. after ellipsis)
         org-catch-invisible-edits 'show-and-error
         ;; Hide blank lines between headings in collapsed view
@@ -879,14 +880,31 @@ project's type."
                 org-koma-letter-export-as-latex 
                 org-koma-letter-export-to-latex))
 
+  ;; Adapated from https://www.reddit.com/r/orgmode/comments/43uuck/temporarily_show_emphasis_markers_when_the_cursor/czmtn29/
+  (defun org-show-emphasis-markers-at-point ()
+    "Show emphasis and verbatim markers around point. This makes it easier to edit arounds the ends of markup when using `org-hide-emphasis-markers'."
+    (save-match-data
+      (if (and (or (org-in-regexp org-emph-re 2) (org-in-regexp org-verbatim-re))
+               (>= (point) (match-beginning 3))
+               (<= (point) (match-end 4))
+               (member (match-string 3) (mapcar 'car org-emphasis-alist)))
+          (with-silent-modifications
+            (remove-text-properties
+             (match-beginning 3) (match-beginning 5)
+             '(invisible org-link)))
+        (apply 'font-lock-flush (list (match-beginning 3) (match-beginning 5))))))
+
   (defun my-org-hook ()
     (setq line-spacing 0.2)
     (setq header-line-format " ")
     (yas-global-mode)
     (org-bullets-mode 1)
+
+    (add-hook 'post-command-hook
+              'org-show-emphasis-markers-at-point nil t)
+
     ;; (org-table-sticky-header-mode)
     ;; (org-sticky-header-mode)
-    (setq org-hide-emphasis-markers t)
 
     ;; (require 'ox-extra)
     ;; (ox-extras-activate '(ignore-headlines))
