@@ -20,16 +20,17 @@ self: nixpkgs: {
        '';
       });
     };
-    org-roam = super.melpaBuild {
+    org-roam = super.melpaBuild rec {
       pname = "org-roam";
-      version = "20200219";
+      version = "0.1.2";
       src = nixpkgs.fetchFromGitHub {
         owner = "jethrokuan";
         repo = "org-roam";
-        rev = "0346d3b16c42e6a05e34daa2fb91dddf8cfe714b";
-        sha256 = "0v4wlw5q7nbc1659miyzxgdgrbirbbh9p3qk4d1gazbqc1k52wbz";
+        rev = "cb029c4ce82811b9896e9eb99115ef885e858fbb";
+        sha256 = "1p8bhj09s0iyb3fcjibsl1p61wiac17sn1w7hwm1wqrcydj8h8hx";
+        # date = 2020-02-21T13:44:16+08:00;
       };
-      packageRequires = [ self.f self.dash ];
+      packageRequires = [ self.f self.dash self.async ];
       recipe = nixpkgs.writeText "recipe" ''
         (org-roam :repo "jethrokuan/org-roam" :fetcher github)
       '';
@@ -85,7 +86,7 @@ self: nixpkgs: {
         sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
         name = "recipe";
       };
-      packageRequires = with super; [dash emacs self.lsp-mode ht spinner];
+      packageRequires = with self; [dash emacs self.lsp-mode ht spinner];
       meta = {
         homepage = "https://melpa.org/#/ccls";
         license = nixpkgs.lib.licenses.free;
@@ -122,12 +123,13 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20200224";
+      version = "20200303";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "9982b7ed5d96eb46cc1de0501de3b66944b90ff4";
-        sha256 = "1l3ibbvwzz8dy7klxpkzrdxc5l8lxg2w0qazasq4nlviv364v4b2";
+        rev = "026ad0edf93e1a9e1d7927635a2bb431874541c5";
+        sha256 = "1abl74bx8wx0ixdc22hqi8nxkcb6wgpkyzv344gw0i1wv40f3lw3";
+        # date = 2020-03-03T10:09:13+09:00;
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -144,12 +146,13 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20200224";
+      version = "20200301";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "da9788b42723b71318ccd0810d73d2147bc712f1";
-        sha256 = "1inihjl39ahvgi4h1q7mz8mbwvqgs73i3zxklhrhfrdxmmbizq9g";
+        rev = "c99ba09c30fb6792b284c5b58af85feed57eeba1";
+        sha256 = "1zwnyqvsyj2rf8lh2n69mp8lwma65s5mcq9qixgljqb6d4mwa3ng";
+        # date = 2020-03-01T21:39:18+01:00;
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -169,6 +172,21 @@ self: nixpkgs: {
         homepage = "https://melpa.org/#/lsp-ui";
         license = nixpkgs.lib.licenses.free;
       };
+    };
+    flycheck = super.melpaBuild {
+      pname = "flycheck";
+      ename = "flycheck";
+      version = "20200224.2057";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "flycheck";
+        repo = "flycheck";
+        rev = "08345d38e2872a3dcb14228edff796195809266f";
+        sha256 = "183s05gm7zkgwphrwq0bq9fv2sldhrxjik8skz7rvbz448syh0c5";
+      };
+      recipe = nixpkgs.writeText "recipe" ''
+        (flycheck :repo "flycheck/flycheck" :fetcher github)
+      '';
+      packageRequires = with self; [dash let-alist pkg-info seq];
     };
     company-lsp = super.melpaBuild {
       pname = "company-lsp";
