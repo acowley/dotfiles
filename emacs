@@ -1013,6 +1013,12 @@ evaluation may begin anew."
   (use-package ob-R
     :defer t
     :commands (org-babel-execute:R org-babel-expand-body:R))
+  (use-package ob-calc
+    :defer t
+    :commands (org-babel-execute:calc org-babel-expand-body:calc))
+  (use-package ob-maxima
+    :defer t
+    :commands (org-babel-execute:maxima org-babel-expand-body:maxima))
   (use-package ob-C
     :defer t
     ; :ensure org-plus-contrib
@@ -1611,6 +1617,14 @@ under the current project's root directory."
 ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 ;; (add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
 ;; (require 'mu4e)
+
+(use-package maxima
+  :load-path "~/.nix-profile/share/emacs/site-lisp/maxima"
+  :mode (rx ".ma" (or ?c ?x) eos)
+  :defer t
+  :commands (maxima-mode imaxima maxima imath-mode)
+  :config
+  (setq imaxima-use-maxima-mode-flag t))
 
 (use-package mu4e
   :load-path "~/.nix-profile/share/emacs/site-lisp/mu4e"
