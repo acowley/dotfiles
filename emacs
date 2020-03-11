@@ -2408,9 +2408,11 @@ sorted block."
 (use-package lsp-mode
   :defer t
   :commands lsp
+  :custom (lsp-keymap-prefix "C-c C-l")
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
-  (lsp-face-highlight-textual ((t (:background "#757500"))))
+  ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
+  (lsp-face-highlight-textual ((t (:background "gold4"))))
   :config
   (setq lsp-prefer-flymake nil
         lsp-prefer-capf t)
@@ -2434,6 +2436,8 @@ sorted block."
           ;; The child frame disappears almost immediately for me
           ;; lsp-ui-doc-use-childframe nil
           lsp-ui-doc-position 'top
+
+          lsp-ui-doc-include-signature t
 
           ;; Without this, the search term is not highlighted in the
           ;; peek popup
