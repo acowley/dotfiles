@@ -86,7 +86,7 @@ self: nixpkgs: {
         sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
         name = "recipe";
       };
-      packageRequires = with self; [dash emacs self.lsp-mode ht spinner];
+      packageRequires = with self; [dash emacs self.lsp-mode ht spinner projectile];
       meta = {
         homepage = "https://melpa.org/#/ccls";
         license = nixpkgs.lib.licenses.free;
