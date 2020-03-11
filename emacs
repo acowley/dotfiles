@@ -2337,7 +2337,7 @@ element based on the god-local-mode predicate."
                                    (mapcar (lambda (p) (concat "~/Projects/" p))
                                            '("MotionCT" "hpp" "Frames" "Vinyl"))
                                    )))
-  (use-package hindent)
+  ;; (use-package hindent)
 
   (use-package lsp-haskell
     ;; :defer t
