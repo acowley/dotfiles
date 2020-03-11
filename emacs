@@ -3046,6 +3046,9 @@ sorted block."
   :bind (("M-o" . ace-window))
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+;;; avy
+(use-package avy
+  :bind (("M-s" . avy-goto-word-1)))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
