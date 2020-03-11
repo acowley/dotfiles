@@ -123,21 +123,19 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20200303";
+      version = "20200309";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "026ad0edf93e1a9e1d7927635a2bb431874541c5";
-        sha256 = "1abl74bx8wx0ixdc22hqi8nxkcb6wgpkyzv344gw0i1wv40f3lw3";
-        # date = 2020-03-03T10:09:13+09:00;
+        rev = "355d4da3ac16d801ce4760f70075997928418186";
+        sha256 = "1zpp54bm666ia82ww4zwqzk6cx0a6f0fjnzp4ggkiiwqlvx5r57s";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
         sha256 = "0cklwllqxzsvs4wvvvsc1pqpmp9w99m8wimpby6v6wlijfg6y1m9";
         name = "recipe";
       };
-      packageRequires = with self; [ emacs ];
-      # patches = [ ./lsp-mode-hash-check.patch ];
+      packageRequires = with self; [ emacs f ht dash-functional spinner lv markdown-mode ];
       meta = {
         homepage = "https://melpa.org/#/lsp-mode";
         license = nixpkgs.lib.licenses.free;
@@ -146,13 +144,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20200301";
+      version = "20200308";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "c99ba09c30fb6792b284c5b58af85feed57eeba1";
-        sha256 = "1zwnyqvsyj2rf8lh2n69mp8lwma65s5mcq9qixgljqb6d4mwa3ng";
-        # date = 2020-03-01T21:39:18+01:00;
+        rev = "70c2fecbabe663a6af4e9414cafc7143f30b2f93";
+        sha256 = "104nwb3k9dxjxc7cz6sxncx9fpcwai8kp22d4d3fr08rm612696m";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
@@ -188,28 +185,28 @@ self: nixpkgs: {
       '';
       packageRequires = with self; [dash let-alist pkg-info seq];
     };
-    company-lsp = super.melpaBuild {
-      pname = "company-lsp";
-      ename = "company-lsp";
-      version = "20190612";
-      src = nixpkgs.fetchFromGitHub {
-        owner = "tigersoldier";
-        repo = "company-lsp";
-        rev = "f921ffa0cdc542c21dc3dd85f2c93df4288e83bd";
-        sha256 = "0dd2plznnnc2l1gqhsxnvrs8n1scp6zbcd4457wrq9z2f7pb5ig2";
-      };
-      recipe = nixpkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/company-lsp";
-        sha256 = "09nbi6vxw8l26gfgsc1k3bx4m8i1px1b0jxaywszky5bv4fdy03l";
-        name = "recipe";
-      };
-      packageRequires = with self; [ company dash emacs lsp-mode s ];
-      patches = [ ./company-lsp-hash-check.patch ];
-      meta = {
-        homepage = "https://melpa.org/#/company-lsp";
-        license = nixpkgs.lib.licenses.free;
-      };
-    };
+    # company-lsp = super.melpaBuild {
+    #   pname = "company-lsp";
+    #   ename = "company-lsp";
+    #   version = "20190612";
+    #   src = nixpkgs.fetchFromGitHub {
+    #     owner = "tigersoldier";
+    #     repo = "company-lsp";
+    #     rev = "f921ffa0cdc542c21dc3dd85f2c93df4288e83bd";
+    #     sha256 = "0dd2plznnnc2l1gqhsxnvrs8n1scp6zbcd4457wrq9z2f7pb5ig2";
+    #   };
+    #   recipe = nixpkgs.fetchurl {
+    #     url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/company-lsp";
+    #     sha256 = "09nbi6vxw8l26gfgsc1k3bx4m8i1px1b0jxaywszky5bv4fdy03l";
+    #     name = "recipe";
+    #   };
+    #   packageRequires = with self; [ company dash emacs lsp-mode s ];
+    #   patches = [ ./company-lsp-hash-check.patch ];
+    #   meta = {
+    #     homepage = "https://melpa.org/#/company-lsp";
+    #     license = nixpkgs.lib.licenses.free;
+    #   };
+    # };
     mu4e-conversation = super.melpaBuild {
       pname = "mu4e-conversation";
       ename = "mu4e-conversation";
@@ -373,7 +370,6 @@ self: nixpkgs: {
     #
     olivetti
     company
-    company-lsp
 
     helm
     helm-company
@@ -401,8 +397,8 @@ self: nixpkgs: {
     ess
 
     haskell-mode
-    hindent
-    dante
+    # hindent
+    # dante
   # ] ++ nixpkgs.lib.optionals (builtins.pathExists ~/src/intero) [
   #   # This is a hacky way of not building these from source on
   #   # machines where we do not expect to use them.
@@ -427,6 +423,7 @@ self: nixpkgs: {
 
     twittering-mode
     corral
+    avy
 
     rust-mode
     cargo
@@ -471,12 +468,8 @@ self: nixpkgs: {
       versionModifier = ".50";
       src = nixpkgs.fetchgit {
         url = "git://git.sv.gnu.org/emacs.git";
-
-        rev = "46fefb09745abbcdb4b56d80cd2bbd545afc39e1";
-        sha256 = "1mmha7lp5bn7snf6d5mjs9979cbsav0h59rxsn5myyplg194pn6f";
-
-        # rev = "41450a8ea5a156a34f6641a0768cadb174fa261c";
-        # sha256 = "1mprbwbbacnmh620416ysfmpdzgglvix6znf8yrj1vyx9z8y7784";
+        rev = "ef4440a9c80b284d46ecce47f4d387f132bbf374";
+        sha256 = "1k3yhm9mg44ql1pinrl93dmcfj6q84j2z3gj0a9jivsmpybs5wy9";
       };
       patches = [];
       prePatch = ''
