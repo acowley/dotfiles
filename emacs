@@ -678,7 +678,13 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;; (use-package monokai-theme :defer t)
 (use-package apropospriate-theme
   :config
-  (load-theme 'apropospriate-dark t))
+  (load-theme 'apropospriate-dark t)
+  :custom-face
+  (helm-match ((t (:foreground "DeepSkyBlue"))))
+  (company-tooltip-selection ((t (:background "SteelBlue"))))
+  (company-tooltip-annotation-selection ((t (:background "SteelBlue"))))
+  (company-tooltip-common-selection ((t (:foreground "black" :background "DeepSkyBlue"))))
+  (company-tooltip-common ((t (:foreground "DeepSkyBlue")))))
 
 ;;; emacs server
 (use-package server
