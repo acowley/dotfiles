@@ -2661,7 +2661,7 @@ sorted block."
 (defun my/c++-mode-hook ()
   (electric-indent-mode t)
   (electric-pair-mode t)
-  (setq company-backends (delete 'company-clang (delete 'company-semantic company-backends)))
+  (setq company-backends (delete 'company-dabbrev (delete 'company-clang (delete 'company-semantic company-backends))))
   (which-function-mode)
   (set-face-foreground 'which-func "LightSkyBlue")
   (yas-minor-mode-on)
