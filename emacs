@@ -742,7 +742,12 @@ project's type."
 (use-package yasnippet
   :commands (yas-global-mode yas-minor-mode yas-minor-mode-on)
   :config
-  (add-to-list 'yas-key-syntaxes #'backward-skip-alpha))
+  (add-to-list 'yas-key-syntaxes #'backward-skip-alpha)
+
+  ;; Without this, `company-complete-selection' causes yasnippet
+  ;; placeholders be inserted so that yas-next-field is no longer
+  ;; available.
+  (setq yas-inhibit-overlay-modification-protection t))
 
 ;;; Dashboard
 (use-package dashboard
