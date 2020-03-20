@@ -680,11 +680,13 @@ Make sure to put cursor on date heading that contains a list of urls."
   :config
   (load-theme 'apropospriate-dark t)
   :custom-face
-  (helm-match ((t (:foreground "DeepSkyBlue"))))
+  (helm-match ((t (:foreground "gold"))))
   (company-tooltip-selection ((t (:background "SteelBlue"))))
   (company-tooltip-annotation-selection ((t (:background "SteelBlue"))))
   (company-tooltip-common-selection ((t (:foreground "black" :background "DeepSkyBlue"))))
-  (company-tooltip-common ((t (:foreground "DeepSkyBlue")))))
+  (company-tooltip-common ((t (:foreground "DeepSkyBlue"))))
+  (lsp-ui-peek-selection ((t (:background "DeepSkyBlue"))))
+  (lsp-ui-peek-highlight ((t (:foreground "gold")))))
 
 ;;; emacs server
 (use-package server
