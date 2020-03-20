@@ -36,6 +36,30 @@
              framed;
     };
 
+    haskell = pkgs.haskell // {
+      packages = pkgs.haskell.packages // {
+        ghc883 = pkgs.haskell.packages.ghc883.override {
+          overrides = self: super: {
+            hie-bios = pkgs.haskell.lib.dontCheck super.hie-bios;
+            # haskell-lsp-types_0_19 = super.callHackage "haskell-lsp-types" "0.19.0.0" {};
+            # haskell-lsp_0_19 = super.callHackage "haskell-lsp" "0.19.0.0" {
+            #   haskell-lsp-types = self.haskell-lsp-types_0_19;
+            # };
+            # ghcide = super.ghcide.override {
+            #   haskell-lsp = self.haskell-lsp_0_19;
+            #   haskell-lsp-types = self.haskell-lsp-types_0_19;
+            # };
+            ghcide = pkgs.haskell.lib.dontCheck (super.callCabal2nix "ghcide" (pkgs.fetchFromGitHub {
+              owner = "digital-asset";
+              repo = "ghcide";
+              rev = "209be0b162bd80f9b0f62c5c1e93a6ed65b89b61";
+              sha256 = "1h848q1r8p9nfdfrsxmswjg67ardrc9cg3mlhc2s2qjz7ka19a8n";
+            }) {});
+          };
+        };
+      };
+    };
+
     alglib = pkgs.callPackage ./nix/alglib {};
     hdrmerge = pkgs.qt5.callPackage ./nix/hdrmerge {};
 
