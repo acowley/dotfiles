@@ -123,12 +123,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20200309";
+      version = "20200315";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "355d4da3ac16d801ce4760f70075997928418186";
-        sha256 = "1zpp54bm666ia82ww4zwqzk6cx0a6f0fjnzp4ggkiiwqlvx5r57s";
+        rev = "6113e321b107915375e7f3fa8e9f85242f7fc874";
+        sha256 = "1vkicqf7p9dkp526svkk331pvb51zq1m26jbdvqvcs17zv8si3xr";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
@@ -144,12 +144,12 @@ self: nixpkgs: {
     lsp-ui = super.melpaBuild {
       pname = "lsp-ui";
       ename = "lsp-ui";
-      version = "20200308";
+      version = "20200312";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-ui";
-        rev = "70c2fecbabe663a6af4e9414cafc7143f30b2f93";
-        sha256 = "104nwb3k9dxjxc7cz6sxncx9fpcwai8kp22d4d3fr08rm612696m";
+        rev = "134d9b725d21f8889f3dc72dddc418c6c6561f0e";
+        sha256 = "1ajza32nj4l5m0x9kghlwc2plavd507wajna6cdk5z276lyrn38a";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
