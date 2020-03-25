@@ -2534,7 +2534,7 @@ sorted block."
   )
 
 (defun docker-ccls ()
-  (require 'lsp)
+  (require 'lsp-mode)
   (require 'ccls)
   ;; (setq lsp-session-file "/home/acowley/.emacs.d/.lsp-session-v1")
   (lsp-register-client

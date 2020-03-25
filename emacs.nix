@@ -86,6 +86,11 @@ self: nixpkgs: {
         sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
         name = "recipe";
       };
+      patches = [(nixpkgs.fetchpatch {
+        # Replace (require 'lsp) with (require 'lsp-mode)
+        url = "https://patch-diff.githubusercontent.com/raw/MaskRay/emacs-ccls/pull/81.patch";
+        sha256 = "08n987bwwi0qkaggc976vdkanj9rgq46vhddswa7rw2vny30vlks";
+      })];
       packageRequires = with self; [dash emacs self.lsp-mode ht spinner projectile];
       meta = {
         homepage = "https://melpa.org/#/ccls";
@@ -123,12 +128,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20200315";
+      version = "20200323";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "6113e321b107915375e7f3fa8e9f85242f7fc874";
-        sha256 = "1vkicqf7p9dkp526svkk331pvb51zq1m26jbdvqvcs17zv8si3xr";
+        rev = "f939b45de5098c45899b044c2902a24c0abcf9f8";
+        sha256 = "05383pj59vwln85inid35318cnlr1jq8l48b9fbr5kfr3ss4sb7r";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
