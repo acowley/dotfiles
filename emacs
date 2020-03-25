@@ -1632,14 +1632,6 @@ under the current project's root directory."
 ;; (add-to-list 'load-path "~/.nix-profile/share/emacs/site-lisp/mu4e")
 ;; (require 'mu4e)
 
-(use-package maxima
-  :load-path "~/.nix-profile/share/emacs/site-lisp/maxima"
-  :mode (rx ".ma" (or ?c ?x) eos)
-  :defer t
-  :commands (maxima-mode imaxima maxima imath-mode)
-  :config
-  (setq imaxima-use-maxima-mode-flag t))
-
 (use-package mu4e
   :load-path "~/.nix-profile/share/emacs/site-lisp/mu4e"
   ; :ensure nil
@@ -2734,8 +2726,15 @@ sorted block."
 
 ;;; imaxima
 ;; imaxima installation
-(autoload 'imaxima "imaxima" "Image support for Maxima." t)
-(autoload 'imath-mode "imath" "Interactive Math minor mode." t)
+;; (autoload 'imaxima "imaxima" "Image support for Maxima." t)
+;; (autoload 'imath-mode "imath" "Interactive Math minor mode." t)
+(use-package maxima
+  :load-path "~/.nix-profile/share/emacs/site-lisp/maxima"
+  :mode (rx ".ma" (or ?c ?x) eos)
+  :defer t
+  :commands (maxima-mode imaxima maxima imath-mode)
+  :config
+  (setq imaxima-use-maxima-mode-flag t))
 
 ;;; QML mode
 (use-package qml-mode
