@@ -22,12 +22,12 @@ self: nixpkgs: {
     };
     org-roam = super.melpaBuild rec {
       pname = "org-roam";
-      version = "20200309";
+      version = "1.0.0";
       src = nixpkgs.fetchFromGitHub {
         owner = "jethrokuan";
         repo = "org-roam";
-        rev = "5e0b7440a31d6c7940f829d5cf2f353ffadbf209";
-        sha256 = "07zvmfi4n6pczhcqk50c308kn4ygfp3dmiwg5qqflzs35s99dg20";
+        rev = "v${version}";
+        sha256 = "08pfa63k194dpk0y2gfa0nzn5lig81q0l9axkq5j4ibj6ifaap4a";
       };
       packageRequires = [ self.f self.dash self.async 
                           self.emacsql self.emacsql-sqlite ];
