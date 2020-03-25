@@ -1657,7 +1657,14 @@ under the current project's root directory."
                                         ;mu4e-drafts-folder "/gmail/drafts"
    mu4e-drafts-folder "/mu4e/drafts"
    mu4e-sent-folder   "/gmail/sent"
-   mu4e-trash-folder  "/gmail/trash"
+   ;; mu4e-trash-folder  "/gmail/trash"
+   mu4e-trash-folder (lambda (msg)
+                       (if (string-prefix-p "/seas"
+                                            (mu4e-message-field msg :maildir))
+                           "/seas/trash"
+                         "/gmail/trash"))
+
+   mu4e-move-to-trash-patterns (list (rx (or "/seas" "/gmail")))
 
    mu4e-headers-skip-duplicates t
    mu4e-compose-dont-reply-to-self t
@@ -1726,9 +1733,9 @@ under the current project's root directory."
 
   ;; NOTE: deleting a message in Gmail is accomplished by moving to the
   ;; trash folder. "Marking for deletion" actually archives the message.
-  (fset 'my-move-to-trash "mt")
-  (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
-  (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
+  ;; (fset 'my-move-to-trash "mt")
+  ;; (define-key mu4e-headers-mode-map (kbd "d") 'my-move-to-trash)
+  ;; (define-key mu4e-view-mode-map (kbd "d") 'my-move-to-trash)
   (when (fboundp 'imagemagick-register-types) (imagemagick-register-types))
                                         ;(setq mu4e-view-prefer-html t)
                                         ;(setq mu4e-html2text-command "html2text -utf8 -width 72")
