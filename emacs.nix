@@ -86,11 +86,14 @@ self: nixpkgs: {
         sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
         name = "recipe";
       };
-      patches = [(nixpkgs.fetchpatch {
-        # Replace (require 'lsp) with (require 'lsp-mode)
-        url = "https://patch-diff.githubusercontent.com/raw/MaskRay/emacs-ccls/pull/81.patch";
-        sha256 = "08n987bwwi0qkaggc976vdkanj9rgq46vhddswa7rw2vny30vlks";
-      })];
+      patches = [
+        (nixpkgs.fetchpatch {
+          # Replace (require 'lsp) with (require 'lsp-mode)
+          url = "https://patch-diff.githubusercontent.com/raw/MaskRay/emacs-ccls/pull/81.patch";
+          sha256 = "08n987bwwi0qkaggc976vdkanj9rgq46vhddswa7rw2vny30vlks";
+        })
+      ];
+
       packageRequires = with self; [dash emacs self.lsp-mode ht spinner projectile];
       meta = {
         homepage = "https://melpa.org/#/ccls";
