@@ -1637,6 +1637,7 @@ under the current project's root directory."
   ; :ensure nil
   :defer t
   :commands (mu4e)
+  :bind (:map mu4e-view-mode-map ("<backspace>" . mu4e-view-mark-or-move-to-trash))
   :config
   (setq
    mu4e-maildir "~/.mail"
