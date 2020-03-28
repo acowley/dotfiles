@@ -35,6 +35,16 @@
              subfiles biblatex logreq biber was minted fvextra xstring
              framed;
     };
+    myzoom = pkgs.stdenv.mkDerivation {
+      name = "zoom-us";
+      src = pkgs.zoom-us;
+      buildInputs = [pkgs.makeWrapper];
+      builder = pkgs.writeText "builder.sh" ''
+        source $stdenv/setup
+        mkdir -p $out/bin
+        makeWrapper ${pkgs.zoom-us}/bin/zoom-us $out/bin/zoom-us --prefix LD_PRELOAD : ${pkgs.libv4l}/lib/libv4l/v4l2convert.so        
+      '';
+    };
 
     haskell = pkgs.haskell // {
       packages = pkgs.haskell.packages // {
