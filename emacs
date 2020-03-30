@@ -1362,11 +1362,19 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (org-roam-directory "~/org/roam")
   (org-roam-link-representation 'title)
   :bind
-  ("C-c n l" . org-roam)      
-  ("C-c n t" . org-roam-today)
-  ("C-c n f" . org-roam-find-file)
-  ("C-c n i" . org-roam-insert)
-  ("C-c n g" . org-roam-show-graph))
+  (("C-c n l" . org-roam)
+   ("C-c n f" . org-roam-find-file)
+   ("C-c n g" . org-roam-show-graph)
+   :map org-mode-map (("C-c n i" . org-roam-insert)))
+  ;; :bind (:map org-roam-mode-map
+  ;;             (("C-c n l" . org-roam)
+  ;;              ("C-c n f" . org-roam-find-file)
+  ;;              ("C-c n g" . org-roam-show-graph))
+  ;;       :map org-mode-map
+  ;;            (("C-c n i" . org-roam-insert)))
+  :config
+  (setq org-roam-graphviz-executable "dot")
+  (require 'org-roam-protocol))
 
 ;;;; outorg
 (use-package outorg
