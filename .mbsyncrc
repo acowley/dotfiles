@@ -156,7 +156,6 @@ SyncState *
 Group seas
 Channel seas-trash
 Channel seas-inbox
-# Channel gmail-drafts
 Channel seas-sent
 Channel seas-flagged
 Channel seas-archive
