@@ -875,7 +875,8 @@ project's type."
   (use-package org-superstar
     :commands (org-superstar-mode)
     :config
-    (setq org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
+    (setq ;; org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
+          org-superstar-headline-bullets-list '("»" "◉" "○" "✸" "✿")
           org-hide-leading-stars t))
   ;; (use-package org-table-sticky-header
   ;;   :diminish org-table-sticky-header-mode)
