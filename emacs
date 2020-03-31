@@ -872,7 +872,11 @@ project's type."
   (setq org-image-actual-width '(800))
   (setq org-latex-prefer-user-labels t)
 
-  (use-package org-bullets :commands (org-bullets-mode))
+  (use-package org-superstar
+    :commands (org-superstar-mode)
+    :config
+    (setq org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
+          org-hide-leading-stars t))
   ;; (use-package org-table-sticky-header
   ;;   :diminish org-table-sticky-header-mode)
   ;; (use-package org-sticky-header)
@@ -912,7 +916,7 @@ project's type."
     (setq line-spacing 0.2)
     (setq header-line-format " ")
     (yas-global-mode)
-    (org-bullets-mode 1)
+    (org-superstar-mode 1)
 
     (add-hook 'post-command-hook
               'org-show-emphasis-markers-at-point nil t)

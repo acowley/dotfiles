@@ -356,7 +356,7 @@ self: nixpkgs: {
 
     # org packages
     orgPackages.org-plus-contrib
-    org-bullets
+    org-superstar
     org-sticky-header
     org-table-sticky-header
     org-journal
