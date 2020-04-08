@@ -131,12 +131,12 @@ self: nixpkgs: {
     lsp-mode = super.melpaBuild {
       pname = "lsp-mode";
       ename = "lsp-mode";
-      version = "20200323";
+      version = "20200406";
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "f939b45de5098c45899b044c2902a24c0abcf9f8";
-        sha256 = "05383pj59vwln85inid35318cnlr1jq8l48b9fbr5kfr3ss4sb7r";
+        rev = "c2de69cc00c69b2d49e204e8bfa6af1f11a15877";
+        sha256 = "01k7frka2x4h0nk86ym2jqvcac527zxqzf0gi66c0rrhsfw1al8w";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
