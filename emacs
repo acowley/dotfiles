@@ -852,6 +852,8 @@ project's type."
   (use-package ox-reveal
     :defer t)
 
+  (use-package ox-rss :commands (org-rss-publish-to-rss))
+
   ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
 
   ;; From https://emacs.stackexchange.com/a/33077/6537
@@ -1227,7 +1229,7 @@ of code to whatever theme I'm using's background"
   (defun org-custom-link-blog-export (path desc format)
     (cond
      ((eq format 'html)
-      (format "<a href=\"https://www.arcadianvisions.com/blog/%s.html\">%s</a>"
+      (format "<a href=\"https://www.arcadianvisions.com/%s.html\">%s</a>"
               (file-name-sans-extension path)
               desc))))
 
@@ -1241,6 +1243,7 @@ insertion into the blog's index."
                          (string-match ".*?/articles/\\(.*?\\)$" (buffer-file-name))
                          (match-string 1 (buffer-file-name)))))
         (concat "* " title "\n"
+                ":PROPERTIES:\n:RSS_PERMALINK: " rel-path "\n:END:"
                 "#+include: \"" rel-path "\"::Slug\n\n"
                 "[[blog:" rel-path "][read more]]"))))
 
@@ -1311,9 +1314,11 @@ prompting for the article's title."
            ;; :sitemap-title "Arcadian Visions Blog"
            ;; :makeindex t
            :htmlized-source t
+           :with-author "Anthony Cowley"
+           :email "acowley@gmail.com"
            :with-creator nil
            :with-date nil
-           :with-email nil
+           :with-email "acowley@gmail.com"
            :with-timestamps nil
            :with-toc nil
            :section-numbers nil
@@ -1342,14 +1347,17 @@ prompting for the article's title."
            :base-directory ,(concat my/blog-directory "/articles/")
            :publishing-directory ,(concat my/blog-directory "/blog")
            :publishing-function (org-rss-publish-to-rss)
-           :html-link-home "http://www.arcadianvisions.com/blog/"
+           :html-link-home "http://www.arcadianvisions.com/"
            :completion-function my/blog-copy-index-to-rss
            :html-link-use-abs-url t
            :exclude ".*"
            :include ("index.org")
+           :author "Anthony Cowley"
            :with-toc nil
-           :with-creator "Anthony"
+           :with-creator nil
            :with-author "Anthony Cowley"
+           :email "acowley@gmail.com"
+           :with-email "acowley@gmail.com"
            :section-numbers nil)
           ("blog-assets"
            ;; Static content like images and CSS
