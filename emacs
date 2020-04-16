@@ -1750,9 +1750,10 @@ under the current project's root directory."
    ;; then, when you want archive some messages, move them to
    ;; the 'All Mail' folder by pressing ``ma''.
    mu4e-maildir-shortcuts '( ("/gmail/Inbox"   . ?i)
-                             ("/gmail/sent"    . ?s)
+                             ;; ("/gmail/sent"    . ?s)
                              ("/gmail/trash"   . ?t)
                              ("/gmail/archive" . ?a)
+                             (:maildir "/seas/archive" :key ?s)
                              ("/seas/Inbox"    . ?u))
 
    ;; something about ourselves
