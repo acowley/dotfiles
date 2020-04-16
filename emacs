@@ -1496,6 +1496,18 @@ entire source file is loaded."
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
   :config
+  (use-package pdf-occur
+    :commands (pdf-occur-global-minor-mode))
+  (use-package pdf-history
+    :commands (pdf-history-minor-mode))
+  (use-package pdf-links
+    :commands (pdf-links-minor-mode))
+  (use-package pdf-outline
+    :commands (pdf-outline-minor-mode))
+  (use-package pdf-annot
+    :commands (pdf-annot-minor-mode))
+  (use-package pdf-sync
+    :commands (pdf-sync-minor-mode))
   ;; If pdf-tools is installed using emacsWithPackage in nix, then the
   ;; `epdfinfo` binary is installed alongside the elisp package.
   (setq pdf-info-epdfinfo-program
