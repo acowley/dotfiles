@@ -471,7 +471,7 @@ self: nixpkgs: {
     if (false && nixpkgs.stdenv.isDarwin)
     then nixpkgs.emacsPackagesFor nixpkgs.emacsMacport
     # else nixpkgs.emacsPackagesFor (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
-    else nixpkgs.emacsPackagesFor ((nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; srcRepo = true; }).overrideAttrs (old: rec {
+    else nixpkgs.emacsPackagesFor ((nixpkgs.emacs.override { imagemagick = nixpkgs.imagemagickBig; srcRepo = true; }).overrideAttrs (old: rec {
       name = "emacs-${version}${versionModifier}";
       version = "28.0";
       versionModifier = ".50";
@@ -489,6 +489,7 @@ self: nixpkgs: {
         sed 's/error ("Attempt to shape unibyte text");/;/g' -i src/composite.c
       '';
       buildInputs = (old.buildInputs or []) ++ [nixpkgs.jansson];
+      configureFlags = (old.configureFlags or []) ++ ["--with-imagemagick"];
     }));
   emacs = (self.myEmacsPackagesFor.overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
