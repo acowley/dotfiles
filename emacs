@@ -2493,7 +2493,12 @@ sorted block."
 (use-package lsp-mode
   :defer t
   :commands lsp
-  :custom (lsp-keymap-prefix "C-c C-l")
+  :custom
+  (lsp-keymap-prefix "C-c C-l")
+
+  ;; The default `lv-message' tends to leave stale windows down in the
+  ;; minibuffer area for me.
+  (lsp-signature-function #'message)
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
