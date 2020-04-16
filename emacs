@@ -1032,6 +1032,50 @@ evaluation may begin anew."
   (use-package ob-R
     :defer t
     :commands (org-babel-execute:R org-babel-expand-body:R))
+  (use-package ob-plantuml
+    :defer t
+    :commands (org-babel-execute:plantuml org-babel-expand-body:plantuml)
+    :config
+      :config
+  (defun org-babel-execute:plantuml (body params)
+    "Execute a block of plantuml code with org-babel.
+This function is called by `org-babel-execute-src-block'."
+    (let* ((out-file (or (cdr (assq :file params))
+		         (error "PlantUML requires a \":file\" header argument")))
+	   (cmdline (cdr (assq :cmdline params)))
+	   (in-file (org-babel-temp-file "plantuml-"))
+	   (java (or (cdr (assq :java params)) ""))
+	   (full-body (org-babel-plantuml-make-body body params))
+	   (cmd (concat "plantuml "
+		        (if (string= (file-name-extension out-file) "png")
+			    " -tpng" "")
+		        (if (string= (file-name-extension out-file) "svg")
+			    " -tsvg" "")
+		        (if (string= (file-name-extension out-file) "eps")
+			    " -teps" "")
+		        (if (string= (file-name-extension out-file) "pdf")
+			    " -tpdf" "")
+		        (if (string= (file-name-extension out-file) "tex")
+			    " -tlatex" "")
+		        (if (string= (file-name-extension out-file) "vdx")
+			    " -tvdx" "")
+		        (if (string= (file-name-extension out-file) "xmi")
+			    " -txmi" "")
+		        (if (string= (file-name-extension out-file) "scxml")
+			    " -tscxml" "")
+		        (if (string= (file-name-extension out-file) "html")
+			    " -thtml" "")
+		        (if (string= (file-name-extension out-file) "txt")
+			    " -ttxt" "")
+		        (if (string= (file-name-extension out-file) "utxt")
+			    " -utxt" "")
+		        " -p " cmdline " < "
+		        (org-babel-process-file-name in-file)
+		        " > "
+		        (org-babel-process-file-name out-file))))
+      (with-temp-file in-file (insert full-body))
+      (message "%s" cmd) (org-babel-eval cmd "")
+      nil)))
   (use-package ob-calc
     :defer t
     :commands (org-babel-execute:calc org-babel-expand-body:calc))
@@ -3021,6 +3065,11 @@ sorted block."
   :defer t
   :mode "\\.dhall\\'"
   :commands (dhall-mode))
+;;; plantuml
+(use-package plantuml-mode
+  :defer t
+  :mode (rx ".plantuml" eos)
+  :commands (plantuml-mode))
 ;;; ESS (R)
 (use-package ess-site :mode (("\\.[rR]\\'" . R-mode)) :commands R)
 ;;; docker

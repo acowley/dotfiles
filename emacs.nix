@@ -443,6 +443,7 @@ self: nixpkgs: {
     psc-ide
     paredit
     yaml-mode
+    plantuml-mode
     # redprl
     osx-dictionary
     graphviz-dot-mode
