@@ -3115,11 +3115,14 @@ sorted block."
   :mode "\\Dockerfile\\'")
 
 (use-package docker-tramp
+  :defer 1
   :config
   (eval-after-load 'tramp
-  '(progn
-     (docker-tramp-add-method)
-     (tramp-set-completion-function docker-tramp-method docker-tramp-completion-function-alist))))
+    '(progn
+       (docker-tramp-add-method)
+       (tramp-set-completion-function 
+        docker-tramp-method 
+        docker-tramp-completion-function-alist))))
 
 ;;; emojify
 (use-package emojify
