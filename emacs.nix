@@ -348,7 +348,8 @@ self: nixpkgs: {
     dashboard
     all-the-icons
     impatient-mode
-    esup
+    # esup
+    benchmark-init
     direnv
     dired-du
     mu4e-conversation

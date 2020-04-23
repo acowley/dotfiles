@@ -16,6 +16,38 @@
               ;; (my/set-font)
               ))
 
+;;; Package setup
+
+; If we run package-initialize, then add-to-list melpa, the
+; package-install invocation will fail. We need the package-archives
+; list setup before calling package-initialize.
+(setq package-archives '(("org" . "http://orgmode.org/elpa/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
+
+;; (package-initialize)
+
+; (require 'use-package)
+(eval-when-compile
+  (add-to-list 'load-path "~/src/use-package")
+  (require 'use-package))
+;; (require 'diminish)
+(require 'bind-key)
+
+;; Show a message whenever a package takes longer than 0.1s to load
+;; (setq use-package-verbose t)
+;; (setq use-package-compute-statistics t)
+
+;;; benchmark-init
+(use-package benchmark-init
+  :config
+  (require 'benchmark-init)
+  ;; To disable collection of benchmark data after init is done.
+  (add-hook 'after-init-hook (lambda () 
+                               (benchmark-init/deactivate)
+                               (require 'benchmark-init-modes)))
+  (benchmark-init/activate))
+;;; Font setup
 ;; It would be nice to include this logic in early-init.el, but
 ;; `window-system' is not set up by the time that file is run during
 ;; emacs startup.
@@ -65,28 +97,6 @@
 (defvar outline-minor-mode-prefix "\M-#")
 
 ;; (add-to-list 'load-path "/Users/acowley/.nix-profile/share/emacs/site-lisp")
-
-;;; Package setup
-
-; If we run package-initialize, then add-to-list melpa, the
-; package-install invocation will fail. We need the package-archives
-; list setup before calling package-initialize.
-(setq package-archives '(("org" . "http://orgmode.org/elpa/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
-
-;; (package-initialize)
-
-; (require 'use-package)
-(eval-when-compile
-  (add-to-list 'load-path "~/src/use-package")
-  (require 'use-package))
-;; (require 'diminish)
-(require 'bind-key)
-
-;; Show a message whenever a package takes longer than 0.1s to load
-(setq use-package-verbose t)
-(setq use-package-compute-statistics t)
 
 ;;; General emacs configuration
 
@@ -789,10 +799,10 @@ project's type."
 
 
 ;;; esup
-(use-package esup
-  :defer t
-  :commands esup
-  :config (setq esup-user-init-file (file-truename "~/dotfiles/emacs")))
+;; (use-package esup
+;;   :defer t
+;;   :commands esup
+;;   :config (setq esup-user-init-file (file-truename "~/dotfiles/emacs")))
 ;;; Org-mode
 
 ;;;; General Org Configuration
