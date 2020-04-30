@@ -584,10 +584,12 @@ end tell" uri)))
 
 ;; hunspell hacking to get ispell to actually use utf-8
 ;; See: http://stackoverflow.com/questions/3961119/working-setup-for-hunspell-in-emacs
-(eval-after-load "ispell" '(defun ispell-get-coding-system () 'utf-8))
 
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'emacs-startup-hook 
+          (lambda () 
+            (eval-after-load "ispell" '(defun ispell-get-coding-system () 'utf-8))
+            (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+            (add-hook 'text-mode-hook 'flyspell-mode)))
 
 ;;;; Copy and comment
 (defun copy-and-comment ()
