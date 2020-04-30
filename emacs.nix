@@ -22,12 +22,12 @@ self: nixpkgs: {
     };
     org-roam = super.melpaBuild rec {
       pname = "org-roam";
-      version = "1.0.0";
+      version = "1.1.0";
       src = nixpkgs.fetchFromGitHub {
         owner = "jethrokuan";
         repo = "org-roam";
         rev = "v${version}";
-        sha256 = "08pfa63k194dpk0y2gfa0nzn5lig81q0l9axkq5j4ibj6ifaap4a";
+        sha256 = "18ljww204kf1pbgrrnx7bn6177lw1bs3npywbx2k1b5j35c3j8xv";
       };
       packageRequires = [ self.f self.dash self.async 
                           self.emacsql self.emacsql-sqlite ];
@@ -35,43 +35,60 @@ self: nixpkgs: {
         (org-roam :repo "jethrokuan/org-roam" :fetcher github)
       '';
     };
-    disk-usage = super.elpaBuild {
-      pname = "disk-usage";
-      ename = "disk-usage";
-      version = "20190422";
-      src = (nixpkgs.fetchFromGitLab {
-        owner = "ambrevar";
-        repo = "emacs-disk-usage";
-        rev = "b0fb8af34291a49b041eab8b5570e7bc8433a8d8";
-        sha256 = "0hv2gsd8k5fbjgckgiyisq4rn1i7y4rchbjy8kmixjv6mx563bll";
-      }) + /disk-usage.el;
-      packageRequires = [ super.emacs ];
-      meta = {
-        homepage = "https://elpa.gnu.org/packages/disk-usage.html";
-        license = nixpkgs.lib.licenses.free;
+    helm-bibtex = super.helm-bibtex.overrideAttrs (old: {
+      src = nixpkgs.fetchFromGitHub {
+        owner = "tmalsburg";
+        repo = "helm-bibtex";
+        rev = "4b7bb7944085f11a23a0999178e1328c71fe998e";
+        sha256 = "1hawvxg25m060fqnz8bvw3j6p1k00f7mcd0bhkplr78krgls7lcl";
       };
+    });
+    org-roam-bibtex = super.melpaBuild rec {
+      pname = "org-roam-bibtex";
+      version = "0.1.0";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "zaeph";
+        repo = "org-roam-bibtex";
+        rev = "v${version}";
+        sha256 = "14f3d1yiidglwbygb5swk44fvky7cla3r11i4zx56hrf8lxjzhp6";
+      };
+      packageRequires = [ self.f self.s self.org self.org-roam
+                          self.bibtex-completion ];
+      recipe = nixpkgs.writeText "recipe" ''
+        (org-roam-bibtex :repo "zaeph/org-roam-bibtex" :fetcher github)
+      '';
     };
-    highlight-indent-guides = super.melpaBuild {
-        pname = "highlight-indent-guides";
-        ename = "highlight-indent-guides";
-        version = "20180910";
-        src = nixpkgs.fetchFromGitHub {
-          owner = "DarthFennec";
-          repo = "highlight-indent-guides";
-          rev = "e46356487d4b19144af3025cf16f1b1bd174a450";
-          sha256 = "1fm13mx7qcwr0jnwknaja4qg92l2yq1f303hx4fjqm609s5vm1hz";
-        };
-        recipe = nixpkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/milkypostman/melpa/c8acca65a5c134d4405900a43b422c4f4e18b586/recipes/highlight-indent-guides";
-          sha256 = "00ghp677qgb5clxhdjarfl8ab3mbp6v7yfsldm9bn0s14lyaq5pm";
-          name = "recipe";
-        };
-        packageRequires = with super; [ emacs ];
-        meta = {
-          homepage = "https://melpa.org/#/highlight-indent-guides";
-          license = nixpkgs.lib.licenses.free;
-        };
+    bibtex-completion = super.melpaBuild {
+      pname = "bibtex-completion";
+      version = "20200427";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "tmalsburg";
+        repo = "helm-bibtex";
+        rev = "4b7bb7944085f11a23a0999178e1328c71fe998e";
+        sha256 = "1hawvxg25m060fqnz8bvw3j6p1k00f7mcd0bhkplr78krgls7lcl";
       };
+      packageRequires = [ self.parsebib self.s self.dash self.f self.cl-lib
+                          self.biblio ];
+      recipe = nixpkgs.writeText "recipe" ''
+        (bibtex-completion :repo "tmalsburg/helm-bibtex" :fetcher github :files ("bibtex-completion.el"))
+      '';
+    };
+    company-box = super.melpaBuild {
+      pname = "company-box";
+      ename = "company-box";
+      version = "20200429";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "sebastiencs";
+        repo = "company-box";
+        rev = "3814fcb14e92f4b85b19e664e216a7c8d5c7144d";
+        sha256 = "0ncc0gmgpnn1q7h7lkxbnfikryq8mqgn6vr8giz8vsngzbv063k6";
+      };
+      packageRequires = [ super.emacs self.company self.dash
+                          self.dash-functional super.all-the-icons ];
+      recipe = nixpkgs.writeText "recipe" ''
+        (company-box :repo "sebastiencs/company-box" :fetcher github :files (:defaults "images"))
+      '';
+    };
     ccls = super.melpaBuild {
       pname = "ccls";
       version = "20191002";
@@ -97,34 +114,6 @@ self: nixpkgs: {
       packageRequires = with self; [dash emacs self.lsp-mode ht spinner projectile];
       meta = {
         homepage = "https://melpa.org/#/ccls";
-        license = nixpkgs.lib.licenses.free;
-      };
-    };
-    # Fix an incompatibility with newer helm that breaks helm-swoop--edit
-    helm-swoop = super.melpaBuild {
-      pname = "helm-swoop";
-      ename = "helm-swoop";
-      version = "20200121";
-      # src = nixpkgs.fetchFromGitHub {
-      #   owner = "ashiklom";
-      #   repo = "helm-swoop";
-      #   rev = "6a881d81fbd1ff550ff22a118be18141d808f91c";
-      #   sha256 = "07vgzykv4p7kbbxj06pjqychh62grm0c5d42073c6z4097dpdim4";
-      # };
-      src = nixpkgs.fetchFromGitHub {
-        owner = "emacsorphanage";
-        repo = "helm-swoop";
-        rev = "9324d8c196ab2a86fde7142f159e081b87a4d277";
-        sha256 = "1nznfrnzfbxa5qlwbddjma96k93f9hr7jv9sqx3krc0i1061nbg8";
-      };
-      recipe = nixpkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/milkypostman/melpa/855ea20024b606314f8590129259747cac0bcc97/recipes/helm-swoop";
-        sha256 = "1b3nyh4h5kcvwam539va4gzxa3rl4a0rdcriif21yq340yifjbdx";
-        name = "recipe";
-      };
-      packageRequires = with super; [ emacs helm ];
-      meta = {
-        homepage = "https://melpa.org/#/helm-swoop";
         license = nixpkgs.lib.licenses.free;
       };
     };
@@ -178,64 +167,6 @@ self: nixpkgs: {
         license = nixpkgs.lib.licenses.free;
       };
     };
-    flycheck = super.melpaBuild {
-      pname = "flycheck";
-      ename = "flycheck";
-      version = "20200224.2057";
-      src = nixpkgs.fetchFromGitHub {
-        owner = "flycheck";
-        repo = "flycheck";
-        rev = "08345d38e2872a3dcb14228edff796195809266f";
-        sha256 = "183s05gm7zkgwphrwq0bq9fv2sldhrxjik8skz7rvbz448syh0c5";
-      };
-      recipe = nixpkgs.writeText "recipe" ''
-        (flycheck :repo "flycheck/flycheck" :fetcher github)
-      '';
-      packageRequires = with self; [dash let-alist pkg-info seq];
-    };
-    # company-lsp = super.melpaBuild {
-    #   pname = "company-lsp";
-    #   ename = "company-lsp";
-    #   version = "20190612";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "tigersoldier";
-    #     repo = "company-lsp";
-    #     rev = "f921ffa0cdc542c21dc3dd85f2c93df4288e83bd";
-    #     sha256 = "0dd2plznnnc2l1gqhsxnvrs8n1scp6zbcd4457wrq9z2f7pb5ig2";
-    #   };
-    #   recipe = nixpkgs.fetchurl {
-    #     url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/company-lsp";
-    #     sha256 = "09nbi6vxw8l26gfgsc1k3bx4m8i1px1b0jxaywszky5bv4fdy03l";
-    #     name = "recipe";
-    #   };
-    #   packageRequires = with self; [ company dash emacs lsp-mode s ];
-    #   patches = [ ./company-lsp-hash-check.patch ];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/company-lsp";
-    #     license = nixpkgs.lib.licenses.free;
-    #   };
-    # };
-    mu4e-conversation = super.melpaBuild {
-      pname = "mu4e-conversation";
-      ename = "mu4e-conversation";
-      version = "20181203.145";
-      src = nixpkgs.fetchFromGitLab {
-        owner = "ambrevar";
-        repo = "mu4e-conversation";
-        rev = "ae5ad4beed8aa69d1400f6f733f84f440ccfc1a7";
-        sha256 = "0cli4d3vxqx6j23rnzqx27aby14mdrwpi3aik79a9ig1jgd7kzn7";
-      };
-      recipe = nixpkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/milkypostman/melpa/7638aecc7a2cd4b1646c6e32fe83e18ef212bbaa/recipes/mu4e-conversation";
-        sha256 = "16vhjaxjhshw7ch9ihk35r99549xlbmvybwjx0p9mzyqi30dn3s6";
-        name = "recipe";
-      };
-      packageRequires = with self; [ emacs ];
-      meta = {
-        homepage = "https://melpa.org/#/mu4e-conversation";
-        license = nixpkgs.lib.licenses.free;
-      };
-    };
 
     # cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
     #   patchPhase = ''
@@ -258,48 +189,6 @@ self: nixpkgs: {
         patches = [./god-segment-project.patch];
     });
 
-    lsp-haskell = super.melpaBuild {
-      pname = "lsp-haskell";
-      ename = "lsp-haskell";
-      version = "20191230";
-      src = nixpkgs.fetchFromGitHub {
-        owner = "emacs-lsp";
-        repo = "lsp-haskell";
-        rev = "6d481f97e62b0fd2455e8f7a36429981277445b1";
-        sha256 = "0ljflzdjzsafgqqq9fdajrcm0rk4xaki2h5gbsbkgn8z65a2xh6h";
-      };
-      recipe = nixpkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/milkypostman/melpa/13d1a86dfe682f65daf529f9f62dd494fd860be9/recipes/lsp-haskell";
-        sha256 = "0pdcxnfp8ng24bfk695wpx5wcdqnjrjsfpks0xicih3mcdm1x9l8";
-        name = "recipe";
-      };
-      packageRequires = with self; [ haskell-mode lsp-mode ];
-      meta = {
-        homepage = "https://melpa.org/#/lsp-haskell";
-        license = nixpkgs.lib.licenses.free;
-        };
-      };
-    # clang-format = super.melpaBuild {
-    #   pname = "clang-format";
-    #   ename = "clang-format";
-    #   version = "20190211";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "emacsmirror";
-    #     repo = "clang-format";
-    #     rev = "0535810160aa6d7b48535c7b5b64891d1033e1c0";
-    #     sha256 = "0036qabav8n2dbci0s608bfsb8nqvpfxifzswv8lp4xddh5avy4b";
-    #   };
-    #   recipe = nixpkgs.fetchurl {
-    #     url = "https://raw.githubusercontent.com/melpa/melpa/master/recipes/clang-format";
-    #     sha256 = "0v8nvgjadzmsz088q6cgli5s99z45bz9qb508qln1yips42zn258";
-    #     name = "recipe";
-    #   };
-    #   packageRequires = with self; [ cl-lib ];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/clang-format";
-    #     license = nixpkgs.lib.licenses.free;
-    #   };
-    # };
     intero = super.melpaBuild {
       pname = "intero";
       version = "20180219";
@@ -372,6 +261,7 @@ self: nixpkgs: {
     org-mime
     org-ref
     org-roam
+    org-roam-bibtex
     biblio biblio-core
     helm-bibtex
     parsebib

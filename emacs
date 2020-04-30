@@ -962,7 +962,21 @@ project's type."
     :commands (org-crypt-use-before-save-magic)
     :hook (org-mode . org-crypt-use-before-save-magic))
   (use-package org-ref
-    :bind ("C-c C-r" . org-ref-helm-insert-cite-link))
+    :bind ("C-c C-r" . org-ref-helm-insert-cite-link)
+    :config
+    (setq ;; org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+          org-ref-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")
+          org-ref-pdf-directory "~/org/roam/references")
+
+    (use-package doi-utils
+      :commands (doi-utils-add-bibtex-entry-from-doi
+                 doi-utils-insert-bibtex-entry-from-doi
+                 doi-utils-get-bibtex-entry-pdf
+                 doi-utils-update-bibtex-entry-from-doi))
+    (use-package org-ref-arxiv
+      :commands (arxiv-add-bibtex-entry
+                 arxiv-get-pdf
+                 arxiv-get-pdf-add-bibtex-entry)))
 
   (add-hook 'org-mode-hook #'my-org-hook)
 
@@ -1426,10 +1440,12 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 (use-package org-roam
   :defer t
   :after org
-  :hook (org-mode . org-roam-mode)
+  ;; :hook (org-mode . org-roam-mode)
+  ;; :hook (after-init . org-roam-mode)
+  :hook (emacs-startup-hook . org-roam-mode)
   :custom
   (org-roam-directory "~/org/roam")
-  (org-roam-link-representation 'title)
+  ;; (org-roam-link-representation 'title)
   :bind
   (("C-c n l" . org-roam)
    ("C-c n f" . org-roam-find-file)
@@ -1444,6 +1460,20 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   :config
   (setq org-roam-graphviz-executable "dot")
   (require 'org-roam-protocol))
+
+;;;; org-roam-bibtex
+(use-package org-roam-bibtex
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :commands (org-roam-bibtex-notes-fn
+             org-roam-bibtex-edit-notes-ad
+             org-roam-bibtex-process-file-field
+             org-roam-bibtex-edit-notes 
+             org-roam-bibtex-find-non-ref-file 
+             org-roam-bibtex-insert-non-ref))
+
+(use-package bibtex-completion
+  :config
+  (setq bibtex-completion-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")))
 
 ;;;; outorg
 (use-package outorg
