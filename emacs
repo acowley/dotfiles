@@ -2134,6 +2134,7 @@ leaving only the sender's name."
 
 ;;; minions
 (use-package minions
+  :disabled
   :config (minions-mode 1))
 
 ;;; moody
