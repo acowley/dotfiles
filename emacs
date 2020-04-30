@@ -724,7 +724,7 @@ Make sure to put cursor on date heading that contains a list of urls."
 
 ;;; Projectile
 (use-package projectile
-  :commands (projectile-switch-project projectile-find-file)
+  :commands (projectile-mode projectile-switch-project projectile-find-file)
   :custom
   (projectile-project-root-files-functions
    '(projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring))
