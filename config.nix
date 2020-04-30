@@ -33,7 +33,7 @@
              minifp lettrine titling titlesec fontspec todonotes
              doublestroke comment multirow cancel doi import ifoddpage
              subfiles biblatex logreq biber was minted fvextra xstring
-             framed;
+             framed standalone aeguill catchfile;
     };
     myzoom = pkgs.stdenv.mkDerivation {
       name = "zoom-us";
