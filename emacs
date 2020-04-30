@@ -733,9 +733,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   (projectile-project-root-files-functions
    '(projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring))
   (projectile-completion-system 'helm)
-  ;; :init
-  ;; (setq projectile-keymap-prefix (kbd "C-c p"))
-  ;; 
+  :init
+  (add-hook 'emacs-startup-hook #'projectile-mode)
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (setq projectile-other-file-alist
@@ -753,8 +752,7 @@ project's type."
         projectile-globally-ignored-directories
         '(".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".cabal-sandbox" ".cabbages" ".stack-work" "build")
         projectile-project-root-files
-        '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "compile_commands.json" "shell.nix" "*.cabal"))
-  (projectile-mode))
+        '("rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "compile_commands.json" "shell.nix" "*.cabal")))
 
 ;;; yasnippet
 (use-package yasnippet
@@ -1442,11 +1440,9 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   )
 ;;;; org-roam
 (use-package org-roam
-  :defer t
+  :defer 5
   :after org
-  ;; :hook (org-mode . org-roam-mode)
-  ;; :hook (after-init . org-roam-mode)
-  :hook (emacs-startup-hook . org-roam-mode)
+  :commands (org-roam-mode org-roam org-roam-find-file org-roam-show-graph)
   :custom
   (org-roam-directory "~/org/roam")
   ;; (org-roam-link-representation 'title)
@@ -1463,7 +1459,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   ;;            (("C-c n i" . org-roam-insert)))
   :config
   (setq org-roam-graphviz-executable "dot")
-  (require 'org-roam-protocol))
+  (require 'org-roam-protocol)
+  (org-roam-mode))
 
 ;;;; org-roam-bibtex
 (use-package org-roam-bibtex
