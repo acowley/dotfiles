@@ -52,7 +52,7 @@
     # Apply a patch that makes nix-shell take a `-o` flag with which
     # one can specify an output directory. This lets you test the
     # installPhase of a package since it does not write to the store.
-    nix = pkgs.nix.overrideAttrs (old: {
+    nixo = pkgs.nix.overrideAttrs (old: {
       patches = (old.patches or []) ++ [(pkgs.fetchpatch {
         url = "https://patch-diff.githubusercontent.com/raw/NixOS/nix/pull/3036.patch";
         sha256 = "04kxbhxs7hb7r2psq5hgr87fnhrw9vggyb2bg8wg0yfvp538ilin";
@@ -97,7 +97,7 @@
 
     cparens = pkgs.haskellPackages.callPackage ~/Projects/cparens {};
 
-    openfoam = pkgs.callPackage ./nix/openfoam {};
+    # openfoam = pkgs.callPackage ./nix/openfoam {};
 
     zenstates = pkgs.callPackage ./nix/zenstates {};
     global = pkgs.callPackage ./nix/global {};
@@ -145,11 +145,12 @@
       };
     };
 
-    octaveFull = pkgs.octaveFull.override {
-      openblas = if pkgs.stdenv.isDarwin then pkgs.openblasCompat else pkgs.openblas;
-      suitesparse = pkgs.suitesparse;
-      jdk = null;
-    };
+    # octaveFull = pkgs.octaveFull.override {
+    #  openblas = if pkgs.stdenv.isDarwin then pkgs.openblasCompat else pkgs.openblas;
+    #  suitesparse = pkgs.suitesparse;
+    #  jdk = null;
+    # };
+
     # fltk = pkgs.callPackage ./nix/fltk {};
 
     # pip2nix = pkgs.callPackage ~/Documents/Projects/pip2nix {
