@@ -682,7 +682,6 @@ Make sure to put cursor on date heading that contains a list of urls."
                (ln (replace-regexp-in-string "\n" "" ln)))
           (browse-url ln))
         (forward-line 1)))))
-
 ;;; Diminish
 (use-package diminish :disabled t)
 ;;; Themes
@@ -710,8 +709,9 @@ Make sure to put cursor on date heading that contains a list of urls."
 (use-package company
   ;; :defer nil
   :commands (company-mode)
-  :init
-  (add-hook 'prog-mode-hook 'company-mode)
+  :hook (prog-mode . company-mode)
+  ;; :init
+  ;; (add-hook 'prog-mode-hook 'company-mode)
   :config
   (setq company-idle-delay 0.1)
   ;; (define-key company-mode-map (kbd "C-:") 'helm-company)
