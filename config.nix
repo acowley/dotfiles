@@ -46,44 +46,6 @@
       '';
     };
 
-    haskell = pkgs.haskell // {
-      packages = pkgs.haskell.packages // {
-        ghc883 = pkgs.haskell.packages.ghc883.override {
-          overrides = self: super: {
-            hie-bios = pkgs.haskell.lib.dontCheck super.hie-bios;
-            # haskell-lsp-types_0_19 = super.callHackage "haskell-lsp-types" "0.19.0.0" {};
-            # haskell-lsp_0_19 = super.callHackage "haskell-lsp" "0.19.0.0" {
-            #   haskell-lsp-types = self.haskell-lsp-types_0_19;
-            # };
-            # ghcide = super.ghcide.override {
-            #   haskell-lsp = self.haskell-lsp_0_19;
-            #   haskell-lsp-types = self.haskell-lsp-types_0_19;
-            # };
-            ghcide = pkgs.haskell.lib.dontCheck (super.callCabal2nix "ghcide" (pkgs.fetchFromGitHub {
-              owner = "digital-asset";
-              repo = "ghcide";
-              # rev = "209be0b162bd80f9b0f62c5c1e93a6ed65b89b61";
-              # sha256 = "1h848q1r8p9nfdfrsxmswjg67ardrc9cg3mlhc2s2qjz7ka19a8n";
-              rev = "39605333c34039241768a1809024c739df3fb2bd";
-              sha256 = "1iysrmj50w3w4ykv70ps6yr21x39mka80zpr9c8airzxb4930ar0";
-            }) {});
-            haskell-lsp-types_0_21 = super.callCabal2nix "haskell-lsp-types" ((pkgs.fetchFromGitHub {
-              owner = "alanz";
-              repo = "haskell-lsp";
-              rev = "0.21.0.0";
-              sha256 = "0qp9g4hscqqb40pcbm2gdyynz06h3j57kgjfklxk0y3p5dl07na2";
-            })+"/haskell-lsp-types") {};
-            haskell-lsp_0_21 = (super.callCabal2nix "haskell-lsp" (pkgs.fetchFromGitHub {
-              owner = "alanz";
-              repo = "haskell-lsp";
-              rev = "0.21.0.0";
-              sha256 = "0qp9g4hscqqb40pcbm2gdyynz06h3j57kgjfklxk0y3p5dl07na2";
-            }) {}).override { haskell-lsp-types = self.haskell-lsp-types_0_21; };
-          };
-        };
-      };
-    };
-
     alglib = pkgs.callPackage ./nix/alglib {};
     hdrmerge = pkgs.qt5.callPackage ./nix/hdrmerge {};
 
