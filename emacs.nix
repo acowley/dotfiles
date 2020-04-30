@@ -269,6 +269,7 @@ self: nixpkgs: {
     #
     olivetti
     company
+    company-box
 
     helm
     helm-company

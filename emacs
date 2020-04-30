@@ -721,7 +721,11 @@ Make sure to put cursor on date heading that contains a list of urls."
     ;; (add-to-list 'company-backends 'company-ispell)
     )
   (add-hook 'text-mode-hook #'ac/company-text-mode))
-
+;;; company-box
+(use-package company-box
+  :defer t
+  :hook (company-mode . company-box-mode)
+  :custom (company-box-icons-alist 'company-box-icons-all-the-icons))
 ;;; Projectile
 (use-package projectile
   :commands (projectile-mode projectile-switch-project projectile-find-file)
