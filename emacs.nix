@@ -45,15 +45,15 @@ self: nixpkgs: {
     });
     org-roam-bibtex = super.melpaBuild rec {
       pname = "org-roam-bibtex";
-      version = "0.1.0";
+      version = "0.2.1";
       src = nixpkgs.fetchFromGitHub {
         owner = "zaeph";
         repo = "org-roam-bibtex";
         rev = "v${version}";
-        sha256 = "14f3d1yiidglwbygb5swk44fvky7cla3r11i4zx56hrf8lxjzhp6";
+        sha256 = "1pd7qga5wl2njkyr9hwa2zjdr7jx0ll9g5lh19grg6mv1il3wr2n";
       };
       packageRequires = [ self.f self.s self.org self.org-roam
-                          self.bibtex-completion ];
+                          self.bibtex-completion self.org-ref ];
       recipe = nixpkgs.writeText "recipe" ''
         (org-roam-bibtex :repo "zaeph/org-roam-bibtex" :fetcher github)
       '';
