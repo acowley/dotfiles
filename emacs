@@ -3218,6 +3218,14 @@ sorted block."
 ;;                  :initial-value mode-line-format
 ;;                  :from-end t))
 
+;;; ediff
+(use-package ediff
+  :custom-face
+  (ediff-current-diff-A ((t :background "dark red")))
+  (ediff-fine-diff-A ((t :background "indian red")))
+  (ediff-current-diff-B ((t (:background "dark goldenrod"))))
+  (ediff-fine-diff-B ((t (:background "sienna"))))
+  :commands (ediff ediff3))
 ;;; Customize
 
 (custom-set-variables
