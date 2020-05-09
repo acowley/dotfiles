@@ -723,6 +723,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (add-hook 'text-mode-hook #'ac/company-text-mode))
 ;;; company-box
 (use-package company-box
+  :disabled
   :defer t
   :hook (company-mode . company-box-mode)
   :custom (company-box-icons-alist 'company-box-icons-all-the-icons))
