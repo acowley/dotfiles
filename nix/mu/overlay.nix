@@ -1,11 +1,11 @@
 self: pkgs: {
   mu = pkgs.mu.overrideAttrs (old: rec {
-    version = "1.4.1";
+    version = "1.4.4";
     src = pkgs.fetchFromGitHub {
       owner  = "djcb";
       repo   = "mu";
       rev    = version;
-      sha256 = "0q2ik7fj5k9i76js4ijyxbgrwqff437lass0sd5if2r40rqh0as0";
+      sha256 = "10snix81ng5vvjaq3ql8xyx4k130scymg87vrahj43s7n98bzgxs";
     };
 
     # This patch causes the mu4e-view-mode-hook to be called on
