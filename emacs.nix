@@ -124,8 +124,8 @@ self: nixpkgs: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacs-lsp";
         repo = "lsp-mode";
-        rev = "c2de69cc00c69b2d49e204e8bfa6af1f11a15877";
-        sha256 = "01k7frka2x4h0nk86ym2jqvcac527zxqzf0gi66c0rrhsfw1al8w";
+        rev = "ebcd87b47775c0786ae318afbcca2c375d2bc793";
+        sha256 = "0pdbxngwxpw6lc594899p1dk7mi4snk8yg1v4c4xq6cwds6cz49d";
       };
       recipe = nixpkgs.fetchurl {
         url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
