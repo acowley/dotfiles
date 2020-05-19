@@ -1403,6 +1403,19 @@ prompting for the article's title."
   ;;; org-noter
   (use-package org-noter :defer t :commands (org-noter))
 
+  ;;; org-noter-pdftools
+  (use-package org-noter-pdftools
+    :after org-noter
+    :config
+    (with-eval-after-load 'pdf-annot
+      (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+
+  ;;; org-pdftools
+  (use-package org-pdftools
+    :after org-noter
+    :config
+    (with-eval-after-load 'org (org-pdftools-setup-link)))
+
 ;;;; org-clock
 
 (defun my-org-clocktable-notodo (ipos tables params)
