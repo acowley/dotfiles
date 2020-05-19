@@ -3213,6 +3213,9 @@ sorted block."
 ;;; avy
 (use-package avy
   :bind (("M-s" . avy-goto-word-1)))
+;;; proofgeneral
+(use-package proof-general
+  :mode (rx ".v" eos))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
