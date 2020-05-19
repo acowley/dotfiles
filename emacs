@@ -834,6 +834,7 @@ project's type."
         org-agenda-dim-blocked-tasks 'invisible
         org-enforce-todo-dependencies 't
         org-hide-emphasis-markers t
+        org-startup-folded t
         ;; Don't let you edit invisible areas (i.e. after ellipsis)
         org-catch-invisible-edits 'show-and-error
         ;; Hide blank lines between headings in collapsed view
