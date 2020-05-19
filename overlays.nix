@@ -4,8 +4,9 @@
 #       ++ lib.optional (!(builtins.pathExists (builtins.toPath "/System/Library"))) [(import ~/dotfiles/rocm.nix)];
 # in lib.foldl' (lib.flip lib.extends) (_: super) myOverlays self
 # # in lib.fix toFix
-[(import ~/dotfiles/emacs.nix)
- (import ~/dotfiles/nix/mu/overlay.nix)]
+[(import (import ./emacs-overlay/nix/sources.nix).emacs-overlay)
+ (import ~/dotfiles/emacs.nix)
+ (import ~/dotfiles/nix/mu/overlay.nix)
 ++ (if builtins.pathExists ~/src/nixpkgs-mozilla/rust-overlay.nix
     then [(import ~/src/nixpkgs-mozilla/rust-overlay.nix)
           (import ~/src/nixpkgs-mozilla/rust-src-overlay.nix)]

@@ -1,6 +1,6 @@
 diff -ruN --exclude '*~' A/doom-modeline.el B/doom-modeline.el
---- A/doom-modeline.el	2020-04-14 10:50:33.747223399 -0400
-+++ B/doom-modeline.el	2020-04-14 10:52:02.854295182 -0400
+--- A/doom-modeline.el	2020-05-11 18:36:53.253410733 -0400
++++ B/doom-modeline.el	2020-05-11 18:38:51.329027416 -0400
 @@ -102,7 +102,7 @@
    '(objed-state misc-info battery irc-buffers debug minor-modes input-method indent-info buffer-encoding major-mode process))
  
@@ -10,7 +10,7 @@ diff -ruN --exclude '*~' A/doom-modeline.el B/doom-modeline.el
    '(misc-info battery irc mu4e gnus github debug minor-modes input-method major-mode process))
  
  (doom-modeline-def-modeline 'vcs
-@@ -114,7 +114,7 @@
+@@ -114,11 +114,11 @@
    '(misc-info major-mode process))
  
  (doom-modeline-def-modeline 'info
@@ -19,3 +19,17 @@ diff -ruN --exclude '*~' A/doom-modeline.el B/doom-modeline.el
    '(misc-info buffer-encoding major-mode))
  
  (doom-modeline-def-modeline 'media
+-  '(bar window-number buffer-size buffer-info)
++  '(bar window-number modals buffer-size buffer-info)
+   '(misc-info media-info major-mode process vcs))
+ 
+ (doom-modeline-def-modeline 'message
+@@ -126,7 +126,7 @@
+   '(objed-state misc-info battery debug minor-modes input-method indent-info buffer-encoding major-mode))
+ 
+ (doom-modeline-def-modeline 'pdf
+-  '(bar window-number matches buffer-info pdf-pages)
++  '(bar window-number modals matches buffer-info pdf-pages)
+   '(misc-info major-mode process vcs))
+ 
+ (doom-modeline-def-modeline 'org-src
