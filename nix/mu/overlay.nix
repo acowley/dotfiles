@@ -1,12 +1,19 @@
 self: pkgs: {
   mu = pkgs.mu.overrideAttrs (old: rec {
-    version = "1.4.4";
+    version = "1.4.6";
     src = pkgs.fetchFromGitHub {
       owner  = "djcb";
       repo   = "mu";
       rev    = version;
-      sha256 = "10snix81ng5vvjaq3ql8xyx4k130scymg87vrahj43s7n98bzgxs";
+      sha256 = "0qbn99ar45vdpx1qwmqyr9zz14833d5xkxs1hr75549dds6a7rh5";
     };
+    # Do *not* mark messages as trashed. Just move them to the trash
+    # folder, otherwise gmail holds on to things in All Mail. Also
+    # mark them as seen and read so that if they are re-surfaced as
+    # part of a conversation thread they do not appear as unread.
+    # prePatch = old.prePatch or "" + ''
+    #   sed 's/"+T-N"/"+S-u-N"/' -i mu4e/mu4e-mark.el
+    # '';
 
     # This patch causes the mu4e-view-mode-hook to be called on
     # unread messages.  See https://github.com/djcb/mu/issues/1192
