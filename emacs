@@ -966,6 +966,7 @@ project's type."
     :commands (org-crypt-use-before-save-magic)
     :hook (org-mode . org-crypt-use-before-save-magic))
   (use-package org-ref
+    :defer t
     :bind ("C-c C-r" . org-ref-helm-insert-cite-link)
     :config
     (setq ;; org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
@@ -1488,6 +1489,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
              org-roam-bibtex-insert-non-ref))
 
 (use-package bibtex-completion
+  :after org-ref
   :config
   (setq bibtex-completion-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")))
 

@@ -1,6 +1,7 @@
 {
   allowUnfree = true;
   allowBroken = true;
+  allowUnsupportedSystem = true;
   rocmTargets = ["gfx803" "gfx900" "gfx906"];
   android_sdk.accept_license = true;
   perlPackageOverrides = pkgs: {
@@ -45,6 +46,10 @@
         makeWrapper ${pkgs.zoom-us}/bin/zoom-us $out/bin/zoom-us --prefix LD_PRELOAD : ${pkgs.libv4l}/lib/libv4l/v4l2convert.so        
       '';
     };
+
+    pass-otp = pkgs.pass-otp.overrideAttrs (_: {
+      doInstallCheck = false;
+    });
 
     alglib = pkgs.callPackage ./nix/alglib {};
     hdrmerge = pkgs.qt5.callPackage ./nix/hdrmerge {};
