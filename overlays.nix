@@ -9,7 +9,9 @@ let optOverlay = x: if builtins.pathExists x then [(import x)] else [];
 in 
 [(import (import ./emacs-overlay/nix/sources.nix).emacs-overlay)
  (import ~/dotfiles/emacs.nix)
- (import ~/dotfiles/nix/mu/overlay.nix)]
+ (import ~/dotfiles/nix/mu/overlay.nix)
+ (import ~/dotfiles/nix/wordnet.nix)
+ (import ~/dotfiles/nix/corectrl/overlay.nix)]
 ++ (if builtins.pathExists ~/src/nixpkgs-mozilla/rust-overlay.nix
     then [(import ~/src/nixpkgs-mozilla/rust-overlay.nix)
           (import ~/src/nixpkgs-mozilla/rust-src-overlay.nix)]

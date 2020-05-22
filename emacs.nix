@@ -3,6 +3,21 @@ self: nixpkgs: {
     inherit (super) pdf-tools;
     inherit (super) emacs-libvterm;
 
+    synosaurus = super.synosaurus.overrideAttrs (old: {
+      patches = old.patches or [] ++ [
+        ./emacs-overlay/synosaurus-wordnet3.1.patch
+      ];
+    });
+
+    # literate-calc-mode = super.literate-calc-mode.overrideAttrs (old: {
+    #   src = nixpkgs.fetchFromGitHub {
+    #     owner = "sulami";
+    #     repo = "literate-calc-mode.el";
+    #     rev = "09dc77ac03cf1b78df4e935a20a8ff731c5bb764";
+    #     sha256 = "0kf3xdaws7mg77z24x7319zwi5qi7rhph52ss3q09ym0ammgpw1k";
+    #   };
+    # });
+
     # org-roam = super.melpaBuild rec {
     #   pname = "org-roam";
     #   version = "1.1.0";

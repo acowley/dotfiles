@@ -1,0 +1,13 @@
+diff -ruN --exclude '*~' A/synosaurus-wordnet.el B/synosaurus-wordnet.el
+--- A/synosaurus-wordnet.el	2020-05-22 13:47:47.237342755 -0400
++++ B/synosaurus-wordnet.el	2020-05-22 13:48:12.946495869 -0400
+@@ -49,8 +49,7 @@
+   (let ((words))
+     (goto-char (point-min))
+     (while (search-forward-regexp "^Sense" nil t)
+-      (forward-line 1)
+-      (beginning-of-line)
++      (search-forward-regexp (rx bol (* space) "=> "))
+       (push (synosaurus-wordnet--collect-list) words))
+     words))
+ 
