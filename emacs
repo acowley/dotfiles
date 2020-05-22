@@ -342,6 +342,10 @@ single-quoted string."
 ;; Make bookmark jumping easier
 (global-set-key (kbd "C-c b") #'bookmark-jump)
 
+;; Don't undo undo operations by default
+(global-set-key (kbd "C-/") #'undo-only)
+(global-set-key (kbd "C-_") #'undo-redo)
+
 ;; Use Shift+ArrowKey to move the cursor between windows.
 ;; This means you lose shift select.
 (windmove-default-keybindings)
