@@ -3074,7 +3074,8 @@ sorted block."
 (use-package dict-lookup
   :if (not (memq window-system '(mac ns)))
   :load-path "~/Projects/dict-lookup"
-  :bind (("C-c d" . dict-lookup-search-pointer)))
+  :bind (("C-c d" . dict-lookup-search-pointer))
+  :custom (dict-lookup-dictionary "dict-db-wordnet-542"))
 
 ;;; graphviz-dot-mode
 (use-package graphviz-dot-mode
