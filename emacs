@@ -3218,6 +3218,14 @@ sorted block."
 ;;; proofgeneral
 (use-package proof-general
   :mode (rx ".v" eos))
+;;; literate-calc-mode
+(use-package literate-calc-mode
+  :commands (literate-calc-mode literate-calc-minor-mode)
+  :config
+  ; From https://www.reddit.com/r/emacs/comments/gn8bzo/literatecalcmode/fr9pf01?utm_source=share&utm_medium=web2x
+  (with-eval-after-load 'calc
+    (defalias 'calcFunc-uconv 'math-convert-units)
+    (defalias 'calcFunc-usimp 'math-simplify-units)))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")

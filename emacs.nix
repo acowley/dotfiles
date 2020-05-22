@@ -2,22 +2,6 @@ self: nixpkgs: {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
     inherit (super) pdf-tools;
     inherit (super) emacs-libvterm;
-    # org = self.orgPackages.org;
-    # org-plus-contrib = self.orgPackages.org-plus-contrib;
-    # orgPackages = {
-    #   org = super.orgPackages.org.overrideAttrs (old : {
-    #     fixupPhase = ''
-    #       cd $out/share/emacs/site-lisp/elpa/org* && patch -p1 < $patches
-    #       cd $out/share/emacs/site-lisp/elpa/org* && emacs --batch -Q --eval "(byte-recompile-directory \"$PWD\" 0)"
-    #     '';
-    #   });
-    #   org-plus-contrib = super.orgPackages.org-plus-contrib.overrideAttrs (old: {
-    #     fixupPhase = ''
-    #       cd $out/share/emacs/site-lisp/elpa/org* && patch -p1 < $patches
-    #       cd $out/share/emacs/site-lisp/elpa/org* && emacs --batch -Q --eval "(byte-recompile-directory \"$PWD\" 0)"
-    #    '';
-    #   });
-    # };
 
     # org-roam = super.melpaBuild rec {
     #   pname = "org-roam";
@@ -34,60 +18,7 @@ self: nixpkgs: {
     #     (org-roam :repo "jethrokuan/org-roam" :fetcher github)
     #   '';
     # };
-    # helm-bibtex = super.helm-bibtex.overrideAttrs (old: {
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "tmalsburg";
-    #     repo = "helm-bibtex";
-    #     rev = "4b7bb7944085f11a23a0999178e1328c71fe998e";
-    #     sha256 = "1hawvxg25m060fqnz8bvw3j6p1k00f7mcd0bhkplr78krgls7lcl";
-    #   };
-    # });
-    # org-roam-bibtex = super.melpaBuild rec {
-    #   pname = "org-roam-bibtex";
-    #   version = "0.2.1";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "zaeph";
-    #     repo = "org-roam-bibtex";
-    #     rev = "v${version}";
-    #     sha256 = "1pd7qga5wl2njkyr9hwa2zjdr7jx0ll9g5lh19grg6mv1il3wr2n";
-    #   };
-    #   packageRequires = [ self.f self.s self.org self.org-roam
-    #                       self.bibtex-completion self.org-ref ];
-    #   recipe = nixpkgs.writeText "recipe" ''
-    #     (org-roam-bibtex :repo "zaeph/org-roam-bibtex" :fetcher github)
-    #   '';
-    # };
-    # bibtex-completion = super.melpaBuild {
-    #   pname = "bibtex-completion";
-    #   version = "20200427";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "tmalsburg";
-    #     repo = "helm-bibtex";
-    #     rev = "4b7bb7944085f11a23a0999178e1328c71fe998e";
-    #     sha256 = "1hawvxg25m060fqnz8bvw3j6p1k00f7mcd0bhkplr78krgls7lcl";
-    #   };
-    #   packageRequires = [ self.parsebib self.s self.dash self.f self.cl-lib
-    #                       self.biblio ];
-    #   recipe = nixpkgs.writeText "recipe" ''
-    #     (bibtex-completion :repo "tmalsburg/helm-bibtex" :fetcher github :files ("bibtex-completion.el"))
-    #   '';
-    # };
-    # company-box = super.melpaBuild {
-    #   pname = "company-box";
-    #   ename = "company-box";
-    #   version = "20200429";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "sebastiencs";
-    #     repo = "company-box";
-    #     rev = "3814fcb14e92f4b85b19e664e216a7c8d5c7144d";
-    #     sha256 = "0ncc0gmgpnn1q7h7lkxbnfikryq8mqgn6vr8giz8vsngzbv063k6";
-    #   };
-    #   packageRequires = [ super.emacs self.company self.dash
-    #                       self.dash-functional super.all-the-icons ];
-    #   recipe = nixpkgs.writeText "recipe" ''
-    #     (company-box :repo "sebastiencs/company-box" :fetcher github :files (:defaults "images"))
-    #   '';
-    # };
+
     # ccls = super.melpaBuild {
     #   pname = "ccls";
     #   version = "20191002";
@@ -109,66 +40,16 @@ self: nixpkgs: {
     #       sha256 = "08n987bwwi0qkaggc976vdkanj9rgq46vhddswa7rw2vny30vlks";
     #     })
     #   ];
-
     #   packageRequires = with self; [dash emacs self.lsp-mode ht spinner projectile];
     #   meta = {
     #     homepage = "https://melpa.org/#/ccls";
     #     license = nixpkgs.lib.licenses.free;
     #   };
     # };
-    # lsp-mode = super.melpaBuild {
-    #   pname = "lsp-mode";
-    #   ename = "lsp-mode";
-    #   version = "20200406";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "emacs-lsp";
-    #     repo = "lsp-mode";
-    #     rev = "ebcd87b47775c0786ae318afbcca2c375d2bc793";
-    #     sha256 = "0pdbxngwxpw6lc594899p1dk7mi4snk8yg1v4c4xq6cwds6cz49d";
-    #   };
-    #   recipe = nixpkgs.fetchurl {
-    #     url = "https://raw.githubusercontent.com/milkypostman/melpa/1a7b69312e688211089a23b75910c05efb507e35/recipes/lsp-mode";
-    #     sha256 = "0cklwllqxzsvs4wvvvsc1pqpmp9w99m8wimpby6v6wlijfg6y1m9";
-    #     name = "recipe";
-    #   };
-    #   packageRequires = with self; [ emacs f ht dash-functional spinner lv markdown-mode ];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/lsp-mode";
-    #     license = nixpkgs.lib.licenses.free;
-    #   };
-    # };
+
     lsp-ui = super.lsp-ui.overrideAttrs (_: {
       patches = [ ./lsp-ui-window-change-no-hide.patch ];
     });
-    # lsp-ui = super.melpaBuild {
-    #   pname = "lsp-ui";
-    #   ename = "lsp-ui";
-    #   version = "20200312";
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "emacs-lsp";
-    #     repo = "lsp-ui";
-    #     rev = "134d9b725d21f8889f3dc72dddc418c6c6561f0e";
-    #     sha256 = "1ajza32nj4l5m0x9kghlwc2plavd507wajna6cdk5z276lyrn38a";
-    #   };
-    #   recipe = nixpkgs.fetchurl {
-    #     url = "https://raw.githubusercontent.com/milkypostman/melpa/1e4fa7cdf71f49f6998b26d81de9522248bc58e6/recipes/lsp-ui";
-    #     sha256 = "00y5i44yd79z0v00a9lvgixb4mrx9nq5vcgmib70h41ffffaq42j";
-    #     name = "recipe";
-    #   };
-    #   packageRequires = with self; [
-    #     dash
-    #     dash-functional
-    #     emacs
-    #     flycheck
-    #     lsp-mode
-    #     markdown-mode
-    #   ];
-    #   patches = [ ./lsp-ui-window-change-no-hide.patch ];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/lsp-ui";
-    #     license = nixpkgs.lib.licenses.free;
-    #   };
-    # };
 
     # cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {
     #   patchPhase = ''
@@ -228,6 +109,8 @@ self: nixpkgs: {
     dired-du
     mu4e-conversation
     ace-window
+
+    literate-calc-mode
 
     # org packages
     orgPackages.org-plus-contrib
