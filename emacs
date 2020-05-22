@@ -1864,6 +1864,12 @@ under the current project's root directory."
 
   (add-hook 'mu4e-compose-mode-hook #'my/mu4e-compose-hook)
 
+  (defun my/mu4e-headers-hook ()
+    ;; The mu4e headers view slows down a lot with ligatures
+    (setq auto-composition-mode nil))
+
+  (add-hook 'mu4e-headers-mode-hook #'my/mu4e-headers-hook)
+
   ;; Add a view in browser action. Trigger with "aV"
   (add-to-list 'mu4e-view-actions
                '("ViewInBrowser" . mu4e-action-view-in-browser) t)
