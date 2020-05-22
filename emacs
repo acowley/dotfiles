@@ -287,6 +287,8 @@ single-quoted string."
 
 (setq confirm-kill-emacs #'y-or-n-p)
 
+(put 'narrow-to-region 'disabled nil)
+
 ;; (tool-bar-mode -1)
 
 ;; (when (and window-system (not (memq window-system '(mac ns))))
