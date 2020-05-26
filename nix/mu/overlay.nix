@@ -1,11 +1,11 @@
 self: pkgs: {
   mu = pkgs.mu.overrideAttrs (old: rec {
-    version = "1.4.6";
+    version = "1.4.7";
     src = pkgs.fetchFromGitHub {
       owner  = "djcb";
       repo   = "mu";
       rev    = version;
-      sha256 = "0qbn99ar45vdpx1qwmqyr9zz14833d5xkxs1hr75549dds6a7rh5";
+      sha256 = "0inn720prhgxxc1napzd3xyzqgsvv70gqddsyzaa84h6946iz6v5";
     };
     # Do *not* mark messages as trashed. Just move them to the trash
     # folder, otherwise gmail holds on to things in All Mail. Also
