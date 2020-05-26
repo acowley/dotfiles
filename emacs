@@ -3239,6 +3239,10 @@ sorted block."
   (with-eval-after-load 'calc
     (defalias 'calcFunc-uconv 'math-convert-units)
     (defalias 'calcFunc-usimp 'math-simplify-units)))
+;;; dired-rsync
+(use-package dired-rsync
+  :bind (:map dired-mode-map
+              ("C-c C-r" . dired-rsync)))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")

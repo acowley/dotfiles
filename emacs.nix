@@ -122,6 +122,7 @@ self: nixpkgs: {
     benchmark-init
     direnv
     dired-du
+    dired-rsync
     mu4e-conversation
     ace-window
 
