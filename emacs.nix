@@ -63,7 +63,8 @@ self: nixpkgs: {
     # };
 
     lsp-ui = super.lsp-ui.overrideAttrs (_: {
-      patches = [ ./lsp-ui-window-change-no-hide.patch ];
+      # patches = [ ./lsp-ui-window-change-no-hide.patch ];
+      patches = [ ./lsp-ui-doc-hide-fix.patch ];
     });
 
     # cmake-mode = super.melpaPackages.cmake-mode.overrideAttrs (_: {

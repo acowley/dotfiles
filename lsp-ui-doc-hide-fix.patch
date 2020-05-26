@@ -1,0 +1,32 @@
+diff -ruN --exclude '*~' A/lsp-ui-doc.el B/lsp-ui-doc.el
+--- A/lsp-ui-doc.el	2020-05-23 03:05:48.311873851 -0400
++++ B/lsp-ui-doc.el	2020-05-23 03:09:41.928882074 -0400
+@@ -615,8 +615,20 @@
+       (not (display-graphic-p))
+       (not (fboundp 'display-buffer-in-child-frame))))
+ 
++(defvar-local lsp-ui-doc--current-buffer nil
++  "Value of `(current-buffer)' when `lsp-ui-doc--display' was last called")
++
++(defun lsp-ui-doc--maybe-hide-frame ()
++  "Calls `lsp-ui-doc--hide-frame' if `current-buffer' is
++different than when `lsp-ui-doc--display' was last called."
++  (unless (eq (current-buffer) lsp-ui-doc--current-buffer)
++    (lsp-ui-doc--hide-frame)))
++
++(add-hook 'post-command-hook #'lsp-ui-doc--maybe-hide-frame)
++
+ (defun lsp-ui-doc--display (symbol string)
+   "Display the documentation."
++  (setq-local lsp-ui-doc--current-buffer (current-buffer))
+   (when (and lsp-ui-doc-use-webkit (not (featurep 'xwidget-internal)))
+     (setq lsp-ui-doc-use-webkit nil))
+   (if (or (null string) (string-empty-p string))
+@@ -748,7 +760,6 @@
+ (advice-add #'select-window :around #'lsp-ui-doc-hide-frame-on-window-change)
+ 
+ (advice-add 'load-theme :before (lambda (&rest _) (lsp-ui-doc--delete-frame)))
+-(add-hook 'window-configuration-change-hook #'lsp-ui-doc--hide-frame)
+ 
+ (advice-add #'keyboard-quit :before #'lsp-ui-doc--hide-frame)
+ 
