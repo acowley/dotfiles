@@ -3,6 +3,12 @@ self: nixpkgs: {
     inherit (super) pdf-tools;
     inherit (super) emacs-libvterm;
 
+    ox-reveal = super.ox-reveal.overrideAttrs (old: {
+      patches = old.patches or [] ++ [
+        ./emacs-overlay/ox-reveal-4.0.patch
+      ];
+    });
+
     synosaurus = super.synosaurus.overrideAttrs (old: {
       patches = old.patches or [] ++ [
         ./emacs-overlay/synosaurus-wordnet3.1.patch

@@ -1,0 +1,224 @@
+diff -ruN --exclude '*~' A/ox-reveal.el B/ox-reveal.el
+--- A/ox-reveal.el	2020-05-29 06:06:28.772051461 -0400
++++ B/ox-reveal.el	2020-05-29 07:36:27.663988674 -0400
+@@ -5,6 +5,7 @@
+ ;; Author: Yujie Wen <yjwen.ty at gmail dot com>
+ ;; Created: 2013-04-27
+ ;; Version: 1.0
++;; Package-Version: 20200429.1533
+ ;; Package-Requires: ((org "8.3"))
+ ;; Keywords: outlines, hypermedia, slideshow, presentation
+ 
+@@ -126,7 +127,7 @@
+ 
+ (defcustom org-reveal-root "./reveal.js"
+   "The root directory of reveal.js packages. It is the directory
+-  within which js/reveal.js is."
++  within which dist/reveal.js is."
+   :group 'org-export-reveal
+   :type 'string)
+ 
+@@ -268,18 +269,20 @@
+   :type 'string)
+ 
+ (defcustom org-reveal-plugins
+-  '(classList markdown zoom notes)
++  '(;; classList 
++    markdown zoom notes)
+   "Default builtin plugins"
+   :group 'org-export-reveal
+   :type '(set
+-          (const classList)
++          ;; (const classList)
+           (const markdown)
+           (const highlight)
+           (const zoom)
+           (const notes)
+           (const search)
+-          (const remotes)
+-          (const multiplex)))
++          ;; (const remotes)
++          ;; (const multiplex)
++))
+ 
+ (defcustom org-reveal-external-plugins nil
+   "Additional third-party Plugins to load with reveal.
+@@ -301,7 +304,7 @@
+   :group 'org-export-reveal
+   :type 'string)
+ 
+-(defcustom org-reveal-highlight-css "%r/lib/css/zenburn.css"
++(defcustom org-reveal-highlight-css "%r/plugin/highlight/zenburn.css"
+   "Highlight.js CSS file."
+   :group 'org-export-reveal
+   :type 'string)
+@@ -571,9 +574,9 @@
+   "Return the HTML contents for declaring reveal stylesheets
+ using custom variable `org-reveal-root'."
+   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
+-         (reveal-css (concat root-path "css/reveal.css"))
++         (reveal-css (concat root-path "dist/reveal.css"))
+          (theme (plist-get info :reveal-theme))
+-         (theme-css (concat root-path "css/theme/" theme ".css"))
++         (theme-css (concat root-path "dist/theme/" theme ".css"))
+          (extra-css (plist-get info :reveal-extra-css))
+          (in-single-file (plist-get info :reveal-single-file)))
+     (concat
+@@ -594,22 +597,7 @@
+      (if (org-reveal--using-highlight.js info)
+          (format "<link rel=\"stylesheet\" href=\"%s\"/>"
+                  (format-spec (plist-get info :reveal-highlight-css)
+-                              `((?r . ,(directory-file-name root-path))))))
+-     ;; print-pdf
+-     (if in-single-file ""
+-       (format "
+-<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+-<script>
+-    if( window.location.search.match( /print-pdf/gi ) ) {
+-        var link = document.createElement( 'link' );
+-        link.rel = 'stylesheet';
+-        link.type = 'text/css';
+-        link.href = '%scss/print/pdf.css';
+-        document.getElementsByTagName( 'head' )[0].appendChild( link );
+-    }
+-</script>
+-"
+-               root-path)))))
++                              `((?r . ,(directory-file-name root-path)))))))))
+ 
+ (defun org-reveal-mathjax-scripts (info)
+   "Return the HTML contents for declaring MathJax scripts"
+@@ -622,13 +610,13 @@
+   "Return the necessary scripts for initializing reveal.js using
+ custom variable `org-reveal-root'."
+   (let* ((root-path (file-name-as-directory (plist-get info :reveal-root)))
+-         (reveal-js (concat root-path "js/reveal.js"))
++         (reveal-js (concat root-path "dist/reveal.js"))
+          ;; Local files
+          (local-root-path (org-reveal--file-url-to-path root-path))
+-         (local-reveal-js (concat local-root-path "js/reveal.js"))
++         (local-reveal-js (concat local-root-path "dist/reveal.js"))
+          (in-single-file (plist-get info :reveal-single-file)))
+     (concat
+-     ;; reveal.js/js/reveal.js
++     ;; reveal.js/dist/reveal.js
+      (if (and in-single-file
+               (file-readable-p local-reveal-js))
+          ;; Embed scripts into HTML
+@@ -646,6 +634,17 @@
+        (concat
+         "<script src=\"" reveal-js "\"></script>\n"))
+      ;; plugin headings
++     (mapconcat (lambda (plugin) 
++                  (let ((str (format "%s" plugin)))
++                    (concat "<script src=\"" root-path "plugin/" str "/" str ".js\"></script>"))) 
++                (let ((buffer-plugins (condition-case e
++                                          (car (read-from-string (plist-get info :reveal-plugins)))
++                                        (end-of-file nil)
++                                        (wrong-type-argument nil))))
++                  (or (and buffer-plugins (listp buffer-plugins) buffer-plugins)
++                      org-reveal-plugins))
++                "\n")
++
+      "
+ <script>
+ // Full list of configuration options available here:
+@@ -657,19 +656,21 @@
+        (and (string< "" options)
+ 	    (format "%s,\n" options)))
+ 
+-     ;; multiplexing - depends on defvar 'client-multiplex'
+-     (when (plist-get info :reveal-multiplex-id)
++     (when (plist-get info :reveal-multiplex-id) 
++       (let ((server-multiplex (not client-multiplex)))
++         (when (and server-multiplex (plist-get info :reveal-multiplex-secret))
++           (setq client-multiplex t))
+        (format
+-"multiplex: {
++               "multiplex: {
+     secret: %s, // null if client
+     id: '%s', // id, obtained from socket.io server
+     url: '%s' // Location of socket.io server
+ },\n"
+-             (if (eq client-multiplex nil)
+-                 (format "'%s'" (plist-get info :reveal-multiplex-secret))
+-               (format "null"))
+-             (plist-get info :reveal-multiplex-id)
+-             (plist-get info :reveal-multiplex-url)))
++               (if server-multiplex
++                   (format "'%s'" (plist-get info :reveal-multiplex-secret))
++                 (format "null"))
++               (plist-get info :reveal-multiplex-id)
++               (plist-get info :reveal-multiplex-url))))
+ 
+      (let ((extra-initial-js  (plist-get info :reveal-extra-initial-js)))
+        (unless (string= extra-initial-js "")
+@@ -679,39 +680,27 @@
+      (if in-single-file ""
+        (concat
+         "
++    plugins: [ "
++        (mapconcat (lambda (plugin) 
++                     (let ((str (format "%s" plugin)))
++                       (concat "Reveal" (capitalize str))))
++                   (let ((buffer-plugins (condition-case e
++                                             (car (read-from-string (plist-get info :reveal-plugins)))
++                                           (end-of-file nil)
++                                           (wrong-type-argument nil))))
++                     (or (and buffer-plugins (listp buffer-plugins) buffer-plugins)
++                         org-reveal-plugins))
++                   ", ")
++        " ],"
++))
++     (if in-single-file ""
++       (concat
++        "
+ // Optional libraries used to extend on reveal.js
+ dependencies: [
+ "
+         ;; JS libraries
+-        (let* ((builtins
+-                '(classList (format " { src: '%slib/js/classList.js', condition: function() { return !document.body.classList; } }" root-path)
+-                  markdown (format " { src: '%splugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+- { src: '%splugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } }" root-path root-path)
+-                  highlight (format " { src: '%splugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }" root-path)
+-                  zoom (format " { src: '%splugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+-                  notes (format " { src: '%splugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+-                  search (format " { src: '%splugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+-                  remotes (format " { src: '%splugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }" root-path)
+-                  multiplex (format " { src: '%s', async: true },\n%s"
+-                                    (plist-get info :reveal-multiplex-socketio-url)
+-                                        ; following ensures that either client.js or master.js is included depending on defva client-multiplex value state
+-                                    (if (not client-multiplex)
+-                                        (progn
+-                                          (if (plist-get info :reveal-multiplex-secret)
+-                                              (setq client-multiplex t))
+-                                          (format " { src: '%splugin/multiplex/master.js', async: true }" root-path))
+-                                      (format " { src: '%splugin/multiplex/client.js', async: true }" root-path)))))
+-               (builtin-codes
+-                (mapcar
+-                 (lambda (p)
+-                   (eval (plist-get builtins p)))
+-                 (let ((buffer-plugins (condition-case e
+-                                           (car (read-from-string (plist-get info :reveal-plugins)))
+-                                         (end-of-file nil)
+-                                         (wrong-type-argument nil))))
+-                   (or (and buffer-plugins (listp buffer-plugins) buffer-plugins)
+-                       org-reveal-plugins))))
+-               (external-plugins
++        (let* ((external-plugins
+ 		(append
+ 		 ;; Global setting
+                  (cl-loop for (key . value) in org-reveal-external-plugins
+@@ -721,10 +710,9 @@
+ 		   (and local-plugins
+ 			(list (format local-plugins root-path))))))
+ 
+-               (all-plugins (if external-plugins (append external-plugins builtin-codes) builtin-codes))
+                (extra-codes (plist-get info :reveal-extra-js))
+                (total-codes
+-                (if (string= "" extra-codes) all-plugins (append (list extra-codes) all-plugins))))
++                (if (string= "" extra-codes) external-plugins (append (list extra-codes) external-plugins))))
+           (mapconcat 'identity total-codes ",\n"))
+         "]\n"
+          ))
