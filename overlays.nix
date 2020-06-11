@@ -17,9 +17,4 @@ in
     else [])
 ++ optOverlay ~/src/rust-analyzer-overlay/default.nix
 ++ optOverlay ~/dotfiles/nix/corectrl/overlay.nix
-++ (if builtins.pathExists (builtins.toPath "/System/Library")
-    then []
-    else if builtins.pathExists ~/src/nixos-rocm
-	 then [ (import ~/src/nixos-rocm/default.nix) ]
-	 else [])
-
+++ optOverlay ~/src/nixos-rocm/default.nix
