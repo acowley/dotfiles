@@ -3,10 +3,12 @@ self: nixpkgs: {
     inherit (super) pdf-tools;
     inherit (super) vterm;
 
-    ox-reveal = super.ox-reveal.overrideAttrs (old: {
-      patches = old.patches or [] ++ [
-        ./emacs-overlay/ox-reveal-4.0.patch
-      ];
+    # ox-reveal = super.ox-reveal.overrideAttrs (old: {
+    #   patches = old.patches or [] ++ [
+    #     ./emacs-overlay/ox-reveal-4.0.patch
+    #   ];
+    # });
+
     god-mode = super.god-mode.overrideAttrs (old: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacsorphanage";
