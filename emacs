@@ -1782,6 +1782,176 @@ under the current project's root directory."
 ;; (global-set-key (kbd "C-x C-b") #'switch-to-buffer)
 
 
+;;; Email (notmuch)
+(use-package notmuch
+  :commands (notmuch)
+  :bind (:map notmuch-show-mode-map
+              ("d" .
+               (lambda ()
+                 "toggle deleted tag for message"
+                 (interactive)
+                 (if (member "deleted" (notmuch-show-get-tags))
+                     (notmuch-show-tag '("-deleted"))
+                   (notmuch-show-tag '("+deleted" "-inbox" "-unread" "-new")))
+                 (notmuch-show-next-message)))
+              ("r" . #'my-notmuch-reply-sender)
+              ("R" . #'my-notmuch-reply)
+              ("a" .
+               (lambda ()
+                 (interactive)
+                 (if (member "archived" (notmuch-show-get-tags))
+                     (notmuch-show-tag '("-archived"))
+                   (notmuch-show-tag '("+archived" "-inbox" "-unread" "-gmail/Inbox" "-seas/Inbox" "-new")))
+                 (notmuch-show-next-thread)))
+              :map notmuch-search-mode-map
+              ("d" .
+               (lambda ()
+                 "toggle deleted tag for message"
+                 (interactive)
+                 (if (member "deleted" (notmuch-search-get-tags))
+                     (notmuch-search-tag '("-deleted"))
+                   (notmuch-search-tag '("+deleted" "-inbox" "-unread" "-new")))
+                 (notmuch-search-next-thread)))
+              ("a" .
+               (lambda ()
+                 (interactive)
+                 (if (member "archived" (notmuch-search-get-tags))
+                     (notmuch-search-tag '("-archived"))
+                   (notmuch-search-tag '("+archived" "-inbox" "-unread" "-gmail/Inbox" "-seas/Inbox" "-new")))
+                 (notmuch-search-next-thread))))
+  :custom
+  (notmuch-search-oldest-first nil)
+  (notmuch-fcc-dirs '(("acowley@gmail.com" . "gmail/sent")
+                      ("acowley@seas.upenn.edu" . "seas/sent")))
+  (notmuch-poll-script "~/dotfiles/notmuch-sync-new.sh")
+  :custom-face
+  (notmuch-search-date ((t (:foreground "SteelBlue"))))
+  (notmuch-search-count ((t (:foreground "SteelBlue"))))
+  ;; (notmuch-search-matching-authors ((t (:foreground "CadetBlue"))))
+  (notmuch-search-matching-authors ((t (:foreground "DeepSkyBlue"))))
+  ;; (notmuch-search-subject ((t (:foreground "DeepSkyBlue"))))
+  (notmuch-search-subject ((t (:foreground "white"))))
+  (notmuch-search-unread-face ((t (:foreground "CadetBlue"))))
+  (notmuch-search-subject ((t (:family "Montserrat" :weight light :height 120 :foreground "white"))))
+
+  :config
+  ;; Associate firefox with the `text/html' MIME type so that typing
+  ;; ".v" opens an HTML part of an email message in firefox.
+  (setq mailcap-user-mime-data '(((viewer . "firefox %s") (type . "text/html"))))
+  (defface notmuch-search-deleted-face
+    '((t (:foreground "tomato")))
+    "Face for the `deleted' tag."
+    :group 'notmuch-search :group 'notmuch-faces)
+  (add-to-list 'notmuch-search-line-faces '("deleted" . notmuch-search-deleted-face))
+  (add-hook 'notmuch-search-hook (lambda () (setq line-spacing 0.1)))
+  (setq user-full-name  "Anthony Cowley")
+  (defun evil-collection-notmuch-toggle-tag (tag mode &optional next-function)
+    "Toggle TAG tag for message in MODE."
+    (let ((get (intern (format "notmuch-%s-get-tags" mode)))
+          (set (intern (format "notmuch-%s-tag" mode)))
+          (next (or next-function (intern (format "notmuch-%s-next-message" mode)))))
+      (funcall set (list (concat (if (member tag (funcall get))
+                                     "-" "+")
+                                 tag)))
+      (funcall next)))
+  (defun evil-collection-notmuch-search-toggle-delete ()
+    "Toggle deleted tag for message."
+    (interactive)
+    (evil-collection-notmuch-toggle-tag "deleted" "search" 'notmuch-search-next-thread))
+
+;;;; Additional SMTP Accounts
+  ;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
+  (defvar my-notmuch-account-alist
+    '(("gmail"
+       (user-mail-address "acowley@gmail.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-service 587)
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-user "acowley@gmail.com")
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@gmail.com" nil)))
+       (smtpmail-auth-credentials
+        '(("smtp.gmail.com" 587 "acowley@gmail.com" nil))))
+      ("upenn"
+       (user-mail-address "acowley@seas.upenn.edu")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-service 587)
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-user "acowley@seas.upenn.edu")
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil)))
+       (smtpmail-auth-credentials
+        '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil))))))
+
+  (defun my-ensure-list (x)
+    "If the given value is a list, leave it alone. If it isn't,
+cons it to nil."
+    (if (listp x) x (cons x nil)))
+
+  (defun my-first (f xs)
+    "Returns the first element of the list for which the given
+predicate returns true."
+    (cond
+     ((null xs) nil)
+     ((funcall f (car xs)) (car xs))
+     (t (my-first f (cdr xs)))))
+
+  (defun my-mem-string (x xs)
+    "memq using 'string-equal' for equality."
+    (cond
+     ((null xs) nil)
+     ((string-equal x (car xs)) xs)
+     (t (my-mem-string x (cdr xs)))))
+
+  (defun my-switch-email-account (possibles &optional prompt)
+    (when possibles
+      (let* ((my-addresses (mapcar #'(lambda (account)
+                                         (cons (car account)
+                                               (cadr (assoc 'user-mail-address
+                                                            (cdr account)))))
+                                     my-notmuch-account-alist))
+             (my-address (progn
+                           (my-first #'(lambda (x)
+                                         (my-mem-string (cdr x) possibles))
+                                     my-addresses)))
+             (account (if my-address (car my-address)
+                        (when prompt
+                          (completing-read
+                           (format "Send with account: (%s) "
+                                   (mapconcat #'(lambda (var) (car var))
+                                              my-notmuch-account-alist "/"))
+                           (mapcar #'(lambda (var) (car var))
+                                   my-notmuch-account-alist)
+                           nil t nil nil (caar my-notmuch-account-alist))))))
+        (when account
+          (mapc #'(lambda (var) (set (car var) (cadr var)))
+                (cdr (assoc (car my-address) my-notmuch-account-alist)))))))
+
+  (defun my-notmuch-set-reply-account ()
+    "Set the account for sending a message"
+    (let ((recipients
+                (split-string (notmuch-show-get-to)
+                              (rx (or space ?\, ?\< ?\>))
+                              t)))
+      (my-switch-email-account recipients t)
+      (message-make-from user-full-name user-mail-address)))
+
+  (defun my-notmuch-reply ()
+"Reply-All that picks which sending account to use by looking for
+a sending account which was a recipient of the email."
+    (interactive)
+    (notmuch-mua-reply (notmuch-show-get-message-id) (my-notmuch-set-reply-account) t))
+  (defun my-notmuch-reply-sender ()
+"Reply that picks which sending account to use by looking for a
+sending account which was a recipient of the email."
+    (interactive)
+    (notmuch-mua-reply (notmuch-show-get-message-id) (my-notmuch-set-reply-account) nil))
+  (advice-add #'message-make-from :before (lambda (&rest r)
+                                            (my-switch-email-account
+                                             (if (or (null r)) nil (cdr r)))))
+
+  ;; (add-hook 'notmuch-mua-send-hook #'my-notmuch-set-account)
+  )
 ;;; Email (mu4e)
 
 ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
