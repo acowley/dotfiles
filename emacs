@@ -1608,6 +1608,10 @@ entire source file is loaded."
          ;; list actions
          ("C-z" . helm-select-action))
   :config
+  ;; Helm locks up when ligatures are enabled
+  (add-hook 'helm-major-mode-hook
+          (lambda ()
+            (setq auto-composition-mode nil)))
   (setq
    helm-always-two-windows t
    helm-candidate-number-limit 100
