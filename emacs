@@ -2811,7 +2811,6 @@ sorted block."
         company-transformers nil
         company-lsp-async t
         lsp-enable-indentation nil)
-  (lsp-ui-flycheck-enable t)
   (flymake-mode -1)
   (defun lsp-format-defun ()
     "Reformat the current function."
@@ -2869,13 +2868,10 @@ sorted block."
   ;(setq ccls-extra-args '("--log-file=/tmp/cc.log"))
   (when (file-exists-p "/etc/lsb-release")
     (setq ccls-executable "/home/acowley/src/ccls/Release/ccls"))
-  (setq company-lsp-cache-candidates nil
-        company-transformers nil
-        ccls-args '("-v=2" "-log-file=/tmp/cc.log")
-        company-lsp-async t
-        lsp-enable-indentation nil)
+    (setq company-transformers nil
+          ccls-args '("-v=3" "-log-file=/tmp/cc.log")
+          lsp-enable-indentation nil)
   (lsp)
-  (lsp-ui-flycheck-enable t)
   (flymake-mode -1)
   )
 
