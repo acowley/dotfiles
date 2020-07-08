@@ -24,6 +24,8 @@ ln -s ${DIR}/config.nix "${HOME}/.config/nixpkgs/config.nix"
 ln -s ${DIR}/overlays.nix "${HOME}/.config/nixpkgs/overlays.nix"
 ln -s ${DIR}/yasnippets/ "${HOME}/.emacs.d/snippets"
 ln -s ${DIR}/dictrc "${HOME}/.dictrc"
+
+ln -s ${DIR}/notmuch-config "${HOME}/.notmuch-config"
 if [ ! -d "${HOME}/.config/afew" ]; then
   mkdir -p "${HOME}/.config/afew"
 fi
