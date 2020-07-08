@@ -58,6 +58,15 @@ self: nixpkgs: {
     #   '';
     # };
 
+    ccls = super.ccls.overrideAttrs (old: {
+      src = nixpkgs.fetchFromGitHub {
+        owner = "MaskRay";
+        repo = "emacs-ccls";
+        rev = "c2de88254142e73791da30e8564854ba4044b426";
+        sha256 = "0xaz9v8fh70y5av50mw5p51x217szx0cjfgfjz9y6xls9mxi8g3z";
+      };
+    });
+
     # ccls = super.melpaBuild {
     #   pname = "ccls";
     #   version = "20191002";
