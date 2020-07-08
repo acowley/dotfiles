@@ -1,0 +1,11 @@
+[ListMailsFilter]
+[FolderNameFilter]
+[SentMailsFilter]
+sent_tag=sent
+[InboxFilter]
+tags = +inbox;-new
+[MailMover]
+folders = gmail/Inbox seas/Inbox
+rename = True
+gmail/Inbox = 'tag:deleted':gmail/trash 'tag:archived':gmail/archive
+seas/Inbox = 'tag:deleted':seas/trash 'tag:archived':seas/archive
