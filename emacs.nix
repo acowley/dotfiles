@@ -7,6 +7,13 @@ self: nixpkgs: {
       patches = old.patches or [] ++ [
         ./emacs-overlay/ox-reveal-4.0.patch
       ];
+    god-mode = super.god-mode.overrideAttrs (old: {
+      src = nixpkgs.fetchFromGitHub {
+        owner = "emacsorphanage";
+        repo = "god-mode";
+        rev = "be58e6d75ccdea00ae28cd8303e7c5682b865d6f";
+        sha256 = "07la740w3wp8fzsrkk21nn4chdnwxvnz9m5g434vvwvjm5mc510q";
+      };
     });
 
     synosaurus = super.synosaurus.overrideAttrs (old: {
