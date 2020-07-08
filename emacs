@@ -3424,7 +3424,8 @@ sorted block."
   ; From https://www.reddit.com/r/emacs/comments/gn8bzo/literatecalcmode/fr9pf01?utm_source=share&utm_medium=web2x
   (with-eval-after-load 'calc
     (defalias 'calcFunc-uconv 'math-convert-units)
-    (defalias 'calcFunc-usimp 'math-simplify-units)))
+    (defalias 'calcFunc-usimp 'math-simplify-units)
+    (defalias 'calcFunc-norm 'calc-abs)))
 ;;; dired-rsync
 (use-package dired-rsync
   :bind (:map dired-mode-map
