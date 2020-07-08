@@ -140,7 +140,7 @@ self: nixpkgs: {
     # };
   };
   myEmacsPackages = epkgs: with epkgs; [
-    proof-general
+    # proof-general
     pdf-tools
     use-package
     diminish
