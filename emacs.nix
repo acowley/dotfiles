@@ -1,7 +1,7 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
     inherit (super) pdf-tools;
-    inherit (super) emacs-libvterm;
+    inherit (super) vterm;
 
     ox-reveal = super.ox-reveal.overrideAttrs (old: {
       patches = old.patches or [] ++ [
@@ -242,7 +242,7 @@ self: nixpkgs: {
     ripgrep
     xterm-color
     highlight-indent-guides
-    emacs-libvterm
+    vterm
     docker
     dockerfile-mode
     qml-mode
