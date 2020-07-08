@@ -1062,6 +1062,9 @@ evaluation may begin anew."
                org-babel-expand-body:elisp
                org-babel-execute:emacs-lisp
                org-babel-expand-body:emacs_lisp))
+  (use-package ob-org
+    :defer t
+    :commands (org-babel-execute:org org-babel-expand-body:org))
   (use-package ob-octave
     :defer t
     ; :ensure org-plus-contrib
