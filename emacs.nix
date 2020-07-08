@@ -22,6 +22,17 @@ self: nixpkgs: {
       ];
     });
 
+    magit = super.magit.overrideAttrs (old: {
+      patches = old.patches or [] ++ [
+        (nixpkgs.fetchpatch {
+          name = "no-new-frame-on-commit.patch";
+          url = "https://github.com/magit/magit/commit/035c24055c0e111187d554a0a214d6f0cbfb4bf1.patch";
+          sha256 = "17294fmx8psq5zrjnczsdnnvyg5qfjkic55x2fzaf1rbby8wbp2v";
+          revert = true;
+        })
+      ];
+    });
+
     # literate-calc-mode = super.literate-calc-mode.overrideAttrs (old: {
     #   src = nixpkgs.fetchFromGitHub {
     #     owner = "sulami";
