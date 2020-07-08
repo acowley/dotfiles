@@ -322,6 +322,11 @@ single-quoted string."
 ;; Keep ediff UI in a single frame
 (setq ediff-window-setup-function #'ediff-setup-windows-plain)
 
+;; Disable ligatures in ediff buffers
+(add-hook 'ediff-mode-hook
+            (lambda ()
+              (setq auto-composition-mode nil)))
+
 ;; Use the exec-path-from-shell package to set the PATH
 ;; (use-package exec-path-from-shell
 ;;   :if (memq window-system '(mac ns))
