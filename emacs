@@ -1785,39 +1785,53 @@ under the current project's root directory."
 ;;; Email (notmuch)
 (use-package notmuch
   :commands (notmuch)
+  :hook
+  (notmuch-show-mode . my/notmuch-show-hook)
+  (message-mode . my/message-mode-hook)
   :bind (:map notmuch-show-mode-map
               ("d" .
                (lambda ()
                  "toggle deleted tag for message"
                  (interactive)
-                 (if (member "deleted" (notmuch-show-get-tags))
-                     (notmuch-show-tag '("-deleted"))
-                   (notmuch-show-tag '("+deleted" "-inbox" "-unread" "-new")))
+                 (if (member "trash" (notmuch-show-get-tags))
+                     (notmuch-show-tag '("-trash"))
+                   (notmuch-show-tag '("+trash" "-inbox" "-unread" "-new")))
                  (notmuch-show-next-message)))
               ("r" . #'my-notmuch-reply-sender)
               ("R" . #'my-notmuch-reply)
               ("a" .
                (lambda ()
                  (interactive)
-                 (if (member "archived" (notmuch-show-get-tags))
-                     (notmuch-show-tag '("-archived"))
-                   (notmuch-show-tag '("+archived" "-inbox" "-unread" "-gmail/Inbox" "-seas/Inbox" "-new")))
+                 ;; (if (member "archived" (notmuch-show-get-tags))
+                 ;;     (notmuch-show-tag '("-archived"))
+                 ;;   (notmuch-show-tag '("+archived" "-inbox" "-unread" "-gmail/Inbox" "-seas/Inbox" "-new")))
+                 (if (member "inbox" (notmuch-show-get-tags))
+                     (notmuch-show-tag '("-inbox" "-unread"))
+                   (notmuch-show-tag '("+inbox")))
                  (notmuch-show-next-thread)))
               :map notmuch-search-mode-map
               ("d" .
                (lambda ()
-                 "toggle deleted tag for message"
                  (interactive)
-                 (if (member "deleted" (notmuch-search-get-tags))
-                     (notmuch-search-tag '("-deleted"))
-                   (notmuch-search-tag '("+deleted" "-inbox" "-unread" "-new")))
-                 (notmuch-search-next-thread)))
+                 (notmuch-search-tag '("+trash" "-inbox" "-unread" "-new"))
+                 (notmuch-search-next-thread))
+               ;; (lambda ()
+               ;;   "toggle deleted tag for message"
+               ;;   (interactive)
+               ;;   (if (member "trash" (notmuch-search-get-tags))
+               ;;       (notmuch-search-tag '("-trash"))
+               ;;     (notmuch-search-tag '("+trash" "-inbox" "-unread" "-new")))
+               ;;   (notmuch-search-next-thread))
+               )
               ("a" .
                (lambda ()
                  (interactive)
-                 (if (member "archived" (notmuch-search-get-tags))
-                     (notmuch-search-tag '("-archived"))
-                   (notmuch-search-tag '("+archived" "-inbox" "-unread" "-gmail/Inbox" "-seas/Inbox" "-new")))
+                 ;; (if (member "archived" (notmuch-search-get-tags))
+                 ;;     (notmuch-search-tag '("-archived"))
+                 ;;   (notmuch-search-tag '("+archived" "-inbox" "-unread" "-gmail/Inbox" "-seas/Inbox" "-new")))
+                 (if (member "inbox" (notmuch-search-get-tags))
+                     (notmuch-search-tag '("-inbox" "-unread"))
+                   (notmuch-search-tag '("+inbox")))
                  (notmuch-search-next-thread))))
   :custom
   (notmuch-search-oldest-first nil)
@@ -1835,6 +1849,12 @@ under the current project's root directory."
   (notmuch-search-subject ((t (:family "Montserrat" :weight light :height 120 :foreground "white"))))
 
   :config
+  (defun my/notmuch-show-hook ()
+    (olivetti-mode)
+    (set-face-attribute 'header-line nil :family "Montserrat" :height 150 :weight 'light))
+
+  (defun my/message-mode-hook ()
+    (olivetti-mode))
   ;; Associate firefox with the `text/html' MIME type so that typing
   ;; ".v" opens an HTML part of an email message in firefox.
   (setq mailcap-user-mime-data '(((viewer . "firefox %s") (type . "text/html"))))
@@ -1843,6 +1863,7 @@ under the current project's root directory."
     "Face for the `deleted' tag."
     :group 'notmuch-search :group 'notmuch-faces)
   (add-to-list 'notmuch-search-line-faces '("deleted" . notmuch-search-deleted-face))
+  ;; (add-to-list 'notmuch-search-line-faces '("trash" . notmuch-search-deleted-face))
   (add-hook 'notmuch-search-hook (lambda () (setq line-spacing 0.1)))
   (setq user-full-name  "Anthony Cowley")
   (defun evil-collection-notmuch-toggle-tag (tag mode &optional next-function)
@@ -3520,6 +3541,9 @@ sorted block."
  '(pop-up-windows nil)
  '(pos-tip-background-color "#197219721972")
  '(pos-tip-foreground-color "#9E9E9E")
+ '(projectile-completion-system 'helm)
+ '(projectile-project-root-files-functions
+   '(projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring))
  '(python-shell-interpreter "python3")
  '(racer-cmd "racer")
  '(safe-local-variable-values

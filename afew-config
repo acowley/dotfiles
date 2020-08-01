@@ -1,11 +1,13 @@
 [ListMailsFilter]
-[FolderNameFilter]
+# [FolderNameFilter]
 [SentMailsFilter]
 sent_tag=sent
+[ArchiveSentMailsFilter]
 [InboxFilter]
-tags = +inbox;-new
-[MailMover]
-folders = gmail/Inbox seas/Inbox
-rename = True
-gmail/Inbox = 'tag:deleted':gmail/trash 'tag:archived':gmail/archive
-seas/Inbox = 'tag:deleted':seas/trash 'tag:archived':seas/archive
+tags = -new;-important;
+# tags = +inbox;-new;-important;-account;
+# [MailMover]
+# folders = gmail/Inbox seas/Inbox
+# rename = True
+# gmail/Inbox = 'tag:deleted':gmail/trash 'tag:archived':gmail/archive
+# seas/Inbox = 'tag:deleted':seas/trash 'tag:archived':seas/archive
