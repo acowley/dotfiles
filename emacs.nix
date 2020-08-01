@@ -35,15 +35,6 @@ self: nixpkgs: {
       ];
     });
 
-    # literate-calc-mode = super.literate-calc-mode.overrideAttrs (old: {
-    #   src = nixpkgs.fetchFromGitHub {
-    #     owner = "sulami";
-    #     repo = "literate-calc-mode.el";
-    #     rev = "09dc77ac03cf1b78df4e935a20a8ff731c5bb764";
-    #     sha256 = "0kf3xdaws7mg77z24x7319zwi5qi7rhph52ss3q09ym0ammgpw1k";
-    #   };
-    # });
-
     # org-roam = super.melpaBuild rec {
     #   pname = "org-roam";
     #   version = "1.1.0";
@@ -60,42 +51,14 @@ self: nixpkgs: {
     #   '';
     # };
 
-    ccls = super.ccls.overrideAttrs (old: {
-      src = nixpkgs.fetchFromGitHub {
-        owner = "MaskRay";
-        repo = "emacs-ccls";
-        rev = "c2de88254142e73791da30e8564854ba4044b426";
-        sha256 = "0xaz9v8fh70y5av50mw5p51x217szx0cjfgfjz9y6xls9mxi8g3z";
-      };
-    });
-
-    # ccls = super.melpaBuild {
-    #   pname = "ccls";
-    #   version = "20191002";
+    # ccls = super.ccls.overrideAttrs (old: {
     #   src = nixpkgs.fetchFromGitHub {
     #     owner = "MaskRay";
     #     repo = "emacs-ccls";
-    #     rev = "b1acc336f27d8a3bbc750c2dc3be915a4ac1afea";
-    #     sha256 = "1qgfxc5d1hb32ks1fxpx7agpw7dvnkz99wydlflc9fqq75g8v142";
+    #     rev = "b8e2f4d9b5bed5b5e8b387ac8e43eff723120b80";
+    #     sha256 = "1g0m5xnapfl5wjlylam5696p49qwwkdlngmjv858fabhhk9z0lin";
     #   };
-    #   recipe = nixpkgs.fetchurl {
-    #     url = "https://raw.githubusercontent.com/melpa/melpa/be27a4022d58860917a659fce2b7d7791fbea4e2/recipes/ccls";
-    #     sha256 = "0kiv0n6pdpa75wjcimpwccwbjbhga4gjnphjrkpj4qz5qv42rbnm";
-    #     name = "recipe";
-    #   };
-    #   patches = [
-    #     (nixpkgs.fetchpatch {
-    #       # Replace (require 'lsp) with (require 'lsp-mode)
-    #       url = "https://patch-diff.githubusercontent.com/raw/MaskRay/emacs-ccls/pull/81.patch";
-    #       sha256 = "08n987bwwi0qkaggc976vdkanj9rgq46vhddswa7rw2vny30vlks";
-    #     })
-    #   ];
-    #   packageRequires = with self; [dash emacs self.lsp-mode ht spinner projectile];
-    #   meta = {
-    #     homepage = "https://melpa.org/#/ccls";
-    #     license = nixpkgs.lib.licenses.free;
-    #   };
-    # };
+    # });
 
     lsp-ui = super.lsp-ui.overrideAttrs (_: {
       # patches = [ ./lsp-ui-window-change-no-hide.patch ];
