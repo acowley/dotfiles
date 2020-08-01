@@ -2783,6 +2783,7 @@ sorted block."
   ;; The default `lv-message' tends to leave stale windows down in the
   ;; minibuffer area for me.
   (lsp-signature-function #'message)
+  (lsp-modeline-diagnostics-enable nil)
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
