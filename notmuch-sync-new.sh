@@ -11,6 +11,3 @@ notmuch tag -deleted folder:gmail/trash or folder:seas/trash
 mbsync gmail-inbox gmail-trash gmail-sent gmail-archive seas-inbox seas-trash seas-sent seas-archive
 notmuch new
 afew -t --new
-
-
-

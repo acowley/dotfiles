@@ -48,9 +48,10 @@ other_email=acowley@seas.upenn.edu;
 #		in the mail store.
 #
 [new]
-tags=unread;inbox;new;
-# tags=new;
-ignore=trash
+# tags=unread;inbox;new;
+tags=new;
+# ignore=trash
+ignore=/trash|.*[.](json|lock|bak)$/
 
 # Search configuration
 #
