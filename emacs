@@ -1770,7 +1770,8 @@ under the current project's root directory."
          ;; I swap these becuase I use switch-to-buffer much more frequently
          ;; and prefer it to have the simpler binding.
          ("C-x b" . list-buffers)
-         ("C-x C-b" . switch-to-buffer)
+         ;; ("C-x C-b" . switch-to-buffer)
+         ("C-x C-b" . helm-buffers-list)
          :map god-local-mode-map
          ("." . repeat)))
 
