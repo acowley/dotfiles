@@ -60,11 +60,16 @@
       (set-frame-font "Victor Mono-11:weight=demi"))))
 (my/set-font)
 
-(set-face-attribute 'info-title-1 nil :family "Yanone Kaffeesatz" :weight 'light :height 200 :foreground "#E1BEE7")
-(set-face-attribute 'info-title-2 nil :family "Yanone Kaffeesatz" :weight 'light :height 175)
-(set-face-attribute 'info-title-3 nil :family "Yanone Kaffeesatz" :weight 'light :height 160)
-(set-face-attribute 'info-title-4 nil :family "Yanone Kaffeesatz" :weight 'light :height 150)
-(set-face-attribute 'info-menu-header nil :family "Yanone Kaffeesatz" :weight 'light :height 175 :foreground "#E1BEE7")
+(use-package info
+  :commands (info info-apropos)
+  :config
+  (set-face-attribute 'info-title-1 nil :family "Yanone Kaffeesatz" :weight 'light :height 200 :foreground "#E1BEE7")
+  (set-face-attribute 'info-title-2 nil :family "Yanone Kaffeesatz" :weight 'light :height 175)
+  (set-face-attribute 'info-title-3 nil :family "Yanone Kaffeesatz" :weight 'light :height 160)
+  (set-face-attribute 'info-title-4 nil :family "Yanone Kaffeesatz" :weight 'light :height 150)
+  (set-face-attribute 'info-menu-header nil :family "Yanone Kaffeesatz" :weight 'light :height 175 :foreground "#E1BEE7"))
+
+
 
 ;;;; Support ligatures
 
