@@ -60,6 +60,12 @@
       (set-frame-font "Victor Mono-11:weight=demi"))))
 (my/set-font)
 
+(set-face-attribute 'info-title-1 nil :family "Yanone Kaffeesatz" :weight 'light :height 200 :foreground "#E1BEE7")
+(set-face-attribute 'info-title-2 nil :family "Yanone Kaffeesatz" :weight 'light :height 175)
+(set-face-attribute 'info-title-3 nil :family "Yanone Kaffeesatz" :weight 'light :height 160)
+(set-face-attribute 'info-title-4 nil :family "Yanone Kaffeesatz" :weight 'light :height 150)
+(set-face-attribute 'info-menu-header nil :family "Yanone Kaffeesatz" :weight 'light :height 175 :foreground "#E1BEE7")
+
 ;;;; Support ligatures
 
 ;; See https://github.com/tonsky/FiraCode/wiki/Emacs-instructions#user-content-using-composition-char-table
@@ -782,6 +788,9 @@ project's type."
 (use-package dashboard
   ;; :load-path "~/src/emacs-dashboard"
   ;; :commands dashboard-insert-startupify-lists
+  :custom-face
+  (dashboard-heading ((t (:family "Yanone Kaffeesatz" :weight light :height 200 :foreground "#E1BEE7"))))
+  (dashboard-banner-logo-title ((t (:family "Yanone Kaffeesatz" :weight light :height 250))))
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents  . 10)
@@ -837,6 +846,8 @@ project's type."
          ("S-<right>" . nil)
          ("S-<up>" . nil)
          ("S-<down>" . nil))
+  :custom-face
+  (org-level-1 ((t (:family "Yanone Kaffeesatz" :weight light :height 250))))
   :config
   (setq org-src-fontify-natively 't
         org-use-speed-commands 't
