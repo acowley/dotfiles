@@ -31,3 +31,4 @@ if [ ! -d "${HOME}/.config/afew" ]; then
 fi
 ln -s ${DIR}/afew-config "${HOME}/.config/afew/config"
 
+ln -s ${DIR}/mailcap "${HOME}/.mailcap"
