@@ -2796,18 +2796,21 @@ sorted block."
   :commands lsp
   :custom
   (lsp-keymap-prefix "C-c C-l")
+  (lsp-configure-hook nil)
 
   ;; The default `lv-message' tends to leave stale windows down in the
   ;; minibuffer area for me.
   (lsp-signature-function #'message)
   (lsp-modeline-diagnostics-enable nil)
+  (lsp-modeline-code-actions-enable nil)
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
   (lsp-face-highlight-textual ((t (:background "gold4"))))
   :config
   (setq lsp-prefer-flymake nil
-        lsp-prefer-capf t)
+        lsp-prefer-capf t
+        read-process-output-max (* 1024 1024))
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
   ;; (use-package company-lsp
   ;;   :config
@@ -2841,8 +2844,12 @@ sorted block."
 
     ;; Highlight the symbol we're looking for in yellow
     (set-face-foreground 'lsp-ui-peek-highlight "yellow"))
+  (require 'lsp-diagnostics)
+  (require 'lsp-completion)
   (require 'lsp-ui)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
+  (add-hook 'lsp-mode-hook 'lsp-completion-mode)
   (flycheck-mode)
   (yas-minor-mode)
   (helm-gtags-mode -1)
