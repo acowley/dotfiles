@@ -69,7 +69,10 @@
   (set-face-attribute 'info-title-4 nil :family "Yanone Kaffeesatz" :weight 'light :height 150)
   (set-face-attribute 'info-menu-header nil :family "Yanone Kaffeesatz" :weight 'light :height 175 :foreground "#E1BEE7"))
 
-
+(use-package hl-line
+  :commands (hl-line-mode)
+  :custom-face
+  (hl-line ((t (:background "gray20")))))
 
 ;;;; Support ligatures
 
@@ -1852,8 +1855,10 @@ under the current project's root directory."
                  (notmuch-search-next-thread))))
   :custom
   (notmuch-search-oldest-first nil)
-  (notmuch-fcc-dirs '(("acowley@gmail.com" . "gmail/sent")
-                      ("acowley@seas.upenn.edu" . "seas/sent")))
+  (notmuch-fcc-dirs '(("acowley@gmail.com" . nil;; "gmail/sent"
+                       )
+                      ("acowley@seas.upenn.edu" . nil;; "seas/sent"
+                       )))
   (notmuch-poll-script "~/dotfiles/notmuch-sync-new.sh")
   :custom-face
   (notmuch-search-date ((t (:foreground "SteelBlue"))))
