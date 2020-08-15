@@ -215,7 +215,7 @@ by a number of spaces equal to the length of PREFIX."
       (insert (string-join xs sep))
       (when suffix (insert suffix))
       (goto-char (point-min))
-      (setq fill-prefix (loop repeat prefix-len concat " "))
+      (setq fill-prefix (cl-loop repeat prefix-len concat " "))
       (fill-paragraph)
       (buffer-string))))
 
