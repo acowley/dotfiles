@@ -1876,6 +1876,7 @@ under the current project's root directory."
     (set-face-attribute 'header-line nil :family "Montserrat" :height 150 :weight 'light))
 
   (defun my/message-mode-hook ()
+    (turn-off-auto-fill)
     (olivetti-mode))
   ;; Associate firefox with the `text/html' MIME type so that typing
   ;; ".v" opens an HTML part of an email message in firefox.
