@@ -1,1 +1,3 @@
 application/pdf; emacsclient -n %s; test=test "$DISPLAY" != ""; description=Portable Document Format; nametemplate=%s.pdf
+image/svg+xml; emacsclient -n %s; test=test "$DISPLAY" != ""; description=Scalable Vector Graphics; nametemplate=%s.svg
+
