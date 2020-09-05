@@ -1967,9 +1967,10 @@ predicate returns true."
                            (mapcar #'(lambda (var) (car var))
                                    my-notmuch-account-alist)
                            nil t nil nil (caar my-notmuch-account-alist))))))
-        (when account
+        (when account 
+          (message "Activating email settings for %s" account)
           (mapc #'(lambda (var) (set (car var) (cadr var)))
-                (cdr (assoc (car my-address) my-notmuch-account-alist)))))))
+                (cdr (assoc account my-notmuch-account-alist)))))))
 
   (defun my-notmuch-set-reply-account ()
     "Set the account for sending a message"
