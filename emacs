@@ -3230,29 +3230,47 @@ sorted block."
   :config
   (setq corral-preserve-point t))
 ;;; rust
+(use-package rustic
+  :defer t
+  :mode (("\\.rs\\'" . rustic-mode))
+  :config
+  (defun my/rustic-hook ()
+    (electric-indent-mode 1)
+    (yas-minor-mode))
+  (add-hook 'rustic-mode-hook #'my/rustic-hook))
+
 (use-package rust-mode
+  :disabled
   :defer t
   :commands (rust-mode)
   :mode "\\.rs\\'"
   :config
   (setq rust-indent-offset 2)
   (use-package cargo)
-  (use-package flycheck-rust
-    :config
-    (flycheck-rust-setup))
-  (use-package racer
-    :commands (racer-mode)
-    :bind (:map rust-mode-map
-           ("TAB" . company-indent-or-complete-common))
-    :config
-    (defun my/racer-hook ()
-      (eldoc-mode)
-      (company-mode)
-      (setq company-tooltip-align-annotations t))
-    (add-hook 'racer-mode-hook #'eldoc-mode))
+  ;; (use-package flycheck-rust
+  ;;   :config
+  ;;   (flycheck-rust-setup))
+  ;; (use-package racer
+  ;;   :commands (racer-mode)
+  ;;   :bind (:map rust-mode-map
+  ;;          ("TAB" . company-indent-or-complete-common))
+  ;;   :config
+  ;;   (defun my/racer-hook ()
+  ;;     (eldoc-mode)
+  ;;     (company-mode)
+  ;;     (setq company-tooltip-align-annotations t))
+  ;;   (add-hook 'racer-mode-hook #'eldoc-mode))
+  (require 'lsp-mode)
+  (require 'lsp-rust)
+  (setq lsp-rust-server 'rust-analyzer
+        lsp-rust-unstable-features t
+
+        ;; If this feature is enabled, we get a lot of spurious
+        ;; dependency crate rebuilds from both RA and cargo itself.
+        lsp-rust-analyzer-cargo-watch-enable nil)
   (defun my/rust-hook ()
-    (flycheck-rust-setup)
-    (flycheck-mode)
+    ;; (flycheck-rust-setup)
+    ;; (flycheck-mode)
     ;; (racer-mode)
     )
   (add-hook 'rust-mode-hook #'my/rust-hook))

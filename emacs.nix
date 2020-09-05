@@ -209,7 +209,8 @@ self: nixpkgs: {
     corral
     avy
 
-    rust-mode
+    # rust-mode
+    rustic
     cargo
     flycheck-rust
     racer
@@ -242,6 +243,7 @@ self: nixpkgs: {
     speed-type
     pomidor
     synosaurus
+    restclient
   ];
   myEmacsPackagesFor =
     if (false && nixpkgs.stdenv.isDarwin)
