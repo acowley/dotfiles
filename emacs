@@ -3501,6 +3501,10 @@ sorted block."
 (use-package dired-rsync
   :bind (:map dired-mode-map
               ("C-c C-r" . dired-rsync)))
+;;; restclient
+(use-package restclient
+  :commands (restclient-mode))
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
