@@ -2816,7 +2816,7 @@ sorted block."
   (lsp-face-highlight-textual ((t (:background "gold4"))))
   :config
   (setq lsp-prefer-flymake nil
-        lsp-prefer-capf t
+        ;; lsp-prefer-capf t
         read-process-output-max (* 1024 1024))
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]\\.ccls-cache$")
   ;; (use-package company-lsp
