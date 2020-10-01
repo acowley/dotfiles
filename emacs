@@ -3432,7 +3432,17 @@ sorted block."
   :bind (:map vterm-mode-map
               ("<escape>" . nil)
               ("M-w" . nil)
-              ("C-y" . nil)))
+              ("C-y" . nil)
+              ("C-n" . nil)
+              ("C-p" . nil)
+              ("C-a" . nil)
+              ("C-e" . nil)
+              ("C-f" . nil)
+              ("C-b" . nil)
+              ("M-b" . nil)
+              ("M-f" . nil)
+              ("C-SPC" . nil)
+              ("M->" . nil)))
 ;;; dhall-mode
 (use-package dhall-mode
   :defer t
