@@ -2833,6 +2833,7 @@ sorted block."
            ("C-c C-s" . lsp-ui-sideline-toggle-symbols-info)
            ("M-." . lsp-ui-peek-find-definitions)
            ("M-?" . lsp-ui-peek-find-references)
+           ("C-c C-l s a" . lsp-ui-sideline-apply-code-actions)
            :map lsp-ui-peek-mode-map
            ("M-n" . lsp-ui-peek--select-next)
            ("M-p" . lsp-ui-peek--select-prev))
