@@ -192,6 +192,7 @@ self: nixpkgs: {
     lsp-mode
     lsp-ui
     lsp-haskell
+    lsp-treemacs
     ccls
 
     cmake-mode

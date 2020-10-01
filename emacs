@@ -2856,6 +2856,13 @@ sorted block."
 
     ;; Highlight the symbol we're looking for in yellow
     (set-face-foreground 'lsp-ui-peek-highlight "yellow"))
+  (use-package lsp-treemacs
+    :commands (lsp-treemacs-symbols
+               lsp-treemacs-errors-list
+               lsp-treemacs-references
+               lsp-treemacs-implementations
+               lsp-treemacs-call-hierarchy
+               lsp-treemacs-type-hierarchy))
   (require 'lsp-diagnostics)
   (require 'lsp-completion)
   (require 'lsp-ui)
