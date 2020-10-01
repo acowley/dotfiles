@@ -2740,7 +2740,8 @@ element based on the god-local-mode predicate."
     ;; :commands lsp-haskell-enable
     :config
     ;; (setq lsp-haskell-process-path-hie "hie")
-    (setq lsp-haskell-process-path-hie "ghcide")
+    ;; (setq lsp-haskell-process-path-hie "ghcide")
+    (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper")
     (setq lsp-haskell-process-args-hie '())
     )
 
