@@ -2,160 +2,67 @@ Sync All
 #Sync PullNew Push
 Expunge Both
 
-IMAPAccount gmail
+IMAPAccount acowleySA
 # Address to connect to
-Host imap.gmail.com
-User acowley@gmail.com
-PassCmd "gpg2 -q --for-your-eyes-only -d ~/.mailpass.gpg"
-# Use SSL
-# UseIMAPS yes
-SSLType IMAPS
+Host mail.privateemail.com
+User acowley@scalableautonomy.com
+PassCmd "gpg2 -q --for-your-eyes-only -d ~/.mailpass-sa.gpg | head -n 1 | tr -d '\n'"
+# Port 143
+# Port 993
+# SSLType IMAPS
+# SSLVersions TLSv1.2
 AuthMechs LOGIN
-# CertificateFile "~/.nix-profile/etc/ca-bundle.crt"
 
-IMAPStore gmail-remote
-Account gmail
+IMAPStore acowleySA-remote
+Account acowleySA
 
-MaildirStore gmail-local
+MaildirStore acowleySA-local
 # The trailing "/" is important
-Path ~/.mail/gmail/
-Inbox ~/.mail/gmail/Inbox
+Path ~/.mail/acowleySA/
+Inbox ~/.mail/acowleySA/Inbox
+SubFolders Verbatim
+
+Channel acowleySA
+Master :acowleySA-remote:
+Slave :acowleySA-local:
+Patterns *
+Expunge Both
+CopyArrivalDate yes
+Sync All
+Create Slave
+SyncState *
+
+IMAPAccount infoSA
+Host mail.privateemail.com
+User info@scalableautonomy.com
+PassCmd "gpg2 -q --for-your-eyes-only -d ~/.mailpass-sa.gpg | tail -n 1"
+# SSLType IMAPS
+AuthMechs LOGIN
+
+IMAPStore infoSA-remote
+Account infoSA
+
+MaildirStore infoSA-local
+# The trailing "/" is important
+Path ~/.mail/infoSA/
+Inbox ~/.mail/infoSA/Inbox
+SubFolders Verbatim
+
+Channel infoSA
+Master :infoSA-remote:
+Slave :infoSA-local:
+Patterns *
+Expunge Both
+CopyArrivalDate yes
+Sync All
+Create Slave
+SyncState *
 
 # A problem with setting a MaxSize is that the message never
 # appears. Would prefer if attachments were dropped, but the message
 # was somehow copied into the local store.
 # MaxSize 5M
 
-Channel gmail-trash
-Master ":gmail-remote:[Gmail]/Trash"
-Slave ":gmail-local:trash"
-Create Both
-SyncState *
-ExpireUnread yes
-
-Channel gmail-archive
-Master ":gmail-remote:[Gmail]/All Mail"
-Slave ":gmail-local:archive"
-Create Both
-SyncState *
-# MaxMessages 100
-ExpireUnread no
-
-Channel gmail-inbox
-Master ":gmail-remote:INBOX"
-Slave ":gmail-local:INBOX"
-Create Both
-SyncState *
-
-# Channel gmail-drafts
-# Master ":gmail-remote:[Gmail]/Drafts"
-# Slave ":gmail-local:drafts"
-# Create Both
-# SyncState *
-
-Channel gmail-sent
-Master ":gmail-remote:[Gmail]/Sent Mail"
-Slave ":gmail-local:sent"
-Create Both
-SyncState *
-# MaxMessages 100
-
-Channel gmail-flagged
-Master ":gmail-remote:[Gmail]/Starred"
-Slave ":gmail-local:flagged"
-Create Both
-SyncState *
-
-Channel gmail-folders
-Master ":gmail-remote:"
-Slave ":gmail-local:"
-Patterns * ![Gmail]* !trash !archive !drafts !flagged !Inbox !sent
-Create Both
-SyncState *
-
-Group gmail
-Channel gmail-trash
-Channel gmail-inbox
-# Channel gmail-drafts
-Channel gmail-sent
-Channel gmail-flagged
-Channel gmail-archive
-
-#################################################
-IMAPAccount seas
-# Address to connect to
-Host imap.gmail.com
-User acowley@seas.upenn.edu
-PassCmd "pass google@seas-mail"
-# Use SSL
-# UseIMAPS yes
-SSLType IMAPS
-AuthMechs LOGIN
-# CertificateFile "~/.nix-profile/etc/ca-bundle.crt"
-
-IMAPStore seas-remote
-Account seas
-
-MaildirStore seas-local
-# The trailing "/" is important
-Path ~/.mail/seas/
-Inbox ~/.mail/seas/Inbox
-
-# A problem with setting a MaxSize is that the message never
-# appears. Would prefer if attachments were dropped, but the message
-# was somehow copied into the local store.
-# MaxSize 5M
-
-Channel seas-trash
-Master ":seas-remote:[Gmail]/Trash"
-Slave ":seas-local:trash"
-Create Both
-SyncState *
-ExpireUnread yes
-
-Channel seas-archive
-Master ":seas-remote:[Gmail]/All Mail"
-Slave ":seas-local:archive"
-Create Both
-SyncState *
-# MaxMessages 100
-ExpireUnread no
-
-Channel seas-inbox
-Master ":seas-remote:INBOX"
-Slave ":seas-local:INBOX"
-Create Both
-SyncState *
-
-# Channel gmail-drafts
-# Master ":gmail-remote:[Gmail]/Drafts"
-# Slave ":gmail-local:drafts"
-# Create Both
-# SyncState *
-
-Channel seas-sent
-Master ":seas-remote:[Gmail]/Sent Mail"
-Slave ":seas-local:sent"
-Create Both
-SyncState *
-# MaxMessages 100
-
-Channel seas-flagged
-Master ":seas-remote:[Gmail]/Starred"
-Slave ":seas-local:flagged"
-Create Both
-SyncState *
-
-Channel seas-folders
-Master ":seas-remote:"
-Slave ":seas-local:"
-Patterns * ![Gmail]* !trash !archive !drafts !flagged !Inbox !sent
-Create Both
-SyncState *
-
-Group seas
-Channel seas-trash
-Channel seas-inbox
-Channel seas-sent
-Channel seas-flagged
-Channel seas-archive
+Group sa
+Channel acowleySA
+Channel infoSA

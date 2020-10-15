@@ -1,11 +1,25 @@
+[MailMover]
+folders = acowleySA/Inbox
+rename = True
+acowleySA/Inbox = 'tag:trash':acowleySA/Trash
+
 [ListMailsFilter]
 # [FolderNameFilter]
 [SentMailsFilter]
 sent_tag=sent
 [ArchiveSentMailsFilter]
+[Filter.1]
+query = to:acowley@scalableautonomy.com
+tags = +inbox;+SA
+message = acowleySA
+[Filter.2]
+query = to:info@scalableautonomy.com
+tags = +inbox;+SAInfo
+message = infoSA
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
+
 # [MailMover]
 # folders = gmail/Inbox seas/Inbox
 # rename = True
