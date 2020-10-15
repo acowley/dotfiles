@@ -3532,6 +3532,17 @@ sorted block."
 (use-package restclient
   :commands (restclient-mode))
 
+;;; auctex
+(use-package auctex
+  :mode (("\\.tex\\'" . TeX-latex-mode))
+  :init (add-hook 'LaTeX-mode-hook (lambda () 
+                                     (require 'auctex-latexmk)
+                                     (auctex-latexmk-setup)))
+  :custom 
+  (TeX-engine 'xetex)
+  (TeX-parse-self t)
+  (TeX-auto-save t)
+  (reftex-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
