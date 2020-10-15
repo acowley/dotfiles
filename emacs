@@ -1881,7 +1881,7 @@ under the current project's root directory."
 
   (defun my/message-mode-hook ()
     (turn-off-auto-fill)
-    (gnus-dired-mode)
+    (turn-on-gnus-dired-mode)
     (olivetti-mode))
   ;; Associate firefox with the `text/html' MIME type so that typing
   ;; ".v" opens an HTML part of an email message in firefox.
