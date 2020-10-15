@@ -10,10 +10,14 @@ in
 [(import (import ./emacs-overlay/nix/sources.nix).emacs-overlay)
  (import ~/dotfiles/emacs.nix)
  (import ~/dotfiles/nix/mu/overlay.nix)
- (import ~/dotfiles/nix/wordnet.nix)]
+ (import ~/dotfiles/nix/wordnet.nix)
+ (import ~/dotfiles/nix/mylatex.nix)
+]
+++ optOverlay ~/src/openconnect-sso/overlay.nix
 ++ (if builtins.pathExists ~/src/nixpkgs-mozilla/rust-overlay.nix
     then [(import ~/src/nixpkgs-mozilla/rust-overlay.nix)
-          (import ~/src/nixpkgs-mozilla/rust-src-overlay.nix)]
+          (import ~/src/nixpkgs-mozilla/rust-src-overlay.nix)
+          (import ~/src/nixpkgs-mozilla/firefox-overlay.nix)]
     else [])
 ++ optOverlay ~/src/rust-analyzer-overlay/default.nix
 ++ optOverlay ~/dotfiles/nix/corectrl/overlay.nix
