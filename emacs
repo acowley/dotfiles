@@ -1861,7 +1861,8 @@ under the current project's root directory."
   (notmuch-fcc-dirs '(("acowley@gmail.com" . nil;; "gmail/sent"
                        )
                       ("acowley@seas.upenn.edu" . nil;; "seas/sent"
-                       )))
+                       )
+                      ("acowley@scalableautonomy.com" . nil)))
   (notmuch-poll-script "~/dotfiles/notmuch-sync-new.sh")
   :custom-face
   (notmuch-search-date ((t (:foreground "SteelBlue"))))
@@ -1928,7 +1929,16 @@ under the current project's root directory."
        (smtpmail-smtp-user "acowley@seas.upenn.edu")
        (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil)))
        (smtpmail-auth-credentials
-        '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil))))))
+        '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil))))
+      ("sa"
+       (user-mail-address "acowley@scalableautonomy.com")
+       (smtpmail-default-smtp-server "mail.privateemail.com")
+       (smtpmail-smtp-service 587)
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-user "acowley@scalableautonomy.com")
+       (smtpmail-starttls-credentials '(("mail.privateemail.com" 587 "acowley@scalableautonomy.com" nil)))
+       (smtpmail-auth-credentials
+        '(("mail.privateemail.com" 587 "acowley@scalableautonomy.com" nil))))))
 
   (defun my-ensure-list (x)
     "If the given value is a list, leave it alone. If it isn't,
@@ -2201,6 +2211,15 @@ sending account which was a recipient of the email."
        (mu4e-sent-folder "/seas/sent")
        (smtpmail-auth-credentials
         '(("smtp.gmail.com" 587 "acowley@seas.upenn.edu" nil))))
+      ("sa"
+       (user-mail-address "acowley@scalableautonomy.com")
+       (smtpmail-default-smtp-server "mail.privateemail.com")
+       (smtpmail-smtp-service 587)
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-user "acowley@scalableautonomy.com")
+       (smtpmail-starttls-credentials '(("mail.privateemail.com" 587 "acowley@scalableautonomy.com" nil)))
+       (smtpmail-auth-credentials
+        '(("mail.privateemail.com" 587 "acowley@scalableautonomy.com" nil))))
 
       ;; ("upenn"
       ;;  (user-mail-address "acowley@seas.upenn.edu")
