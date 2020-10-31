@@ -284,6 +284,25 @@ single-quote character, and concatenating the remaining
 single-quoted string."
     (concat "'" (replace-regexp-in-string "'" "'\\\\''" str) "'"))
 
+(defun parenthesize-negatives ()
+"Wrap negative numeric literals in parentheses.
+
+Parentheses are required with negative numeric literals Haskell.
+This helper makes it slightly easier to paste numbers into
+Haskell programs as it may be applied to all numbers in region."
+  (interactive)
+  (if (region-active-p)
+      (save-excursion
+        (let ((regexp (rx "-" (+ (or digit ?.))))
+              (start (region-beginning))
+              (end (region-end)))
+          (goto-char start)
+          (while (re-search-forward regexp end t)
+            (message "Found match: %s" (match-string 0))
+            (replace-match "(\\&)" nil nil)
+            (set 'end (+ end 2)))))
+    (message "Select a region first")))
+
 ;;;; Miscellaneous Settings
 
 ;; A short mode line that is going to be tweaked with moody
