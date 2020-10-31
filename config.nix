@@ -67,6 +67,10 @@
 
     # An monospace font with cursive italics
     victor-mono = pkgs.callPackage ./nix/victor-mono.nix {};
+
+    # A display font similar to Futura
+    nunito = pkgs.callPackage ./nix/nunito.nix {};
+
     montserrat = pkgs.callPackage ./nix/montserrat.nix {};
     wattmangtk = pkgs.python3Packages.callPackage ./nix/wattmangtk {
     matplotlib = pkgs.python3Packages.matplotlib.override { enableGtk3 = true; };
