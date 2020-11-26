@@ -931,6 +931,7 @@ project's type."
   (use-package ox-reveal
     :defer t)
 
+  (use-package ox-md :commands (org-md-export-to-markdown))
   (use-package ox-rss :commands (org-rss-publish-to-rss))
 
   ;(set-alist 'org-preview-latex-process-alist 'imagemagick (append '(:programs ("latex" "convert")) (alist-get 'imagemagick org-preview-latex-process-alist)))
