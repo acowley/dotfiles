@@ -3497,7 +3497,8 @@ sorted block."
               ("M-b" . nil)
               ("M-f" . nil)
               ("C-SPC" . nil)
-              ("M->" . nil)))
+              ("M->" . nil)
+              ("M-s" . nil)))
 ;;; dhall-mode
 (use-package dhall-mode
   :defer t
