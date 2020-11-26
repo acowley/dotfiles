@@ -36,6 +36,18 @@
     #          subfiles biblatex logreq biber was minted fvextra xstring
     #          framed standalone aeguill catchfile pagecolor;
     # };
+    maxima = pkgs.maxima.overrideAttrs (old: rec {
+      version = "2020-11-24";
+      name = "maxima-${version}";
+      src = pkgs.fetchgit {
+        url = "https://git.code.sf.net/p/maxima/code";
+        rev = "ea608cf8a3dd9640771ee846b4f608887727bb72";
+        sha256 = "1p2r8rbmnllxwka1bigk6s4bp1y8i5wwhx2lb048nliahk0pv7sg";
+      };
+      postPatch = old.postPatch or "" + ''
+        sed 's/multiple-value-setq/cl-multiple-value-setq/g' -i interfaces/emacs/imaxima/imaxima.el
+      '';
+    });
     myzoom = pkgs.stdenv.mkDerivation {
       name = "zoom-us";
       src = pkgs.zoom-us;
