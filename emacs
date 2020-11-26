@@ -2916,6 +2916,7 @@ sorted block."
   (require 'lsp-diagnostics)
   (require 'lsp-completion)
   (require 'lsp-ui)
+  (require 'lsp-modeline)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
   (add-hook 'lsp-mode-hook 'lsp-completion-mode)
@@ -2983,12 +2984,12 @@ sorted block."
   ;(setq ccls-extra-args '("--log-file=/tmp/cc.log"))
   (when (file-exists-p "/etc/lsb-release")
     (setq ccls-executable "/home/acowley/src/ccls/Release/ccls"))
-    (setq company-transformers nil
-          ccls-args '("-v=3" "-log-file=/tmp/cc.log")
-          lsp-enable-indentation nil)
+  (setq company-transformers nil
+        ccls-args '("-v=3" "-log-file=/tmp/cc.log")
+        lsp-enable-indentation nil)
   (lsp)
-  (flymake-mode -1)
-  )
+  (lsp-completion-mode)
+  (flymake-mode -1))
 
 (defun docker-ccls ()
   (require 'lsp-mode)
