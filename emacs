@@ -916,6 +916,14 @@ project's type."
         ;; Don't indent text to align with the headline
         org-adapt-indentation nil
 
+        ;; Display of the first data row of the table at point in the
+        ;; window header line
+        org-table-header-line-p t
+
+        ;; Use NAME affiliated keyword to generate anchor IDs if
+        ;; CUSTOM_ID is not set
+        org-html-prefer-user-labels t
+
         org-todo-keywords '((sequence "TODO" "|" "DONE" "ABANDONED")))
 
   (require 'ox-extra)
