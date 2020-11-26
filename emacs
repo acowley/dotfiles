@@ -3568,8 +3568,8 @@ sorted block."
 (use-package avy
   :bind (("M-s" . avy-goto-word-1)))
 ;;; proofgeneral
-(use-package proof-general
-  :mode (rx ".v" eos))
+;; (use-package proof-general
+;;   :mode (rx ".v" eos))
 ;;; literate-calc-mode
 (use-package literate-calc-mode
   :commands (literate-calc-mode literate-calc-minor-mode)
