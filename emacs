@@ -3188,11 +3188,14 @@ sorted block."
 ;; (autoload 'imaxima "imaxima" "Image support for Maxima." t)
 ;; (autoload 'imath-mode "imath" "Interactive Math minor mode." t)
 (use-package maxima
-  :load-path "~/.nix-profile/share/emacs/site-lisp/maxima"
+  :load-path "~/.nix-profile/share/emacs/site-lisp"
   :mode (rx ".ma" (or ?c ?x) eos)
   :defer t
   :commands (maxima-mode imaxima maxima imath-mode)
+  ;; :custom
+  ;; (imaxima-latex-preamble "\usepackage{pagecolor}")
   :config
+  (require 'imaxima)
   (setq imaxima-use-maxima-mode-flag t))
 
 ;;; QML mode
