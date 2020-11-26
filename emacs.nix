@@ -129,8 +129,8 @@ self: nixpkgs: {
     # org packages
     orgPackages.org-plus-contrib
     org-superstar
-    org-sticky-header
-    org-table-sticky-header
+    # org-sticky-header
+    # org-table-sticky-header
     org-journal
     ox-reveal
     ox-tufte
