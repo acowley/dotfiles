@@ -8,7 +8,7 @@
       ;; gc-cons-percentage 0.6
       file-name-handler-alist nil)
 
-(add-hook 'emacs-startup-hook 
+(add-hook 'emacs-startup-hook
           #'(lambda () (setq ;; gc-cons-threshold 16777216 ; 16mb
                              gc-cons-threshold 104857600 ; 100MB
                              gc-cons-percentage 0.1
@@ -43,7 +43,7 @@
   :config
   (require 'benchmark-init)
   ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook (lambda () 
+  (add-hook 'after-init-hook (lambda ()
                                (benchmark-init/deactivate)
                                (require 'benchmark-init-modes)))
   (benchmark-init/activate))
@@ -54,7 +54,7 @@
 (defun my/set-font ()
   (if (and nil (memq window-system '(mac ns)))
       (set-frame-font "Monaco 14")
-    (if (or (memq window-system '(mac ns)) 
+    (if (or (memq window-system '(mac ns))
             (file-exists-p "/etc/lsb-release"))
         (set-frame-font "Victor Mono-15:weight=demi")
       (set-frame-font "Victor Mono-11:weight=demi"))))
@@ -397,7 +397,7 @@ Haskell programs as it may be applied to all numbers in region."
 (add-to-list 'image-file-name-extensions "pdf")
 (setq imagemagick-types-inhibit (remove 'PDF imagemagick-types-inhibit))
 (add-to-list 'imagemagick-enabled-types 'PDF)
-(add-hook 'emacs-startup-hook (lambda () 
+(add-hook 'emacs-startup-hook (lambda ()
                                 (imagemagick-register-types)))
 
 ;; (use-package session
@@ -559,7 +559,7 @@ end tell" uri)))
 
 ;; Put the visited file name in the frame title
 ;; (setq-default frame-title-format '("%f [%m]"))
-(setq-default frame-title-format 
+(setq-default frame-title-format
               '((:eval (file-name-nondirectory (or (buffer-file-name) "")))
                 " [%m]"))
 
@@ -629,8 +629,8 @@ end tell" uri)))
 ;; hunspell hacking to get ispell to actually use utf-8
 ;; See: http://stackoverflow.com/questions/3961119/working-setup-for-hunspell-in-emacs
 
-(add-hook 'emacs-startup-hook 
-          (lambda () 
+(add-hook 'emacs-startup-hook
+          (lambda ()
             (eval-after-load "ispell" '(defun ispell-get-coding-system () 'utf-8))
             (add-hook 'prog-mode-hook 'flyspell-prog-mode)
             (add-hook 'text-mode-hook 'flyspell-mode)))
@@ -690,12 +690,12 @@ end tell" uri)))
   (save-excursion
     (let* ((dir "~/.mozilla/firefox/")
            (dirs (directory-files dir))
-           (unique-dir (cl-find-if (lambda (x) 
+           (unique-dir (cl-find-if (lambda (x)
                                      (and (string-match "\\.default" x)
                                           (file-accessible-directory-p (concat dir x))))
                                    dirs))
            (path (concat dir unique-dir "/sessionstore-backups/recovery.jsonlz4"))
-           (cmd (concat "nix run nixpkgs.lz4json -c lz4jsoncat " path 
+           (cmd (concat "nix run nixpkgs.lz4json -c lz4jsoncat " path
                         " | nix run nixpkgs.jq -c jq '.windows[].tabs[] | .entries[-1] | .url'"
                         " | sed 's/\"//g' | sort | uniq"))
            (ret (shell-command-to-string cmd)))
@@ -703,7 +703,7 @@ end tell" uri)))
        (concat "* "
                (format-time-string "[%Y-%m-%d %H:%M:%S]")
                "\n"
-               (mapconcat (lambda (x) (concat "  - " x)) 
+               (mapconcat (lambda (x) (concat "  - " x))
                           (cl-remove-if (lambda (x) (or (null x)
                                                         (string-blank-p x)
                                                         (string= "null" x)))
@@ -711,7 +711,7 @@ end tell" uri)))
                           "\n"))))))
 
 (defun restore-firefox-session ()
-  "Restore web browser session by opening each link with `browse-url`. 
+  "Restore web browser session by opening each link with `browse-url`.
 
 Make sure to put cursor on date heading that contains a list of urls."
 
@@ -746,8 +746,8 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; emacs server
 (use-package server
   :config (and (fboundp 'server-mode)
-               (add-hook 'emacs-startup-hook 
-                         (lambda () 
+               (add-hook 'emacs-startup-hook
+                         (lambda ()
                            (or (server-running-p) (server-mode))))))
 ;;; company-mode
 (use-package company
@@ -955,7 +955,7 @@ project's type."
 
 
   ;; This is slow to load
-  (use-package ox-tufte 
+  (use-package ox-tufte
     :load-path "~/src/ox-tufte"
     :defer t)
 
@@ -965,8 +965,8 @@ project's type."
 
   (use-package ox-koma-letter
      :defer t
-     :commands (org-koma-letter-export-to-pdf 
-                org-koma-letter-export-as-latex 
+     :commands (org-koma-letter-export-to-pdf
+                org-koma-letter-export-as-latex
                 org-koma-letter-export-to-latex))
 
   ;; Adapated from https://www.reddit.com/r/orgmode/comments/43uuck/temporarily_show_emphasis_markers_when_the_cursor/czmtn29/
@@ -1077,7 +1077,7 @@ evaluation may begin anew."
   (use-package ob-js
     :defer t
     :commands (org-babel-execute:js org-babel-expand-body:js))
-  
+
   (defun org-babel-execute:runhaskell (body params)
     (org-babel-eval "runhaskell"
                     (org-babel-expand-body:generic body params)))
@@ -1130,38 +1130,38 @@ evaluation may begin anew."
     "Execute a block of plantuml code with org-babel.
 This function is called by `org-babel-execute-src-block'."
     (let* ((out-file (or (cdr (assq :file params))
-		         (error "PlantUML requires a \":file\" header argument")))
-	   (cmdline (cdr (assq :cmdline params)))
-	   (in-file (org-babel-temp-file "plantuml-"))
-	   (java (or (cdr (assq :java params)) ""))
-	   (full-body (org-babel-plantuml-make-body body params))
-	   (cmd (concat "plantuml "
-		        (if (string= (file-name-extension out-file) "png")
-			    " -tpng" "")
-		        (if (string= (file-name-extension out-file) "svg")
-			    " -tsvg" "")
-		        (if (string= (file-name-extension out-file) "eps")
-			    " -teps" "")
-		        (if (string= (file-name-extension out-file) "pdf")
-			    " -tpdf" "")
-		        (if (string= (file-name-extension out-file) "tex")
-			    " -tlatex" "")
-		        (if (string= (file-name-extension out-file) "vdx")
-			    " -tvdx" "")
-		        (if (string= (file-name-extension out-file) "xmi")
-			    " -txmi" "")
-		        (if (string= (file-name-extension out-file) "scxml")
-			    " -tscxml" "")
-		        (if (string= (file-name-extension out-file) "html")
-			    " -thtml" "")
-		        (if (string= (file-name-extension out-file) "txt")
-			    " -ttxt" "")
-		        (if (string= (file-name-extension out-file) "utxt")
-			    " -utxt" "")
-		        " -p " cmdline " < "
-		        (org-babel-process-file-name in-file)
-		        " > "
-		        (org-babel-process-file-name out-file))))
+                         (error "PlantUML requires a \":file\" header argument")))
+           (cmdline (cdr (assq :cmdline params)))
+           (in-file (org-babel-temp-file "plantuml-"))
+           (java (or (cdr (assq :java params)) ""))
+           (full-body (org-babel-plantuml-make-body body params))
+           (cmd (concat "plantuml "
+                        (if (string= (file-name-extension out-file) "png")
+                            " -tpng" "")
+                        (if (string= (file-name-extension out-file) "svg")
+                            " -tsvg" "")
+                        (if (string= (file-name-extension out-file) "eps")
+                            " -teps" "")
+                        (if (string= (file-name-extension out-file) "pdf")
+                            " -tpdf" "")
+                        (if (string= (file-name-extension out-file) "tex")
+                            " -tlatex" "")
+                        (if (string= (file-name-extension out-file) "vdx")
+                            " -tvdx" "")
+                        (if (string= (file-name-extension out-file) "xmi")
+                            " -txmi" "")
+                        (if (string= (file-name-extension out-file) "scxml")
+                            " -tscxml" "")
+                        (if (string= (file-name-extension out-file) "html")
+                            " -thtml" "")
+                        (if (string= (file-name-extension out-file) "txt")
+                            " -ttxt" "")
+                        (if (string= (file-name-extension out-file) "utxt")
+                            " -utxt" "")
+                        " -p " cmdline " < "
+                        (org-babel-process-file-name in-file)
+                        " > "
+                        (org-babel-process-file-name out-file))))
       (with-temp-file in-file (insert full-body))
       (message "%s" cmd) (org-babel-eval cmd "")
       nil)))
@@ -1540,8 +1540,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   :commands (org-roam-bibtex-notes-fn
              org-roam-bibtex-edit-notes-ad
              org-roam-bibtex-process-file-field
-             org-roam-bibtex-edit-notes 
-             org-roam-bibtex-find-non-ref-file 
+             org-roam-bibtex-edit-notes
+             org-roam-bibtex-find-non-ref-file
              org-roam-bibtex-insert-non-ref))
 
 (use-package bibtex-completion
@@ -2000,7 +2000,7 @@ predicate returns true."
                            (mapcar #'(lambda (var) (car var))
                                    my-notmuch-account-alist)
                            nil t nil nil (caar my-notmuch-account-alist))))))
-        (when account 
+        (when account
           (message "Activating email settings for %s" account)
           (mapc #'(lambda (var) (set (car var) (cadr var)))
                 (cdr (assoc account my-notmuch-account-alist)))))))
@@ -3407,8 +3407,8 @@ sorted block."
   :defer t
   :commands (nix-buffer))
 ;;; toml
-(use-package toml-mode 
-  :defer t 
+(use-package toml-mode
+  :defer t
   :mode "\\.toml\\'")
 ;;; markdown-mode
 (use-package markdown-mode :defer t
@@ -3507,8 +3507,8 @@ sorted block."
   (eval-after-load 'tramp
     '(progn
        (docker-tramp-add-method)
-       (tramp-set-completion-function 
-        docker-tramp-method 
+       (tramp-set-completion-function
+        docker-tramp-method
         docker-tramp-completion-function-alist))))
 
 ;;; emojify
@@ -3527,7 +3527,7 @@ sorted block."
 ;;; pomidor
 (use-package pomidor
   :bind (("<f12>" . pomidor))
-  :config (setq pomidor-sound-tick nil 
+  :config (setq pomidor-sound-tick nil
                 pomidor-sound-tack nil)
   :hook (pomidor-mode . (lambda ()
                           (display-line-numbers-mode -1)
@@ -3535,10 +3535,10 @@ sorted block."
                           (setq left-margin-width 2 right-margin-width 0)
                           (set-window-buffer nil (current-buffer)))))
 ;;; synosaurus
-(use-package synosaurus 
-  :commands (synosaurus-mode 
-             synosaurus-lookup 
-             synosaurus-choose-and-replace 
+(use-package synosaurus
+  :commands (synosaurus-mode
+             synosaurus-lookup
+             synosaurus-choose-and-replace
              synosaurus-choose-and-insert)
   :config
   (require 'synosaurus-wordnet))
@@ -3574,10 +3574,10 @@ sorted block."
 ;;; auctex
 (use-package auctex
   :mode (("\\.tex\\'" . TeX-latex-mode))
-  :init (add-hook 'LaTeX-mode-hook (lambda () 
+  :init (add-hook 'LaTeX-mode-hook (lambda ()
                                      (require 'auctex-latexmk)
                                      (auctex-latexmk-setup)))
-  :custom 
+  :custom
   (TeX-engine 'xetex)
   (TeX-parse-self t)
   (TeX-auto-save t)
