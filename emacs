@@ -3304,8 +3304,8 @@ sorted block."
   (defun my/rustic-hook ()
     (electric-indent-mode 1)
     (yas-minor-mode))
-  (setq rustic-analyzer-command "rust-analyzerw"
-        lsp-rust-analyzer-server-command "rust-analyzerw")
+  (setq rustic-analyzer-command '("rust-analyzer")
+        lsp-rust-analyzer-server-command '("rust-analyzer"))
   (add-hook 'rustic-mode-hook #'my/rustic-hook))
 
 (use-package rust-mode
@@ -3332,7 +3332,7 @@ sorted block."
   (require 'lsp-mode)
   (require 'lsp-rust)
   (setq lsp-rust-server 'rust-analyzer
-        lsp-rust-analyzer-server-command "rust-analyzerw"
+        lsp-rust-analyzer-server-command '("rust-analyzer")
         lsp-rust-unstable-features t
 
         ;; If this feature is enabled, we get a lot of spurious
