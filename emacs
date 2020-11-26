@@ -320,6 +320,8 @@ Haskell programs as it may be applied to all numbers in region."
 
 (setq confirm-kill-emacs #'y-or-n-p)
 
+(setq warning-suppress-types '((comp)))
+
 (put 'narrow-to-region 'disabled nil)
 
 ;; (tool-bar-mode -1)
