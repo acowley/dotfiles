@@ -9,6 +9,6 @@ self: pkgs: {
   #   };
   #   outputHash = "101lppd1805drwd038b4njr5czzjnqqxf3xlf6v3l22wfwr2cn3l";
   # });
-  corectrl = self.libsForQt514.callPackage ./default.nix {};
+  corectrl = self.libsForQt5.callPackage ./default.nix {};
 }
 
