@@ -1,6 +1,6 @@
 self: nixpkgs: {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
-    inherit (super) pdf-tools;
+    # inherit (super) pdf-tools;
     inherit (super) vterm;
 
     # ox-reveal = super.ox-reveal.overrideAttrs (old: {
@@ -8,6 +8,17 @@ self: nixpkgs: {
     #     ./emacs-overlay/ox-reveal-4.0.patch
     #   ];
     # });
+
+    pdf-tools = super.pdf-tools.overrideAttrs (old: {
+      patches = old.patches or [] ++ [
+        # https://github.com/politza/pdf-tools/pull/588
+        (nixpkgs.fetchpatch {
+          name = "pdf-tools-undefined-function";
+          url = "https://patch-diff.githubusercontent.com/raw/politza/pdf-tools/pull/588.patch";
+          sha256 = "1pr2cjf2f6kbcrhdil3l73lmqmj636h7g4l80gnw5gxg3cwmqkrv";
+        })
+      ];
+    });
 
     god-mode = super.god-mode.overrideAttrs (old: {
       src = nixpkgs.fetchFromGitHub {
