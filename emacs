@@ -4,9 +4,7 @@
 ;;; Before everything else
 (defvar old--file-name-handler-alist file-name-handler-alist)
 
-(setq ;; gc-cons-threshold 100000000; ie 100mb, default is 800kb
-      ;; gc-cons-percentage 0.6
-      file-name-handler-alist nil)
+(setq file-name-handler-alist nil)
 
 (add-hook 'emacs-startup-hook
           #'(lambda () (setq ;; gc-cons-threshold 16777216 ; 16mb
@@ -1614,6 +1612,15 @@ entire source file is loaded."
          ("C-c j" . org-journal-new-entry)))
 
 
+;;; org-books
+(use-package org-books
+  :commands (org-books-add-book
+             org-books-rate-book
+             org-books-cliplink
+             org-books-add-url
+             org-books-add-isbn)
+  :custom
+  (org-books-file "~/org/home.org"))
 ;;; olivetti-mode
 (use-package olivetti
   :commands (olivetti-mode)

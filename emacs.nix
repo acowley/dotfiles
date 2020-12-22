@@ -157,6 +157,7 @@ self: nixpkgs: {
     org-ref
     org-roam
     org-roam-bibtex
+    org-books
     biblio biblio-core
     helm-bibtex
     parsebib
