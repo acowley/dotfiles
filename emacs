@@ -36,6 +36,9 @@
 ;; (setq use-package-verbose t)
 ;; (setq use-package-compute-statistics t)
 
+;; For gccemacs
+(setq comp-deferred-compilation nil)
+
 ;;; benchmark-init
 (use-package benchmark-init
   :config
