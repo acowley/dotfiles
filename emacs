@@ -3155,6 +3155,10 @@ sorted block."
 (add-hook 'c-mode-hook #'my/c++-mode-hook)
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 
+(use-package opencl-mode 
+  :mode "\\.cl\\'"
+  :hook (opencl-mode . #'electric-indent-local-mode))
+
 ;;; mixed-pitch
 (use-package mixed-pitch
   :commands (mixed-pitch-mode)
@@ -3184,7 +3188,7 @@ sorted block."
 ;;; File mode associtions
 
 ;; OpenCL code uses c-mode
-(add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
+;; (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
 
 (add-to-list 'auto-mode-alist '("\\.launch\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.machine\\'" . nxml-mode))

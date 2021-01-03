@@ -231,6 +231,7 @@ self: nixpkgs: {
     racer
 
     dhall-mode
+    opencl-mode
     purescript-mode
     psc-ide
     paredit
