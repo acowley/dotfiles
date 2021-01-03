@@ -760,7 +760,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   ;; :init
   ;; (add-hook 'prog-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay 0.1)
+  ;; (setq company-idle-delay 0.1)
+  (setq company-idle-delay 0.0)
   ;; (define-key company-mode-map (kbd "C-:") 'helm-company)
   ;; (define-key company-active-map (kbd "C-:") 'helm-company)
   ;(setq company-backends (remq 'company-eclim (remq 'company-oddmuse company-backends)))
