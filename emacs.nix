@@ -260,6 +260,7 @@ self: nixpkgs: {
     pomidor
     synosaurus
     restclient
+    gif-screencast
   ];
   myEmacsPackagesFor =
     if (false && nixpkgs.stdenv.isDarwin)

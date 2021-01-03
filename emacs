@@ -3611,6 +3611,9 @@ sorted block."
   (TeX-parse-self t)
   (TeX-auto-save t)
   (reftex-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")))
+;;; gif-screencast
+(use-package gif-screencast
+  :commands (gif-screencast))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
