@@ -9,6 +9,6 @@ self: super: {
              minifp lettrine titling titlesec fontspec todonotes
              doublestroke comment multirow cancel doi import ifoddpage
              subfiles biblatex logreq biber was minted fvextra xstring
-             framed standalone aeguill catchfile pagecolor fontawesome;
+             framed standalone aeguill catchfile pagecolor fontawesome soul;
     };
 }
