@@ -2989,7 +2989,7 @@ sorted block."
   )
 
 (defun lsp-ccls ()
-  "Enable LSP with the CCLS backend"
+  "Enable LSP with the CCLS backend."
   (interactive)
   (require 'ccls)
   (require 'lsp-ui-flycheck)
