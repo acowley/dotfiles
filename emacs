@@ -833,6 +833,10 @@ project's type."
         dashboard-set-heading-icons t
         dashboard-set-file-icons t))
 
+(use-package page-break-lines
+  ;; Used by the dashboard package
+  :commands (page-break-lines-mode))
+
 ;;; impatient-mode
 (use-package impatient-mode
   :disabled
