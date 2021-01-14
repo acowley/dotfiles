@@ -64,11 +64,16 @@
 (use-package info
   :commands (info info-apropos)
   :config
-  (set-face-attribute 'info-title-1 nil :family "Yanone Kaffeesatz" :weight 'light :height 200 :foreground "#E1BEE7")
-  (set-face-attribute 'info-title-2 nil :family "Yanone Kaffeesatz" :weight 'light :height 175)
-  (set-face-attribute 'info-title-3 nil :family "Yanone Kaffeesatz" :weight 'light :height 160)
-  (set-face-attribute 'info-title-4 nil :family "Yanone Kaffeesatz" :weight 'light :height 150)
-  (set-face-attribute 'info-menu-header nil :family "Yanone Kaffeesatz" :weight 'light :height 175 :foreground "#E1BEE7"))
+  ;; (set-face-attribute 'info-title-1 nil :family "Yanone Kaffeesatz" :weight 'light :height 200 :foreground "#E1BEE7")
+  ;; (set-face-attribute 'info-title-2 nil :family "Yanone Kaffeesatz" :weight 'light :height 175)
+  ;; (set-face-attribute 'info-title-3 nil :family "Yanone Kaffeesatz" :weight 'light :height 160)
+  ;; (set-face-attribute 'info-title-4 nil :family "Yanone Kaffeesatz" :weight 'light :height 150)
+  ;; (set-face-attribute 'info-menu-header nil :family "Yanone Kaffeesatz" :weight 'light :height 175 :foreground "#E1BEE7")
+  (set-face-attribute 'info-title-1 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 200 :foreground "#E1BEE7")
+  (set-face-attribute 'info-title-2 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 175)
+  (set-face-attribute 'info-title-3 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 160)
+  (set-face-attribute 'info-title-4 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 150)
+  (set-face-attribute 'info-menu-header nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 175 :foreground "#E1BEE7"))
 
 (use-package hl-line
   :commands (hl-line-mode)
@@ -823,8 +828,10 @@ project's type."
   ;; :load-path "~/src/emacs-dashboard"
   ;; :commands dashboard-insert-startupify-lists
   :custom-face
-  (dashboard-heading ((t (:family "Yanone Kaffeesatz" :weight light :height 200 :foreground "#E1BEE7"))))
-  (dashboard-banner-logo-title ((t (:family "Yanone Kaffeesatz" :weight light :height 250))))
+  ;; (dashboard-heading ((t (:family "Yanone Kaffeesatz" :weight light :height 200 :foreground "#E1BEE7"))))
+  ;; (dashboard-banner-logo-title ((t (:family "Yanone Kaffeesatz" :weight light :height 250))))
+  (dashboard-heading ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 200 :foreground "#E1BEE7"))))
+  (dashboard-banner-logo-title ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents  . 10)
@@ -885,8 +892,10 @@ project's type."
          ("S-<up>" . nil)
          ("S-<down>" . nil))
   :custom-face
-  (org-level-1 ((t (:family "Yanone Kaffeesatz" :weight light :height 250))))
+  ;; (org-level-1 ((t (:foundry "UKWN" :family "Yanone Kaffeesatz" :weight light :height 250))))
+  (org-level-1 ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
   :config
+  ;; (set-face-font 'org-level-1 "Yanone Kaffeesatz Light:style=Light,Regular")
   (setq org-src-fontify-natively 't
         org-use-speed-commands 't
         org-html-doctype "html5"
