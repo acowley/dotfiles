@@ -125,6 +125,7 @@ self: nixpkgs: {
     projectile
     yasnippet
     dashboard
+    page-break-lines
     all-the-icons
     impatient-mode
     # esup
@@ -207,6 +208,7 @@ self: nixpkgs: {
     lsp-ui
     lsp-haskell
     lsp-treemacs
+    lsp-docker
     ccls
 
     cmake-mode
