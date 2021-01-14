@@ -3145,12 +3145,13 @@ sorted block."
   (which-function-mode)
   (set-face-foreground 'which-func "LightSkyBlue")
   (yas-minor-mode-on)
+  (c-toggle-auto-newline -1)
   ;; Make imenu work with OpenCL, CUDA, and HIP compute kernels
   (add-to-list 'imenu-generic-expression
                `("Kernels"
                  ,(concat
                    ;"^[a-zA-Z0-9_]+[ \t]?"		; Type specs; there can be no
-                   (rx (or "__global__" "__device__" "__host__") space)
+                   (rx (or "__global__" "__device__" "__host__" "__kernel") space)
                    "\\([a-zA-Z0-9_*]+[ \t]+\\)"	; more than 3 tokens, right?
                    "\\([a-zA-Z0-9_*]+[ \t]+\\)?"
                    "\\([*&]+[ \t]*\\)?"			; Pointer.
@@ -3165,7 +3166,8 @@ sorted block."
 
 (use-package opencl-mode 
   :mode "\\.cl\\'"
-  :hook (opencl-mode . #'electric-indent-local-mode))
+  :config
+  (add-hook 'opencl-mode-hook #'electric-indent-local-mode))
 
 ;;; mixed-pitch
 (use-package mixed-pitch
