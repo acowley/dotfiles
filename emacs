@@ -1242,7 +1242,7 @@ location."
         (progn
           (goto-char (point-min))
           (let ((pt (my/org-babel-next-src-block)))
-            (loop until (or (null pt) (> pt stop)) do
+            (cl-loop until (or (null pt) (> pt stop)) do
                   (let ((info (org-babel-get-src-block-info 't)))
                     (when (and (string-equal "ipython" (nth 0 info)) ; language
                                (string-equal "silent"
