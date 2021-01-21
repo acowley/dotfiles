@@ -1257,6 +1257,25 @@ location."
                              (org-babel-execute-src-block))))
                   (setq pt (my/org-babel-next-src-block))))))))
 
+  (defun my/org-execute-session ()
+    "Execute every org src block with a :session header up to point."
+    (interactive)
+    (save-excursion
+      (let ((stop (point)))
+        (goto-char (point-min))
+        (let ((pt (my/org-babel-next-src-block)))
+          (cl-loop until (or (null pt) (> pt stop)) do
+                   (let* ((info (org-babel-get-src-block-info 't))
+                          (sess (assoc :session (nth 2 info))))
+                     (when (and (consp sess)
+                                (or (not (stringp (cdr sess))) 
+                                    (not (string-equal "none" (cdr sess)))))
+                       (progn
+                         (message "Executing %s block at line %s"
+                                  (nth 0 info) (line-number-at-pos pt))
+                         (org-babel-execute-src-block))))
+                (setq pt (my/org-babel-next-src-block)))))))
+
   ;; Adapted from
   ;; http://emacs.stackexchange.com/questions/3374/set-the-background-of-org-exported-code-blocks-according-to-theme
   (defun my/org-inline-css-hook (exporter)
