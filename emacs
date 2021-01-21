@@ -3414,8 +3414,8 @@ sorted block."
 ;;; elisp
 (use-package paredit
   :commands paredit-mode
-  :bind (:map paredit-mode-map
-              ("M-s" . avy-goto-word-1))
+  ;; :bind (:map paredit-mode-map
+  ;;             ("M-s" . avy-goto-word-1))
   :init
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
   (add-hook 'ielm-mode-hook #'paredit-mode))
