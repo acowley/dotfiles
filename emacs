@@ -1135,7 +1135,7 @@ evaluation may begin anew."
   (use-package ob-octave
     :defer t
     ; :ensure org-plus-contrib
-    :commands (org-babel-execute:octave org-babel-expand-body:octave))
+    :commands (org-babel-execute:octave))
   (use-package ob-latex
     :defer t
     ; :ensure org-plus-contrib
