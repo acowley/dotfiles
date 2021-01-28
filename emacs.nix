@@ -162,8 +162,8 @@ self: nixpkgs: {
     biblio biblio-core
     helm-bibtex
     parsebib
-    auctex
-    auctex-latexmk
+    # auctex
+    # auctex-latexmk
 
     #
     olivetti
