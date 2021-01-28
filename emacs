@@ -774,6 +774,14 @@ Make sure to put cursor on date heading that contains a list of urls."
     ;; (add-to-list 'company-backends 'company-ispell)
     )
   (add-hook 'text-mode-hook #'ac/company-text-mode))
+;;; prescient
+(use-package prescient
+  :commands (prescient-persist-mode)
+  :hook (company-mode . prescient-persist-mode))
+;;; company-prescient
+(use-package company-prescient
+  :commands (company-prescient-mode)
+  :hook (company-mode . company-prescient-mode))
 ;;; company-box
 (use-package company-box
   :disabled

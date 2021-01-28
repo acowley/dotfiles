@@ -181,6 +181,8 @@ self: nixpkgs: {
     olivetti
     company
     company-box
+    prescient
+    company-prescient
 
     helm
     helm-company
