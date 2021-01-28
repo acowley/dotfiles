@@ -8,6 +8,18 @@ self: nixpkgs: {
     #     ./emacs-overlay/ox-reveal-4.0.patch
     #   ];
     # });
+    orgPackages = super.orgPackages // {
+      org-plus-contrib = super.orgPackages.org-plus-contrib.overrideAttrs (old: {
+        # This is the org-fold branch using text properties rather
+        # than overlays to display hidden text in org files.
+        src = nixpkgs.fetchFromGitHub {
+          owner = "yantar92";
+          repo = "org";
+          rev = "98cfc185bbe83ddcae85cc7d0f4beb3f5afa938e";
+          sha256 = "sha256:1m6753c1jdnlw2kcc0d0bc1l7j1lf1kqk2xh58sczzirkq5445va";
+        };
+      });
+    };
 
     pdf-tools = super.pdf-tools.overrideAttrs (old: {
       patches = old.patches or [] ++ [
