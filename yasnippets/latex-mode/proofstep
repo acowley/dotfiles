@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: proof step
+# key: pstep
+# --
+\proofstep{$0}
