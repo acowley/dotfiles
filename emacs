@@ -2968,6 +2968,7 @@ sorted block."
   (require 'lsp-completion)
   (require 'lsp-ui)
   (require 'lsp-modeline)
+  (require 'lsp-headerline)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
   (add-hook 'lsp-mode-hook 'lsp-completion-mode)
