@@ -648,6 +648,8 @@ end tell" uri)))
   (interactive)
   (kill-ring-save (region-beginning) (region-end))
   (comment-dwim nil)
+  (goto-char (region-end))
+  (end-of-line)
   (newline-and-indent))
 
 ;;;; Tramp with sudo
