@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake
+{ stdenv, lib, fetchFromGitHub, cmake
 , glfw, buildSamples ? false
 , mesa_drivers, vulkan-headers, vulkan-loader }:
 stdenv.mkDerivation {
@@ -13,11 +13,11 @@ stdenv.mkDerivation {
   };
   nativeBuildInputs = [ cmake ];
   # buildInputs = [ mesa_drivers.dev ];
-  buildInputs = stdenv.lib.optional buildSamples glfw;
+  buildInputs = lib.optional buildSamples glfw;
   propagatedBuildInputs = [ vulkan-headers vulkan-loader ];
   patchPhase = ''
     sed 's|\(set(OUTPUT_DIRECTORY \).*|\1"''${CMAKE_BINARY_DIR}/lib")|' -i CMakeLists.txt
-  '' + stdenv.lib.optionalString buildSamples ''
+  '' + lib.optionalString buildSamples ''
     sed -e '/\/Libs\/glfw\/include/d' \
         -e '/\/Libs\/glfw\/lib/d' \
         -i Samples/CMakeLists.txt
@@ -40,7 +40,7 @@ stdenv.mkDerivation {
     mkdir $out
     cp -r lib $out
     cp -r include $out
-  '' + stdenv.lib.optionalString buildSamples ''
+  '' + lib.optionalString buildSamples ''
     cp -r ../Samples/Data $out
     cp ../Libs/Assimp/lib/${if stdenv.isLinux then "linux64" else "osx64"}/* $out/lib
   '';

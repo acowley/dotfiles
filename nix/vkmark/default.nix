@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, meson, ninja, pkgconfig, assimp, glm
+{ stdenv, lib, fetchFromGitHub, meson, ninja, pkgconfig, assimp, glm
 , libxcb, xcbutilwm, vulkan-headers, vulkan-loader }:
 
 stdenv.mkDerivation {
@@ -18,7 +18,7 @@ stdenv.mkDerivation {
   meta = {
     description = "Vulkan benchmark modeled on glmark2";
     homepage = https://github.com/vkmark/vkmark;
-    license = stdenv.lib.licenses.lgpl21;
-    platforms = stdenv.lib.platforms.all;
+    license = lib.licenses.lgpl21;
+    platforms = lib.platforms.all;
   };
 }

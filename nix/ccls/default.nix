@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, fetchpatch, cmake, llvmPackages }:
+{ stdenv, lib, fetchFromGitHub, fetchpatch, cmake, llvmPackages }:
 llvmPackages.stdenv.mkDerivation rec {
   name = "ccls-${version}";
   version = "20200725";
@@ -33,7 +33,7 @@ llvmPackages.stdenv.mkDerivation rec {
   meta = {
     description = "C/C++/ObjC language server";
     homepage = https://github.com/MaskRay/ccls;
-    license = stdenv.lib.licenses.asl20;
-    platforms = stdenv.lib.platforms.all;
+    license = lib.licenses.asl20;
+    platforms = lib.platforms.all;
   };
 }

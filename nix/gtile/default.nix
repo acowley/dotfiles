@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ stdenv, lib, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
   name = "gnome-shell-extension-gtile-${version}";
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     cp *.js *.json *.css $out/share/gnome-shell/extensions/${uuid}
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A window tiling extension for Gnome";
     license = licenses.gpl2;
     maintainers = with maintainers; [ acowley ];

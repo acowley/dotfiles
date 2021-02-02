@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, fetchpatch, bc, kernel }:
+{ stdenv, lib, fetchurl, fetchFromGitHub, fetchpatch, bc, kernel }:
 stdenv.mkDerivation rec {
   # version = "1.0.0";
   version = "5.5.2_34066.20201216";
@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Kernel module driver for Realtek 8821ce wireless card";
-    platforms = stdenv.lib.platforms.linux;
-    license = stdenv.lib.licenses.gpl2;
+    platforms = lib.platforms.linux;
+    license = lib.licenses.gpl2;
   };
 }

@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, cmake, boost, eigen }:
+{ stdenv, lib, fetchgit, cmake, boost, eigen }:
 # let version = "3.2.1"; in
 let version = "2018-02-20"; in
 stdenv.mkDerivation {
@@ -15,7 +15,7 @@ stdenv.mkDerivation {
   ];
 #    "-DGTSAM_BUILD_TESTS=OFF"
   nativeBuildInputs = [ cmake boost eigen ];
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A library of C++ classes that implement smoothing and mapping (SAM) in robotics and vision";
     homepage = https://research.cc.gatech.edu/borg/gtsam/;
     platforms = platforms.unix;

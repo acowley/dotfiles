@@ -1,4 +1,4 @@
-{ fetchurl, stdenv, libtool, makeWrapper
+{ stdenv, lib, fetchurl, libtool, makeWrapper
 , coreutils, ctags, ncurses, pythonPackages, sqlite, universal-ctags, pkgconfig
 }:
 
@@ -40,7 +40,7 @@ stdenv.mkDerivation rec {
       --prefix PYTHONPATH : "$(toPythonPath ${pythonPackages.pygments})"
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Source code tag system";
     longDescription = ''
       GNU GLOBAL is a source code tagging system that works the same way

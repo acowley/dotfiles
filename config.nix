@@ -19,7 +19,7 @@
       '';
       meta = {
         description = "Perl extension for renaming multiple files";
-        license = with pkgs.stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+        license = with pkgs.lib.licenses; [ artistic1 gpl1Plus ];
       };
     };
   };

@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake }:
+{ stdenv, lib, fetchFromGitHub, cmake }:
 stdenv.mkDerivation rec {
   name = "libsimdpp-${version}";
   version = "2018-01-14";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   meta = {
     description = "Portable header-only zero-overhead C++ low level SIMD library";
     homepage = https://github.com/p12tic/libsimdpp;
-    license = stdenv.lib.licenses.boost;
-    platforms = stdenv.lib.platforms.all;
+    license = lib.licenses.boost;
+    platforms = lib.platforms.all;
   };
 }

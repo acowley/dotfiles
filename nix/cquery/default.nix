@@ -1,4 +1,4 @@
-{ stdenv, writeTextFile, fetchFromGitHub, cmake, llvmPackages_6, ncurses }:
+{ stdenv, lib, writeTextFile, fetchFromGitHub, cmake, llvmPackages_6, ncurses }:
 llvmPackages_6.stdenv.mkDerivation rec {
   name = "cquery-${version}";
   version = "2018-05-21";
@@ -63,7 +63,7 @@ llvmPackages_6.stdenv.mkDerivation rec {
   meta = {
     description = "Low-latency language server for C++, powered by libclang";
     homepage = https://github.com/jacobdufault/cquery;
-    license = stdenv.lib.licenses.mit;
-    platforms = stdenv.lib.platforms.all;
+    license = lib.licenses.mit;
+    platforms = lib.platforms.all;
   };
 }

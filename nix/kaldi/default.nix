@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python27, zlib, autoconf, wget
+{ stdenv, lib, fetchFromGitHub, python27, zlib, autoconf, wget
 , subversion, git, which, darwin
 , sctk, sph2pipe, openfst, atlas, openblas }:
 
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   };
   buildInputs = [ python27 zlib autoconf wget which git subversion
     sctk sph2pipe openfst openblas atlas ]
-    ++ stdenv.lib.optional stdenv.isDarwin darwin.cctools;
+    ++ lib.optional stdenv.isDarwin darwin.cctools;
 
   postPatch = ''
     sed -e 's/# CXX = clang++/CXX = clang++/' \
@@ -30,7 +30,7 @@ stdenv.mkDerivation rec {
     cd src && make
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Kaldi Speech Recognition Toolkit";
     homepage = http://kaldi-asr.org/;
     license = licenses.apsl20;

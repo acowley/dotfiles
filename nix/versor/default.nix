@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, libGL, freeglut, glew, glfw, withGraphics ? false, examples ? false }:
+{ stdenv, lib, fetchFromGitHub, cmake, libGL, freeglut, glew, glfw, withGraphics ? false, examples ? false }:
 stdenv.mkDerivation rec {
   name = "versor-${version}";
   version = "20180616";
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
     fetchSubmodules = withGraphics;
   };
   nativeBuildInputs = [ cmake ];
-  buildInputs = stdenv.lib.optionals withGraphics [libGL freeglut glew glfw];
+  buildInputs = lib.optionals withGraphics [libGL freeglut glew glfw];
   cmakeFlags = [ "-DOpenGL_GL_PREFERENCE=GLVND"
                  ''-DBUILD_GRAPHICS=${if withGraphics then "ON" else "OFF"}''
                  ''-DGLFW_BUILD_EXAMPLES=${if withGraphics then "ON" else "OFF"}''
@@ -20,10 +20,10 @@ stdenv.mkDerivation rec {
                  ''-DBUILD_EXAMPLES=${if examples then "ON" else "OFF"}''
                ];
   # preConfigure =
-  #   stdenv.lib.optionalString withGraphics ''
+  #   lib.optionalString withGraphics ''
   #     sed 's/BUILD_GRAPHICS OFF/BUILD_GRAPHICS ON/' -i CMakeLists.txt
   #   '' +
-  #   stdenv.lib.optionalString examples ''
+  #   lib.optionalString examples ''
   #     sed 's/BUILD_EXAMPLES OFF/BUILD_EXAMPLES ON/' -i CMakeLists.txt
   #   '';
 }
