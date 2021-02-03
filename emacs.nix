@@ -278,34 +278,9 @@ self: nixpkgs: {
     restclient
     gif-screencast
   ];
-  myEmacsPackagesFor =
-    if (false && nixpkgs.stdenv.isDarwin)
-    then nixpkgs.emacsPackagesFor nixpkgs.emacsMacport
-    # else nixpkgs.emacsPackagesFor (nixpkgs.emacs.override { inherit (nixpkgs) imagemagick; });
-    else nixpkgs.emacsPackagesFor ((nixpkgs.emacs.override { imagemagick = nixpkgs.imagemagickBig; srcRepo = true; }).overrideAttrs (old: rec {
-      name = "emacs-${version}${versionModifier}";
-      version = "28.0";
-      versionModifier = ".50";
-      src = nixpkgs.fetchgit {
-        url = "git://git.sv.gnu.org/emacs.git";
-        # rev = "421eeff243af683bf0b7c6d9181650a1c6900f9b";
-        # sha256 = "09ci3cyzl3vbvag8ldyrqvg0av0057b8qnq4j7whgp91w52m3vlp";
-        rev = "b2581eea1be1468a15927be00ba2f3f399af33a1";
-        sha256 = "05dd2h1cacgl8f4r9zh3i5qwl9njdz9dnjdvhyb14h8313y3iwj9";
-      };
-      patches = [];
-      prePatch = ''
-        sed 's/\([[:space:]]*\)\(LC_ALL=C $(RUN_TEMACS) -batch $(BUILD_DETAILS) -l loadup --temacs=dump\)/\1env -i \2/' -i src/Makefile.in
-        sed 's/\((tramp-compat-process-running-p "gvfs-fuse-daemon")\)/(tramp-compat-process-running-p ".gvfsd-fuse-wrapped") \1/' -i lisp/net/tramp-gvfs.el
-        sed 's/error ("Attempt to shape unibyte text");/;/g' -i src/composite.c
-      '';
-      buildInputs = (old.buildInputs or []) ++ [nixpkgs.jansson];
-      configureFlags = (old.configureFlags or []) ++ ["--with-imagemagick"];
-    }));
-  # emacs = (self.myEmacsPackagesFor.overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
-
   myemacsPkgs = (self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides;
   myemacs = ((self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
+  
   myemacsGccPkgs = (self.emacsPackagesFor self.emacsGcc).overrideScope' self.myEmacsPackageOverrides;
   myemacsGcc = ((self.emacsPackagesFor self.emacsGcc).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
