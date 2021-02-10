@@ -36,6 +36,7 @@
     #          subfiles biblatex logreq biber was minted fvextra xstring
     #          framed standalone aeguill catchfile pagecolor;
     # };
+    tint = pkgs.callPackage ./nix/tint {};
     maxima = pkgs.maxima.overrideAttrs (old: rec {
       version = "2020-11-24";
       name = "maxima-${version}";
