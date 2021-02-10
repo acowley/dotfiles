@@ -330,6 +330,8 @@ Haskell programs as it may be applied to all numbers in region."
 
 (put 'narrow-to-region 'disabled nil)
 
+(setq inhibit-compacting-font-caches t)
+
 ;; (tool-bar-mode -1)
 
 ;; (when (and window-system (not (memq window-system '(mac ns))))
