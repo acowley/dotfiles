@@ -23,13 +23,13 @@ Inbox ~/.mail/acowleySA/Inbox
 SubFolders Verbatim
 
 Channel acowleySA
-Master :acowleySA-remote:
-Slave :acowleySA-local:
+Far :acowleySA-remote:
+Near :acowleySA-local:
 Patterns *
 Expunge Both
 CopyArrivalDate yes
 Sync All
-Create Slave
+Create Near
 SyncState *
 
 IMAPAccount infoSA
@@ -49,13 +49,13 @@ Inbox ~/.mail/infoSA/Inbox
 SubFolders Verbatim
 
 Channel infoSA
-Master :infoSA-remote:
-Slave :infoSA-local:
+Far :infoSA-remote:
+Near :infoSA-local:
 Patterns *
 Expunge Both
 CopyArrivalDate yes
 Sync All
-Create Slave
+Create Near
 SyncState *
 
 # A problem with setting a MaxSize is that the message never
