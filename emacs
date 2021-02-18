@@ -768,24 +768,28 @@ Make sure to put cursor on date heading that contains a list of urls."
   :hook (prog-mode . company-mode)
   ;; :init
   ;; (add-hook 'prog-mode-hook 'company-mode)
+  :custom (company-minimum-prefix-length 2)
   :config
   ;; (setq company-idle-delay 0.1)
   (setq company-idle-delay 0.0)
   ;; (define-key company-mode-map (kbd "C-:") 'helm-company)
   ;; (define-key company-active-map (kbd "C-:") 'helm-company)
-  ;(setq company-backends (remq 'company-eclim (remq 'company-oddmuse company-backends)))
+
   (defun ac/company-text-mode ()
     ;; (add-to-list 'company-backends 'company-ispell)
     )
   (add-hook 'text-mode-hook #'ac/company-text-mode))
 ;;; prescient
 (use-package prescient
+  :custom (company-prescient-sort-length-enable nil)
   :commands (prescient-persist-mode)
   :hook (company-mode . prescient-persist-mode))
 ;;; company-prescient
 (use-package company-prescient
   :commands (company-prescient-mode)
-  :hook (company-mode . company-prescient-mode))
+  :hook (company-mode . company-prescient-mode)
+  :config
+  (setq company-prescient-sort-length-enable nil))
 ;;; company-box
 (use-package company-box
   :disabled
