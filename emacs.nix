@@ -193,6 +193,7 @@ self: nixpkgs: {
     helm-projectile
     helm-gtags
     helm-org-rifle
+    helm-notmuch
     wgrep-helm
 
     # imenu-anywhere

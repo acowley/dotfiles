@@ -1823,6 +1823,10 @@ under the current project's root directory."
 ;; (helm-mode 1)
 ;; (ido-mode -1)
 
+;;; helm-notmuch
+(use-package helm-notmuch
+  :commands (helm-notmuch))
+
 ;;; helm-org-rifle
 (use-package helm-org-rifle
   :defer t
