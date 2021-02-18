@@ -3509,6 +3509,10 @@ sorted block."
 ;;; glsl
 (use-package glsl-mode
   :mode "\\.\\(vert\\|frag\\|geom\\|comp\\)\\'")
+;;; wgsl
+(use-package wgsl-mode
+  :load-path "~/Projects/wgsl-mode"
+  :mode "\\.wgsl\\'")
 ;;; smartparens-mode
 (use-package smartparens
   :defer t
