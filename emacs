@@ -1,6 +1,9 @@
 (require 'package)
 (setq package-quickstart t)
 
+;; This can fix some troubles with native compilation
+;; (setq load-no-native t)
+
 ;;; Before everything else
 (defvar old--file-name-handler-alist file-name-handler-alist)
 
@@ -41,6 +44,7 @@
 
 ;;; benchmark-init
 (use-package benchmark-init
+  :disabled
   :config
   (require 'benchmark-init)
   ;; To disable collection of benchmark data after init is done.
