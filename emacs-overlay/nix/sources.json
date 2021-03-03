@@ -1,14 +1,14 @@
 {
     "collares": {
-        "branch": "revert-package-el-changes",
+        "branch": "gccemacs-lsp-mode",
         "description": "Bleeding edge emacs overlay [maintainer=@adisbladis] ",
         "homepage": "",
         "owner": "collares",
         "repo": "emacs-overlay",
-        "rev": "e30b9c2bc98307a1f1b76d926768d96c7a56be9d",
-        "sha256": "0c4linx2jqkxlpvik2jnq1njrckf4wfxbqsviwk1spy3mkdr85ws",
+        "rev": "201c489da75cb7d82f2fa00e170ad7fb1d043422",
+        "sha256": "0mz03hmmfrg8qnblik1w743ffqv1slmj9y1yc3imm9dg711x8ygr",
         "type": "tarball",
-        "url": "https://github.com/collares/emacs-overlay/archive/e30b9c2bc98307a1f1b76d926768d96c7a56be9d.tar.gz",
+        "url": "https://github.com/collares/emacs-overlay/archive/201c489da75cb7d82f2fa00e170ad7fb1d043422.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "emacs-overlay": {
