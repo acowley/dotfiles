@@ -1685,7 +1685,9 @@ entire source file is loaded."
   :bind (("C-c C-j" . org-journal-new-entry)
          ("C-c j" . org-journal-new-entry)))
 
-
+;;;; org-ql
+(use-package org-ql
+  :commands (org-ql-query org-ql-search org-ql-select org-ql))
 ;;; org-books
 (use-package org-books
   :commands (org-books-add-book

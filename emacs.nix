@@ -181,6 +181,8 @@ self: nixpkgs: {
     org-roam
     org-roam-bibtex
     org-books
+    org-ql
+
     biblio biblio-core
     helm-bibtex
     parsebib
