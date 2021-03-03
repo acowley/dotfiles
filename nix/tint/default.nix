@@ -26,11 +26,11 @@ let local-spirv-headers = spirv-headers.overrideAttrs (old: rec {
     });
 in stdenv.mkDerivation {
   pname = "tint";
-  version = "2021-02-10-unstable";
+  version = "2021-03-03-unstable";
   src = fetchgit {
     url = "https://dawn.googlesource.com/tint";
-    rev = "22a9f175e0f4b760afd583557d57868c50553409";
-    sha256 = "sha256:0kjix0v0b8z205qsccs4zrxzafxaia7afia1k5xdly9g5wh4ig8s";
+    rev = "04d93c88a06b32ee2cb0f2fe4a95678659d93f3e";
+    sha256 = "sha256:0cl6qqk29kbkx9sk61545w7axmw6j88j9givzw0kyssrxjkws5na";
   };
   preConfigure = ''
     mkdir -p third_party/spirv-tools
