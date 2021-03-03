@@ -64,6 +64,8 @@
     caire = pkgs.callPackage ./nix/caire {};
 
     gp-saml-gui = pkgs.python3Packages.callPackage ./nix/gp-saml-gui {};
+    GlobalProtect-openconnect = pkgs.qt514.callPackage ./nix/GlobalProtect-openconnect {};
+
     pass-otp = pkgs.pass-otp.overrideAttrs (_: {
       doInstallCheck = false;
     });
