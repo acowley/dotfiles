@@ -60,6 +60,10 @@
       '';
     };
 
+    rga-run = (pkgs.steamPackages.steam-fhsenv.override {
+      nativeOnly = true;
+      extraPkgs = (pkgs: [pkgs.amdvlk]);
+    }).run;
 
     caire = pkgs.callPackage ./nix/caire {};
 
