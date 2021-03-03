@@ -18,3 +18,5 @@
   (let ((file-name-handler-alist))
     (apply orig-fun args))))
 
+;; For gccemacs
+;; (setq comp-deferred-compilation nil)
