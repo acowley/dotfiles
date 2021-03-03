@@ -973,7 +973,11 @@ project's type."
         ;; CUSTOM_ID is not set
         org-html-prefer-user-labels t
 
-        org-todo-keywords '((sequence "TODO" "|" "DONE" "ABANDONED")))
+        org-todo-keywords '((sequence "TODO" "|" "DONE(d!)" "ABANDONED"))
+
+        ;; Speed up org fontification
+        org-priority-regexp "^\\*+.*\\(\\[#\\([A-Z0-9]+\\)\\] ?\\)"
+        )
 
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
