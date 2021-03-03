@@ -1030,17 +1030,18 @@ project's type."
   ;; Adapated from https://www.reddit.com/r/orgmode/comments/43uuck/temporarily_show_emphasis_markers_when_the_cursor/czmtn29/
   (defun org-show-emphasis-markers-at-point ()
     "Show emphasis and verbatim markers around point. This makes it easier to edit arounds the ends of markup when using `org-hide-emphasis-markers'."
-    (save-match-data
-      (if (and (or (org-in-regexp org-emph-re 2)
-                   (org-in-regexp org-verbatim-re))
-               (>= (point) (match-beginning 3))
-               (<= (point) (match-end 4))
-               (member (match-string 3) (mapcar 'car org-emphasis-alist)))
-          (with-silent-modifications
-            (remove-text-properties
-             (match-beginning 3) (match-beginning 5)
-             '(invisible org-link)))
-        (apply 'font-lock-flush (list (match-beginning 3) (match-beginning 5))))))
+    (unless org-roam-backlinks-mode
+      (save-match-data
+        (if (and (or (org-in-regexp org-emph-re 2)
+                     (org-in-regexp org-verbatim-re))
+                 (>= (point) (match-beginning 3))
+                 (<= (point) (match-end 4))
+                 (member (match-string 3) (mapcar 'car org-emphasis-alist)))
+            (with-silent-modifications
+              (remove-text-properties
+               (match-beginning 3) (match-beginning 5)
+               '(invisible org-link)))
+          (apply 'font-lock-flush (list (match-beginning 3) (match-beginning 5)))))))
 
   (defun my-org-hook ()
     (setq line-spacing 0.2)
