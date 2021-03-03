@@ -62,7 +62,7 @@
       (set-frame-font "Victor Mono-11:weight=demi"))))
 (my/set-font)
 
-(defvar yanone-font-name (if (memq window-system '(mac ns))
+(defvar yanone-font-name (if (or t (memq window-system '(mac ns)))
                              "Yanone Kaffeesatz"
                            "Yanonne Kaffeesatz Light:style=Light,Regular"))
 
