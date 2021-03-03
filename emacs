@@ -3241,14 +3241,15 @@ sorted block."
   :init
   ;; If you want it in all text modes:
   (add-hook 'text-mode-hook #'mixed-pitch-mode)
+  (add-hook 'org-mode-hook #'mixed-pitch-mode)
   :config
   ;; Depending on your specific setup, you may want to adjust the height of
   ;; variable pitch fonts:
   (set-face-attribute 'variable-pitch nil
-                      ;; :height (if (memq window-system '(mac ns)) 150 150)
+                      :height (if (memq window-system '(mac ns)) 170 140)
                       :family "Montserrat"
-                      :height 140
-                      :weight 'light)
+                      :weight (if (memq window-system '(mac ns)) 'normal 'light))
+
 
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
 
