@@ -32,6 +32,16 @@ self: nixpkgs: {
       ];
     });
 
+    benchmark-init = super.benchmark-init.overrideAttrs (old: {
+      patches = old.patches or [] ++ [
+        (nixpkgs.fetchpatch {
+          name = "Add-version-to-define-obsolete-function-alias";
+          url = "https://patch-diff.githubusercontent.com/raw/dholm/benchmark-init-el/pull/16.patch";
+          sha256 = "1m03pl4a1q04gw3ykhhj9xsyb9lr6vm7mh3qjzlyplms1i30llcm";
+        })
+      ];
+    });
+
     god-mode = super.god-mode.overrideAttrs (old: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacsorphanage";
