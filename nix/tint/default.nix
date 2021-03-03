@@ -1,6 +1,17 @@
 { stdenv, lib, fetchFromGitHub, fetchgit, cmake, python3, doxygen, graphviz
 , spirv-tools, spirv-headers }:
-let local-spirv-tools = spirv-tools.overrideAttrs (old: rec {
+let local-spirv-headers = spirv-headers.overrideAttrs (old: rec {
+      version = "1.5.4.raytracing.fixed";
+      src = fetchFromGitHub {
+        owner = "KhronosGroup";
+        repo = "SPIRV-Headers";
+        rev = version;
+        sha256 = "sha256:12gp2mqcar6jj57jw9isfr62yn72kmvdcl0zga4gvrlyfhnf582q";
+      };
+    });
+    local-spirv-tools = (spirv-tools.override {
+      spirv-headers = local-spirv-headers;
+    }).overrideAttrs (old: rec {
       version = "2020.6";
       src = fetchFromGitHub {
         owner = "KhronosGroup";
@@ -12,15 +23,6 @@ let local-spirv-tools = spirv-tools.overrideAttrs (old: rec {
         mkdir -p $out/include/spirv-tools
         cp *.inc $out/include/spirv-tools
       '';
-    });
-    local-spirv-headers = spirv-headers.overrideAttrs (old: rec {
-      version = "1.5.4.raytracing.fixed";
-      src = fetchFromGitHub {
-        owner = "KhronosGroup";
-        repo = "SPIRV-Headers";
-        rev = version;
-        sha256 = "sha256:12gp2mqcar6jj57jw9isfr62yn72kmvdcl0zga4gvrlyfhnf582q";
-      };
     });
 in stdenv.mkDerivation {
   pname = "tint";
