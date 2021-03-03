@@ -60,6 +60,9 @@
       '';
     };
 
+
+    caire = pkgs.callPackage ./nix/caire {};
+
     gp-saml-gui = pkgs.python3Packages.callPackage ./nix/gp-saml-gui {};
     pass-otp = pkgs.pass-otp.overrideAttrs (_: {
       doInstallCheck = false;
