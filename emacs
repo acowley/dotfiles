@@ -61,6 +61,10 @@
       (set-frame-font "Victor Mono-11:weight=demi"))))
 (my/set-font)
 
+(defvar yanone-font-name (if (memq window-system '(mac ns))
+                             "Yanone Kaffeesatz"
+                           "Yanonne Kaffeesatz Light:style=Light,Regular"))
+
 (use-package info
   :commands (info info-apropos)
   :config
@@ -69,11 +73,12 @@
   ;; (set-face-attribute 'info-title-3 nil :family "Yanone Kaffeesatz" :weight 'light :height 160)
   ;; (set-face-attribute 'info-title-4 nil :family "Yanone Kaffeesatz" :weight 'light :height 150)
   ;; (set-face-attribute 'info-menu-header nil :family "Yanone Kaffeesatz" :weight 'light :height 175 :foreground "#E1BEE7")
-  (set-face-attribute 'info-title-1 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 200 :foreground "#E1BEE7")
-  (set-face-attribute 'info-title-2 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 175)
-  (set-face-attribute 'info-title-3 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 160)
-  (set-face-attribute 'info-title-4 nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 150)
-  (set-face-attribute 'info-menu-header nil :font "Yanone Kaffeesatz Light:style=Light,Regular" :weight 'light :height 175 :foreground "#E1BEE7"))
+
+  (set-face-attribute 'info-title-1 nil :font yanone-font-name :weight 'light :height 200 :foreground "#E1BEE7")
+  (set-face-attribute 'info-title-2 nil :font yanone-font-name :weight 'light :height 175)
+  (set-face-attribute 'info-title-3 nil :font yanone-font-name :weight 'light :height 160)
+  (set-face-attribute 'info-title-4 nil :font yanone-font-name :weight 'light :height 150)
+  (set-face-attribute 'info-menu-header nil :font yanone-font-name :weight 'light :height 175 :foreground "#E1BEE7"))
 
 (use-package hl-line
   :commands (hl-line-mode)
@@ -846,9 +851,13 @@ project's type."
   :custom-face
   ;; (dashboard-heading ((t (:family "Yanone Kaffeesatz" :weight light :height 200 :foreground "#E1BEE7"))))
   ;; (dashboard-banner-logo-title ((t (:family "Yanone Kaffeesatz" :weight light :height 250))))
-  (dashboard-heading ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 200 :foreground "#E1BEE7"))))
-  (dashboard-banner-logo-title ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
+  ;; (dashboard-heading ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 200 :foreground "#E1BEE7"))))
+  ;; (dashboard-banner-logo-title ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
+  ;; (dashboard-heading ((t (:font yanone-font-name :weight light :height 200 :foreground "#E1BEE7"))))
+  ;; (dashboard-banner-logo-title ((t (:font yanone-font-name :weight light :height 250))))
   :config
+  (set-face-attribute 'dashboard-heading nil :font yanone-font-name :weight 'light :height 200 :foreground "#E1BEE7")
+  (set-face-attribute 'dashboard-banner-logo-title nil :font yanone-font-name :weight 'light :height 250)
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents  . 10)
                           (bookmarks . 5)
@@ -909,9 +918,16 @@ project's type."
          ("S-<down>" . nil))
   :custom-face
   ;; (org-level-1 ((t (:foundry "UKWN" :family "Yanone Kaffeesatz" :weight light :height 250))))
-  (org-level-1 ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
+  ;; (org-level-1 ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
+  ;; (org-level-1 ((t (:font yanone-font-name :weight light :height 250))))
   :config
   ;; (set-face-font 'org-level-1 "Yanone Kaffeesatz Light:style=Light,Regular")
+  ;; (set-face-attribute 'org-level-1 nil yanone-font-name :weight 'light :height 250)
+  (set-face-font 'org-level-1 yanone-font-name)
+  (if (memq window-system '(mac ns))
+      (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
+    (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
+
   (setq org-src-fontify-natively 't
         org-use-speed-commands 't
         org-html-doctype "html5"
