@@ -1703,6 +1703,7 @@ entire source file is loaded."
 ;;; pdf-tools
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
+  :mode ("\\.pdf\\'" . pdf-view-mode)
   :config
   (use-package pdf-occur
     :commands (pdf-occur-global-minor-mode))
