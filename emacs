@@ -1597,10 +1597,10 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (org-roam-directory "~/org/roam")
   ;; (org-roam-link-representation 'title)
   :bind
-  (("C-c n l" . org-roam)
-   ("C-c n f" . org-roam-find-file)
-   ("C-c n g" . org-roam-show-graph)
-   :map org-mode-map (("C-c n i" . org-roam-insert)))
+  (("C-c r l" . org-roam)
+   ("C-c r f" . org-roam-find-file)
+   ("C-c r g" . org-roam-show-graph)
+   :map org-mode-map (("C-c r i" . org-roam-insert)))
   ;; :bind (:map org-roam-mode-map
   ;;             (("C-c n l" . org-roam)
   ;;              ("C-c n f" . org-roam-find-file)
@@ -1848,7 +1848,8 @@ under the current project's root directory."
 (use-package helm-org-rifle
   :defer t
   :commands (helm-org-rifle helm-org-rifle-agenda-files)
-  :bind (("C-c r" . helm-org-rifle-agenda-files)))
+  ;; :bind (("C-c r" . helm-org-rifle-agenda-files))
+  )
 
 ;;; god-mode
 
