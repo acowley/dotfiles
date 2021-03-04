@@ -3675,7 +3675,8 @@ sorted block."
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 ;;; avy
 (use-package avy
-  :bind (("M-s" . avy-goto-word-1)))
+  :bind (("M-s" . avy-goto-word-1)
+         ("M-S" . avy-goto-char-2)))
 ;;; proofgeneral
 ;; (use-package proof-general
 ;;   :mode (rx ".v" eos))
