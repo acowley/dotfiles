@@ -2954,6 +2954,9 @@ sorted block."
   (lsp-signature-function #'message)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-code-actions-enable nil)
+  :bind (:map lsp-mode-map
+              ("C-c C-l C-= C-=" . lsp-format-buffer)
+              ("C-c C-l C-f" . lsp-format-buffer))
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
@@ -2974,6 +2977,8 @@ sorted block."
            ("M-." . lsp-ui-peek-find-definitions)
            ("M-?" . lsp-ui-peek-find-references)
            ("C-c C-l s a" . lsp-ui-sideline-apply-code-actions)
+           ("C-c C-l C-s C-a" . lsp-ui-sideline-apply-code-actions)
+           ("C-c C-l C-a" . lsp-ui-sideline-apply-code-actions)
            :map lsp-ui-peek-mode-map
            ("M-n" . lsp-ui-peek--select-next)
            ("M-p" . lsp-ui-peek--select-prev))
