@@ -15,8 +15,8 @@ self: nixpkgs: {
         src = nixpkgs.fetchFromGitHub {
           owner = "yantar92";
           repo = "org";
-          rev = "98cfc185bbe83ddcae85cc7d0f4beb3f5afa938e";
-          sha256 = "sha256:1m6753c1jdnlw2kcc0d0bc1l7j1lf1kqk2xh58sczzirkq5445va";
+          rev = "99c43d01bf4ecc9949c9ee5812dec70cd57e90a1";
+          sha256 = "sha256:014xvk4188ksmr9yxcw95v7hdc1r8w0a95g8rp8llzf0j5yaswbp";
         };
       });
     };
