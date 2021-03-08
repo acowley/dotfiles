@@ -68,6 +68,22 @@ self: nixpkgs: {
       ];
     });
 
+    # This package did not work well for me. With the minor mode
+    # enabled, I could not move point within a number!
+    number-separator = super.trivialBuild {
+      pname = "number-separator";
+      version = "0.0.1";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "legalnonsense";
+        repo = "number-separator.el";
+        rev = "96a39e3cc58c4b67c5ed91b7d8a4367d2cc49ebb";
+        sha256 = "sha256:0f0gvji701cwv7rzys2y7hvczzk21idd6wxdlbzmi6490i9vyb6j";
+      };
+      postPatch = ''
+        sed "s/\((require 'font-lock)\)/\1\n(require 'cl-lib)/" -i number-separator.el
+      '';
+    };
+
     # org-roam = super.melpaBuild rec {
     #   pname = "org-roam";
     #   version = "1.1.0";
