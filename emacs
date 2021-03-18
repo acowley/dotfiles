@@ -836,6 +836,7 @@ project's type."
 ;;; yasnippet
 (use-package yasnippet
   :commands (yas-global-mode yas-minor-mode yas-minor-mode-on)
+  :hook (haskell-mode . yas/minor-mode)
   :bind (("C-<tab>" . yas-next-field))
   :config
   (add-to-list 'yas-key-syntaxes #'backward-skip-alpha)
