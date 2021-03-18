@@ -2031,14 +2031,25 @@ under the current project's root directory."
   (notmuch-search-subject ((t (:family "Montserrat" :weight light :height 120 :foreground "white"))))
 
   :config
+  (set-face-attribute 'notmuch-search-subject nil :font "Montserrat" :weight 'normal :height 120 :foreground "gainsboro")
+  (set-face-attribute 'notmuch-tag-face nil :foreground "olive drab")
+  (set-face-attribute 'notmuch-search-subject nil :font "Victor Mono" :weight 'normal :height 120 :foreground "white")
+  (set-face-attribute 'notmuch-search-unread-face nil :foreground "CadetBlue")
+  
   (defun my/notmuch-show-hook ()
+    (setq olivetti-body-width 90)
+    (set-face-attribute 'variable-pitch nil :height 120 :weight 'normal)
+    (variable-pitch-mode)
     (olivetti-mode)
-    (set-face-attribute 'header-line nil :family "Montserrat" :height 150 :weight 'light))
+    (set-face-attribute 'header-line nil :font "Montserrat" :height 150 :weight 'light))
 
   (defun my/message-mode-hook ()
     (turn-off-auto-fill)
     (turn-on-gnus-dired-mode)
+    (variable-pitch-mode)
     (olivetti-mode))
+  (defun my/notmuch-search-hook ()
+    (setq line-spacing 0.2))
   ;; Associate firefox with the `text/html' MIME type so that typing
   ;; ".v" opens an HTML part of an email message in firefox.
   (setq mailcap-user-mime-data '(((viewer . "firefox %s") (type . "text/html"))))
@@ -2048,7 +2059,7 @@ under the current project's root directory."
     :group 'notmuch-search :group 'notmuch-faces)
   (add-to-list 'notmuch-search-line-faces '("deleted" . notmuch-search-deleted-face))
   ;; (add-to-list 'notmuch-search-line-faces '("trash" . notmuch-search-deleted-face))
-  (add-hook 'notmuch-search-hook (lambda () (setq line-spacing 0.1)))
+  (add-hook 'notmuch-search-hook #'my/notmuch-search-hook)
   (setq user-full-name  "Anthony Cowley")
   (defun evil-collection-notmuch-toggle-tag (tag mode &optional next-function)
     "Toggle TAG tag for message in MODE."
