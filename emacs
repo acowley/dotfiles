@@ -2854,7 +2854,7 @@ element based on the god-local-mode predicate."
 ; (add-to-list 'load-path "~/src/ghc-mod/elisp/")
 
 (use-package haskell-mode
-  :mode "\\.\\(hs\\|lhs\\)\\'"
+  :mode ("\\.\\(hs\\|lhs\\)\\'" ("cabal" . haskell-cabal-mode))
   :init
   (setq inferior-haskell-find-project-root nil
         haskell-process-type 'cabal-repl
@@ -2930,6 +2930,7 @@ element based on the god-local-mode predicate."
     ;; (setq lsp-haskell-process-path-hie "ghcide")
     (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper")
     (setq lsp-haskell-process-args-hie '())
+    (setq lsp-haskell-formatting-provider "brittany")
     )
 
   (defun my-haskell-mode-hook ()
