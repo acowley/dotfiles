@@ -3,7 +3,12 @@ folders = acowleySA/Inbox
 rename = True
 acowleySA/Inbox = 'tag:trash':acowleySA/Trash
 
-[ListMailsFilter]
+# The ListMailsFilter creates too many tags under a `list/*`
+# hierarchy. Some mailings pack something that looks like a thread
+# identifier into the email's `list-id` header, leaving me with many
+# tags not associated to any message in Gmail and other clients.
+# [ListMailsFilter]
+
 # [FolderNameFilter]
 [SentMailsFilter]
 sent_tag=sent
@@ -16,6 +21,18 @@ message = acowleySA
 query = to:info@scalableautonomy.com
 tags = +inbox;+SAInfo
 message = infoSA
+[HeaderMatchingFilter.1]
+header = List-Id
+pattern = emacs-orgmode.gnu.org
+tags = +orgmode
+[HeaderMatchingFilter.2]
+header = List-Id
+pattern = haskell-cafe.haskell.org
+tags = +Haskell
+[HeaderMatchingFilter.3]
+header = List-ID
+pattern = ~sircmpwn/sr.ht-discuss
+tags = +lists/~sircmpwn/sr
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
