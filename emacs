@@ -929,6 +929,8 @@ project's type."
   (if (memq window-system '(mac ns))
       (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
     (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
+  ;; (set-face-attribute 'org-todo nil :weight 'bold)
+  ;; (set-face-attribute 'org-done nil :weight 'bold)
 
   (setq org-src-fontify-natively 't
         org-use-speed-commands 't
@@ -1690,6 +1692,39 @@ entire source file is loaded."
 ;;;; org-ql
 (use-package org-ql
   :commands (org-ql-query org-ql-search org-ql-select org-ql))
+;;; elegant-agenda
+(use-package elegant-agenda-mode 
+  :hook org-agenda-mode
+  :disabled
+  :init
+  (defun air-org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+  (setq org-agenda-custom-commands
+      '(("d" "Today"
+         (;; (tags-todo "SCHEDULED<\"<+1d>\"&PRIORITY=\"A\""
+          ;;            ((org-agenda-skip-function
+          ;;              '(org-agenda-skip-entry-if 'todo 'done))
+          ;;             (org-agenda-overriding-header "High-priority unfinished tasks:")))
+          (tags-todo "PRIORITY=\"A\""
+                     ((org-agenda-skip-function
+                       '(org-agenda-skip-entry-if 'todo 'done))
+                      (org-agenda-overriding-header "High-priority unfinished tasks:")))
+          (agenda "" ((org-agenda-span 'day)
+                      (org-scheduled-delay-days -14)
+                      (org-agenda-overriding-header "Schedule")))
+          (tags-todo "SCHEDULED<\"<+1d>\""
+                     ((org-agenda-skip-function
+                       '(or (org-agenda-skip-entry-if 'done)
+                            (air-org-skip-subtree-if-priority ?A)))
+                      (org-agenda-overriding-header "Tasks:"))))))))
 ;;; org-books
 (use-package org-books
   :commands (org-books-add-book
