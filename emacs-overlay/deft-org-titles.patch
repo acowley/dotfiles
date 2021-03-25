@@ -1,0 +1,23 @@
+diff '--exclude=*~' -Naur A/deft.el B/deft.el
+--- A/deft.el	2021-03-25 11:49:20.533767915 -0400
++++ B/deft.el	2021-03-25 11:54:31.057640086 -0400
+@@ -549,6 +549,7 @@
+ (require 'cl-lib)
+ (require 'widget)
+ (require 'wid-edit)
++(require 'org-roam)
+ 
+ ;; Customization
+ 
+@@ -1079,10 +1080,7 @@
+ used as title."
+   (if deft-use-filename-as-title
+       (deft-base-filename file)
+-    (let ((begin (string-match "^.+$" contents)))
+-      (if begin
+-          (funcall deft-parse-title-function
+-                   (substring contents begin (match-end 0)))))))
++    (org-roam-db--get-title file)))
+ 
+ (defun deft-parse-summary (contents title)
+   "Parse the file CONTENTS, given the TITLE, and extract a summary.

@@ -3759,6 +3759,15 @@ sorted block."
 ;;; gif-screencast
 (use-package gif-screencast
   :commands (gif-screencast))
+;;; deft
+(use-package deft
+  :commands deft
+  :config
+  (setq deft-extensions '("org")
+        deft-directory "~/org"
+        deft-recursive t
+        deft-org-mode-title-prefix t
+        deft-use-filename-as-title nil))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")

@@ -84,6 +84,13 @@ self: nixpkgs: {
       '';
     };
 
+    deft = super.deft.overrideAttrs (old: {
+      patches = old.patches or [] ++ [
+        ./emacs-overlay/deft-org-titles.patch
+      ];
+      buildInputs = old.buildInputs ++ [self.org-roam];
+    });
+
     # org-roam = super.melpaBuild rec {
     #   pname = "org-roam";
     #   version = "1.1.0";
@@ -198,6 +205,8 @@ self: nixpkgs: {
     org-roam-bibtex
     org-books
     org-ql
+
+    deft
 
     biblio biblio-core
     helm-bibtex
