@@ -1,23 +1,23 @@
 { stdenv, lib, fetchFromGitHub, fetchgit, cmake, python3, doxygen, graphviz
 , spirv-tools, spirv-headers }:
 let local-spirv-headers = spirv-headers.overrideAttrs (old: rec {
-      version = "1.5.4.raytracing.fixed";
+      version = "2021-03-10";
       src = fetchFromGitHub {
         owner = "KhronosGroup";
         repo = "SPIRV-Headers";
-        rev = version;
-        sha256 = "sha256:12gp2mqcar6jj57jw9isfr62yn72kmvdcl0zga4gvrlyfhnf582q";
+        rev = "bcf55210f13a4fa3c3d0963b509ff1070e434c79";
+        sha256 = "1xykpclxywr2dm4an19wrcjjzkxnl6gg49k7rbpxkl67yvabmr9m";
       };
     });
     local-spirv-tools = (spirv-tools.override {
       spirv-headers = local-spirv-headers;
     }).overrideAttrs (old: rec {
-      version = "2020.6";
+      version = "2021-03-17";
       src = fetchFromGitHub {
         owner = "KhronosGroup";
         repo = "SPIRV-Tools";
-        rev = "v${version}";
-        sha256 = "sha256:0v26ws6qx23jn4dcpsq6rqmdxgyxpl5pcvfm90wb3nz6iqbqx294";
+        rev = "4f498774db5250c05fbdd8f24912ab2938401c00";
+        sha256 = "1g96nfpkfhsghwrhszkpx42hknym7s2a7bh9kcyjk0ja27kgvrgm";
       };
       postInstall = ''
         mkdir -p $out/include/spirv-tools
@@ -29,8 +29,8 @@ in stdenv.mkDerivation {
   version = "2021-03-03-unstable";
   src = fetchgit {
     url = "https://dawn.googlesource.com/tint";
-    rev = "04d93c88a06b32ee2cb0f2fe4a95678659d93f3e";
-    sha256 = "sha256:0cl6qqk29kbkx9sk61545w7axmw6j88j9givzw0kyssrxjkws5na";
+    rev = "2f04dc94ce25e91e40dc088d787e148bd499ba65";
+    sha256 = "17l2wj95s7bvwmf28xgl5kllaaxlg39xvimnzfd6qmixpsbl7caz";
   };
   preConfigure = ''
     mkdir -p third_party/spirv-tools
