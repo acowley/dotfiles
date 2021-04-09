@@ -1161,8 +1161,8 @@ evaluation may begin anew."
                        (org-babel-expand-body:generic body params))))
 
   (add-to-list 'org-src-lang-modes '("nix-shell" . sh))
-
   (add-to-list 'org-src-lang-modes '("dhall" . dhall))
+  (add-to-list 'org-src-lang-modes '("rust" . rustic))
 
   (use-package ob-emacs-lisp
     :defer t
@@ -1189,6 +1189,9 @@ evaluation may begin anew."
   (use-package ob-R
     :defer t
     :commands (org-babel-execute:R org-babel-expand-body:R))
+  (use-package ob-rust
+    :defer t
+    :commands (org-babel-execute:rustic))
   (use-package ob-plantuml
     :defer t
     :commands (org-babel-execute:plantuml org-babel-expand-body:plantuml)
