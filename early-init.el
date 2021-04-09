@@ -14,9 +14,9 @@
 
 ;; also set file-name-handler-alist to nil during 'require'
 ;; this is needed because of deferred package loading
-(advice-add 'require :around (lambda (orig-fun &rest args)
-  (let ((file-name-handler-alist))
-    (apply orig-fun args))))
+;; (advice-add 'require :around (lambda (orig-fun &rest args)
+;;   (let ((file-name-handler-alist))
+;;     (apply orig-fun args))))
 
 ;; For gccemacs
-;; (setq comp-deferred-compilation nil)
+(setq comp-deferred-compilation nil)
