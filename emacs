@@ -3571,7 +3571,7 @@ sorted block."
 (use-package direnv
   :config
   (setq direnv-always-show-summary nil)
-  (direnv-mode))
+  (direnv-mode 1))
 ;;; dired-du
 (use-package dired-du
   :commands (dired-du-mode))
