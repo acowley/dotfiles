@@ -10,13 +10,14 @@ self: nixpkgs: {
     # });
     orgPackages = super.orgPackages // {
       org-plus-contrib = super.orgPackages.org-plus-contrib.overrideAttrs (old: {
-        # This is the org-fold branch using text properties rather
-        # than overlays to display hidden text in org files.
+        # This is the feature/org-fold-universal-core branch using
+        # text properties rather than overlays to display hidden text
+        # in org files.
         src = nixpkgs.fetchFromGitHub {
           owner = "yantar92";
           repo = "org";
-          rev = "99c43d01bf4ecc9949c9ee5812dec70cd57e90a1";
-          sha256 = "sha256:014xvk4188ksmr9yxcw95v7hdc1r8w0a95g8rp8llzf0j5yaswbp";
+          rev = "81a803180db886137e8d9da6c270413bb3ffb775";
+          sha256 = "sha256:1nrxa4qc6wvfvhqw935ggw79f9k4a43w8y6lw95ad4f95096ipz3";
         };
       });
     };
