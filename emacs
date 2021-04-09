@@ -1977,7 +1977,7 @@ under the current project's root directory."
                  (interactive)
                  (if (member "trash" (notmuch-show-get-tags))
                      (notmuch-show-tag '("-trash"))
-                   (notmuch-show-tag '("+trash" "-inbox" "-unread" "-new")))
+                   (notmuch-show-tag '("+trash" "-inbox" "-unread" "-new" "-flagged")))
                  (notmuch-show-next-message)))
               ("r" . #'my-notmuch-reply-sender)
               ("R" . #'my-notmuch-reply)
@@ -1995,7 +1995,7 @@ under the current project's root directory."
               ("d" .
                (lambda ()
                  (interactive)
-                 (notmuch-search-tag '("+trash" "-inbox" "-unread" "-new"))
+                 (notmuch-search-tag '("+trash" "-inbox" "-unread" "-new" "-flagged"))
                  (notmuch-search-next-thread))
                ;; (lambda ()
                ;;   "toggle deleted tag for message"
