@@ -329,4 +329,9 @@ self: nixpkgs: {
   
   myemacsGccPkgs = (self.emacsPackagesFor self.emacsGcc).overrideScope' self.myEmacsPackageOverrides;
   myemacsGcc = ((self.emacsPackagesFor self.emacsGcc).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
+
+  emacsGccMac = self.emacsGcc.overrideAttrs (old: {
+    configureFlags = old.configureFlags or [] ++ ["--with-mac-metal"];
+  });
+  myemacsGccMac = ((self.emacsPackagesFor self.emacsGccMac).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
 }
