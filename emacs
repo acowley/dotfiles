@@ -3013,6 +3013,7 @@ sorted block."
   ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
   (lsp-face-highlight-textual ((t (:background "gold4"))))
   :config
+  (advice-add 'lsp :before #'direnv-update-environment)
   (setq lsp-prefer-flymake nil
         ;; lsp-prefer-capf t
         read-process-output-max (* 1024 1024))
