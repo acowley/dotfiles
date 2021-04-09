@@ -3717,7 +3717,8 @@ sorted block."
              synosaurus-choose-and-replace
              synosaurus-choose-and-insert)
   :config
-  (require 'synosaurus-wordnet))
+  (require 'synosaurus-wordnet)
+  (setq synosaurus-backend #'synosaurus-backend-wordnet))
 ;;; ace-window
 (use-package ace-window
   :defer t
