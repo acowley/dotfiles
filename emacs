@@ -3136,6 +3136,7 @@ sorted block."
         ccls-args '("-v=3" "-log-file=/tmp/cc.log")
         lsp-enable-indentation nil)
   (lsp)
+  (require 'lsp-completion)
   (lsp-completion-mode)
   (flymake-mode -1))
 
