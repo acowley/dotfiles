@@ -221,6 +221,13 @@ self: nixpkgs: {
     company-box
     prescient
     company-prescient
+    selectrum
+    selectrum-prescient
+    consult
+    consult-flycheck
+    marginalia
+    embark
+    embark-consult
 
     helm
     helm-company

@@ -789,7 +789,9 @@ Make sure to put cursor on date heading that contains a list of urls."
 (use-package prescient
   :custom (company-prescient-sort-length-enable nil)
   :commands (prescient-persist-mode)
-  :hook (company-mode . prescient-persist-mode))
+  :hook (company-mode . prescient-persist-mode)
+  :config
+  (prescient-persist-mode +1))
 ;;; company-prescient
 (use-package company-prescient
   :commands (company-prescient-mode)
@@ -802,13 +804,75 @@ Make sure to put cursor on date heading that contains a list of urls."
   :defer t
   :hook (company-mode . company-box-mode)
   :custom (company-box-icons-alist 'company-box-icons-all-the-icons))
+;;; selectrum
+(use-package selectrum
+  :defer 1
+  :commands (selectrum-mode)
+  :config
+  ;; (set-face-background 'selectrum-current-candidate "DeepSkyBlue")
+  (set-face-background 'selectrum-current-candidate "gray31")
+  (set-face-foreground 'selectrum-current-candidate "DeepSkyBlue")
+  (selectrum-mode +1))
+;;; selectrum-prescent
+(use-package selectrum-prescient
+  :commands (selectrum-prescient-mode)
+  :hook (selectrum-mode . selectrum-prescient-mode))
+;;; consult
+(use-package consult
+  :commands (consult-line consult-buffer consult-yank consult-goto-line consult-ripgrep)
+  :bind (("C-x C-b" . consult-buffer)
+         ("C-y" . consult-yank)
+         ("M-g g" . consult-goto-line)
+         ("C-c i" . consult-imenu)
+         ;; ("C-s" . consult-line)
+         ("C-s" . consult-line-symbol-at-point)
+         )
+  :config
+  (defun consult-line-symbol-at-point ()
+    (interactive)
+    (consult-line (thing-at-point 'symbol))))
+
+(use-package consult-flycheck
+  :commands (consult-flycheck))
+
+(use-package marginalia
+  :commands (marginalia-mode)
+  :bind (;; ("M-A" . marginalia-cycle)
+         :map minibuffer-local-map
+              ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode))
+
+(use-package embark
+  :commands (embark-act embark-bindings)
+  :bind (("C-S-a" . embark-act)
+         ("C-h B" . embark-bindings))
+  :config
+  (defun my/occur-edit-hook ()
+    (when (< (count-windows) 2)
+      (progn
+        (setq my--split-for-occur-edit t)
+        (split-window-vertically))))
+  (defun my/occur-edit-cease ()
+    (when (bound-and-true-p my--split-for-occur-edit)
+      (delete-window)))
+  (add-hook 'occur-edit-mode-hook #'my/occur-edit-hook)
+  (advice-add 'occur-cease-edit :after #'my/occur-edit-cease))
+
+(use-package embark-consult
+  :after (embark consult)
+  ;; :hook
+  ;; (embark-collect-mode . embark-consult-preview-minor-mode)
+  )
+
 ;;; Projectile
 (use-package projectile
   :commands (projectile-mode projectile-switch-project projectile-find-file)
   :custom
   (projectile-project-root-files-functions
    '(projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring))
-  (projectile-completion-system 'helm)
+  ;; (projectile-completion-system 'helm)
+  (projectile-completion-system 'default)
   :init
   (add-hook 'emacs-startup-hook #'projectile-mode)
   :config
@@ -1039,7 +1103,7 @@ project's type."
   ;; Adapated from https://www.reddit.com/r/orgmode/comments/43uuck/temporarily_show_emphasis_markers_when_the_cursor/czmtn29/
   (defun org-show-emphasis-markers-at-point ()
     "Show emphasis and verbatim markers around point. This makes it easier to edit arounds the ends of markup when using `org-hide-emphasis-markers'."
-    (unless org-roam-backlinks-mode
+    (unless nil ;; org-roam-backlinks-mode
       (save-match-data
         (if (and (or (org-in-regexp org-emph-re 2)
                      (org-in-regexp org-verbatim-re))
@@ -1768,14 +1832,15 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   (pdf-tools-install))
 ;;; Helm
 (use-package helm
+  :disabled
   :defer 1
   ;; :diminish helm-mode
   :commands (helm-find-files helm-mini helm-M-x helm-imenu helm-mode)
   :bind (("M-x" . helm-M-x)
          ("C-c h" . helm-mini)
-         ("C-c i" . helm-imenu)
-         ("C-c C-i" . helm-imenu)
-         ("C-x C-f" . helm-find-files)
+         ;; ("C-c i" . helm-imenu)
+         ;; ("C-c C-i" . helm-imenu)
+         ;; ("C-x C-f" . helm-find-files)
          :map helm-map
          ;; use TAB for action
          ("<tab>" . helm-execute-persistent-action)
@@ -1834,6 +1899,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
       (isearch-forward)))
 
   (use-package helm-swoop
+    :disabled
     :defer t
     :commands helm-swoop
     :bind (("M-i" . helm-swoop)
@@ -1856,6 +1922,7 @@ under the current project's root directory."
   ;;   :config
   ;;   (use-package docker-tramp))
   (use-package helm-projectile
+    :disabled
     :defer t)
   (use-package wgrep-helm
     :commands (wgrep-change-to-wgrep-mode wgrep-finish-edit wgrep-helm-setup)
@@ -1882,7 +1949,7 @@ under the current project's root directory."
       (interactive)
       (wgrep-change-to-wgrep-mode))
     (add-hook 'helm-occur-mode-hook #'my/helm-occur-hook))
-  (helm-mode 1)
+  ;; (helm-mode 1)
   )
 ;; (require 'helm)
 ;; (helm-mode 1)
@@ -1952,7 +2019,7 @@ under the current project's root directory."
          ;; and prefer it to have the simpler binding.
          ("C-x b" . list-buffers)
          ;; ("C-x C-b" . switch-to-buffer)
-         ("C-x C-b" . helm-buffers-list)
+         ;; ("C-x C-b" . helm-buffers-list)
          :map god-local-mode-map
          ("." . repeat)))
 
@@ -3864,7 +3931,6 @@ sorted block."
  '(pop-up-windows nil)
  '(pos-tip-background-color "#197219721972")
  '(pos-tip-foreground-color "#9E9E9E")
- '(projectile-completion-system 'helm)
  '(projectile-project-root-files-functions
    '(projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring))
  '(python-shell-interpreter "python3")
