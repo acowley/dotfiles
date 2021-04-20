@@ -827,6 +827,7 @@ Make sure to put cursor on date heading that contains a list of urls."
          ;; ("C-s" . consult-line)
          ("C-s" . consult-line-symbol-at-point)
          )
+  :custom (consult-locate-command "/run/wrappers/bin/locate --ignore-case --existing --regexp ARG OPTS")
   :config
   (defun consult-line-symbol-at-point ()
     (interactive)
