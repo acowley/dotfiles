@@ -2117,6 +2117,8 @@ under the current project's root directory."
   (notmuch-search-subject ((t (:family "Montserrat" :weight light :height 120 :foreground "white"))))
 
   :config
+  (add-to-list 'notmuch-saved-searches 
+               '(:name "lists" :query "tag:unread AND (tag:haskell OR tag:orgmode OR tag:rocm)" :key "l"))
   (set-face-attribute 'notmuch-search-subject nil :font "Montserrat" :weight 'normal :height 120 :foreground "gainsboro")
   (set-face-attribute 'notmuch-tag-face nil :foreground "olive drab")
   (set-face-attribute 'notmuch-search-subject nil :font "Victor Mono" :weight 'normal :height 120 :foreground "white")
