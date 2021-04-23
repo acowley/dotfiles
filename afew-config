@@ -33,6 +33,10 @@ tags = +Haskell
 header = List-ID
 pattern = ~sircmpwn/sr.ht-discuss
 tags = +lists/~sircmpwn/sr
+[HeaderMatchingFilter.4]
+header = List-ID
+pattern = RadeonOpenCompute/ROCm
+tags = +rocm
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
