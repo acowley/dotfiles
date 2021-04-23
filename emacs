@@ -834,7 +834,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   :hook (selectrum-mode . selectrum-prescient-mode))
 ;;; consult
 (use-package consult
-  :commands (consult-line consult-buffer consult-yank consult-goto-line consult-ripgrep)
+  :commands (consult-line consult-buffer consult-yank consult-goto-line consult-ripgrep consult-locate)
   :bind (("C-x C-b" . consult-buffer)
          ("C-y" . consult-yank)
          ("M-g g" . consult-goto-line)
