@@ -129,6 +129,21 @@
 ;;;; Elisp Helpers
 (require 'subr-x)
 
+(defun path-up-one-level ()
+  "Remove the trailing directory component of a path at point"
+  (interactive)
+  (let ((path (thing-at-point 'filename t)))
+    (when path
+      (goto-char (point-min))
+      (let ((end (search-forward path)))
+        (when end
+          (let ((start (search-backward path)))
+            (when start
+              (let ((new-path (file-name-directory (directory-file-name path))))
+                (kill-region start end)
+                (insert new-path)))))))))
+(bind-key "C-l" #'path-up-one-level minibuffer-local-map)
+
 (defun my/eval-last-sexp (raw-prefix)
   "A wrapper around `eval-last-sexp' that modifies the behavior when called with a prefix argument to insert the result of evaluating the sexp before point after inserting an arrow. The result is the original sexp is left in the buffer, followed by an arrow, followed by the result of evaluation. If no prefix is given, the result is shown in the minibuffer as with `eval-last-sexp'."
   (interactive "P")
