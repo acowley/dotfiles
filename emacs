@@ -28,12 +28,11 @@
 
 ;; (package-initialize)
 
-; (require 'use-package)
-(eval-when-compile
-  (add-to-list 'load-path "~/src/use-package")
-  (require 'use-package))
-;; (require 'diminish)
-(require 'bind-key)
+(require 'use-package)
+;; (eval-when-compile
+;;   (add-to-list 'load-path "~/src/use-package")
+;;   (require 'use-package))
+;; (require 'bind-key)
 
 ;; Show a message whenever a package takes longer than 0.1s to load
 ;; (setq use-package-verbose t)
