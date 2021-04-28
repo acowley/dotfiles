@@ -37,6 +37,10 @@ tags = +lists/~sircmpwn/sr
 header = List-ID
 pattern = RadeonOpenCompute/ROCm
 tags = +rocm
+[HeaderMatchingFilter.5]
+header = List-ID
+pattern = gfx-rs/naga
+tags = +wgpu
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
