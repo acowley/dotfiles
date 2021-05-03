@@ -3448,7 +3448,8 @@ sorted block."
 (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
 (use-package magit
   :defer t
-  :commands (magit-status)
+  ;; :commands (magit-status)
+  :bind (("C-x g" . magit-status))
   :config
   (add-hook 'magit-log-edit-mode-hook 'turn-on-auto-fill)
   (setq magit-last-seen-setup-instructions "1.4.0")
