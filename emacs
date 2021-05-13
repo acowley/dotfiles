@@ -1815,9 +1815,26 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
              org-books-rate-book
              org-books-cliplink
              org-books-add-url
-             org-books-add-isbn)
+             org-books-add-isbn
+             org-books-all-authors)
   :custom
-  (org-books-file "~/org/home.org"))
+  (org-books-file "~/org/home.org")
+  :init
+  (defun my/add-org-book (title author)
+    "Add a book (specified by TITLE and AUTHOR) to the `org-books-file::BOOKS' heading."
+    (interactive
+     (let ((completion-ignore-case t))
+       (list
+        (read-string "Book Title: ")
+        (completing-read "Author: " (org-books-all-authors)))))
+    (if org-books-file
+        (save-excursion
+          (with-current-buffer (find-file-noselect org-books-file)
+            (let ((pos (org-find-exact-headline-in-buffer "Books" (current-buffer) t)))
+              (if pos
+                  (org-books--insert-at-pos pos title author nil)
+                (message "Couldn't find `Books' header")))))
+      (message "org-books-file not set"))))
 ;;; olivetti-mode
 (use-package olivetti
   :commands (olivetti-mode)
