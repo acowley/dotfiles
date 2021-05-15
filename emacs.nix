@@ -22,15 +22,19 @@ self: nixpkgs: {
       });
     };
 
-    pdf-tools = super.pdf-tools.overrideAttrs (old: {
-      patches = old.patches or [] ++ [
-        # https://github.com/politza/pdf-tools/pull/588
-        (nixpkgs.fetchpatch {
-          name = "pdf-tools-undefined-function";
-          url = "https://patch-diff.githubusercontent.com/raw/politza/pdf-tools/pull/588.patch";
-          sha256 = "1pr2cjf2f6kbcrhdil3l73lmqmj636h7g4l80gnw5gxg3cwmqkrv";
-        })
-      ];
+    # pdf-tools = super.pdf-tools.overrideAttrs (old: {
+    #   patches = old.patches or [] ++ [
+    #     # https://github.com/politza/pdf-tools/pull/588
+    #     (nixpkgs.fetchpatch {
+    #       name = "pdf-tools-undefined-function";
+    #       url = "https://patch-diff.githubusercontent.com/raw/politza/pdf-tools/pull/588.patch";
+    #       sha256 = "1pr2cjf2f6kbcrhdil3l73lmqmj636h7g4l80gnw5gxg3cwmqkrv";
+    #     })
+    #   ];
+    # });
+
+    treemacs = super.treemacs.overrideAttrs (old: {
+      propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [nixpkgs.python3];
     });
 
     benchmark-init = super.benchmark-init.overrideAttrs (old: {
