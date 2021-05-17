@@ -833,9 +833,9 @@ Make sure to put cursor on date heading that contains a list of urls."
   :hook (selectrum-mode . selectrum-prescient-mode))
 ;;; consult
 (use-package consult
-  :commands (consult-line consult-buffer consult-yank consult-goto-line consult-ripgrep consult-locate)
+  :commands (consult-line consult-buffer consult-yank-from-kill-ring consult-goto-line consult-ripgrep consult-locate)
   :bind (("C-x C-b" . consult-buffer)
-         ("C-y" . consult-yank)
+         ("C-y" . my/yank)
          ("M-g g" . consult-goto-line)
          ("C-c i" . consult-imenu)
          ;; ("C-s" . consult-line)
@@ -853,7 +853,12 @@ Make sure to put cursor on date heading that contains a list of urls."
     (interactive "P")
     (if (null prefix)
         (consult-line-symbol-at-point)
-      (isearch-forward))))
+      (isearch-forward)))
+  (defun my/yank (prefix)
+    (interactive "P")
+    (if (null prefix)
+        (call-interactively #'consult-yank-from-kill-ring)
+      (clipboard-yank))))
 
 (use-package consult-flycheck
   :commands (consult-flycheck))
