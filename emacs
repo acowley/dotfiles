@@ -839,7 +839,7 @@ Make sure to put cursor on date heading that contains a list of urls."
          ("M-g g" . consult-goto-line)
          ("C-c i" . consult-imenu)
          ;; ("C-s" . consult-line)
-         ("C-s" . consult-line-symbol-at-point)
+         ("C-s" . my/search-forward)
          )
   :after projectile
   :custom (consult-locate-command "/run/wrappers/bin/locate --ignore-case --existing --regexp ARG OPTS")
@@ -847,7 +847,13 @@ Make sure to put cursor on date heading that contains a list of urls."
   (setq consult-project-root-function #'projectile-project-root)
   (defun consult-line-symbol-at-point ()
     (interactive)
-    (consult-line (thing-at-point 'symbol))))
+    (consult-line (thing-at-point 'symbol)))
+  (defun my/search-forward (prefix)
+    "Calls `helm-swoop` unless a prefix argument is given, in which case it calls `isearch-forward`"
+    (interactive "P")
+    (if (null prefix)
+        (consult-line-symbol-at-point)
+      (isearch-forward))))
 
 (use-package consult-flycheck
   :commands (consult-flycheck))
@@ -1925,7 +1931,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     :bind (:map company-mode-map
                 ("C-:" . helm-company)))
 
-  (defun my/search-forward (prefix)
+  (defun my/helm-search-forward (prefix)
     "Calls `helm-swoop` unless a prefix argument is given, in which case it calls `isearch-forward`"
     (interactive "P")
     (if (null prefix)
