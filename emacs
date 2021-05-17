@@ -844,6 +844,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   :after projectile
   :custom (consult-locate-command "/run/wrappers/bin/locate --ignore-case --existing --regexp ARG OPTS")
   :config
+  (require 'consult-imenu)
   (setq consult-project-root-function #'projectile-project-root)
   (defun consult-line-symbol-at-point ()
     (interactive)
