@@ -27,7 +27,7 @@ pattern = emacs-orgmode.gnu.org
 tags = +orgmode
 [HeaderMatchingFilter.2]
 header = List-Id
-pattern = haskell-cafe.haskell.org
+pattern = (haskell-cafe.haskell.org|ghc-devs.haskell.org)
 tags = +Haskell
 [HeaderMatchingFilter.3]
 header = List-ID
