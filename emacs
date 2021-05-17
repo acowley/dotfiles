@@ -2021,25 +2021,6 @@ under the current project's root directory."
   (setq god-exempt-major-modes nil
         god-exempt-predicates nil)
 
-;;   (defun ac/god-mode-toggle ()
-;;     "Set the mode line to a white background when god-mode is
-;; active; black when inactive."
-;;     (if god-local-mode
-;;         (progn
-;;           ;; (set-face-background 'sml/line-number "orange")
-;;           ;; (set-face-foreground 'sml/line-number "black")
-;;           ;; (set-face-attribute 'mode-line nil :box "orange")
-;;           ;; (hl-line-mode 1)
-;;           )
-
-;;       ;; (set-face-background 'sml/line-number "black")
-;;       ;; (set-face-foreground 'sml/line-number "white")
-;;       ;; (set-face-attribute 'mode-line nil :box nil)
-;;       ;(unless (eq major-mode 'mu4e-headers-mode) (hl-line-mode -1))
-;;       ))
-
-;;   (add-hook 'god-mode-enabled-hook #'ac/god-mode-toggle)
-;;   (add-hook 'god-mode-disabled-hook #'ac/god-mode-toggle)
   (defun ac/god-enable-on-new-buffers (&rest buffer-name)
     "Enable god-mode on new buffers if it is enabled globally."
     (when (and god-global-mode
@@ -2056,6 +2037,13 @@ under the current project's root directory."
     (if (bound-and-true-p overwrite-mode)
         (god-local-mode-pause)
       (god-local-mode-resume)))
+
+  (defun my/god-disabled-hook ()
+    (setq-local cursor-type 'bar))
+  (defun my/god-enabled-hook ()
+    (setq-local cursor-type 'box))
+  (add-hook 'god-mode-enabled-hook #'my/god-enabled-hook)
+  (add-hook 'god-mode-disabled-hook #'my/god-disabled-hook)
 
   (add-hook 'overwrite-mode-hook #'ac/god-toggle-on-overwrite)
 
