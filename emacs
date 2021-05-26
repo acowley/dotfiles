@@ -3525,7 +3525,8 @@ sorted block."
                      (t (funcall (plist-get (car auth) :secret)))))))
     (set-variable
      'znc-servers
-     `(("raspberrypi.local" 1234 t ((rasznc "acowley/freenode" ,password)))))))
+     `(("raspberrypi.local" 1234 t ((rasznc "acowley/libera" ,password)))
+       ("irc.libera.chat" 6697 t ((libera "acowley" "foo")))))))
 
 ;;; twittering-mode
 (use-package twittering-mode
