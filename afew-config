@@ -32,7 +32,7 @@ tags = +Haskell
 [HeaderMatchingFilter.3]
 header = List-ID
 pattern = ~sircmpwn/sr.ht-discuss
-tags = +lists/~sircmpwn/sr
+tags = +srht
 [HeaderMatchingFilter.4]
 header = List-ID
 pattern = RadeonOpenCompute/ROCm
