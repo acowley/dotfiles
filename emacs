@@ -3881,6 +3881,13 @@ sorted block."
         deft-recursive t
         deft-org-mode-title-prefix t
         deft-use-filename-as-title nil))
+;;; octave
+(use-package octave
+  :commands (octave-mode)
+  :config
+  (setq octave-comment-char ?%
+        octave-comment-start "%"
+        octave-block-comment-start "% "))
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
