@@ -1070,11 +1070,21 @@ project's type."
         ;; CUSTOM_ID is not set
         org-html-prefer-user-labels t
 
-        org-todo-keywords '((sequence "TODO" "|" "DONE(d!)" "ABANDONED"))
+        org-todo-keywords '((sequence "TODO" "|" "DONE" "ABANDONED"))
 
         ;; Speed up org fontification
         org-priority-regexp "^\\*+.*\\(\\[#\\([A-Z0-9]+\\)\\] ?\\)"
         )
+  (defun my/org-todo-change ()
+    (let ((state (org-get-todo-state)))
+      (cond
+       ((and state (string= state "DONE"))
+        (org-set-property "completed"
+                          (format-time-string "%Y-%m-%d %a %H:%M"
+                                              (org-current-time))))
+       ((and state (string= state "TODO"))
+        (org-set-property "opened" (format-time-string "%Y-%m-%d %a %H:%M"))))))
+  (add-hook 'org-after-todo-state-change-hook #'my/org-todo-change)
 
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
