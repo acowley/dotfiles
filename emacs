@@ -590,7 +590,8 @@ end tell" uri)))
 ;; Put the visited file name in the frame title
 ;; (setq-default frame-title-format '("%f [%m]"))
 (setq-default frame-title-format
-              '((:eval (file-name-nondirectory (or (buffer-file-name) "")))
+              '("emacs - "
+                (:eval (file-name-nondirectory (or (buffer-file-name) "")))
                 " [%m]"))
 
 ;; Add Byte as a unit to `calc`
