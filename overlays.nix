@@ -13,6 +13,7 @@ in
  # (import ~/dotfiles/nix/mu/overlay.nix)
  (import ~/dotfiles/nix/wordnet.nix)
  (import ~/dotfiles/nix/mylatex.nix)
+ (import ~/dotfiles/nix/kwin-tiling.nix)
 ]
 ++ optOverlay ~/src/openconnect-sso/overlay.nix
 # ++ (if builtins.pathExists ~/src/nixpkgs-mozilla/rust-overlay.nix
