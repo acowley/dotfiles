@@ -843,7 +843,9 @@ Make sure to put cursor on date heading that contains a list of urls."
          ("C-s" . my/search-forward)
          )
   :after projectile
-  :custom (consult-locate-command "/run/wrappers/bin/locate --ignore-case --existing --regexp ARG OPTS")
+  :custom (consult-locate-command (if (memq window-system '(mac ns))
+                                      "mdfind -onlyin /Users/acowley -name ARG OPTS"
+                                      "/run/wrappers/bin/locate --ignore-case --existing --regexp ARG OPTS"))
   :config
   (require 'consult-imenu)
   (setq consult-project-root-function #'projectile-project-root
