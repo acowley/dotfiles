@@ -1,12 +1,12 @@
-diff --exclude '*~' -ruN A/doom-modeline.el B/doom-modeline.el
---- A/doom-modeline.el	2021-05-15 12:14:09.191331034 -0400
-+++ B/doom-modeline.el	2021-05-15 12:17:47.272323854 -0400
+diff -ruN --exclude '*~' A/doom-modeline.el B/doom-modeline.el
+--- A/doom-modeline.el	2021-06-04 10:16:12.459665843 -0400
++++ B/doom-modeline.el	2021-06-04 10:17:47.778005423 -0400
 @@ -94,7 +94,7 @@
    '(objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker))
  
  (doom-modeline-def-modeline 'minimal
--  '(bar hud matches buffer-info-simple)
-+  '(bar hud modals matches buffer-info-simple)
+-  '(bar matches buffer-info-simple)
++  '(bar modals matches buffer-info-simple)
    '(media-info major-mode))
  
  (doom-modeline-def-modeline 'special
@@ -14,13 +14,13 @@ diff --exclude '*~' -ruN A/doom-modeline.el B/doom-modeline.el
    '(objed-state misc-info battery irc-buffers debug minor-modes input-method indent-info buffer-encoding major-mode process))
  
  (doom-modeline-def-modeline 'project
--  '(bar hud window-number buffer-default-directory)
-+  '(bar hud window-number modals buffer-default-directory)
+-  '(bar window-number buffer-default-directory)
++  '(bar window-number modals buffer-default-directory)
    '(misc-info battery irc mu4e gnus github debug minor-modes input-method major-mode process))
  
  (doom-modeline-def-modeline 'dashboard
--  '(bar hud window-number buffer-default-directory-simple)
-+  '(bar hud window-number modals buffer-default-directory-simple)
+-  '(bar window-number buffer-default-directory-simple)
++  '(bar window-number modals buffer-default-directory-simple)
    '(misc-info battery irc mu4e gnus github debug minor-modes input-method major-mode process))
  
  (doom-modeline-def-modeline 'vcs
@@ -28,18 +28,18 @@ diff --exclude '*~' -ruN A/doom-modeline.el B/doom-modeline.el
    '(misc-info battery irc mu4e gnus github debug minor-modes buffer-encoding major-mode process))
  
  (doom-modeline-def-modeline 'package
--  '(bar hud window-number package)
-+  '(bar hud window-number modals package)
+-  '(bar window-number package)
++  '(bar window-number modals package)
    '(misc-info major-mode process))
  
  (doom-modeline-def-modeline 'info
--  '(bar hud window-number buffer-info info-nodes buffer-position parrot selection-info)
-+  '(bar hud window-number modals buffer-info info-nodes buffer-position parrot selection-info)
+-  '(bar window-number buffer-info info-nodes buffer-position parrot selection-info)
++  '(bar window-number modals buffer-info info-nodes buffer-position parrot selection-info)
    '(misc-info buffer-encoding major-mode))
  
  (doom-modeline-def-modeline 'media
--  '(bar hud window-number buffer-size buffer-info)
-+  '(bar hud window-number modals buffer-size buffer-info)
+-  '(bar window-number buffer-size buffer-info)
++  '(bar window-number modals buffer-size buffer-info)
    '(misc-info media-info major-mode process vcs))
  
  (doom-modeline-def-modeline 'message
@@ -47,8 +47,8 @@ diff --exclude '*~' -ruN A/doom-modeline.el B/doom-modeline.el
    '(objed-state misc-info battery debug minor-modes input-method indent-info buffer-encoding major-mode))
  
  (doom-modeline-def-modeline 'pdf
--  '(bar hud window-number matches buffer-info pdf-pages)
-+  '(bar hud window-number modals matches buffer-info pdf-pages)
+-  '(bar window-number matches buffer-info pdf-pages)
++  '(bar window-number modals matches buffer-info pdf-pages)
    '(misc-info major-mode process vcs))
  
  (doom-modeline-def-modeline 'org-src

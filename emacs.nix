@@ -142,7 +142,7 @@ self: nixpkgs: {
 
     doom-modeline =
       super.melpaPackages.doom-modeline.overrideAttrs (_: {
-        patches = [./god-segment-project.patch];
+        patches = [./doom-modals-everywhere.patch];
     });
 
     # structured-haskell-mode = super.melpaBuild {
