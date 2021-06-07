@@ -3339,7 +3339,8 @@ sorted block."
 (use-package paredit
   :commands paredit-mode
   :bind (:map paredit-mode-map
-              ("M-s" . nil))
+              ("M-s" . nil)
+              ("DEL" . nil))
   :init
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
   (add-hook 'ielm-mode-hook #'paredit-mode))
