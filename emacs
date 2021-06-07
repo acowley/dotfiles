@@ -1017,7 +1017,7 @@ project's type."
          ("S-<right>" . nil)
          ("S-<up>" . nil)
          ("S-<down>" . nil))
-  :custom-face
+  ;; :custom-face
   ;; (org-level-1 ((t (:foundry "UKWN" :family "Yanone Kaffeesatz" :weight light :height 250))))
   ;; (org-level-1 ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
   ;; (org-level-1 ((t (:font yanone-font-name :weight light :height 250))))
@@ -1028,8 +1028,6 @@ project's type."
   (if (memq window-system '(mac ns))
       (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
     (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
-  ;; (set-face-attribute 'org-todo nil :weight 'bold)
-  ;; (set-face-attribute 'org-done nil :weight 'bold)
 
   (setq org-src-fontify-natively 't
         org-use-speed-commands 't
@@ -1125,10 +1123,6 @@ project's type."
     (setq ;; org-superstar-headline-bullets-list '("⁖" "◉" "○" "✸" "✿")
           org-superstar-headline-bullets-list '("»" "◉" "○" "✸" "✿")
           org-hide-leading-stars t))
-  ;; (use-package org-table-sticky-header
-  ;;   :diminish org-table-sticky-header-mode)
-  ;; (use-package org-sticky-header)
-
 
   ;; This is slow to load
   (use-package ox-tufte
@@ -2583,311 +2577,12 @@ predicate returns true."
                 my-mu4e-account-alist))
   ;; (global-mu4e-conversation-mode)
 )
-(use-package mu4e-conversation
-  :after mu4e
-  :disabled
-  :config
-  (setq mu4e-conversation-print-function 'mu4e-conversation-print-tree)
-  (global-mu4e-conversation-mode)
-
-;;     :defer t
-;;     ;; :disabled
-;;     :commands global-mu4e-conversation-mode
-;;     ;; :custom-face
-;;     ;; (mu4e-conversation-sender-1 ((t (:foreground "SandyBrown"))))
-;;     ;; (mu4e-conversation-sender-2 ((t (:foreground "DeepSkyBlue"))))
-;;     ;; (mu4e-conversation-sender-3 ((t (:foreground "LightSalmon"))))
-;;     ;; (mu4e-conversation-sender-4 ((t (:foreground "DarkKhaki"))))
-
-;;     :config
-;; (defun my/mu4e-conversation-hook ()
-;;   (unless (eq major-mode 'org-mode)
-;;     (mu4e-conversation-toggle-view))
-;;   ;; (olivetti-mode 1)
-;;   )
-
-;; (defun my/mu4e-conversation-after (thread &optional print-function)
-;; "Expand all trees, but collapse all drawers (e.g. PROPERTIES)."
-;;   (outline-show-all)
-;;   (run-hook-with-args 'org-cycle-hook 'all))
-
-;; (setq mu4e-conversation-hook #'my/mu4e-conversation-hook)
-;; (advice-add #'mu4e-conversation--print :after #'my/mu4e-conversation-after)
-
-;; (defun contextual-time (ts-msg)
-;; "Format a date-time string emphasizing information relative to
-;; the curren time. If the date of the given time stamp is today,
-;; then only the time is included. If it is another day of this
-;; year, only the month and day are included. If it is another year,
-;; the year, month, and day are included."
-;;   (let ((ts-now (current-time)))
-;;     (pcase (cons (decode-time ts-msg) (decode-time ts-now))
-;;       (`((,_ ,minute ,hour ,day ,month ,year . ,_) . (,_ ,_ ,_ ,today ,this-month ,this-year . ,_))
-;;        (format-time-string
-;;         (if (= this-year year)
-;;             (if (and (= this-month month) (= today day))
-;;                 "%l:%M %p"
-;;               "%b %e")
-;;           "%F")
-;;         ts-msg))
-;;       (_ "unparsed date"))))
-
-;; (defun strip-email-address (sender)
-;;   "Remove the email address part of an email sender string,
-;; leaving only the sender's name."
-;;   (let ((pre-address (string-match " <" sender)))
-;;     (if (and pre-address (> pre-address 0))
-;;         (substring sender 0 pre-address)
-;;       sender)))
-
-;; (defun mu4e-conversation-print-tree (index thread-content thread-headers)
-;;   "Insert Org-formatted message found at INDEX in THREAD-CONTENT."
-;;   (let* ((msg (nth index thread-content))
-;;          (msg-header (nth index thread-headers))
-;;          (level (plist-get (mu4e-message-field msg-header :thread) :level))
-;;          (org-level (make-string (1+ level) ?*))
-;;          body-start)
-;;     ;; Header.
-;;     (insert (format "%s %s%s, %s %s\n"
-;;                     org-level
-;;                     (if (memq 'unread (mu4e-message-field msg :flags))
-;;                         "UNREAD "
-;;                       "")
-;;                     (strip-email-address (mu4e-conversation--from-name msg))
-;;                     (contextual-time (mu4e-message-field msg :date))
-;;                     (mu4e-message-field msg :flags)))
-;;     ;; Body
-;;     (goto-char (point-max))
-;;     (setq body-start (point))
-;;     (insert (mu4e-message-body-text msg))
-;;     ;; Turn shr-url into Org links.
-;;     (goto-char body-start)
-;;     (let (begin end url text)
-;;       (while (and (not (eobp))
-;;                   (setq begin (next-single-char-property-change (point) 'shr-url))
-;;                   (get-text-property begin 'shr-url))
-;;         (goto-char begin)
-;;         (setq url (get-text-property (point) 'shr-url)
-;;               end (next-single-char-property-change (point) 'shr-url)
-;;               text (buffer-substring-no-properties begin end))
-;;         (delete-region begin end)
-;;         (insert (format "[[%s][%s]]" url text))))
-;;     ;; Prefix "*" at the beginning of lines with a space to prevent them
-;;     ;; from being interpreted as Org sections.
-;;     (goto-char body-start)
-;;     (while (re-search-forward (rx line-start "*") nil t) (replace-match " *"))
-;;     (goto-char body-start)
-;;     (if mu4e-conversation--use-org-quote-blocks
-;;         (mu4e-conversation--format-org-quote-blocks body-start)
-;;       (while (re-search-forward (rx line-start ">" (?  blank)) nil t) (replace-match ": ")))
-;;     (goto-char body-start)
-;;     (while (re-search-forward (concat "^" message-mark-insert-begin) nil t)
-;;       (replace-match "#+begin_src
-;; "))
-;;     (goto-char body-start)
-;;     (while (re-search-forward (concat "^" message-mark-insert-end) nil t)
-;;       (replace-match "#+end_src
-;; "))
-;;     (goto-char (point-max))
-;;     (org-set-property "Maildir" (mu4e-message-field msg :maildir))
-;;     (org-set-property "To" (mu4e-conversation--format-address-list
-;;                             (mu4e-message-field msg :to)))
-;;     (when (mu4e-message-field msg :cc)
-;;       (org-set-property "CC" (mu4e-conversation--format-address-list
-;;                               (mu4e-message-field msg :cc))))
-;;     (let ((attachments (mu4e~view-construct-attachments-header msg)))
-;;       ;; TODO: Propertize attachments.
-;;       (when attachments
-;;         (org-set-property "Attachments" (replace-regexp-in-string "\n$" "" attachments)))
-;;       (when (and (< (length (mu4e-message-field msg :to)) 2)
-;;                  (not (mu4e-message-field msg :cc))
-;;                  (not attachments))
-;;         (save-excursion
-;;           (goto-char (car (org-get-property-block)))
-;;           (forward-line -1)
-;;           (org-cycle))))))
-)
-
-;;; minions
-(use-package minions
-  :disabled
-  :config (minions-mode 1))
-
-;;; moody
-(use-package moody
-  :disabled
-  :config
-  (defun my-moody-wrap (string &optional width direction type)
-    "A copy of moody-wrap that colors the left slant of the
-element based on the god-local-mode predicate."
-    (unless type
-      (setq type 'tab))
-    (unless direction
-      (setq direction 'down))
-    (let* ((base  (if (moody-window-active-p)
-                      'mode-line
-                    'mode-line-inactive))
-           (outer (face-attribute base :background))
-           (line  (face-attribute base :underline))
-           (line  (if (eq line 'unspecified) outer line))
-           (inner (if (eq type 'ribbon)
-                      (face-attribute base :underline)
-                    (face-attribute 'default :background)))
-           (slant (if (eq direction 'down)
-                      (list outer line inner)
-                    (list inner line outer)))
-           (god-bg (if (and (moody-window-active-p)
-                            (bound-and-true-p god-local-mode))
-                       "#dddd00"
-                     (face-attribute 'mode-line :background)))
-           (face-left (if (eq direction 'down)
-                          (list :overline (and (eq type 'ribbon) line)
-                                :underline god-bg
-                                :foreground god-bg
-                                :background god-bg)
-                        (list :overline line
-                              :underline (and (or (eq type 'ribbon)
-                                                  (not (window-at-side-p nil 'bottom)))
-                                              line)
-                              :background inner)))
-           (face  (if (eq direction 'down)
-                      (list :overline (and (eq type 'ribbon) line)
-                            :underline line
-                            :background inner)
-                    (list :overline line
-                          :underline (and (or (eq type 'ribbon)
-                                              (not (window-at-side-p nil 'bottom)))
-                                          line)
-                          :background inner)))
-           (pad   (max (- (or width 0) (length string)) 2)))
-      (setq string
-            (concat (make-string (ceiling pad 2) ?\s)
-                    (substring string 0)
-                    (make-string (floor pad 2) ?\s)))
-      (add-face-text-property 0 (length string) face nil string)
-      (list
-       (propertize " " 'face face-left 'display
-                   (apply moody-slant-function
-                          (if (eq direction 'down) 'down 'up)
-                          (list god-bg god-bg inner)))
-       string
-       (propertize " " 'face face 'display
-                   (apply moody-slant-function
-                          (pcase (list type direction)
-                            (`(tab    down) (cons 'up   slant))
-                            (`(tab    up)   (cons 'down slant))
-                            (`(ribbon down) (cons 'down (reverse slant)))
-                            (`(ribbon up)   (cons 'up   (reverse slant)))))))))
-
-  (defvar god-moody-buffer-identification
-    '(:eval
-      (my-moody-wrap
-       (format-mode-line (propertized-buffer-identification "%b"))
-       20 'down 'tab)))
-
-  (put 'god-moody-buffer-identification 'risky-local-variable t)
-
-  (defvar god-modified-mode-line
-    '(:eval
-      (let* ((string (if (buffer-modified-p) " * " " - "))
-             (god-face (if (and (moody-window-active-p)
-                                (bound-and-true-p god-local-mode))
-                           '(:background "#dddd00" :foreground "#373737")
-                         `(:background ,(face-attribute 'mode-line :background)
-                                       :foreground ,(face-attribute 'mode-line :foreground)))))
-        (list (propertize string 'face god-face))))
-    "Mode line format for god-mode and buffer-modified status")
-
-  (put 'god-modified-mode-line 'risky-local-variable t)
-
-  (defun moody-god-replace-mode-line-buffer-identification (&optional reverse)
-    (interactive "P")
-    (moody-replace-element 'mode-line-buffer-identification
-                           'god-moody-buffer-identification
-                           reverse))
-
-  (defun moody-god-buffer-modified (&optional reverse)
-    (interactive "P")
-    (moody-replace-element 'mode-line-modified
-                           'god-modified-mode-line
-                           reverse))
-
-  ;; ("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification moody-mode-line-buffer-identification "   " mode-line-position
-  ;;  (vc-mode moody-vc-mode)
-  ;;  "  " minions-mode-line-modes mode-line-misc-info mode-line-end-spaces)
-  (moody-god-buffer-modified)
-  (setq x-underline-at-descent-line t)
-  (moody-god-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode))
-
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :config
   (setq doom-modeline-buffer-encoding nil
         doom-modeline-buffer-file-name-style 'truncate-all))
-;;; spaceline
-(use-package spaceline
-  :disabled
-  :config
-  (require 'spaceline-config)
-  (spaceline-emacs-theme)
-  (diminish 'outline-minor-mode)
-  (diminish 'projectile-mode)
-  (diminish 'helm-mode)
-  (diminish 'abbrev-mode)
-  (diminish 'buffer-face-mode)
-  (diminish 'flyspell-mode)
-  (diminish 'auto-revert-mode)
-  (diminish 'text-scale-mode)
-  (diminish 'flycheck-mode)
-  (diminish 'company-mode)
-  (diminish 'yas-minor-mode)
-  (diminish 'paredit-mode)
-  (diminish 'eldoc-mode)
-  (spaceline-toggle-buffer-encoding-abbrev-off)
-  (spaceline-toggle-buffer-size-off)
-  (spaceline-toggle-erc-track-off)
-
-  (defun ac/spaceline-highlight-face-god-state ()
-    (if (bound-and-true-p god-local-mode)
-        'spaceline-evil-normal          ;'spaceline-evil-visual
-      'spaceline-evil-emacs             ;'spaceline-evil-insert
-      ))
-
-  ;; spaceline-evil-state-faces is a variable defined in ‘spaceline.el’.
-  ;; Its value is ((normal . spaceline-evil-normal)
-  ;;  (insert . spaceline-evil-insert)
-  ;;  (emacs . spaceline-evil-emacs)
-  ;;  (replace . spaceline-evil-replace)
-  ;;  (visual . spaceline-evil-visual)
-  ;;  (motion . spaceline-evil-motion))
-                                        ;(setq spaceline-highlight-face-func #'spaceline-highlight-face-evil-state)
-  ;; (setq spaceline-highlight-face-func #'spaceline-highlight-face-default)
-  (setq spaceline-highlight-face-func #'ac/spaceline-highlight-face-god-state)
-  )
-
-;;; smart-mode-line (powerline)
-;; (use-package smart-mode-line
-;;   :config
-;;   (use-package smart-mode-line-powerline-theme)
-;;   (setq sml/no-confirm-load-theme t)
-;;   (sml/setup)
-
-;;   ;; Replace ":Doc:Projects/Foo/blah.hs" with ":Foo:blah.hs"
-;;   (add-to-list 'sml/replacer-regexp-list '("^:Doc:Projects/\\([^/]*\\)/" ":\\1:") t)
-
-;;   ;(sml/apply-theme 'smart-mode-line-powerline)
-;;   (sml/apply-theme 'dark)
-
-;;   ;; Don't show common minor modes
-;;   (setq rm-blacklist (mapconcat 'identity '(" Fly" " company" " God" " Helm" " Outl" " ARev" " BufFace" " Wrap" "+1" "Projectile.*" "Abbrev") "\\|"))
-;;   (setq sml/mode-width 'full)
-;;   ;; (setq sml/mode-width 0)
-;;   ;; (setq sml/shorten-modes nil)
-;;   ;; (setq sml/name-width '(0 . 44))
-;;   (setq sml/name-width '(0 . 25)))
-
 ;;; Multiple-cursors
 
 ;; multiple-cursors setup
