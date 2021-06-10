@@ -3311,7 +3311,8 @@ sorted block."
     (electric-indent-mode 1)
     (yas-minor-mode))
   (setq rustic-analyzer-command '("rust-analyzer")
-        lsp-rust-analyzer-server-command '("rust-analyzer"))
+        lsp-rust-analyzer-server-command '("rust-analyzer")
+        lsp-rust-analyzer-diagnostics-disabled ["inactive-code"])
   (add-hook 'rustic-mode-hook #'my/rustic-hook))
 
 (use-package rust-mode
