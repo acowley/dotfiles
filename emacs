@@ -1737,6 +1737,38 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
              org-roam-bibtex-find-non-ref-file
              org-roam-bibtex-insert-non-ref))
 
+;;;; org-marginalia
+(use-package org-marginalia
+  :after org
+  :commands (org-marginalia-mode org-marginalia-mark org-marginalia-open)
+  :bind (:map org-marginalia-mode-map
+              (("C-c M" . org-marginalia-make-annotation)
+               ("C-c m o" . org-marginalia-open)
+               ("C-c m ]" . org-marginalia-browse-forward)
+               ("C-c m [" . org-marginalia-browse-backward)))
+  :custom-face (org-marginalia-highlighter ((t (:background "dark olive green"))))
+  :config
+  (defun org-marginalia-make-annotation ()
+    (interactive)
+    (let ((mark-end (region-end)))
+      (org-marginalia-mark (region-beginning) (region-end))
+      (org-marginalia-save)
+      (org-marginalia-open (1- mark-end))
+      (end-of-buffer)))
+
+  (defun org-marginalia-browse-forward ()
+    (interactive)
+    (let ((buf (current-buffer)))
+      (org-marginalia-next) (org-marginalia-open (point))
+      (pop-to-buffer buf nil t)))
+
+  (defun org-marginalia-browse-backward ()
+    (interactive)
+    (let ((buf (current-buffer)))
+      (org-marginalia-prev) (org-marginalia-open (point))
+      (pop-to-buffer buf nil t))))
+
+;;;; bibtex-completion
 (use-package bibtex-completion
   :after org-ref
   :config
