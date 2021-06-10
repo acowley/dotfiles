@@ -2852,6 +2852,7 @@ sorted block."
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-code-actions-enable nil)
   (lsp-rust-all-features t)
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
   :bind (:map lsp-mode-map
               ("C-c C-l C-= C-=" . lsp-format-buffer)
               ("C-c C-l C-f" . lsp-format-buffer))
