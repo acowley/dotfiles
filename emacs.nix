@@ -3,6 +3,17 @@ self: nixpkgs: {
     # inherit (super) pdf-tools;
     inherit (super) vterm;
 
+    clip2org = super.trivialBuild {
+      pname = "clip2org";
+      version = "2021-06-11";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "acowley";
+        repo = "clip2org";
+        rev = "e80616a98780f37c7cc87baefd38ad2180f8a98f";
+        sha256 = "sha256:1h3fbblhdb0hrrk0cl0j8wcf4x0z0wma971ahl79m9g9394yvfps";
+      };
+    };
+
     org-marginalia = super.trivialBuild {
       pname = "org-marginalia";
       version = "2021-01-09";
@@ -222,6 +233,7 @@ self: nixpkgs: {
     org-books
     org-ql
     org-marginalia
+    clip2org
 
     deft
 

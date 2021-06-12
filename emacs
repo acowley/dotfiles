@@ -3634,6 +3634,13 @@ sorted block."
   (setq octave-comment-char ?%
         octave-comment-start "%"
         octave-block-comment-start "% "))
+
+;;; clip2org
+(use-package clip2org
+  :commands (clip2org)
+  :config
+  (setq clip2org-clippings-file "~/Documents/My Clippings.txt"))
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
