@@ -3643,6 +3643,9 @@ sorted block."
   :config
   (setq clip2org-clippings-file "~/Documents/My Clippings.txt"))
 
+(use-package lean4-mode
+  :mode "\\.lean\\'")
+
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")

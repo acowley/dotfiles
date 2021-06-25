@@ -1,7 +1,32 @@
-self: nixpkgs: {
+self: nixpkgs: 
+let selfPkgs = self; 
+    leanSrc = nixpkgs.fetchFromGitHub {
+      owner = "leanprover";
+      repo = "lean4";
+      rev = "52af4e24715ff1ad6618d952b618f35e2c4307f2";
+      sha256 = "sha256:1sp0lavr4vh7nqpysq68xrq9i57y6nr5bn4sy5sczpjhz82swmzz";
+    };
+in {
   myEmacsPackageOverrides = self: super: super.melpaPackages // {
     # inherit (super) pdf-tools;
     inherit (super) vterm;
+
+    lean4-mode = super.melpaBuild {
+      pname = "lean4-mode";
+      version = "1";
+      # src = selfPkgs.lean4-mode.src;
+      src = "${leanSrc}/lean4-mode";
+      packageRequires = with super.melpaPackages; [ dash f flycheck magit-section lsp-mode s ];
+      recipe = nixpkgs.writeText "recipe" ''
+        (lean4-mode :repo "leanprover/lean4" :fetcher github :files ("*.el"))
+      '';
+      fileSpecs = [ "*.el" ];
+        # tail -n +2 lean4-input.el > tmp.el
+        # mv tmp.el lean4-input.el
+      prePatch = ''
+        sed "s/(require 'rx)/(require 'rx)\n(require 'dash)/" -i lean4-syntax.el
+      '';
+    };
 
     clip2org = super.trivialBuild {
       pname = "clip2org";
@@ -351,6 +376,8 @@ self: nixpkgs: {
     synosaurus
     restclient
     gif-screencast
+
+    lean4-mode
   ];
   myemacsPkgs = (self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides;
   myemacs = ((self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
