@@ -99,15 +99,22 @@
     };
     vez = pkgs.callPackage ./nix/vez { buildSamples = true; };
     powerline-go = pkgs.powerline-go.overrideAttrs (old: {
-      postPatch = ''
-        sed 's@\([[:space:]]\)dotEnv := false@\1var dotEnvEnv string\n\1dotEnvEnv, _ = os.LookupEnv("DIRENV_DIR")\n\1dotEnv := dotEnvEnv != ""@' -i segment-dotenv.go
-        sed -e 's/\([[:space:]]*\)\(p.appendSegment("nix-shell", segment{\)/\1var nixPrompt string\n\1if nixShell == "impure" {\n\1    nixPrompt = "nix"\n\1} else {\n\1    nixPrompt = nixShell\n\1}\n\1\2/' \
-            -e 's/\([[:space:]]*content:[[:space:]]*\)nixShell,/\1nixPrompt,/' \
-            -i segment-nix-shell.go
-        sed -e 's/\([[:space:]]*NixShellBg:\).*/\1 22,/' \
-            -e 's/\([[:space:]]*NixShellFg:\).*/\1 254,/' \
-            -i defaults.go
-      '';
+      patches = old.patches or [] ++ [
+        (pkgs.fetchpatch {
+          name = "icon-for-nix-segment";
+          url = "https://patch-diff.githubusercontent.com/raw/justjanne/powerline-go/pull/310.patch";
+          sha256 = "sha256-5sYiVL/8NEB4TBAQ/CF2EzyP/X059C7T508D/AUvwII=";
+        })
+      ];
+      # postPatch = ''
+      #   sed 's@\([[:space:]]\)dotEnv := false@\1var dotEnvEnv string\n\1dotEnvEnv, _ = os.LookupEnv("DIRENV_DIR")\n\1dotEnv := dotEnvEnv != ""@' -i segment-dotenv.go
+      #   sed -e 's/\([[:space:]]*\)\(p.appendSegment("nix-shell", segment{\)/\1var nixPrompt string\n\1if nixShell == "impure" {\n\1    nixPrompt = "nix"\n\1} else {\n\1    nixPrompt = nixShell\n\1}\n\1\2/' \
+      #       -e 's/\([[:space:]]*content:[[:space:]]*\)nixShell,/\1nixPrompt,/' \
+      #       -i segment-nix-shell.go
+      #   sed -e 's/\([[:space:]]*NixShellBg:\).*/\1 22,/' \
+      #       -e 's/\([[:space:]]*NixShellFg:\).*/\1 254,/' \
+      #       -i defaults.go
+      # '';
     });
     clang-format = pkgs.callPackage ({ stdenv, writeText, libclang }:
       stdenv.mkDerivation {
