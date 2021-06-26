@@ -1522,9 +1522,10 @@ insertion into the blog's index."
       (let* ((title (substring-no-properties (car (plist-get (org-export-get-environment) :title))))
              (rel-path (progn
                          (string-match ".*?/articles/\\(.*?\\)$" (buffer-file-name))
-                         (match-string 1 (buffer-file-name)))))
+                         (match-string 1 (buffer-file-name))))
+             (rel-html (concat (file-name-sans-extension rel-path) ".html")))
         (concat "* " title "\n"
-                ":PROPERTIES:\n:RSS_PERMALINK: " rel-path "\n:END:"
+                ":PROPERTIES:\n:RSS_PERMALINK: " rel-html "\n:END:"
                 "#+include: \"" rel-path "\"::Slug\n\n"
                 "[[blog:" rel-path "][read more]]"))))
 
