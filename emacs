@@ -1580,7 +1580,8 @@ prompting for the article's title."
     "Local directory for blog files")
 
   (defun my/blog-copy-index-to-rss (_)
-    (shell-command (format "(cd %s/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")" my/blog-directory)))
+    (shell-command (format "(cd %s/blog && cp index.xml rss.xml && nix-shell -p gnused --run \"sed 's/index.xml/rss.xml/' -i ./rss.xml\")" my/blog-directory))
+    (shell-command (format "cd %s/blog/blog && cp ../rss.xml ." my/blog-directory)))
   (defun my/blog-sync-assets (_)
     (shell-command (format "rsync -a %s/blog/assets/basedir/ %s/blog" my/blog-directory my/blog-directory)))
   (setq org-publish-project-alist
