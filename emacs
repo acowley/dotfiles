@@ -1127,7 +1127,8 @@ project's type."
   ;; This is slow to load
   (use-package ox-tufte
     :load-path "~/src/ox-tufte"
-    :defer t)
+    :defer t
+    :commands (org-html-publish-to-tufte-html))
 
   ;; This is also slow to load
   (use-package ox-gfm
