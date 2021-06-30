@@ -19,4 +19,4 @@
 ;;     (apply orig-fun args))))
 
 ;; For gccemacs
-(setq comp-deferred-compilation nil)
+(setq native-comp-deferred-compilation nil)
