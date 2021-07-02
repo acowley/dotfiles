@@ -3631,6 +3631,10 @@ sorted block."
         deft-directory "~/org"
         deft-recursive t
         deft-org-mode-title-prefix t
+
+        ;; The large home.org file significantly slows down deft
+        deft-ignore-file-regexp (rx (or "home.org" 
+                                        (seq (not ?o) (not ?r) (not ?g) eol)))
         deft-use-filename-as-title nil))
 ;;; octave
 (use-package octave
