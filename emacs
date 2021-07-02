@@ -3604,8 +3604,15 @@ sorted block."
     (defalias 'calcFunc-norm 'calc-abs)))
 ;;; dired-rsync
 (use-package dired-rsync
-  :bind (:map dired-mode-map
-              ("C-c C-r" . dired-rsync)))
+  :commands (dired-rsync)
+  :hook (dired-mode . (lambda () (bind-key "C-c C-r" #'dired-rsync dired-mode-map)))
+
+  ;; The below ends up not getting triggered until we explicitly
+  ;; execute the `dired-rsync' command. I think this is because of how
+  ;; dired-mode is loaded. The hook above gets things going.
+  ; :bind (:map dired-mode-map
+  ;             ("C-c C-r" . dired-rsync))
+  )
 ;;; restclient
 (use-package restclient
   :commands (restclient-mode))
