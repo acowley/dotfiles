@@ -1192,7 +1192,8 @@ project's type."
     :hook (org-mode . org-crypt-use-before-save-magic))
   (use-package org-ref
     :defer t
-    :bind ("C-c C-r" . org-ref-helm-insert-cite-link)
+    :bind (:map org-mode-map 
+                (("C-c C-r" . org-ref-helm-insert-cite-link)))
     :config
     (setq ;; org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
           org-ref-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")
