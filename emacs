@@ -797,11 +797,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (setq company-idle-delay 0.0)
   ;; (define-key company-mode-map (kbd "C-:") 'helm-company)
   ;; (define-key company-active-map (kbd "C-:") 'helm-company)
-
-  (defun ac/company-text-mode ()
-    ;; (add-to-list 'company-backends 'company-ispell)
-    )
-  (add-hook 'text-mode-hook #'ac/company-text-mode))
+  )
 ;;; prescient
 (use-package prescient
   :custom (company-prescient-sort-length-enable nil)
