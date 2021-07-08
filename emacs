@@ -823,8 +823,9 @@ Make sure to put cursor on date heading that contains a list of urls."
   :custom (company-box-icons-alist 'company-box-icons-all-the-icons))
 ;;; selectrum
 (use-package selectrum
-  :defer 1
-  :commands (selectrum-mode)
+  ;; :defer 1
+  ;; :commands (selectrum-mode)
+  :demand
   :config
   ;; (set-face-background 'selectrum-current-candidate "DeepSkyBlue")
   (set-face-background 'selectrum-current-candidate "gray31")
@@ -833,7 +834,12 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; selectrum-prescent
 (use-package selectrum-prescient
   :commands (selectrum-prescient-mode)
-  :hook (selectrum-mode . selectrum-prescient-mode))
+  :after selectrum
+  :demand
+  :config
+  ;; (add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
+  ;; :hook (selectrum-mode-hook . selectrum-prescient-mode)
+  (selectrum-prescient-mode +1))
 ;;; consult
 (use-package consult
   :commands (consult-line consult-buffer consult-yank-from-kill-ring consult-goto-line consult-ripgrep consult-locate)
