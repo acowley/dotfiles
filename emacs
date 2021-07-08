@@ -3690,6 +3690,10 @@ sorted block."
   (ediff-current-diff-B ((t (:background "dark goldenrod"))))
   (ediff-fine-diff-B ((t (:background "sienna"))))
   :commands (ediff ediff3))
+;;; flyspell-correct
+(use-package flyspell-correct
+  :after flyspell
+  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
 ;;; Customize
 
 (custom-set-variables

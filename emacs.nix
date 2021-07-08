@@ -376,6 +376,7 @@ in {
     synosaurus
     restclient
     gif-screencast
+    flyspell-correct
 
     lean4-mode
   ];
