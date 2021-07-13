@@ -371,6 +371,7 @@ Haskell programs as it may be applied to all numbers in region."
 (add-hook 'after-change-major-mode-hook
           (lambda () (electric-quote-mode -1)))
 (electric-quote-mode -1)
+(electric-pair-mode +1)
 
 ;; Cause use-package to install packages automatically if not already
 ;; present
