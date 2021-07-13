@@ -1,15 +1,15 @@
-diff '--exclude=*~' -Naur A/deft.el B/deft.el
---- A/deft.el	2021-03-25 11:49:20.533767915 -0400
-+++ B/deft.el	2021-03-25 11:54:31.057640086 -0400
-@@ -549,6 +549,7 @@
+diff -ruN --exclude '*~' A/deft.el B/deft.el
+--- A/deft.el	2021-07-13 16:09:32.411560358 -0400
++++ B/deft.el	2021-07-13 16:20:00.077925185 -0400
+@@ -548,6 +548,7 @@
+ 
  (require 'cl-lib)
- (require 'widget)
- (require 'wid-edit)
+ (require 'button)
 +(require 'org-roam)
  
  ;; Customization
  
-@@ -1079,10 +1080,7 @@
+@@ -1084,10 +1085,7 @@
  used as title."
    (if deft-use-filename-as-title
        (deft-base-filename file)
