@@ -1714,15 +1714,14 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 (use-package org-roam
   :defer 5
   :after org
-  :commands (org-roam-mode org-roam org-roam-find-file org-roam-show-graph)
-  :custom
-  (org-roam-directory "~/org/roam")
-  ;; (org-roam-link-representation 'title)
+  :commands (org-roam-node-find)
+  :init
+  (setq org-roam-v2-ack t)
   :bind
-  (("C-c r l" . org-roam)
-   ("C-c r f" . org-roam-find-file)
-   ("C-c r g" . org-roam-show-graph)
-   :map org-mode-map (("C-c r i" . org-roam-insert)))
+  (("C-c r l" . org-roam-buffer-toggle)
+   ("C-c r f" . org-roam-node-find)
+   ;; ("C-c r g" . org-roam-show-graph)
+   :map org-mode-map (("C-c r i" . org-roam-node-insert)))
   ;; :bind (:map org-roam-mode-map
   ;;             (("C-c n l" . org-roam)
   ;;              ("C-c n f" . org-roam-find-file)
@@ -1730,9 +1729,10 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   ;;       :map org-mode-map
   ;;            (("C-c n i" . org-roam-insert)))
   :config
-  (setq org-roam-graphviz-executable "dot")
+  (setq org-roam-directory "~/org/roam" 
+        org-roam-graphviz-executable "dot")
   (require 'org-roam-protocol)
-  (org-roam-mode))
+  (org-roam-setup))
 
 ;;;; org-roam-bibtex
 (use-package org-roam-bibtex
