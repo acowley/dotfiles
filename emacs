@@ -516,7 +516,7 @@ last double colon is truncated to 20 characters."
       (unless (null file) (recentf-add-file file))))
   (advice-add 'switch-to-buffer :after #'recent-buffer)
   :config
-  (setq recentf-max-saved-items 100))
+  (setq recentf-max-saved-items 200))
 
 ;; Another options is
 ;; (require 'recentf)
