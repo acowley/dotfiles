@@ -1092,8 +1092,14 @@ project's type."
         (org-set-property "opened" (format-time-string "%Y-%m-%d %a %H:%M"))))))
   (add-hook 'org-after-todo-state-change-hook #'my/org-todo-change)
 
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines))
+  ;; (require 'ox-extra)
+  ;; (ox-extras-activate '(ignore-headlines))
+  (use-package org-contrib
+    :after org
+    :config
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines)))
+
   (use-package ox-reveal
     :defer t)
 

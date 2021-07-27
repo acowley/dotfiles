@@ -11,22 +11,22 @@ in {
     # inherit (super) pdf-tools;
     inherit (super) vterm;
 
-    lean4-mode = super.melpaBuild {
-      pname = "lean4-mode";
-      version = "1";
-      # src = selfPkgs.lean4-mode.src;
-      src = "${leanSrc}/lean4-mode";
-      packageRequires = with super.melpaPackages; [ dash f flycheck magit-section lsp-mode s ];
-      recipe = nixpkgs.writeText "recipe" ''
-        (lean4-mode :repo "leanprover/lean4" :fetcher github :files ("*.el"))
-      '';
-      fileSpecs = [ "*.el" ];
-        # tail -n +2 lean4-input.el > tmp.el
-        # mv tmp.el lean4-input.el
-      prePatch = ''
-        sed "s/(require 'rx)/(require 'rx)\n(require 'dash)/" -i lean4-syntax.el
-      '';
-    };
+    # lean4-mode = super.melpaBuild {
+    #   pname = "lean4-mode";
+    #   version = "1";
+    #   # src = selfPkgs.lean4-mode.src;
+    #   src = "${leanSrc}/lean4-mode";
+    #   packageRequires = with super.melpaPackages; [ dash f flycheck magit-section lsp-mode s ];
+    #   recipe = nixpkgs.writeText "recipe" ''
+    #     (lean4-mode :repo "leanprover/lean4" :fetcher github :files ("*.el"))
+    #   '';
+    #   fileSpecs = [ "*.el" ];
+    #     # tail -n +2 lean4-input.el > tmp.el
+    #     # mv tmp.el lean4-input.el
+    #   prePatch = ''
+    #     sed "s/(require 'rx)/(require 'rx)\n(require 'dash)/" -i lean4-syntax.el
+    #   '';
+    # };
 
     clip2org = super.trivialBuild {
       pname = "clip2org";
@@ -55,19 +55,20 @@ in {
     #     ./emacs-overlay/ox-reveal-4.0.patch
     #   ];
     # });
-    orgPackages = super.orgPackages // {
-      org-plus-contrib = super.orgPackages.org-plus-contrib.overrideAttrs (old: {
-        # This is the feature/org-fold-universal-core branch using
-        # text properties rather than overlays to display hidden text
-        # in org files.
-        src = nixpkgs.fetchFromGitHub {
-          owner = "yantar92";
-          repo = "org";
-          rev = "81a803180db886137e8d9da6c270413bb3ffb775";
-          sha256 = "sha256:1nrxa4qc6wvfvhqw935ggw79f9k4a43w8y6lw95ad4f95096ipz3";
-        };
-      });
-    };
+
+    # orgPackages = super.orgPackages // {
+    #   org-plus-contrib = super.orgPackages.org-plus-contrib.overrideAttrs (old: {
+    #     # This is the feature/org-fold-universal-core branch using
+    #     # text properties rather than overlays to display hidden text
+    #     # in org files.
+    #     src = nixpkgs.fetchFromGitHub {
+    #       owner = "yantar92";
+    #       repo = "org";
+    #       rev = "81a803180db886137e8d9da6c270413bb3ffb775";
+    #       sha256 = "sha256:1nrxa4qc6wvfvhqw935ggw79f9k4a43w8y6lw95ad4f95096ipz3";
+    #     };
+    #   });
+    # };
 
     # pdf-tools = super.pdf-tools.overrideAttrs (old: {
     #   patches = old.patches or [] ++ [
@@ -236,7 +237,9 @@ in {
     literate-calc-mode
 
     # org packages
-    orgPackages.org-plus-contrib
+    # orgPackages.org-plus-contrib
+    org
+    org-contrib
     org-superstar
     # org-sticky-header
     # org-table-sticky-header
@@ -378,7 +381,7 @@ in {
     gif-screencast
     flyspell-correct
 
-    lean4-mode
+    # lean4-mode
   ];
   myemacsPkgs = (self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides;
   myemacs = ((self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
