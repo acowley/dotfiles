@@ -1739,6 +1739,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (setq org-roam-directory "~/org/roam" 
         org-roam-graphviz-executable "dot")
   (require 'org-roam-protocol)
+  (require 'org-roam-graph)
+  (setq org-roam-graph-link-hidden-types '("file" "http" "https"))
   (org-roam-setup))
 
 ;;;; org-roam-bibtex
