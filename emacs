@@ -1024,6 +1024,8 @@ project's type."
   ;; (org-level-1 ((t (:foundry "UKWN" :family "Yanone Kaffeesatz" :weight light :height 250))))
   ;; (org-level-1 ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
   ;; (org-level-1 ((t (:font yanone-font-name :weight light :height 250))))
+  :custom-face
+  (org-block ((t (:slant normal))))
   :config
   ;; (set-face-font 'org-level-1 "Yanone Kaffeesatz Light:style=Light,Regular")
   ;; (set-face-attribute 'org-level-1 nil yanone-font-name :weight 'light :height 250)
