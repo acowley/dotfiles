@@ -856,6 +856,20 @@ Make sure to put cursor on date heading that contains a list of urls."
   (require 'consult-imenu)
   (setq consult-project-root-function #'projectile-project-root
         consult-async-input-debounce 0.1)
+
+  ;; I use consult-buffer to visit recent files, but previewing any
+  ;; file I touch while navigating the list of completions is too
+  ;; slow. However, I very much want previews when using something
+  ;; like consult-line so that I can see the context of each match. To
+  ;; address this, I use an explicit keybinding for previews when
+  ;; using consult-buffer, but otherwise leave it at its default of
+  ;; 'any.
+  (defun my/disable-consult-preview ()
+    (setq consult-preview-key (kbd "M-.")))
+  (defun my/enable-consult-preview ()
+    (setq consult-preview-key 'any))
+  (advice-add #'consult-buffer :before #'my/disable-consult-preview)
+  (advice-add #'consult-buffer :after #'my/enable-consult-preview)
   (defun consult-line-symbol-at-point ()
     (interactive)
     (consult-line (thing-at-point 'symbol)))
