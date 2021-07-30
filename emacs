@@ -846,6 +846,7 @@ Make sure to put cursor on date heading that contains a list of urls."
          ("C-c i" . consult-imenu)
          ;; ("C-s" . consult-line)
          ("C-s" . my/search-forward)
+         ("C-x l" . consult-locate)
          )
   :after projectile
   :custom (consult-locate-command (if (memq window-system '(mac ns))
