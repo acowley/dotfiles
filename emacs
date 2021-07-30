@@ -1216,24 +1216,6 @@ project's type."
     :custom (org-crypt-key "D50A574B")
     :commands (org-crypt-use-before-save-magic)
     :hook (org-mode . org-crypt-use-before-save-magic))
-  (use-package org-ref
-    :defer t
-    :bind (:map org-mode-map 
-                (("C-c C-r" . org-ref-helm-insert-cite-link)))
-    :config
-    (setq ;; org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
-          org-ref-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")
-          org-ref-pdf-directory "~/org/roam/references")
-
-    (use-package doi-utils
-      :commands (doi-utils-add-bibtex-entry-from-doi
-                 doi-utils-insert-bibtex-entry-from-doi
-                 doi-utils-get-bibtex-entry-pdf
-                 doi-utils-update-bibtex-entry-from-doi))
-    (use-package org-ref-arxiv
-      :commands (arxiv-add-bibtex-entry
-                 arxiv-get-pdf
-                 arxiv-get-pdf-add-bibtex-entry)))
 
   (add-hook 'org-mode-hook #'my-org-hook)
 
@@ -1799,11 +1781,33 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
       (org-marginalia-prev) (org-marginalia-open (point))
       (pop-to-buffer buf nil t))))
 
+;;;; org-ref
+(use-package org-ref
+    :defer t
+    :bind (:map org-mode-map 
+                (("C-c C-r" . org-ref-helm-insert-cite-link)))
+    :config
+    (setq ;; org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+          org-ref-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")
+          org-ref-pdf-directory "~/org/roam/references"))
 ;;;; bibtex-completion
 (use-package bibtex-completion
   :after org-ref
   :config
   (setq bibtex-completion-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")))
+
+;;;; doi-utils
+(use-package doi-utils
+      :commands (doi-utils-add-bibtex-entry-from-doi
+                 doi-utils-insert-bibtex-entry-from-doi
+                 doi-utils-get-bibtex-entry-pdf
+                 doi-utils-update-bibtex-entry-from-doi))
+
+;;;; org-ref-arxiv
+(use-package org-ref-arxiv
+  :commands (arxiv-add-bibtex-entry
+             arxiv-get-pdf
+             arxiv-get-pdf-add-bibtex-entry))
 
 ;;;; outorg
 (use-package outorg
