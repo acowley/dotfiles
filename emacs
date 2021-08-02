@@ -898,8 +898,10 @@ Make sure to put cursor on date heading that contains a list of urls."
 
 (use-package embark
   :commands (embark-act embark-bindings)
-  :bind (("C-S-a" . embark-act)
-         ("C-h B" . embark-bindings))
+  :bind (:map minibuffer-local-map
+              ;; ("C-S-a" . embark-act)
+              ("C-." . embark-act)
+              ("C-h B" . embark-bindings))
   :config
   (defun my/occur-edit-hook ()
     (when (< (count-windows) 2)
