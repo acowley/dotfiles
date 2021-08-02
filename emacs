@@ -888,6 +888,7 @@ Make sure to put cursor on date heading that contains a list of urls."
 (use-package consult-flycheck
   :commands (consult-flycheck))
 
+;;; marginalia
 (use-package marginalia
   :commands (marginalia-mode)
   :bind (;; ("M-A" . marginalia-cycle)
@@ -896,6 +897,15 @@ Make sure to put cursor on date heading that contains a list of urls."
   :init
   (marginalia-mode))
 
+;;; which-key
+(use-package which-key
+  :defer nil
+  :commands (which-key-mode)
+  :config
+  (which-key-mode)
+  (which-key-enable-god-mode-support))
+
+;;; embark
 (use-package embark
   :commands (embark-act embark-bindings)
   :bind (("C-S-e" . embark-dwim) 
@@ -913,7 +923,12 @@ Make sure to put cursor on date heading that contains a list of urls."
     (when (bound-and-true-p my--split-for-occur-edit)
       (delete-window)))
   (add-hook 'occur-edit-mode-hook #'my/occur-edit-hook)
-  (advice-add 'occur-cease-edit :after #'my/occur-edit-cease))
+  (advice-add 'occur-cease-edit :after #'my/occur-edit-cease)
+  (setq embark-action-indicator
+      (lambda (map _target)
+        (which-key--show-keymap "Embark" map nil nil 'no-paging)
+        #'which-key--hide-popup-ignore-command)
+      embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
   :after (embark consult)
