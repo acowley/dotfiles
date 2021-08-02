@@ -1750,6 +1750,15 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
              org-roam-bibtex-find-non-ref-file
              org-roam-bibtex-insert-non-ref))
 
+;;;; org-roam-ui
+(use-package org-roam-ui
+  :after org-roam
+  :commands (org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 ;;;; org-marginalia
 (use-package org-marginalia
   :after org

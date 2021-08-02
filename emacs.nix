@@ -28,6 +28,21 @@ in {
     #   '';
     # };
 
+    org-roam-ui = super.trivialBuild {
+      pname = "org-roam-ui";
+      version = "2021-08-02";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "org-roam";
+        repo = "org-roam-ui";
+        rev = "177f4b38d2dcf59861198db1113a2cf7ef59f5d9";
+        sha256 = "sha256-wPGP/CqoF9kemGbjGeS6v+yR1rfR7ETpNBv4/yhc0/k=";
+      };
+      packageRequires = [self.f self.websocket self.org-roam self.simple-httpd];
+      postInstall = ''
+        cp -r out $out/share/emacs/site-lisp
+      '';
+    };
+
     clip2org = super.trivialBuild {
       pname = "clip2org";
       version = "2021-06-11";
@@ -382,6 +397,7 @@ in {
     flyspell-correct
 
     # lean4-mode
+    org-roam-ui
   ];
   myemacsPkgs = (self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides;
   myemacs = ((self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
