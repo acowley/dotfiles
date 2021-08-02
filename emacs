@@ -898,8 +898,9 @@ Make sure to put cursor on date heading that contains a list of urls."
 
 (use-package embark
   :commands (embark-act embark-bindings)
-  :bind (:map minibuffer-local-map
-              ;; ("C-S-a" . embark-act)
+  :bind (("C-S-e" . embark-dwim) 
+         ("C-S-a" . embark-act)
+         :map minibuffer-local-map
               ("C-." . embark-act)
               ("C-h B" . embark-bindings))
   :config
