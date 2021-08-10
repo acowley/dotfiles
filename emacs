@@ -3567,7 +3567,7 @@ sorted block."
   :bind (:map vterm-mode-map
               ("<escape>" . nil)
               ("M-w" . nil)
-              ("C-y" . nil)
+              ;; ("C-y" . nil)
               ("C-n" . nil)
               ("C-p" . nil)
               ("C-a" . nil)
