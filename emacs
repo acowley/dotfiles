@@ -903,10 +903,10 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; which-key
 (use-package which-key
   :defer nil
-  :commands (which-key-mode)
+  :commands (which-key-mode which-key-enable-god-mode-support)
   :config
-  (which-key-mode)
-  (which-key-enable-god-mode-support))
+  (which-key-enable-god-mode-support)
+  (which-key-mode))
 
 ;;; embark
 (use-package embark
