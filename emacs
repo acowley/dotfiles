@@ -2842,13 +2842,9 @@ predicate returns true."
   (use-package lsp-haskell
     ;; :defer t
     ;; :commands lsp-haskell-enable
-    :config
-    ;; (setq lsp-haskell-process-path-hie "hie")
-    ;; (setq lsp-haskell-process-path-hie "ghcide")
-    (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper")
-    (setq lsp-haskell-process-args-hie '())
-    (setq lsp-haskell-formatting-provider "brittany")
-    )
+    :custom
+    ;; (lsp-haskell-formatting-provider "brittany")
+    (lsp-haskell-formatting-provider "fourmolu"))
 
   (defun my-haskell-mode-hook ()
     ;; (structured-haskell-mode)
