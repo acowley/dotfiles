@@ -395,6 +395,7 @@ in {
     restclient
     gif-screencast
     flyspell-correct
+    gnuplot
 
     # lean4-mode
     org-roam-ui

@@ -1317,6 +1317,9 @@ evaluation may begin anew."
     :defer t
     ; :ensure org-plus-contrib
     :commands (org-babel-execute:dot org-babel-expand-body:dot))
+  (use-package ob-gnuplot
+    :defer t
+    :commands (org-babel-execute:gnuplot org-babel-expand-body:gnuplot))
   (use-package ob-R
     :defer t
     :commands (org-babel-execute:R org-babel-expand-body:R))
