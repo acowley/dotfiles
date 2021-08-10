@@ -1063,6 +1063,7 @@ project's type."
   :custom-face
   (org-block ((t (:slant normal))))
   :config
+  (define-key org-mode-map (kbd "C-c C-x C-TAB") #'org-clock-in)
   ;; (set-face-font 'org-level-1 "Yanone Kaffeesatz Light:style=Light,Regular")
   ;; (set-face-attribute 'org-level-1 nil yanone-font-name :weight 'light :height 250)
   (set-face-font 'org-level-1 yanone-font-name)
