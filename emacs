@@ -3577,7 +3577,7 @@ sorted block."
               ;; ("C-y" . nil)
               ("C-n" . nil)
               ("C-p" . nil)
-              ("C-a" . nil)
+              ;;;("C-a" . nil)
               ("C-e" . nil)
               ("C-f" . nil)
               ("C-b" . nil)
@@ -3585,7 +3585,22 @@ sorted block."
               ("M-f" . nil)
               ("C-SPC" . nil)
               ("M->" . nil)
-              ("M-s" . nil)))
+              ("M-s" . nil))
+  :config
+  (setq vterm-kill-buffer-on-exit t)
+
+  ;; From https://github.com/akermu/emacs-libvterm/blob/master/README.md
+  (defun vterm-counsel-yank-pop-action (orig-fun &rest args)
+    (if (equal major-mode 'vterm-mode)
+        (let ((inhibit-read-only t)
+              (yank-undo-function (lambda (_start _end) (vterm-undo))))
+          (cl-letf (((symbol-function 'insert-for-yank)
+                     (lambda (str) (vterm-send-string str t))))
+            (apply orig-fun args)))
+      (apply orig-fun args)))
+
+  (advice-add 'counsel-yank-pop-action :around #'vterm-counsel-yank-pop-action)
+  (advice-add 'consult-yank-from-kill-ring :around #'vterm-counsel-yank-pop-action))
 ;;; dhall-mode
 (use-package dhall-mode
   :defer t
