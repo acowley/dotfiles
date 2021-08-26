@@ -1121,6 +1121,8 @@ project's type."
 
         ;; Speed up org fontification
         org-priority-regexp "^\\*+.*\\(\\[#\\([A-Z0-9]+\\)\\] ?\\)"
+
+        org-src-preserve-indentation t
         )
   (defun my/org-todo-change ()
     (let ((state (org-get-todo-state)))
