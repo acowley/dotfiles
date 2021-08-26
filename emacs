@@ -1279,6 +1279,10 @@ evaluation may begin anew."
     ; :ensure org-plus-contrib
     :commands (org-babel-execute:haskell org-babel-expand-body:haskell))
 
+  (use-package ob-nim
+    :defer t
+    :commands (org-babel-execute:nim org-babel-expand-body:nim))
+
   (use-package ob-js
     :defer t
     :commands (org-babel-execute:js org-babel-expand-body:js))
@@ -3755,6 +3759,10 @@ sorted block."
 (use-package flyspell-correct
   :after flyspell
   :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+;;; nim-mode
+(use-package nim-mode
+  :mode "\\.nim\\'"
+  :commands (nim-mode))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)

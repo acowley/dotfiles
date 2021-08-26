@@ -263,6 +263,7 @@ in {
     ox-tufte
     ox-gfm
     ob-ipython
+    ob-nim
     org-noter
     org-pdftools
     org-noter-pdftools
@@ -400,6 +401,7 @@ in {
     # lean4-mode
     org-roam-ui
     which-key
+    nim-mode
   ];
   myemacsPkgs = (self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides;
   myemacs = ((self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
