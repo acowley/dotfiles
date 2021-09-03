@@ -1064,10 +1064,12 @@ project's type."
   ;; (org-level-1 ((t (:font yanone-font-name :weight light :height 250))))
   :custom-face
   (org-block ((t (:slant normal))))
+  (org-quote ((t (:font "Roboto" :slant italic :height 150))))
   :config
   (define-key org-mode-map (kbd "C-c C-x C-TAB") #'org-clock-in)
   ;; (set-face-font 'org-level-1 "Yanone Kaffeesatz Light:style=Light,Regular")
   ;; (set-face-attribute 'org-level-1 nil yanone-font-name :weight 'light :height 250)
+  ;; (set-face-attribute 'org-quote nil :font "Roboto" :slant 'italic :height 150)
   (set-face-font 'org-level-1 yanone-font-name)
   (if (memq window-system '(mac ns))
       (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
@@ -1123,6 +1125,8 @@ project's type."
         org-priority-regexp "^\\*+.*\\(\\[#\\([A-Z0-9]+\\)\\] ?\\)"
 
         org-src-preserve-indentation t
+
+        org-fontify-quote-and-verse-blocks t
         )
   (defun my/org-todo-change ()
     (let ((state (org-get-todo-state)))
