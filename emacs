@@ -2213,6 +2213,7 @@ under the current project's root directory."
                  (notmuch-show-next-message)))
               ("r" . #'my-notmuch-reply-sender)
               ("R" . #'my-notmuch-reply)
+              ("o" . #'org-open-at-point)
               ("a" .
                (lambda ()
                  (interactive)
