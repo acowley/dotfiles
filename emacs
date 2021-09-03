@@ -2932,6 +2932,7 @@ sorted block."
   :custom
   (lsp-keymap-prefix "C-c C-l")
   (lsp-configure-hook nil)
+  ;; (lsp-semantic-tokens-enable t)
 
   ;; The default `lv-message' tends to leave stale windows down in the
   ;; minibuffer area for me.
@@ -3006,7 +3007,7 @@ sorted block."
   (add-hook 'lsp-mode-hook 'lsp-completion-mode)
   (flycheck-mode)
   (yas-minor-mode)
-  (helm-gtags-mode -1)
+  ;; (helm-gtags-mode -1)
   (setq company-lsp-cache-candidates nil
         company-transformers nil
         company-lsp-async t
@@ -3022,9 +3023,9 @@ sorted block."
 ;;; ccls
 (use-package ccls
   :defer t
-  :bind (:map flymake-mode-map
-              ("M-n" . flymake-goto-next-error)
-              ("M-p" . flymake-goto-prev-error))
+  ;; :bind (:map flymake-mode-map
+  ;;             ("M-n" . flymake-goto-next-error)
+  ;;             ("M-p" . flymake-goto-prev-error))
   :config
   (bind-key "C-c C-n"
             (lambda () (interactive) (ccls-navigate "D")) lsp-ui-mode-map)
