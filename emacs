@@ -1836,13 +1836,14 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 
 ;;;; org-ref
 (use-package org-ref
-    :defer t
-    :bind (:map org-mode-map 
-                (("C-c C-r" . org-ref-helm-insert-cite-link)))
-    :config
-    (setq ;; org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
-          org-ref-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")
-          org-ref-pdf-directory "~/org/roam/references"))
+  :disabled t
+  :defer t
+  :bind (:map org-mode-map 
+              (("C-c C-r" . org-ref-helm-insert-cite-link)))
+  :config
+  (setq ;; org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+   org-ref-default-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")
+   org-ref-pdf-directory "~/org/roam/references"))
 ;;;; bibtex-completion
 (use-package bibtex-completion
   :after org-ref
