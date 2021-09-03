@@ -1753,7 +1753,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
          "* TODO %?\n  %i\n  %a"))))
 ;;;; org-roam
 (use-package org-roam
-  :defer 5
+  ;; :defer 5
   :after org
   :commands (org-roam-node-find)
   :init
@@ -1775,7 +1775,14 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   (require 'org-roam-protocol)
   (require 'org-roam-graph)
   (setq org-roam-graph-link-hidden-types '("file" "http" "https"))
-  (org-roam-setup))
+  ;; Speeds up slow org-roam db updates
+  (advice-add 'org-roam-db-update-file :around
+              (defun +org-roam-db-update-file (fn &rest args)
+                (emacsql-with-transaction (org-roam-db)
+                  (apply fn args))))
+  (org-roam-db-autosync-mode)
+  ;; (org-roam-setup)
+  )
 
 ;;;; org-roam-bibtex
 (use-package org-roam-bibtex
