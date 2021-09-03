@@ -1143,6 +1143,7 @@ project's type."
   ;; (ox-extras-activate '(ignore-headlines))
   (use-package org-contrib
     :after org
+    :defer 10
     :config
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines)))
