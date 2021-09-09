@@ -41,6 +41,10 @@ tags = +rocm
 header = List-ID
 pattern = gfx-rs/naga
 tags = +wgpu
+[HeaderMatchingFilter.6]
+header = From
+pattern = (evesham.k12.nj.us|classroom.google.com)
+tags = +School;+Owen
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
