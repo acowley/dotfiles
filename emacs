@@ -893,6 +893,14 @@ Make sure to put cursor on date heading that contains a list of urls."
 (use-package consult-flycheck
   :commands (consult-flycheck))
 
+(use-package consult-dir
+  :ensure t
+  :bind (("C-x C-d" . consult-dir)
+         ;; :map minibuffer-local-completion-map
+         :map selectrum-minibuffer-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file)))
+
 ;;; marginalia
 (use-package marginalia
   :commands (marginalia-mode)
@@ -3744,8 +3752,7 @@ sorted block."
         deft-org-mode-title-prefix t
 
         ;; The large home.org file significantly slows down deft
-        deft-ignore-file-regexp (rx (or "home.org" 
-                                        (seq (not ?o) (not ?r) (not ?g) eol)))
+        deft-ignore-file-regexp (rx (or "home.org"))
         deft-use-filename-as-title nil))
 ;;; octave
 (use-package octave

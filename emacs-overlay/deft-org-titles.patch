@@ -1,15 +1,7 @@
-diff -ruN --exclude '*~' A/deft.el B/deft.el
---- A/deft.el	2021-07-13 16:09:32.411560358 -0400
-+++ B/deft.el	2021-07-13 16:20:00.077925185 -0400
-@@ -548,6 +548,7 @@
- 
- (require 'cl-lib)
- (require 'button)
-+(require 'org-roam)
- 
- ;; Customization
- 
-@@ -1084,10 +1085,7 @@
+diff --exclude '*~' -ruN A/deft.el B/deft.el
+--- A/deft.el	2021-09-09 13:55:31.273231208 -0400
++++ B/deft.el	2021-09-09 14:08:18.140732430 -0400
+@@ -1084,10 +1084,11 @@
  used as title."
    (if deft-use-filename-as-title
        (deft-base-filename file)
@@ -17,7 +9,11 @@ diff -ruN --exclude '*~' A/deft.el B/deft.el
 -      (if begin
 -          (funcall deft-parse-title-function
 -                   (substring contents begin (match-end 0)))))))
-+    (org-roam-db--get-title file)))
++    (if (string-match 
++         (rx (seq bol "#+" (or "title" "TITLE") ":" (* space) (group (* any)) eol))
++         contents)
++        (match-string 1 contents)
++      "No Title")))
  
  (defun deft-parse-summary (contents title)
    "Parse the file CONTENTS, given the TITLE, and extract a summary.

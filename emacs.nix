@@ -297,6 +297,7 @@ in {
     selectrum-prescient
     consult
     consult-flycheck
+    consult-dir
     marginalia
     embark
     embark-consult
