@@ -1821,7 +1821,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
                ("C-c m o" . org-marginalia-open)
                ("C-c m ]" . org-marginalia-browse-forward)
                ("C-c m [" . org-marginalia-browse-backward)))
-  :custom-face (org-marginalia-highlighter ((t (:background "dark olive green"))))
+  :custom-face (org-marginalia-highlighter ((t (;; :background "dark olive green" 
+                                                            :underline t))))
   :config
   (defun org-marginalia-make-annotation ()
     (interactive)
