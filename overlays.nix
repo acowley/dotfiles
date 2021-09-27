@@ -23,4 +23,5 @@ in
 #     else [])
 # ++ optOverlay ~/src/rust-analyzer-overlay/default.nix
 # ++ optOverlay ~/dotfiles/nix/corectrl/overlay.nix
-++ optOverlay ~/src/nixos-rocm/default.nix
+  # ++ optOverlay ~/src/nixos-rocm/default.nix
+
