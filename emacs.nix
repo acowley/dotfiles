@@ -56,12 +56,12 @@ in {
 
     org-marginalia = super.trivialBuild {
       pname = "org-marginalia";
-      version = "2021-01-09";
+      version = "2021-08-29";
       src = nixpkgs.fetchFromGitHub {
         owner = "nobiot";
         repo = "org-marginalia";
-        rev = "045b7593f505b0ef58215f76ed4916a1a0cf611c";
-        sha256 = "sha256:0a884bz7jk2iidf8i3f1533y79jdncamfghh5zbsg5zlq6mjjrj3";
+        rev = "ad93331bf715f6843438d046e97fcd6eac61a4e6";
+        hash = "sha256-6DTQlmyH88j99QlhO5nszkCkFu05AjoKHbgkJKhax6k=";
       };
     };
 
