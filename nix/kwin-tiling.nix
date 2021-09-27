@@ -4,8 +4,8 @@ self: super: {
     src = super.fetchFromGitHub {
       owner = "kwin-scripts";
       repo = "kwin-tiling";
-      rev = "a240b4327892305008525fed96f9f9227c904893";
-      sha256 = "sha256:0d0hr0c7zl05j0k55drck9ghm66mjdfvl858zr8vx6ff8fva1i4f";
+      rev = "660e0cbc58452b0cb8cbf6ea6f2487332ada2655";
+      hash = "sha256-xixZ36b+XCfDeqKS+P9bESnKfjPVuEaKcsPKRU62760=";
     };
 
     # NOTE: We need to copy the `installPhase` here because it
