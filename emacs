@@ -3754,6 +3754,12 @@ sorted block."
 
         ;; The large home.org file significantly slows down deft
         deft-ignore-file-regexp (rx (or "home.org"))
+        deft-strip-summary-regexp (rx (or (seq bol (* space) eol)
+                                          ;; (or ?\n ?\t)
+                                          (seq bol ":" (* upper) ":" (* any) eol)
+                                          (seq "[id:" (* (or alnum ?\-)) ?\])
+                                          (seq bol "#+" (* (or alnum ?\_)) ":" (* any) eol)
+                                          (seq bol "# -*-" (* any) eol)))
         deft-use-filename-as-title nil))
 ;;; octave
 (use-package octave
