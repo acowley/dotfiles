@@ -25,5 +25,9 @@
           };
       in {
         legacyPackages = pkgs;
+        apps.fritzing = {
+          type = "app";
+          program = "${pkgs.fritzing}/bin/Fritzing";
+        };
       });
 }
