@@ -1136,6 +1136,29 @@ project's type."
 
         org-fontify-quote-and-verse-blocks t
         )
+
+  ;; org-mode supports inline map demarcated with \(...\) somewhat
+  ;; better than dollar signs. But a dollar sign is easier to type, so
+  ;; this little widget interprets a dollar sign to insert a \(\) pair
+  ;; with point in between. If a dollar sign is inserted again, those
+  ;; characters are replaced with an actual dollar sign.
+  ;; I got this from Eric Fraga on the org mailing list.
+
+  ;; from Nicolas Richard <theonewiththeevillook@yahoo.fr>
+  ;; Date: Fri, 8 Mar 2013 16:23:02 +0100
+  ;; Message-ID: <87vc913oh5.fsf@yahoo.fr>
+  ;; (defun yf/org-electric-dollar nil
+  ;;   "When called once, insert \\(\\) and leave point in between.
+  ;;      When called twice, replace the previously inserted \\(\\) by one $."
+  ;;   (interactive)
+  ;;   (if (and (looking-at "\\\\)") (looking-back "\\\\("))
+  ;;       (progn (delete-char 2)
+  ;;              (delete-char -2)
+  ;;              (insert "$"))
+  ;;     (insert "\\(\\)")
+  ;;     (backward-char 2)))
+  ;; (define-key org-mode-map (kbd "$") 'yf/org-electric-dollar)
+
   (defun my/org-todo-change ()
     (let ((state (org-get-todo-state)))
       (cond
