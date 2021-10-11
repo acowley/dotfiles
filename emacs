@@ -2247,6 +2247,7 @@ under the current project's root directory."
               ("r" . #'my-notmuch-reply-sender)
               ("R" . #'my-notmuch-reply)
               ("o" . #'org-open-at-point)
+              ("l" . #'notmuch-show-jump-to-latest)
               ("a" .
                (lambda ()
                  (interactive)
@@ -2306,6 +2307,25 @@ under the current project's root directory."
   (set-face-attribute 'notmuch-tag-face nil :foreground "olive drab")
   (set-face-attribute 'notmuch-search-subject nil :font "Victor Mono" :weight 'normal :height 120 :foreground "white")
   (set-face-attribute 'notmuch-search-unread-face nil :foreground "CadetBlue")
+
+  ;; From https://www.reddit.com/r/emacs/comments/aja2ov/notmuch_thread_sort_order/eeujv47/
+  (defun notmuch-show-jump-to-latest ()
+    "Jump to the message in the current thread with the latest
+timestamp."
+    (interactive)
+    (let ((timestamp 0)
+          latest)
+      (notmuch-show-mapc
+       (lambda () (let ((ts (notmuch-show-get-prop :timestamp)))
+                    (when (> ts timestamp)
+                      (setq timestamp ts
+                            latest (point))))))
+      (if latest
+          (progn
+            (goto-char latest)
+            (notmuch-show-message-visible (notmuch-show-get-message-properties) t)
+            (recenter-top-bottom 10))
+        (error "Cannot find latest message."))))
   
   (defun my/notmuch-show-hook ()
     (setq olivetti-body-width 90)
