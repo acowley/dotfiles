@@ -30,12 +30,12 @@ in {
 
     org-roam-ui = super.trivialBuild {
       pname = "org-roam-ui";
-      version = "2021-08-02";
+      version = "2021-10-12";
       src = nixpkgs.fetchFromGitHub {
         owner = "org-roam";
         repo = "org-roam-ui";
-        rev = "177f4b38d2dcf59861198db1113a2cf7ef59f5d9";
-        sha256 = "sha256-wPGP/CqoF9kemGbjGeS6v+yR1rfR7ETpNBv4/yhc0/k=";
+        rev = "50ebd6c39b40b9b22cd34d932fa9aa5cc334ff37";
+        hash = "sha256-I5NGREiViMXDqmY7/4juvLMUqsmnPuRBzaV6pi85TJQ=";
       };
       packageRequires = [self.f self.websocket self.org-roam self.simple-httpd];
       postInstall = ''
