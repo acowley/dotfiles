@@ -13,7 +13,7 @@
   };
 
   outputs = { self, nixpkgs, flake-utils# , nixos-rocm
-            }: 
+            }:
     flake-utils.lib.eachDefaultSystem (system: 
       let # overlays = [nixos-rocm.overlay];
           pkgs = import nixpkgs { 
