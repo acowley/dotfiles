@@ -45,6 +45,10 @@ tags = +wgpu
 header = From
 pattern = (evesham.k12.nj.us|classroom.google.com)
 tags = +School;+Owen
+[HeaderMatchingFilter.7]
+header = From
+pattern = groq.com
+tags = +groq
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
