@@ -1811,6 +1811,16 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   ;;              ("C-c n g" . org-roam-show-graph))
   ;;       :map org-mode-map
   ;;            (("C-c n i" . org-roam-insert)))
+  :custom
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?" :target
+      (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}
+")
+      :unnarrowed t)
+     ("s" "Serve Robotics Note" plain
+      "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: serve\n")
+      :unnarrowed t)))
   :config
   (setq org-roam-directory "~/org/roam" 
         org-roam-graphviz-executable "dot")
