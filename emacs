@@ -2994,6 +2994,7 @@ sorted block."
   (lsp-rust-all-features t)
   ;; (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-rust-analyzer-cargo-watch-command "check")
+  (lsp-clients-clangd-args '("-header-insertion=never" "--header-insertion-decorators=0"))
   :bind (:map lsp-mode-map
               ("C-c C-l C-= C-=" . lsp-format-buffer)
               ("C-c C-l C-f" . lsp-format-buffer))
