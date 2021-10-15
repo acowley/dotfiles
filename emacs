@@ -1782,7 +1782,17 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
       '(("t" "Task" entry (file+headline org-default-notes-file "Tasks")
             "* TODO %?\n  SCHEDULED: %t\n%i\n")
         ("p" "Project Task" entry (file+headline (find-project-notes) "Tasks")
-         "* TODO %?\n  %i\n  %a"))))
+         "* TODO %?\n  %i\n  %a")
+        ("s" "Serve Robotics Task" entry
+         (file+function "~/org/serve.org" (lambda ()
+                                            (let ((headline (format-time-string "%Y %B" (current-time))))
+                                              (condition-case nil
+                                                  (org-find-olp (list headline) t)
+                                                (error (progn
+                                                         (goto-char (point-min))
+                                                         (org-insert-heading)
+                                                         (insert headline)))))))
+         "* TODO %?\n:PROPERTIES:\n:opened: %U\n:END:\n"))))
 ;;;; org-roam
 (use-package org-roam
   ;; :defer 5
