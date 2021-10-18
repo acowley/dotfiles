@@ -15,7 +15,7 @@
   outputs = { self, nixpkgs, flake-utils# , nixos-rocm
             }:
     flake-utils.lib.eachDefaultSystem (system: 
-      let # overlays = [nixos-rocm.overlay];
+      let overlays = import ../overlays.nix;
           pkgs = import nixpkgs { 
             inherit system;
             # inherit overlays;
