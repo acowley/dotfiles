@@ -3170,6 +3170,7 @@ sorted block."
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
   (add-hook 'lsp-mode-hook 'lsp-completion-mode)
+  (add-hook 'lsp-mode-hook 'lsp-semantic-tokens-mode)
   (flycheck-mode)
   (yas-minor-mode)
   ;; (helm-gtags-mode -1)
