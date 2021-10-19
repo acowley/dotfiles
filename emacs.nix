@@ -38,8 +38,23 @@ in {
         hash = "sha256-I5NGREiViMXDqmY7/4juvLMUqsmnPuRBzaV6pi85TJQ=";
       };
       packageRequires = [self.f self.websocket self.org-roam self.simple-httpd];
-      postInstall = ''
+      postFixup = ''
         cp -r out $out/share/emacs/site-lisp
+      '';
+    };
+
+    org-clock-reminder = super.trivialBuild {
+      pname = "org-clock-reminder";
+      version = "2021-10-10";
+      src = nixpkgs.fetchFromGitHub {
+        owner = "inickey";
+        repo = "org-clock-reminder";
+        rev = "9f9b88348ffbc6628f2286dcb4c064b520d0a638";
+        hash = "sha256-CnOLlgAPOCquOr++wrL+LayOq02NKawAHqut15TAobY=";
+      };
+      packageRequires = [self.org];
+      postFixup = ''
+        cp -r icons $out/share/emacs/site-lisp
       '';
     };
 
@@ -278,6 +293,7 @@ in {
     org-ql
     org-marginalia
     clip2org
+    org-clock-reminder
 
     deft
 

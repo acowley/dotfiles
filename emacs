@@ -2064,6 +2064,12 @@ entire source file is loaded."
 ;;;; org-ql
 (use-package org-ql
   :commands (org-ql-query org-ql-search org-ql-select org-ql))
+;;; org-clock-reminder
+(use-package org-clock-reminder
+  :after org
+  :config
+  (setq org-clock-reminder-remind-inactivity 't)
+  (org-clock-reminder-activate))
 ;;; elegant-agenda
 (use-package elegant-agenda-mode 
   :hook org-agenda-mode
