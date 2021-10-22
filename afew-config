@@ -47,6 +47,10 @@ pattern = (evesham.k12.nj.us|classroom.google.com)
 tags = +School;+Owen
 [HeaderMatchingFilter.7]
 header = From
+pattern = serverobotics.com
+tags = +serve
+[HeaderMatchingFilter.8]
+header = From
 pattern = groq.com
 tags = +groq
 [InboxFilter]
