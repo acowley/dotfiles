@@ -3127,6 +3127,7 @@ sorted block."
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-code-actions-enable nil)
   (lsp-rust-all-features t)
+  (lsp-semantic-tokens-enable t)
   ;; (lsp-rust-analyzer-cargo-watch-command "clippy")
   (lsp-rust-analyzer-cargo-watch-command "check")
   (lsp-clients-clangd-args '("-header-insertion=never" "--header-insertion-decorators=0"))
@@ -3173,6 +3174,8 @@ sorted block."
           lsp-ui-peek-fontify 'always
           )
 
+    (require 'lsp-semantic-tokens)
+    (set-face-attribute 'lsp-face-semhl-property nil :slant 'italic)
     ;; Make the lsp-ui-peek overlay stand out a bit better
     (set-face-background 'lsp-ui-peek-peek "dark slate gray")
 
@@ -3193,7 +3196,6 @@ sorted block."
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
   (add-hook 'lsp-mode-hook 'lsp-completion-mode)
-  (add-hook 'lsp-mode-hook 'lsp-semantic-tokens-mode)
   (flycheck-mode)
   (yas-minor-mode)
   ;; (helm-gtags-mode -1)
@@ -3216,6 +3218,7 @@ sorted block."
   ;;             ("M-n" . flymake-goto-next-error)
   ;;             ("M-p" . flymake-goto-prev-error))
   :config
+  (require 'lsp-ui)
   (bind-key "C-c C-n"
             (lambda () (interactive) (ccls-navigate "D")) lsp-ui-mode-map)
   (bind-key "C-c C-p"
