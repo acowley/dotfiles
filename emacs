@@ -2412,6 +2412,7 @@ under the current project's root directory."
                        )
                       ("acowley@seas.upenn.edu" . nil;; "seas/sent"
                        )
+                      ("anthony.cowley@serverobotics.com" . nil)
                       ("acowley@scalableautonomy.com" . nil)))
   (notmuch-poll-script "~/dotfiles/notmuch-sync-new.sh")
   :custom-face
@@ -2503,6 +2504,16 @@ timestamp."
        (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@gmail.com" nil)))
        (smtpmail-auth-credentials
         '(("smtp.gmail.com" 587 "acowley@gmail.com" nil))))
+      ("serve"
+       (user-mail-address "anthony.cowley@serverobotics.com")
+       (smtpmail-default-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-server "smtp.gmail.com")
+       (smtpmail-smtp-service 587)
+       (smtpmail-stream-type starttls)
+       (smtpmail-smtp-user "anthony.cowley@serverobotics.com")
+       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "anthony.cowley@serverobotics.com" nil)))
+       (smtpmail-auth-credentials
+        '(("smtp.gmail.com" 587 "anthony.cowley@serverobotics.com" nil))))
       ("upenn"
        (user-mail-address "acowley@seas.upenn.edu")
        (smtpmail-default-smtp-server "smtp.gmail.com")
