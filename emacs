@@ -1135,6 +1135,12 @@ project's type."
         org-src-preserve-indentation t
 
         org-fontify-quote-and-verse-blocks t
+
+        ;; Truncate the task name
+        org-clock-heading-function (lambda ()
+                                     (let ((str (nth 4 (org-heading-components))))
+                                       (if (> (length str) 12)
+                                           (substring str 0 12))))
         )
 
   ;; org-mode supports inline map demarcated with \(...\) somewhat
