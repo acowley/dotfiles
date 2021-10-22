@@ -31,7 +31,7 @@ path=/home/acowley/.mail
 [user]
 name=Anthony Cowley
 primary_email=acowley@gmail.com
-other_email=acowley@seas.upenn.edu;acowley@scalableautonomy.com;
+other_email=acowley@seas.upenn.edu;acowley@scalableautonomy.com;anthony.cowley@serverobotics.com
 
 # Configuration for "notmuch new"
 #
