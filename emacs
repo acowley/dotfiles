@@ -3996,6 +3996,12 @@ sorted block."
 (use-package nim-mode
   :mode "\\.nim\\'"
   :commands (nim-mode))
+;;; bazel
+(use-package bazel
+  :mode (("BUILD" . bazel-build-mode)
+         ("WORKSPACE" . bazel-workspace-mode)
+         ("\\.bzl\\'" . bazel-starlark-mode)
+         ("\\.bazelrc" . bazelrc-mode)))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)

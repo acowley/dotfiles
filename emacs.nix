@@ -419,6 +419,8 @@ in {
     org-roam-ui
     which-key
     nim-mode
+
+    bazel
   ];
   myemacsPkgs = (self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides;
   myemacs = ((self.emacsPackagesFor self.emacsGit).overrideScope' self.myEmacsPackageOverrides).emacsWithPackages self.myEmacsPackages;
