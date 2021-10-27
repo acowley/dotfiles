@@ -1825,7 +1825,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
       :unnarrowed t)
      ("s" "Serve Robotics Note" plain
       "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: serve\n")
+      :if-new (file+head "serve/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: serve\n")
       :unnarrowed t)))
   :config
   (setq org-roam-directory "~/org/roam" 
