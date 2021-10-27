@@ -1136,11 +1136,11 @@ project's type."
 
         org-fontify-quote-and-verse-blocks t
 
-        ;; Truncate the task name
+        ;; Truncate the org-clock task name shown in the mode line
         org-clock-heading-function (lambda ()
                                      (let ((str (nth 4 (org-heading-components))))
-                                       (if (> (length str) 12)
-                                           (substring str 0 12))))
+                                       (if (> (length str) 18)
+                                           (substring str 0 18))))
         )
 
   ;; org-mode supports inline map demarcated with \(...\) somewhat
