@@ -47,12 +47,16 @@ pattern = (evesham.k12.nj.us|classroom.google.com)
 tags = +School;+Owen
 [HeaderMatchingFilter.7]
 header = From
-pattern = serverobotics.com
-tags = +serve
-[HeaderMatchingFilter.8]
-header = From
 pattern = groq.com
 tags = +groq
+[HeaderMatchingFilter.8]
+header = From
+pattern = serverobotics.com
+tags = +serve
+[HeaderMatchingFilter.9]
+header = To
+pattern = (serve-robotics/(skel|x)|@serverobotics.com)
+tags = +serve
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
