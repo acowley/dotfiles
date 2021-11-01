@@ -305,8 +305,71 @@ dash) transpose chunks around that. Otherwise transpose sexps."
       (insert "\n#endif"))
     (forward-line 4)))
 
+(defun serve-project-path (fname)
+  "Transform a file name into a path relative to a project root."
+  (let ((project-root (expand-file-name
+                       (or (locate-dominating-file fname "WORKSPACE")
+                           (locate-dominating-file fname "run-container.sh")))))
+    (string-remove-prefix project-root (expand-file-name fname))))
+
+(defun insert-serve-include-guard ()
+  "Insert a C/C++-style '#ifndef' include guard using Serve conventions"
+  (interactive)
+  (let* ((fname (serve-project-path (buffer-file-name)))
+         (ext (upcase (file-name-extension fname)))
+         (base (upcase (file-name-sans-extension (file-name-nondirectory fname))))
+         (path (upcase (file-name-directory fname)))
+         (guard (string-replace "/" "_" (concat path base "_" ext "_")))
+         (copyright "/**
+ * Copyright 2021 Serve Robotics Inc.
+ */\n\n"))
+    (save-excursion
+      (goto-char (point-min))
+      (insert (concat copyright "#ifndef " guard "\n#define " guard "\n\n\n"))
+      (goto-char (point-max))
+      (insert (concat "\n#endif  // " guard)))
+    (forward-line 3)))
+
+(defun start-of-week ()
+  (let* ((today (parse-time-string (time-stamp-string)))
+         (day-of-week (calendar-day-of-week (calendar-current-date)))
+         (day-of-month (decoded-time-day today)))
+    (append '(0 0 0) (list (- (decoded-time-day today)
+                              (min (- day-of-month 1) day-of-week)))
+            (-drop 4 today))))
+
+(defun count-completed-tasks ()
+  "Count up all tasks completed this week and this month.
+Considers entries in the current buffer whose headlines match `* DONE' and have a `:completed:' property with a date."
+  (interactive)
+  (let* ((start (start-of-week))
+         (this-week (decoded-time-day start))
+         (this-month (decoded-time-month start)))
+    (let* ((res (org-map-entries
+                 (lambda ()
+                   (let* ((props (org-entry-properties))
+                          (completed (assoc "COMPLETED" props))
+                          (wat (message "Completed on %s" completed))
+                          (date (and completed (parse-time-string (cdr completed))))
+                          (month (and date (nth 4 date))))
+                     (message "month is %s, date is %s" month date)
+                     (if (and month (= month this-month))
+                         (if (< (- (decoded-time-day date) this-week) 7)
+                             '(1 . 1)
+                           '(1 . 0))
+                       '(0 . 0))))
+                 "* DONE"))
+           (sums (-reduce (lambda (acc x)
+                            (pcase (cons acc x)
+                              (`((,acc-m . ,acc-w) . (,m . ,w))
+                               (cons (+ acc-m m) (+ acc-w w)))))
+                          res)))
+      (pcase sums
+        (`(,month-count . ,week-count)
+         (message "%d tasks completed this week; %d this month" week-count month-count))))))
+
 (defun quote-shell-string (str)
-    "Safely embed a string in single-quotes.
+  "Safely embed a string in single-quotes.
 
 We can pass single-quoted strings to shell commands, but single
 quotes within those strings need to be escaped. We use the
