@@ -896,7 +896,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (set-face-background 'selectrum-current-candidate "gray31")
   (set-face-foreground 'selectrum-current-candidate "DeepSkyBlue")
   (selectrum-mode +1))
-;;; selectrum-prescent
+;;; selectrum-prescient
 (use-package selectrum-prescient
   :commands (selectrum-prescient-mode)
   :after selectrum
