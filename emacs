@@ -1858,7 +1858,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
          (file+function "~/org/serve.org" (lambda ()
                                             (let ((headline (format-time-string "%Y %B" (current-time))))
                                               (condition-case nil
-                                                  (org-find-olp (list headline) t)
+                                                  (goto-char (org-find-olp (list headline) t))
                                                 (error (progn
                                                          (goto-char (point-min))
                                                          (org-insert-heading)
