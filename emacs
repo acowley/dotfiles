@@ -1204,7 +1204,8 @@ project's type."
         org-clock-heading-function (lambda ()
                                      (let ((str (nth 4 (org-heading-components))))
                                        (if (> (length str) 18)
-                                           (substring str 0 18))))
+                                           (substring str 0 18)
+                                         str)))
         )
 
   ;; org-mode supports inline map demarcated with \(...\) somewhat
