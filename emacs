@@ -923,7 +923,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   :config
   (require 'consult-imenu)
   (setq consult-project-root-function #'projectile-project-root
-        consult-async-input-debounce 0.1)
+        consult-async-input-debounce 0.1
+        consult-locate-args "/run/wrappers/bin/locate -e -A --regex")
 
   ;; I use consult-buffer to visit recent files, but previewing any
   ;; file I touch while navigating the list of completions is too
