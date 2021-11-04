@@ -1143,7 +1143,7 @@ project's type."
   ;; (set-face-attribute 'org-level-1 nil yanone-font-name :weight 'light :height 250)
   ;; (set-face-attribute 'org-quote nil :font "Roboto" :slant 'italic :height 150)
   (set-face-font 'org-level-1 yanone-font-name)
-  (if (memq window-system '(mac ns))
+  (if (or (memq window-system '(mac ns)) (file-exists-p "/etc/issue"))
       (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
     (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
 
@@ -3512,7 +3512,7 @@ sorted block."
   (set-face-attribute 'variable-pitch nil
                       :height (if (memq window-system '(mac ns)) 170 140)
                       :family "Montserrat"
-                      :weight (if (memq window-system '(mac ns)) 'normal 'light))
+                      :weight (if (or (memq window-system '(mac ns)) (file-exists-p "/etc/issue")) 'normal 'light))
 
 
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
