@@ -3027,7 +3027,8 @@ predicate returns true."
 (use-package nix-mode
   :mode "\\.nix\\'"
   :config
-  (require 'nix-update "~/src/nix-update-el/nix-update.el"))
+  ;; (require 'nix-update "~/src/nix-update-el/nix-update.el")
+  )
 
 (defun find-nix-shell ()
   "Search for the first shell.nix file to be found in the same directory as the current file or all ancestor directories."
