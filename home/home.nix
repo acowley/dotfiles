@@ -32,6 +32,7 @@
     enable = true;
     sessionVariables = {
       NIX_PATH = "/home/acowley/src/nixpkgs";
+      EDITOR = "emacsclient";
     };
     bashrcExtra = ''
       source $HOME/.nix-profile/etc/profile.d/nix.sh
