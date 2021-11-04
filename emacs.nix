@@ -125,6 +125,12 @@ in {
       ];
     });
 
+    lsp-mode = super.lsp-mode.overrideAttrs (old: {
+      patches = old.patches or [] ++ [
+        ./emacs-overlay/lsp-unicode.patch
+      ];
+    });
+
     god-mode = super.god-mode.overrideAttrs (old: {
       src = nixpkgs.fetchFromGitHub {
         owner = "emacsorphanage";
