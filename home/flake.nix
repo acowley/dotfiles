@@ -28,6 +28,7 @@
       system = "x86_64-linux";
       homeDirectory = "/home/acowley";
       username = "acowley";
+      stateVersion = "21.11";
     };
   };
 }
