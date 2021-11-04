@@ -9,7 +9,7 @@ let optOverlay = x: if builtins.pathExists x then [(import x)] else [];
 in 
 [(import (import ./emacs-overlay/nix/sources.nix).emacs-overlay)
  #(import (import ./emacs-overlay/nix/sources.nix).collares)
- (import ~/dotfiles/emacs.nix)
+ (import ~/dotfiles/my-emacs/emacs.nix)
  # (import ~/dotfiles/nix/mu/overlay.nix)
  (import ~/dotfiles/nix/wordnet.nix)
  (import ~/dotfiles/nix/mylatex.nix)
