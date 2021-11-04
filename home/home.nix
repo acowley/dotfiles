@@ -27,6 +27,16 @@
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" ]; })
   ];
 
+  programs.bash = {
+    enable = true;
+    sessionVariables = {
+      NIX_PATH = "/home/acowley/src/nixpkgs";
+    };
+    bashrcExtra = ''
+      source $HOME/.nix-profile/etc/profile.d/nix.sh
+    '';
+  };
+
   fonts.fontconfig.enable = true;
 
   programs.git = {
