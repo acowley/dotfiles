@@ -25,6 +25,12 @@
     userName = "Anthony Cowley";
   };
 
+  programs.emacs = {
+    enable = true;
+    package = pkgs.myemacsGcc;
+  };
+  home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/emacs;
+
   services.gpg-agent = {
     enable = true;
     defaultCacheTtl = 14400;
@@ -106,5 +112,5 @@ tags = -new;-important;
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "21.11";
+  # home.stateVersion = "21.11";
 }
