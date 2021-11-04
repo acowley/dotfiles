@@ -1,7 +1,7 @@
 # Symlink the files in this directory to their usual locations in the
 # home directory.
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-ln -s ${DIR}/emacs ${HOME}/.emacs
+ln -s ${DIR}/dotEmacs ${HOME}/.emacs
 if [ ! -d "${HOME}/.emacs.d" ]; then
   mkdir "${HOME}/.emacs.d"
 fi
