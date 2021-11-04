@@ -1,5 +1,5 @@
 # Usage:
-# nix build .#home.activationPackage --impure
+# nix build .#home.activationPackage
 # result/activate
 {
   inputs = {
