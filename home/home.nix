@@ -13,11 +13,21 @@
     direnv
     nix-direnv
     imagemagick
-    powerline-go
     jq
     sqlite
     mylatex
+    ripgrep
+    rofi
+
+    # fonts
+    powerline-fonts
+    powerline-symbols
+    victor-mono
+    yanone-kaffeesatz
+    (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" ]; })
   ];
+
+  fonts.fontconfig.enable = true;
 
   programs.git = {
     enable = true;
@@ -30,6 +40,16 @@
     package = pkgs.myemacsGcc;
   };
   home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/emacs;
+
+  programs.powerline-go = {
+    enable = true;
+    newline = true;
+    modules = ["cwd" "ssh" "dotenv" "nix-shell" "gitlite" "exit"];
+    pathAliases = {
+      "\\~/Projects/serve/skel" = "skel";
+      "\\~/Projects/serve/x" = "x";
+    };
+  };
 
   services.gpg-agent = {
     enable = true;
