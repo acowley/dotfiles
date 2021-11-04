@@ -45,18 +45,18 @@
   xdg = {
     enable = true;
     mime.enable = true;
-    systemDirs.data = [
-      # These were all set in the default Ubuntu
-      "/usr/share/ubuntu"
-      "/home/acowley/.local/share/flatpak/exports/share"
-      "/var/lib/flatpak/exports/share"
-      "/usr/local/share/"
-      "/usr/share/"
-      "/var/lib/snapd/desktop"
+    # systemDirs.data = [
+    #   # These were all set in the default Ubuntu
+    #   # "/usr/share/ubuntu"
+    #   # "/home/acowley/.local/share/flatpak/exports/share"
+    #   # "/var/lib/flatpak/exports/share"
+    #   # "/usr/local/share/"
+    #   # "/usr/share/"
+    #   # "/var/lib/snapd/desktop"
 
-      # Help Gnome find home-manager-installed apps
-      "/home/acowley/.nix-profile/share/applications"
-    ];
+    #   # Help Gnome find home-manager-installed apps
+    #   "/home/acowley/.nix-profile/share/applications"
+    # ];
   };
 
   programs.git = {
