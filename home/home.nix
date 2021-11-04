@@ -15,7 +15,10 @@
     sqlite
     mylatex
     ripgrep
-    rofi
+    xclip
+    gnupg
+    tree
+    libqalculate
 
     # fonts
     powerline-fonts
@@ -31,10 +34,30 @@
     sessionVariables = {
       NIX_PATH = "/home/acowley/src/nixpkgs";
       EDITOR = "emacsclient";
+      BORG_PASSCOMMAND="pass borg-nixos-hp";
+      BORG_REPO="raspberrypi.local:/mnt/usbdrive/backups/nixos-hp";
+      TMPDIR="$XDG_RUNTIME_DIR";
     };
     bashrcExtra = ''
-      source $HOME/.nix-profile/etc/profile.d/nix.sh
+      if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+        source $HOME/.nix-profile/etc/profile.d/nix.sh
+      fi
+
+      # Let the emacs vterm package communicate with emacs. For example,
+      # changing directory in vterm will give emacs a different starting
+      # directory when opening a file.
+      if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+          && [[ -n ''${EMACS_VTERM_PATH} ]] \
+          && [[ -f ''${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
+            source ''${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
+      fi
     '';
+    shellAliases = {
+      pbcopy = "xclip -selection c";
+      pbpaste = "xclip -selection clipboard -o";
+      nb = "nix-build --no-out-link '<nixpkgs>' -A";
+      nrepl = "nix repl '<nixpkgs>'";
+    };
   };
 
   fonts.fontconfig.enable = true;
@@ -67,7 +90,7 @@
     enable = true;
     package = pkgs.myemacsGcc;
   };
-  home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/emacs;
+  home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/dotEmacs;
 
   programs.powerline-go = {
     enable = true;
@@ -94,72 +117,20 @@
     maxCacheTtl = 43200;
   };
 
+  programs.password-store = {
+    enable = true;
+    package = pkgs.pass.withExtensions (exts: [ exts.pass-otp ]);
+  };
+
+  programs.rofi = {
+    enable = true;
+    theme = "DarkBlue";
+  };
+
   programs.afew = {
     enable = true;
-    extraConfig = ''
-[MailMover]
-folders = acowleySA/Inbox
-rename = True
-acowleySA/Inbox = 'tag:trash':acowleySA/Trash
-
-# The ListMailsFilter creates too many tags under a `list/*`
-# hierarchy. Some mailings pack something that looks like a thread
-# identifier into the email's `list-id` header, leaving me with many
-# tags not associated to any message in Gmail and other clients.
-# [ListMailsFilter]
-
-# [FolderNameFilter]
-[SentMailsFilter]
-sent_tag=sent
-[ArchiveSentMailsFilter]
-[Filter.1]
-query = to:acowley@scalableautonomy.com
-tags = +inbox;+SA
-message = acowleySA
-[Filter.2]
-query = to:info@scalableautonomy.com
-tags = +inbox;+SAInfo
-message = infoSA
-[HeaderMatchingFilter.1]
-header = List-Id
-pattern = emacs-orgmode.gnu.org
-tags = +orgmode
-[HeaderMatchingFilter.2]
-header = List-Id
-pattern = (haskell-cafe.haskell.org|ghc-devs.haskell.org|libraries.haskell.org)
-tags = +Haskell
-[HeaderMatchingFilter.3]
-header = List-ID
-pattern = ~sircmpwn/sr.ht-discuss
-tags = +srht
-[HeaderMatchingFilter.4]
-header = List-ID
-pattern = RadeonOpenCompute/ROCm
-tags = +rocm
-[HeaderMatchingFilter.5]
-header = List-ID
-pattern = gfx-rs/naga
-tags = +wgpu
-[HeaderMatchingFilter.6]
-header = From
-pattern = (evesham.k12.nj.us|classroom.google.com)
-tags = +School;+Owen
-[HeaderMatchingFilter.7]
-header = From
-pattern = groq.com
-tags = +groq
-[HeaderMatchingFilter.8]
-header = From
-pattern = serverobotics.com
-tags = +serve
-[HeaderMatchingFilter.9]
-header = To
-pattern = (serve-robotics/(skel|x)|@serverobotics.com)
-tags = +serve
-[InboxFilter]
-tags = -new;-important;
-    '';
   };
+  home.file.afew.source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/afew-config;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

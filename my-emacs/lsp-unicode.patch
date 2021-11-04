@@ -1,0 +1,56 @@
+diff -ruN --exclude '*~' A/lsp-mode.el B/lsp-mode.el
+--- A/lsp-mode.el	2021-10-13 15:54:46.266733684 -0400
++++ B/lsp-mode.el	2021-10-13 15:57:25.389858602 -0400
+@@ -1534,13 +1534,7 @@
+         (lsp-save-restriction-and-excursion
+           (goto-char (point-min))
+           (forward-line line)
+-          ;; server may send character position beyond the current line and we
+-          ;; should fallback to line end.
+-          (-let [line-end (line-end-position)]
+-            (if (> character (- line-end (point)))
+-                line-end
+-              (forward-char character)
+-              (point)))))))
++          (lsp--move-to-character character)))))
+ 
+ (lsp-defun lsp--position-to-point ((&Position :line :character))
+   "Convert `Position' object in PARAMS to a point."
+@@ -3933,12 +3927,36 @@
+ (defun lsp--cur-line (&optional point)
+   (1- (line-number-at-pos point)))
+ 
++(defun lsp--column (&optional lbp)
++  "Calculate current COLUMN as defined by the LSP spec.
++LBP defaults to `line-beginning-position'."
++  (/ (- (length (encode-coding-region (or lbp (line-beginning-position))
++                                      (point) 'utf-16 t))
++        2)
++     2))
++
++(defun lsp--move-to-character (character)
++  "Move to CHARACTER abiding by the LSP spec."
++  (save-restriction
++    (cl-loop
++     with lbp = (line-beginning-position)
++     initially
++     (narrow-to-region lbp (line-end-position))
++     (move-to-column character)
++     for diff = (- character
++                   (lsp--column lbp))
++     until (zerop diff)
++     do (condition-case eob-err
++            (forward-char (/ (if (> diff 0) (1+ diff) (1- diff)) 2))
++          (end-of-buffer (cl-return eob-err))))
++    (point)))
++
+ (defun lsp--cur-position ()
+   "Make a Position object for the current point."
+   (or (lsp-virtual-buffer-call :cur-position)
+       (lsp-save-restriction-and-excursion
+         (list :line (lsp--cur-line)
+-              :character (- (point) (line-beginning-position))))))
++             :character (lsp--column)))))
+ 
+ (defun lsp--point-to-position (point)
+   "Convert POINT to Position."

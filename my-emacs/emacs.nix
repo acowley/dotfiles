@@ -127,7 +127,7 @@ in {
 
     lsp-mode = super.lsp-mode.overrideAttrs (old: {
       patches = old.patches or [] ++ [
-        ./emacs-overlay/lsp-unicode.patch
+        ./lsp-unicode.patch
       ];
     });
 
@@ -142,7 +142,7 @@ in {
 
     synosaurus = super.synosaurus.overrideAttrs (old: {
       patches = old.patches or [] ++ [
-        ./emacs-overlay/synosaurus-wordnet3.1.patch
+        ./synosaurus-wordnet3.1.patch
       ];
     });
 
@@ -175,7 +175,7 @@ in {
 
     deft = super.deft.overrideAttrs (old: {
       patches = old.patches or [] ++ [
-        ./emacs-overlay/deft-org-titles.patch
+        ./deft-org-titles.patch
       ];
       buildInputs = old.buildInputs ++ [self.org-roam];
     });

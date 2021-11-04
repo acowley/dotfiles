@@ -6,8 +6,7 @@
     nixpkgs.url = "path:/home/acowley/src/nixpkgs";
     homeManager.url = "github:nix-community/home-manager";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    my-emacs.url = "path:/home/acowley/dotfiles/emacs.nix";
-    my-emacs.flake = false;
+    my-emacs.url = "path:/home/acowley/dotfiles/my-emacs";
     my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
     my-latex.flake = false;
   };
@@ -19,7 +18,7 @@
         nixpkgs = {
           overlays = [
             emacs-overlay.overlay
-            (final: prev: import my-emacs final prev)
+            my-emacs.overlay
             (final: prev: import my-latex final prev)
           ];
           config = { allowUnfree = true; };
