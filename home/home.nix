@@ -24,6 +24,7 @@
     powerline-symbols
     victor-mono
     yanone-kaffeesatz
+    montserrat
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" ]; })
   ];
 
