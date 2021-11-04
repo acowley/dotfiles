@@ -10,8 +10,6 @@
 
   home.packages = with pkgs; [
     cachix
-    direnv
-    nix-direnv
     imagemagick
     jq
     sqlite
@@ -78,6 +76,15 @@
     pathAliases = {
       "\\~/Projects/serve/skel" = "skel";
       "\\~/Projects/serve/x" = "x";
+    };
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    nix-direnv = {
+      enable = true;
+      enableFlakes = true;
     };
   };
 
