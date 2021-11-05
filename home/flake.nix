@@ -19,7 +19,7 @@
     let mkHome = extraImports:
           homeManager.lib.homeManagerConfiguration {
             configuration = { pkgs, lib, ... }: {
-              imports = [ ./home.nix ] ++ extraImports;
+              imports = [ ./common.nix ] ++ extraImports;
               nixpkgs = {
                 overlays = [
                   emacs-overlay.overlay
