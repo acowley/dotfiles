@@ -34,8 +34,6 @@
     sessionVariables = {
       NIX_PATH = "/home/acowley/src/nixpkgs";
       EDITOR = "emacsclient";
-      BORG_PASSCOMMAND="pass borg-nixos-hp";
-      BORG_REPO="raspberrypi.local:/mnt/usbdrive/backups/nixos-hp";
       TMPDIR="$XDG_RUNTIME_DIR";
     };
     bashrcExtra = ''

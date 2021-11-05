@@ -36,8 +36,8 @@
           };
     in {
       homeConfigurations = {
-        serve = mkHome [./serve.nix];
-        home = mkHome [];
+        serve = mkHome [ ./serve.nix ];
+        home = mkHome [ ./home.nix ];
       };
     };
 }
