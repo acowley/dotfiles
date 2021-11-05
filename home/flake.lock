@@ -38,7 +38,7 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "narHash": "sha256-qbmwwXMKuHvvUIbkNLmlX3mB/2eI1DnCeNz8Q7pf+8k=",
+        "narHash": "sha256-p/ARMaP3ru9+QK47Jst5vWovhTRCrXRE9qx0m5sRvkE=",
         "path": "/home/acowley/dotfiles/my-emacs",
         "type": "path"
       },

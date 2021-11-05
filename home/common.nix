@@ -19,6 +19,7 @@
     gnupg
     tree
     libqalculate
+    afew
 
     # fonts
     powerline-fonts
@@ -125,10 +126,10 @@
     theme = "DarkBlue";
   };
 
-  programs.afew = {
-    enable = true;
-  };
-  home.file.afew.source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/afew-config;
+  # programs.afew = {
+  #   enable = true;
+  # };
+  home.file.".config/afew/config".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/afew-config;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
