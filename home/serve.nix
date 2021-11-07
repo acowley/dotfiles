@@ -9,14 +9,19 @@ let nixGL = fetchTarball {
 
     # Technique from 
     # https://github.com/guibou/nixGL/issues/16#issuecomment-903188923
-    myNixGL = pkgs.writeShellScriptBin "nixGLNvidia" ''
+    myNixGLNvidia = pkgs.writeShellScriptBin "nixGLNvidia" ''
       $(nix-build ${nixGL} -A auto.nixGLNvidia --no-out-link)/bin/* "$@"
+    '';
+    myNixGLIntel = pkgs.writeShellScriptBin "nixGLIntel" ''
+      $(nix-build ${nixGL} -A nixGLIntel --no-out-link)/bin/* "$@"
     '';
 in
 {
   home.packages = with pkgs; [
     google-cloud-sdk
-    myNixGL
+    kdenlive
+    myNixGLNvidia
+    myNixGLIntel
   ];
 
   programs.bash = {
