@@ -354,7 +354,7 @@ Considers entries in the current buffer whose headlines match `* DONE' and have 
                           (month (and date (nth 4 date))))
                      (message "month is %s, date is %s" month date)
                      (if (and month (= month this-month))
-                         (if (< (- (decoded-time-day date) this-week) 7)
+                         (if (> (decoded-time-day date) this-week)
                              '(1 . 1)
                            '(1 . 0))
                        '(0 . 0))))
