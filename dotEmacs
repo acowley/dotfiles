@@ -1206,6 +1206,9 @@ project's type."
                                        (if (> (length str) 18)
                                            (substring str 0 18)
                                          str)))
+
+        org-goto-interface 'outline-path-completionp
+        org-outline-path-complete-in-steps nil
         )
 
   ;; org-mode supports inline map demarcated with \(...\) somewhat
