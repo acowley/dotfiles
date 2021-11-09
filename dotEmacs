@@ -3262,6 +3262,7 @@ sorted block."
   (require 'lsp-ui)
   (require 'lsp-modeline)
   (require 'lsp-headerline)
+  (require 'lsp-lens)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
   (add-hook 'lsp-mode-hook 'lsp-completion-mode)
