@@ -32,29 +32,37 @@
 
   programs.bash = {
     enable = true;
+    enableVteIntegration = true;
+
     sessionVariables = {
       NIX_PATH = "/home/acowley/src/nixpkgs";
       EDITOR = "emacsclient";
       TMPDIR="$XDG_RUNTIME_DIR";
     };
+
     bashrcExtra = ''
       if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
         source $HOME/.nix-profile/etc/profile.d/nix.sh
       fi
 
-      # Let the emacs vterm package communicate with emacs. For example,
-      # changing directory in vterm will give emacs a different starting
-      # directory when opening a file.
-      if [[ "$INSIDE_EMACS" = 'vterm' ]] \
-          && [[ -n ''${EMACS_VTERM_PATH} ]] \
-          && [[ -f ''${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
-            source ''${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
-      fi
+      function nb() {
+        nix build n#$1 --json | ${pkgs.jq}/bin/jq -r '.[0].outputs.out'
+      }
     '';
+
+      # # Let the emacs vterm package communicate with emacs. For example,
+      # # changing directory in vterm will give emacs a different starting
+      # # directory when opening a file.
+      # if [[ "$INSIDE_EMACS" = 'vterm' ]] \
+      #     && [[ -n ''${EMACS_VTERM_PATH} ]] \
+      #     && [[ -f ''${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
+      #       source ''${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
+      # fi
+
     shellAliases = {
       pbcopy = "xclip -selection c";
       pbpaste = "xclip -selection clipboard -o";
-      nb = "nix-build --no-out-link '<nixpkgs>' -A";
+      # nb = "nix-build --no-out-link '<nixpkgs>' -A";
       nrepl = "nix repl '<nixpkgs>'";
     };
   };
