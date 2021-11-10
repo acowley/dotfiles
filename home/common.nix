@@ -96,6 +96,9 @@
     enable = true;
     userEmail = "acowley@gmail.com";
     userName = "Anthony Cowley";
+    extraConfig = {
+      init = { defaultBranch = "main"; };
+    };
   };
 
   programs.emacs = {
