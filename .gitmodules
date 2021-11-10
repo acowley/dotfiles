@@ -1,0 +1,3 @@
+[submodule "my-emacs"]
+	path = my-emacs
+	url = git@github.com:acowley/my-emacs.git
