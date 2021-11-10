@@ -127,6 +127,9 @@
   programs.password-store = {
     enable = true;
     package = pkgs.pass.withExtensions (exts: [ exts.pass-otp ]);
+
+    # The default here is $XDG_DATA_HOME/password-store (aka ~/.local/share/password-store)
+    # settings = { PASSWORD_STORE_DIR = "$HOME/.password-store"; };
   };
 
   programs.rofi = {
