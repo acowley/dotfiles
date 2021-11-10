@@ -38,13 +38,17 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
+        "lastModified": 1636555202,
         "narHash": "sha256-qbmwwXMKuHvvUIbkNLmlX3mB/2eI1DnCeNz8Q7pf+8k=",
-        "path": "/home/acowley/dotfiles/my-emacs",
-        "type": "path"
+        "owner": "acowley",
+        "repo": "my-emacs",
+        "rev": "8bb7b097343dde4ac3f07bfe87b0c2af32bbab4b",
+        "type": "github"
       },
       "original": {
-        "path": "/home/acowley/dotfiles/my-emacs",
-        "type": "path"
+        "owner": "acowley",
+        "repo": "my-emacs",
+        "type": "github"
       }
     },
     "my-latex": {

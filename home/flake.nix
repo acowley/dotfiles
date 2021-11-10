@@ -10,7 +10,7 @@
     nixpkgs.url = "path:/home/acowley/src/nixpkgs";
     homeManager.url = "github:nix-community/home-manager";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    my-emacs.url = "path:/home/acowley/dotfiles/my-emacs";
+    my-emacs.url = "github:acowley/my-emacs";
     my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
     my-latex.flake = false;
   };
