@@ -28,5 +28,9 @@ in
     bashrcExtra = ''
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
     '';
+
+    sessionVariables = {
+      GIT_SSH_COMMAND = "ssh";
+    };
   };
 }
