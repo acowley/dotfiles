@@ -40,13 +40,18 @@
       TMPDIR="$XDG_RUNTIME_DIR";
     };
 
+    # The nb alias returns the store path of the `out` output of a
+    # nixpkgs attribute. If a second argument is given, it is the name
+    # of an output /other/ than `out`. E.g. `nb gcc.cc.lib lib` gives
+    # the store path of the `lib` output xoof the `gcc.cc.lib`
+    # derivation.
     bashrcExtra = ''
       if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
         source $HOME/.nix-profile/etc/profile.d/nix.sh
       fi
 
       function nb() {
-        nix build n#$1 --json | ${pkgs.jq}/bin/jq -r '.[0].outputs.out'
+        nix build n#$1 --json | ${pkgs.jq}/bin/jq -r ".[0].outputs.''${2:-out}"
       }
     '';
 
