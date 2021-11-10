@@ -3795,7 +3795,11 @@ sorted block."
 ;;; web-mode
 (use-package web-mode
   :mode "\\.html\\'"
-  :commands (web-mode))
+  :commands (web-mode)
+  :config
+  (setq web-mode-markup-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-css-indent-offset 2))
 ;;; glsl
 (use-package glsl-mode
   :mode "\\.\\(vert\\|frag\\|geom\\|comp\\)\\'")
