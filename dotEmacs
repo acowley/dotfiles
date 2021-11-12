@@ -52,13 +52,23 @@
 ;; It would be nice to include this logic in early-init.el, but
 ;; `window-system' is not set up by the time that file is run during
 ;; emacs startup.
+(defun my/preferred-font-size ()
+  (cond 
+   ((memq window-system '(mac ns)) 15)
+   ((file-exists-p "/etc/lsb-release") 18)
+   (t 11)))
+
 (defun my/set-font ()
   (if (and nil (memq window-system '(mac ns)))
       (set-frame-font "Monaco 14")
-    (if (or (memq window-system '(mac ns))
-            (file-exists-p "/etc/lsb-release"))
-        (set-frame-font "Victor Mono-15:weight=demi")
-      (set-frame-font "Victor Mono-11:weight=demi"))))
+    (let ((size (my/preferred-font-size)))
+      (set-frame-font (format "Victor Mono-%d:weight=demi" size)))
+    ;; (if (or (memq window-system '(mac ns))
+    ;;         ;; (file-exists-p "/etc/lsb-release")
+    ;;         )
+    ;;     (set-frame-font "Victor Mono-15:weight=demi")
+    ;;   (set-frame-font "Victor Mono-11:weight=demi"))
+    ))
 (my/set-font)
 
 (defvar yanone-font-name (if (or t (memq window-system '(mac ns)))
@@ -3539,7 +3549,10 @@ sorted block."
   ;; Depending on your specific setup, you may want to adjust the height of
   ;; variable pitch fonts:
   (set-face-attribute 'variable-pitch nil
-                      :height (if (memq window-system '(mac ns)) 170 140)
+                      :height (cond 
+                               ((memq window-system '(mac ns)) 170)
+                               ((file-exists-p "/etc/lsb-release") 200)
+                               (t 140))
                       :family "Montserrat"
                       :weight (if (or (memq window-system '(mac ns)) (file-exists-p "/etc/issue")) 'normal 'light))
 
