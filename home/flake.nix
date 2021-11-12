@@ -11,6 +11,7 @@
     homeManager.url = "github:nix-community/home-manager";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     my-emacs.url = "github:acowley/my-emacs";
+    # my-emacs.url = "path:/home/acowley/dotfiles/my-emacs";
     my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
     my-latex.flake = false;
   };
@@ -38,6 +39,14 @@
       homeConfigurations = {
         serve = mkHome [ ./serve.nix ];
         home = mkHome [ ./home.nix ];
+      };
+      legacyPackages.x86_64-linux = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = [
+          emacs-overlay.overlay
+          my-emacs.overlay
+          (final: prev: import my-latex final prev)
+        ];
       };
     };
 }
