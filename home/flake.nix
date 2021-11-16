@@ -38,10 +38,11 @@
             username = "acowley";
             stateVersion = "21.11";
           };
+        mkLinux = machine: mkHome { extraImports = [ ./linux.nix machine ]; };
     in {
       homeConfigurations = {
-        serve = mkHome [ ./linux.nix ./serve.nix ];
-        home = mkHome [ ./linux.nix ./home.nix ];
+        serve = mkLinux ./serve.nix;
+        home = mkLinux ./home.nix;
         macos = mkHome {
           extraImports = [ ./macos.nix ];
           system = "x86_64-darwin";

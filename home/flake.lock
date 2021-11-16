@@ -17,7 +17,9 @@
     },
     "homeManager": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1635839387,
@@ -35,7 +37,7 @@
     },
     "my-emacs": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1636735954,
@@ -65,20 +67,6 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1635986482,
-        "narHash": "sha256-fxKgX7+O5X6CP5w+lGgkz2bUcCrYEM5/Mr5WxX5vL9o=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "2eb54fbbe6cf34f93e10a3cbbb5229ef3a8a6a06",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
         "lastModified": 1636623366,
         "narHash": "sha256-jOQMlv9qFSj0U66HB+ujZoapty0UbewmSNbX8+3ujUQ=",
         "owner": "nixos",
@@ -93,7 +81,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_2": {
       "locked": {
         "narHash": "sha256-/FOcqeDxuYt5ddHu251EOKLWul6SJzB0FLu9f1wXLOY=",
         "path": "/home/acowley/src/nixpkgs",
@@ -110,7 +98,7 @@
         "homeManager": "homeManager",
         "my-emacs": "my-emacs",
         "my-latex": "my-latex",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },
