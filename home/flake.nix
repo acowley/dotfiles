@@ -9,6 +9,7 @@
   inputs = {
     nixpkgs.url = "path:/home/acowley/src/nixpkgs";
     homeManager.url = "github:nix-community/home-manager";
+    homeManager.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     my-emacs.url = "github:acowley/my-emacs";
     # my-emacs.url = "path:/home/acowley/dotfiles/my-emacs";
@@ -16,8 +17,11 @@
     my-latex.flake = false;
   };
 
-  outputs = { self, nixpkgs, homeManager, emacs-overlay, my-emacs, my-latex }: 
-    let mkHome = extraImports:
+  outputs = { self, nixpkgs, homeManager, emacs-overlay, my-emacs, my-latex }:
+    let mkHome = { extraImports,
+                   system ? "x86_64-linux",
+                   homeDirectory ? "/home/acowley"
+                 }:
           homeManager.lib.homeManagerConfiguration {
             configuration = { pkgs, lib, ... }: {
               imports = [ ./common.nix ] ++ extraImports;
@@ -30,15 +34,19 @@
                 config = { allowUnfree = true; };
               };
             };
-            system = "x86_64-linux";
-            homeDirectory = "/home/acowley";
+            inherit system homeDirectory;
             username = "acowley";
             stateVersion = "21.11";
           };
     in {
       homeConfigurations = {
-        serve = mkHome [ ./serve.nix ];
-        home = mkHome [ ./home.nix ];
+        serve = mkHome [ ./linux.nix ./serve.nix ];
+        home = mkHome [ ./linux.nix ./home.nix ];
+        macos = mkHome {
+          extraImports = [ ./macos.nix ];
+          system = "x86_64-darwin";
+          homeDirectory = "/Users/acowley";
+        };
       };
       legacyPackages.x86_64-linux = import nixpkgs {
         system = "x86_64-linux";

@@ -24,6 +24,8 @@ in
     myNixGLIntel
   ];
 
+  targets.genericLinux.enable = true;
+
   programs.bash = {
     bashrcExtra = ''
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
