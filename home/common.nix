@@ -26,6 +26,7 @@
     yanone-kaffeesatz
     montserrat
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" ]; })
+    (pkgs.callPackage ./pkgs/poppins.nix {})
   ];
 
   programs.bash = {
