@@ -47,7 +47,7 @@
       fi
 
       function nb() {
-        nix build n#$1 --json | ${pkgs.jq}/bin/jq -r ".[0].outputs.''${2:-out}"
+        nix build --no-link n#$1 --json | ${pkgs.jq}/bin/jq -r ".[0].outputs.''${2:-out}"
       }
     '';
 
