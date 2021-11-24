@@ -3528,7 +3528,8 @@ sorted block."
                    "\\([a-zA-Z0-9_*]+\\)[ \t]*("	; Name.
                    ) 4))
   (setq imenu-create-index-function #'my/merged-imenu)
-  (helm-gtags-mode 1))
+  ;; (helm-gtags-mode 1)
+  )
 
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
 (add-hook 'c-mode-hook #'my/c++-mode-hook)
