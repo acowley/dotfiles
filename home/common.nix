@@ -15,7 +15,7 @@
     mylatex
     ripgrep
     gnupg
-    # tree
+    tree
     libqalculate
     afew
 
