@@ -3,6 +3,7 @@
   home.packages = with pkgs; [
     ffmpeg
     hunspell
+    hunspellDicts.en_US-large
     pinentry_mac
     wget
     bashInteractive
@@ -12,6 +13,7 @@
     sessionVariables = {
       NIX_PATH = "nixpkgs=/Users/acowley/src/nixpkgs";
       TMPDIR = "/tmp";
+      DICPATH = "/Users/acowley/.nix-profile/share/hunspell";
     };
     bashrcExtra = ''
       export TMPDIR=/tmp
