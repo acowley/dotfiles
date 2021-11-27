@@ -27,6 +27,9 @@
     montserrat
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" ]; })
     (pkgs.callPackage ./pkgs/poppins.nix {})
+    roboto
+    roboto-mono
+    roboto-slab
   ];
 
   programs.bash = {
