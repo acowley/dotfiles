@@ -6,7 +6,7 @@
   programs.bash = {
     enableVteIntegration = true;
     sessionVariables = {
-      NIX_PATH = "/home/acowley/src/nixpkgs";
+      NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
     };
 
     shellAliases = {
