@@ -44,6 +44,7 @@
   };
 
   home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/dotEmacs;
+  home.file.".emacs.d/early-init.el".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/early-init.el;
 
   home.file.".config/afew/config".source = config.lib.file.mkOutOfStoreSymlink /home/acowley/dotfiles/afew-config;
 }
