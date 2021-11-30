@@ -83,7 +83,7 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "narHash": "sha256-FryF8OANcY8JWBG3plRpu+ePZqQXH+bleuup15L7bCo=",
+        "narHash": "sha256-DRNPbZBzqJGku9VIxs5rsrt3eQOrC7jW2P/SkiFl5mw=",
         "path": "/home/acowley/src/nixpkgs",
         "type": "path"
       },
