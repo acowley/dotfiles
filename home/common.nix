@@ -1,5 +1,13 @@
 { config, pkgs, ... }:
-{
+let no-uuid = drv: font-dir: extension: pkgs.stdenv.mkDerivation {
+      name = "my-${drv.name}";
+      builder = pkgs.writeText "builder.sh" ''
+        source $stdenv/setup
+        mkdir -p $out/share/fonts/${font-dir}
+        cp ${drv}/share/fonts/${font-dir}/*.${extension} $out/share/fonts/${font-dir}
+      '';
+    };
+in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -23,11 +31,28 @@
     powerline-fonts
     powerline-symbols
     victor-mono
-    yanone-kaffeesatz
+    # (stdenv.mkDerivation {
+    #   name = "my-yanone-kaffeesatz-2004";
+    #   builder = writeText "builder.sh" ''
+    #     source $stdenv/setup
+    #     mkdir -p $out/share/fonts/opentype
+    #     cp ${pkgs.yanone-kaffeesatz}/share/fonts/opentype/*.otf $out/share/fonts/opentype
+    #   '';
+    # })
+    (no-uuid yanone-kaffeesatz "opentype" "otf")
     montserrat
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" ]; })
     (pkgs.callPackage ./pkgs/poppins.nix {})
-    roboto
+    # roboto
+    # (stdenv.mkDerivation {
+    #   name = "my-roboto-2.138";
+    #   builder = writeText "builder.sh" ''
+    #     source $stdenv/setup
+    #     mkdir -p $out/share/fonts/truetype
+    #     cp ${pkgs.roboto}/share/fonts/truetype/*.ttf $out/share/fonts/truetype
+    #   '';
+    # })
+    (no-uuid roboto "truetype" "ttf")
     roboto-mono
     roboto-slab
   ];
