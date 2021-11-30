@@ -5,6 +5,7 @@
 # Or:
 # home-manager switch --flake .#serve
 # or home-manager switch --flake .#home
+# or home-manager switch --flake .#macos
 {
   inputs = {
     nixpkgs.url = "path:/home/acowley/src/nixpkgs";
