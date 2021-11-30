@@ -22,7 +22,6 @@ in {
     sqlite
     mylatex
     ripgrep
-    gnupg
     tree
     libqalculate
     afew
@@ -125,6 +124,8 @@ in {
     enableBashIntegration = true;
     nix-direnv.enable = true;
   };
+
+  programs.gpg.enable = true;
 
   programs.password-store = {
     enable = true;
