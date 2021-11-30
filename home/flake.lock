@@ -36,15 +36,12 @@
       }
     },
     "my-emacs": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
       "locked": {
-        "lastModified": 1636735954,
-        "narHash": "sha256-8obizv36qi+EI71K/Jsp7ECC9itKmyk4TP3BwQekZI4=",
+        "lastModified": 1638283688,
+        "narHash": "sha256-JEWQATyYVkxjgiyi2XnC+4epl6BUqF06mEriZB1A6eE=",
         "owner": "acowley",
         "repo": "my-emacs",
-        "rev": "9314dcc24a4648e3b3fa1487b38f5cec566f7482",
+        "rev": "61fd1c27a4470328e3b592bc688c3866e93da867",
         "type": "github"
       },
       "original": {
@@ -67,22 +64,6 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1637595801,
-        "narHash": "sha256-LkIMwVFKCuEqidaUdg8uxwpESAXjsPo4oCz3eJ7RaRw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "263ef4cc4146c9fab808085487438c625d4426a9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
         "narHash": "sha256-DRNPbZBzqJGku9VIxs5rsrt3eQOrC7jW2P/SkiFl5mw=",
         "path": "/home/acowley/src/nixpkgs",
         "type": "path"
@@ -98,7 +79,7 @@
         "homeManager": "homeManager",
         "my-emacs": "my-emacs",
         "my-latex": "my-latex",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       }
     }
   },
