@@ -366,6 +366,7 @@ dash) transpose chunks around that. Otherwise transpose sexps."
     (forward-line 3)))
 
 (defun start-of-week ()
+  "Returns the date of the start of the week or the start of the current month, whichever is most recent."
   (let* ((today (parse-time-string (time-stamp-string)))
          (day-of-week (calendar-day-of-week (calendar-current-date)))
          (day-of-month (decoded-time-day today)))
