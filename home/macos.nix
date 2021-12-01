@@ -7,6 +7,7 @@
     pinentry_mac
     wget
     bashInteractive
+    terminal-notifier
   ];
   programs.home-manager.path = "/Users/acowley/src/home-manager";
   programs.bash = {
