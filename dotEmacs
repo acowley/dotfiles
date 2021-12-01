@@ -3564,6 +3564,9 @@ sorted block."
 
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
 
+  ;; Make time stamps fixed-width. This is especially helpful when
+  ;; they appear in tables.
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-date)
   )
 
 ;;; python
