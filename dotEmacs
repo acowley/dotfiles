@@ -1245,6 +1245,7 @@ project's type."
 
         org-goto-interface 'outline-path-completionp
         org-outline-path-complete-in-steps nil
+        org-duration-format 'h:mm
         )
 
   ;; org-mode supports inline map demarcated with \(...\) somewhat
