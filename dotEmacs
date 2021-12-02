@@ -471,6 +471,11 @@ Haskell programs as it may be applied to all numbers in region."
 
 (setq display-line-numbers-type 'relative)
 
+;; Let us use a minibuffer command (as with a package like consult)
+;; while using another command in the minibuffer
+(setq enable-recursive-minibuffers t)
+(minibuffer-depth-indicate-mode 1)
+
 ;; Disable electric-quote-mode everywhere
 (add-hook 'after-change-major-mode-hook
           (lambda () (electric-quote-mode -1)))
