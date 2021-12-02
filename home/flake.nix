@@ -46,7 +46,8 @@
         home = mkLinux ./home.nix;
         macos = mkHome {
           extraImports = [ ./macos.nix ];
-          system = "x86_64-darwin";
+          #system = "x86_64-darwin";
+          system = "aarch64-darwin";
           homeDirectory = "/Users/acowley";
         };
       };
