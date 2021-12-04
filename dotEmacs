@@ -377,19 +377,6 @@ dash) transpose chunks around that. Otherwise transpose sexps."
                           (-map #'calendar-current-date (-iterate #'1- 0 7)))))
     (append (car res) (cadr res))))
 
-(defun within-a-week-p (start-of-week date)
-  "Return t if DATE is within one week of START-OF-WEEK, else nil."  
-  (pcase (cons start-of-week date)
-    (`((,_ ,_ ,sow-year) . (,_ ,_ ,now-year))
-     (and (or (= now-year sow-year) (= now-year (+ 1 sow-year)))
-          (let* ((sow-number (calendar-day-number start-of-week))
-                 (now-number (calendar-day-number date))
-                 (diff (- now-number
-                          (if (= sow-year now-year)
-                              sow-number
-                            (- sow-number 365)))))
-            (and (>= diff 0) (< diff 7))))))))
-
 (defun time-to-date (time)
   "Convert a time as returned by `parse-time-string' to a date as returned by `calendar-current-date'."
   (pcase time
