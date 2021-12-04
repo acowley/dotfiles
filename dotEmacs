@@ -371,6 +371,12 @@ dash) transpose chunks around that. Otherwise transpose sexps."
   (-find (-compose #'zerop #'calendar-day-of-week)
          (-map #'calendar-current-date (-iterate #'1- 0 7))))
 
+(defun till-start-of-week ()
+  "Return a list of dates going back to the most recent Sunday."
+  (let ((res (-split-with (-compose #'not #'zerop #'calendar-day-of-week)
+                          (-map #'calendar-current-date (-iterate #'1- 0 7)))))
+    (append (car res) (cadr res))))
+
 (defun within-a-week-p (start-of-week date)
   "Return t if DATE is within one week of START-OF-WEEK, else nil."  
   (pcase (cons start-of-week date)
@@ -382,7 +388,7 @@ dash) transpose chunks around that. Otherwise transpose sexps."
                           (if (= sow-year now-year)
                               sow-number
                             (- sow-number 365)))))
-            (and (>= diff 0) (< diff 7)))))))
+            (and (>= diff 0) (< diff 7))))))))
 
 (defun time-to-date (time)
   "Convert a time as returned by `parse-time-string' to a date as returned by `calendar-current-date'."
@@ -393,7 +399,7 @@ dash) transpose chunks around that. Otherwise transpose sexps."
   "Count up all tasks completed this week and this month.
 Considers entries in the current buffer whose headlines match `* DONE' and have a `:completed:' property with a date."
   (interactive)
-  (let* ((start (start-of-week2))
+  (let* ((days-of-week (till-start-of-week))
          (this-month (car (calendar-current-date))))
     (let* ((res (org-map-entries
                  (lambda ()
@@ -405,7 +411,8 @@ Considers entries in the current buffer whose headlines match `* DONE' and have 
                           (month (and date (car date))))
                      (if completed
                          (cons (if (= month this-month) 1 0)
-                               (if (within-a-week-p start date) 1 0))
+                               (if (-any-p (-partial #'equal date) days-of-week)
+                                   1 0))
                        '(0 . 0))
                      ))
                  "* DONE"))
