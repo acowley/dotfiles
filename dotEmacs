@@ -365,35 +365,49 @@ dash) transpose chunks around that. Otherwise transpose sexps."
       (insert (concat "\n#endif  // " guard)))
     (forward-line 3)))
 
+(require 'dash)
 (defun start-of-week ()
-  "Returns the date of the start of the week or the start of the current month, whichever is most recent."
-  (let* ((today (parse-time-string (time-stamp-string)))
-         (day-of-week (calendar-day-of-week (calendar-current-date)))
-         (day-of-month (decoded-time-day today)))
-    (append '(0 0 0) (list (- (decoded-time-day today)
-                              (min (- day-of-month 1) day-of-week)))
-            (-drop 4 today))))
+  "Return a date triple of (MONTH DAY YEAR) for the Sunday that starts the current week."
+  (-find (-compose #'zerop #'calendar-day-of-week)
+         (-map #'calendar-current-date (-iterate #'1- 0 7))))
+
+(defun within-a-week-p (start-of-week date)
+  "Return t if DATE is within one week of START-OF-WEEK, else nil."  
+  (pcase (cons start-of-week date)
+    (`((,_ ,_ ,sow-year) . (,_ ,_ ,now-year))
+     (and (or (= now-year sow-year) (= now-year (+ 1 sow-year)))
+          (let* ((sow-number (calendar-day-number start-of-week))
+                 (now-number (calendar-day-number date))
+                 (diff (- now-number
+                          (if (= sow-year now-year)
+                              sow-number
+                            (- sow-number 365)))))
+            (and (>= diff 0) (< diff 7)))))))
+
+(defun time-to-date (time)
+  "Convert a time as returned by `parse-time-string' to a date as returned by `calendar-current-date'."
+  (pcase time
+    (`(,_ ,_ ,_ ,day ,mon ,year ,_ ,_ ,_) (list mon day year))))
 
 (defun count-completed-tasks ()
   "Count up all tasks completed this week and this month.
 Considers entries in the current buffer whose headlines match `* DONE' and have a `:completed:' property with a date."
   (interactive)
-  (let* ((start (start-of-week))
-         (this-week (decoded-time-day start))
-         (this-month (decoded-time-month start)))
+  (let* ((start (start-of-week2))
+         (this-month (car (calendar-current-date))))
     (let* ((res (org-map-entries
                  (lambda ()
                    (let* ((props (org-entry-properties))
                           (completed (assoc "COMPLETED" props))
-                          (wat (message "Completed on %s" completed))
-                          (date (and completed (parse-time-string (cdr completed))))
-                          (month (and date (nth 4 date))))
-                     (message "month is %s, date is %s" month date)
-                     (if (and month (= month this-month))
-                         (if (> (decoded-time-day date) this-week)
-                             '(1 . 1)
-                           '(1 . 0))
-                       '(0 . 0))))
+                          (date (and completed 
+                                     (time-to-date 
+                                      (parse-time-string (cdr completed)))))
+                          (month (and date (car date))))
+                     (if completed
+                         (cons (if (= month this-month) 1 0)
+                               (if (within-a-week-p start date) 1 0))
+                       '(0 . 0))
+                     ))
                  "* DONE"))
            (sums (-reduce (lambda (acc x)
                             (pcase (cons acc x)
