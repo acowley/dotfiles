@@ -3591,6 +3591,13 @@ sorted block."
 
 (add-hook 'python-mode-hook #'ac/python-hook)
 
+;;; nxml
+(use-package nxml
+  :mode "\\.\\(xml\\|launch\\|machine\\|chs\\)\\'"
+  :config
+  (defun my-nxml-hook ()
+    (rng-set-vacuous-schema))
+  (add-hook 'nxml-mode-hook #'my-nxml-hook))
 ;;; File mode associtions
 
 ;; OpenCL code uses c-mode
