@@ -375,7 +375,7 @@ dash) transpose chunks around that. Otherwise transpose sexps."
   "Return a list of dates going back to the most recent Sunday."
   (let ((res (-split-with (-compose #'not #'zerop #'calendar-day-of-week)
                           (-map #'calendar-current-date (-iterate #'1- 0 7)))))
-    (append (car res) (cadr res))))
+    (append (car res) (caadr res))))
 
 (defun time-to-date (time)
   "Convert a time as returned by `parse-time-string' to a date as returned by `calendar-current-date'."
