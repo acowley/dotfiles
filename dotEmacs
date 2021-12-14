@@ -591,7 +591,8 @@ Haskell programs as it may be applied to all numbers in region."
 (put 'dired-find-alternate-file 'disabled nil)
 (setq wdired-allow-to-change-permissions t)
 (setq dired-listing-switches "-alh"
-      dired-du-size-format t)
+      dired-du-size-format t
+      dired-dwim-target t)
 
 ;; When `'which-function` output is too long, it can interfere with
 ;; modeline rendering
