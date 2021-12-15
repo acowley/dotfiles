@@ -2194,6 +2194,13 @@ entire source file is loaded."
 ;;;; org-ql
 (use-package org-ql
   :commands (org-ql-query org-ql-search org-ql-select org-ql))
+;;; alert
+(use-package alert
+  :commands alert
+  :config
+  (setq alert-default-style (if (memq window-system '(mac ns))
+                                'notifier
+                              'notifications)))
 ;;; org-clock-reminder
 (use-package org-clock-reminder
   :after org
