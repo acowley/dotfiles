@@ -16,9 +16,10 @@
     # my-emacs.url = "path:/home/acowley/dotfiles/my-emacs";
     my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
     my-latex.flake = false;
+    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, homeManager, emacs-overlay, my-emacs, my-latex }:
+  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex }:
     let mkHome = { extraImports,
                    system ? "x86_64-linux",
                    homeDirectory ? "/home/acowley"
@@ -51,13 +52,15 @@
           homeDirectory = "/Users/acowley";
         };
       };
-      legacyPackages.x86_64-linux = import nixpkgs {
-        system = "x86_64-linux";
+    } //
+    flake-utils.lib.eachDefaultSystem (system: {
+      legacyPackages = import nixpkgs {
+        inherit system;
         overlays = [
           emacs-overlay.overlay
           my-emacs.overlay
           (final: prev: import my-latex final prev)
         ];
       };
-    };
+    });
 }
