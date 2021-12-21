@@ -3022,6 +3022,14 @@ predicate returns true."
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :config
+  ;; Emacs 29 uses a proportional font for the mode line
+  ;; See https://github.com/seagle0128/doom-modeline/issues/491
+  ;; (set-face-attribute 'mode-line nil :height 110 :family "Victor Mono")
+  ;; (set-face-attribute 'mode-line-inactive nil :height 110 :family "Victor Mono")
+  ;; (set-face-attribute 'mode-line nil :family "Victor Mono")
+  ;; (set-face-attribute 'mode-line-inactive nil :family "Victor Mono")
+  (set-face-attribute 'mode-line nil :height 100)
+  (set-face-attribute 'mode-line-inactive nil :height 100)
   (setq doom-modeline-buffer-encoding nil
         doom-modeline-buffer-file-name-style 'truncate-all))
 ;;; Multiple-cursors
