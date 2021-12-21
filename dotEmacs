@@ -3312,6 +3312,8 @@ sorted block."
           ;; Without this, the search term is not highlighted in the
           ;; peek popup
           lsp-ui-peek-fontify 'always
+
+          lsp-ui-doc-show-with-cursor t
           )
 
     (require 'lsp-semantic-tokens)
