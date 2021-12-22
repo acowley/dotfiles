@@ -2751,6 +2751,7 @@ sending account which was a recipient of the email."
 ;; (require 'mu4e)
 
 (use-package mu4e
+  :disabled
   :load-path "~/.nix-profile/share/emacs/site-lisp/mu4e"
   ; :ensure nil
   :defer t
@@ -3025,7 +3026,6 @@ predicate returns true."
   (setq mu4e-user-mail-address-list
         (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
                 my-mu4e-account-alist))
-  ;; (global-mu4e-conversation-mode)
 )
 ;;; doom-modeline
 (use-package doom-modeline
