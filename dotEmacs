@@ -1508,6 +1508,9 @@ evaluation may begin anew."
   (use-package ob-rust
     :defer t
     :commands (org-babel-execute:rustic))
+  (use-package ob-awk
+    :defer t
+    :commands (org-babel-execute:awk org-babel-expand-body:awk))
   (use-package ob-plantuml
     :defer t
     :commands (org-babel-execute:plantuml org-babel-expand-body:plantuml)
