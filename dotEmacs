@@ -134,6 +134,7 @@
 ;;                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
 
 (use-package ligature
+  :disabled
   :config
   ;; Enable the "www" ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))
