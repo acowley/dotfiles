@@ -1221,13 +1221,18 @@ project's type."
         org-format-latex-options `(:foreground default
                                    :background default
                                    :scale ,(if (memq window-system '(mac ns))
-                                               1.0 2.0)
+                                               1.0
+                                             ;; 2.0
+                                             1.0
+                                             )
                                    :html-foreground "Black"
                                    :html-background "Transparent"
                                    :html-scale 1.0
                                    :matchers ("begin" "$1" "$" "$$" "\\(" "\\["))
 
         org-latex-packages-alist '(("" "fontspec" nil))
+
+        org-latex-create-formula-image-program 'dvisvgm
 
         ;; For leuven-theme
         ;; Fontify the whole line for headings (with a background color).
