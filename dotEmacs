@@ -3036,11 +3036,11 @@ predicate returns true."
   ;; (set-face-attribute 'mode-line nil :family "Victor Mono")
   ;; (set-face-attribute 'mode-line-inactive nil :family "Victor Mono")
 
-  (unless (or (memq window-system '(mac ns))
-              (file-exists-p "/etc/lsb-release"))
-    ;; Shrink the mode line faces on NixOS
-    (set-face-attribute 'mode-line nil :height 100)
-    (set-face-attribute 'mode-line-inactive nil :height 100))
+  ;; (unless (or (memq window-system '(mac ns))
+  ;;             (file-exists-p "/etc/lsb-release"))
+  ;;   ;; Shrink the mode line faces on NixOS
+  ;;   (set-face-attribute 'mode-line nil :height 100)
+  ;;   (set-face-attribute 'mode-line-inactive nil :height 100))
 
   ;; See https://github.com/seagle0128/doom-modeline/issues/486
   ;; (set-face-attribute 'mode-line nil :inherit 'default)
