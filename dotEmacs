@@ -71,9 +71,7 @@
     ))
 (my/set-font)
 
-(defvar yanone-font-name (if (or t (memq window-system '(mac ns)))
-                             "Yanone Kaffeesatz"
-                           "Yanonne Kaffeesatz Light:style=Light,Regular"))
+(defvar yanone-font-name "Yanone Kaffeesatz")
 
 (use-package info
   :commands (info info-apropos)
@@ -3037,8 +3035,18 @@ predicate returns true."
   ;; (set-face-attribute 'mode-line-inactive nil :height 110 :family "Victor Mono")
   ;; (set-face-attribute 'mode-line nil :family "Victor Mono")
   ;; (set-face-attribute 'mode-line-inactive nil :family "Victor Mono")
-  (set-face-attribute 'mode-line nil :height 100)
-  (set-face-attribute 'mode-line-inactive nil :height 100)
+
+  (unless (or (memq window-system '(mac ns))
+              (file-exists-p "/etc/lsb-release"))
+    ;; Shrink the mode line faces on NixOS
+    (set-face-attribute 'mode-line nil :height 100)
+    (set-face-attribute 'mode-line-inactive nil :height 100))
+
+  ;; See https://github.com/seagle0128/doom-modeline/issues/486
+  ;; (set-face-attribute 'mode-line nil :inherit 'default)
+  ;; (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+  ;; (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+
   (setq doom-modeline-buffer-encoding nil
         doom-modeline-buffer-file-name-style 'truncate-all))
 ;;; Multiple-cursors
