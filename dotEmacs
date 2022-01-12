@@ -4169,7 +4169,9 @@ sorted block."
 ;;; flyspell-correct
 (use-package flyspell-correct
   :after flyspell
-  :bind (:map flyspell-mode-map ("C-;" . flyspell-correct-wrapper)))
+  :bind (:map flyspell-mode-map
+              ("C-;" . flyspell-correct-wrapper)
+              ("C-," . flyspell-correct-previous)))
 ;;; nim-mode
 (use-package nim-mode
   :mode "\\.nim\\'"
