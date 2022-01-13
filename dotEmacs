@@ -3627,7 +3627,7 @@ sorted block."
 (add-hook 'python-mode-hook #'ac/python-hook)
 
 ;;; nxml
-(use-package nxml
+(use-package nxml-mode
   :mode "\\.\\(xml\\|launch\\|machine\\|chs\\)\\'"
   :config
   (defun my-nxml-hook ()
