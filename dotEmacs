@@ -3334,6 +3334,9 @@ sorted block."
           )
 
     (require 'lsp-semantic-tokens)
+
+    ;; Typeset fields of structures in italic. This helps them stand
+    ;; out from local variables or function parameters.
     (set-face-attribute 'lsp-face-semhl-property nil :slant 'italic)
     ;; Make the lsp-ui-peek overlay stand out a bit better
     (set-face-background 'lsp-ui-peek-peek "dark slate gray")
