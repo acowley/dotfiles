@@ -1425,9 +1425,25 @@ project's type."
   (use-package org-crypt
     ;; GPG key to use for encryption
     ;; Either the Key ID or set to nil to use symmetric encryption.
-    :custom (org-crypt-key "D50A574B")
+    :custom (org-crypt-key "71A75F0F")
     :commands (org-crypt-use-before-save-magic)
-    :hook (org-mode . org-crypt-use-before-save-magic))
+    :hook (org-mode . org-crypt-use-before-save-magic)
+    :config
+
+    ;; Tangling from an org buffer will save first, which causes
+    ;; org-crypt to r-eencrypt everything. For specific modes, we may
+    ;; want to add hooks to reveal elements after saving so that they
+    ;; are decrypted before tangling. The basic idea came from here
+    ;; https://ag91.github.io/blog/2020/10/30/org-crypt-and-tangling-source-blocks/
+    ;; but the technique there did not work for me, so I came up with
+    ;; this use of `org-decrypt-entries'.
+    (defun ac/org-decrypt-all ()
+      (auto-save-mode -1)
+      (org-decrypt-entries))
+    (defun ac/org-decrypt-after-save-on ()
+      (add-hook 'after-save-hook #'ac/org-decrypt-all))
+    (defun ac/org-decrypt-after-save-off ()
+      (remove-hook 'after-save-hook #'ac/org-decrypt-all)))
 
   (add-hook 'org-mode-hook #'my-org-hook)
 
