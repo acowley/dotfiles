@@ -1189,6 +1189,24 @@ project's type."
   (org-block ((t (:slant normal))))
   (org-quote ((t (:font "Roboto" :slant italic :height 150))))
   :config
+
+  ;; Swap the tilde and backtick keys in orgmode
+  ;; From http://mbork.pl/2022-01-17_Making_code_snippets_in_Org-mode_easier_to_type
+  (defun org-insert-backtick ()
+    "Insert a backtick using `org-self-insert-command'."
+    (interactive)
+    (setq last-command-event ?`)
+    (call-interactively #'org-self-insert-command))
+
+  (defun org-insert-tilde ()
+    "Insert a tilde using `org-self-insert-command'."
+    (interactive)
+    (setq last-command-event ?~)
+    (call-interactively #'org-self-insert-command))
+
+  (define-key org-mode-map (kbd "`") #'org-insert-tilde)
+  (define-key org-mode-map (kbd "~") #'org-insert-backtick)
+
   (define-key org-mode-map (kbd "C-c C-x C-TAB") #'org-clock-in)
   ;; (set-face-font 'org-level-1 "Yanone Kaffeesatz Light:style=Light,Regular")
   ;; (set-face-attribute 'org-level-1 nil yanone-font-name :weight 'light :height 250)
