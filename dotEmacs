@@ -1483,6 +1483,10 @@ evaluation may begin anew."
     ; :ensure org-plus-contrib
     :commands (org-babel-execute:haskell org-babel-expand-body:haskell))
 
+  (use-package ob-ledger
+    :defer t
+    :commands (org-babel-execute:ledger))
+
   (use-package ob-nim
     :defer t
     :commands (org-babel-execute:nim org-babel-expand-body:nim))
@@ -4219,6 +4223,9 @@ sorted block."
          ("WORKSPACE" . bazel-workspace-mode)
          ("\\.bzl\\'" . bazel-starlark-mode)
          ("\\.bazelrc" . bazelrc-mode)))
+;;; ledger
+(use-package ledger-mode
+  :mode "\\.ledger\\'")
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
