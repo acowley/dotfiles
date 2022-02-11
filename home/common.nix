@@ -40,7 +40,7 @@ in {
     # })
     (no-uuid yanone-kaffeesatz "opentype" "otf")
     montserrat
-    (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" ]; })
+    (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" "DejaVuSansMono" ]; })
     (pkgs.callPackage ./pkgs/poppins.nix {})
     # roboto
     # (stdenv.mkDerivation {
