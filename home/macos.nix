@@ -8,6 +8,8 @@
     wget
     bashInteractive
     terminal-notifier
+    ledger
+    mosh
   ];
   home.sessionPath = [
     "/opt/homebrew/bin"
