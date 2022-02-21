@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   home.packages = with pkgs; [
-    ffmpeg
+    ffmpeg-full
     hunspell
     hunspellDicts.en_US-large
     pinentry_mac
