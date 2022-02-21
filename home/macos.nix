@@ -20,6 +20,7 @@
       NIX_PATH = "nixpkgs=/Users/acowley/src/nixpkgs";
       TMPDIR = "/tmp";
       DICPATH = "/Users/acowley/.nix-profile/share/hunspell";
+      EMACS_SOCKET_NAME = "/tmp/emacs501/server";
     };
     bashrcExtra = ''
       export TMPDIR=/tmp
