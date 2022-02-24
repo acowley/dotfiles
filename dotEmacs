@@ -1016,6 +1016,10 @@ Make sure to put cursor on date heading that contains a list of urls."
          ("C-x C-d" . consult-dir)
          ("C-x C-j" . consult-dir-jump-file)))
 
+(use-package consult-projectile
+  :commands (consult-projectile)
+  :bind (("C-x C-p" . consult-projectile)))
+
 ;;; marginalia
 (use-package marginalia
   :commands (marginalia-mode)
