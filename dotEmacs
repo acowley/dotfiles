@@ -3614,6 +3614,12 @@ sorted block."
   (set-face-foreground 'which-func "LightSkyBlue")
   (yas-minor-mode-on)
   (c-toggle-auto-newline -1)
+
+  ;; Possibly override clangd path
+  (let ((clangd-path (getenv "CLANGD_PATH")))
+    (when clangd-path
+      (setq lsp-clangd-binary-path clangd-path)))
+
   ;; Make imenu work with OpenCL, CUDA, and HIP compute kernels
   (add-to-list 'imenu-generic-expression
                `("Kernels"
