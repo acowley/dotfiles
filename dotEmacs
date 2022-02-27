@@ -4236,6 +4236,9 @@ sorted block."
 ;;; ledger
 (use-package ledger-mode
   :mode "\\.ledger\\'")
+;;; typescript
+(use-package typescript-mode
+  :mode "\\.ts\\'")
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
