@@ -116,6 +116,7 @@ in {
     pathAliases = {
       "\\~/Projects/serve/skel" = "skel";
       "\\~/Projects/serve/x" = "x";
+      "\\~/Projects/serve/upslam2" = "upslam2";
     };
   };
 
