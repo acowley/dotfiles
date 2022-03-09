@@ -1317,10 +1317,10 @@ project's type."
       (cond
        ((and state (string= state "DONE"))
         (org-set-property "completed"
-                          (format-time-string "%Y-%m-%d %a %H:%M"
+                          (format-time-string "<%Y-%m-%d %a %H:%M>"
                                               (org-current-time))))
        ((and state (string= state "TODO"))
-        (org-set-property "opened" (format-time-string "%Y-%m-%d %a %H:%M"
+        (org-set-property "opened" (format-time-string "<%Y-%m-%d %a %H:%M>"
                                                        (org-current-time)))))))
   (add-hook 'org-after-todo-state-change-hook #'my/org-todo-change)
 
