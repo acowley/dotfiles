@@ -1369,7 +1369,8 @@ project's type."
   (use-package org-modern
     :commands (org-modern-mode)
     :config
-    (setq org-modern-star ["»" "○" "◈" "◇" "⁕"]))
+    (setq org-modern-star ["»" "○" "◈" "◇" "⁕"]
+          org-modern-hide-stars nil))
 
   ;; This is slow to load
   (use-package ox-tufte
