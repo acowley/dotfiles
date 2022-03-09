@@ -1366,6 +1366,11 @@ project's type."
           org-superstar-headline-bullets-list '("»" "◉" "○" "✸" "✿")
           org-hide-leading-stars t))
 
+  (use-package org-modern
+    :commands (org-modern-mode)
+    :config
+    (setq org-modern-star ["»" "○" "◈" "◇" "⁕"]))
+
   ;; This is slow to load
   (use-package ox-tufte
     :load-path "~/src/ox-tufte"
