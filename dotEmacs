@@ -3645,6 +3645,7 @@ sorted block."
 (add-hook 'c++-mode-hook #'my/c++-mode-hook)
 (add-hook 'c-mode-hook #'my/c++-mode-hook)
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (use-package opencl-mode 
   :mode "\\.cl\\'"
