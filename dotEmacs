@@ -3623,9 +3623,15 @@ sorted block."
   (c-toggle-auto-newline -1)
 
   ;; Possibly override clangd path
+  (message "Checking for a CLANGD_PATH override")
+  (direnv-update-environment)
   (let ((clangd-path (getenv "CLANGD_PATH")))
     (when clangd-path
-      (setq lsp-clangd-binary-path clangd-path)))
+      (progn
+        (message "Setting explicit clangd path: %s" clangd-path)
+        (setq lsp-clangd-binary-path clangd-path)
+        (setq lsp-clients-clangd-executable clangd-path)
+        (setq lsp-clients--clangd-default-executable clangd-path))))
 
   ;; Make imenu work with OpenCL, CUDA, and HIP compute kernels
   (add-to-list 'imenu-generic-expression
