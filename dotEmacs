@@ -1217,7 +1217,7 @@ project's type."
   ;; (set-face-attribute 'org-level-1 nil yanone-font-name :weight 'light :height 250)
   ;; (set-face-attribute 'org-quote nil :font "Roboto" :slant 'italic :height 150)
   (set-face-font 'org-level-1 yanone-font-name)
-  (if (or (memq window-system '(mac ns)) (file-exists-p "/etc/issue"))
+  (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos")))
       (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
     (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
 
@@ -3673,10 +3673,11 @@ sorted block."
   (set-face-attribute 'variable-pitch nil
                       :height (cond 
                                ((memq window-system '(mac ns)) 170)
+                               ((file-exists-p "/etc/nixos") 110)
                                ((file-exists-p "/etc/lsb-release") 200)
                                (t 140))
                       :family "Montserrat"
-                      :weight (if (or (memq window-system '(mac ns)) (file-exists-p "/etc/issue")) 'normal 'light))
+                      :weight (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos"))) 'normal 'light))
 
 
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
