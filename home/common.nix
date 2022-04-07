@@ -19,7 +19,7 @@ in {
     cachix
     imagemagick
     jq
-    sqlite
+    (sqlite.override { interactive = true; })
     mylatex
     ripgrep
     tree
