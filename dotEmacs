@@ -889,6 +889,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   :config
   (load-theme 'apropospriate-dark t)
   :custom-face
+  (region ((t (:background "gray22"))))
   (helm-match ((t (:foreground "gold"))))
   (company-tooltip-selection ((t (:background "SteelBlue"))))
   (company-tooltip-annotation-selection ((t (:background "SteelBlue"))))
