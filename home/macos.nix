@@ -11,6 +11,7 @@
     terminal-notifier
     ledger
     mosh
+    tarsnap
   ];
   home.sessionPath = [
     "/opt/homebrew/bin"
