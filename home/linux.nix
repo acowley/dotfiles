@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     xclip
+    afew
   ];
   programs.bash = {
     enableVteIntegration = true;

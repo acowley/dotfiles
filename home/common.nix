@@ -24,7 +24,7 @@ in {
     ripgrep
     tree
     libqalculate
-    afew
+    # afew
 
     # fonts
     powerline-fonts
