@@ -52,11 +52,11 @@
     },
     "my-emacs": {
       "locked": {
-        "lastModified": 1650162145,
-        "narHash": "sha256-ZPurOTN/ayDydXAq70PGfJbFre7cIa4Yca4xxTfEtAo=",
+        "lastModified": 1652191252,
+        "narHash": "sha256-FeiczYjeewji9xyZZJ2Ix97KaOYaPR9zo5DrXK/E4gU=",
         "owner": "acowley",
         "repo": "my-emacs",
-        "rev": "807bd5d5554626518ab3c18b96b3c69c2eedbd47",
+        "rev": "0011858f2dc79d7da677a3e00abae68f13884ada",
         "type": "github"
       },
       "original": {

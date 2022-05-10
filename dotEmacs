@@ -4359,6 +4359,9 @@ sorted block."
 ;;; typescript
 (use-package typescript-mode
   :mode "\\.ts\\'")
+;;; protobuf
+(use-package protobuf-mode
+  :mode "\\.proto\\'")
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
