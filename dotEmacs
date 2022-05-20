@@ -996,7 +996,7 @@ Make sure to put cursor on date heading that contains a list of urls."
     (interactive)
     (consult-line (thing-at-point 'symbol)))
   (defun my/search-forward (prefix)
-    "Calls `helm-swoop` unless a prefix argument is given, in which case it calls `isearch-forward`"
+    "Calls `consult-line` unless a prefix argument is given, in which case it calls `isearch-forward`"
     (interactive "P")
     (if (null prefix)
         (consult-line-symbol-at-point)
