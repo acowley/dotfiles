@@ -1604,6 +1604,10 @@ evaluation may begin anew."
     :defer t
     :commands (org-babel-execute:ledger))
 
+  (use-package ob-sqlite
+    :defer t
+    :commands (org-babel-execute:sqlite org-babel-expand-body:sqlite))
+
   (use-package ob-nim
     :defer t
     :commands (org-babel-execute:nim org-babel-expand-body:nim))
