@@ -4371,6 +4371,9 @@ sorted block."
 (use-package gnuplot
   :commands (gnuplot-mode)
   :mode "\\.gnuplot\\'")
+;;; zig
+(use-package zig-mode
+  :mode "\\.zig\\'")
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
