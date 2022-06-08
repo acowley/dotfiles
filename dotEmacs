@@ -3786,7 +3786,7 @@ sorted block."
                                ((file-exists-p "/etc/lsb-release") 200)
                                (t 140))
                       :family "Montserrat"
-                      :weight (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos"))) 'normal 'light))
+                      :weight 'normal)
 
 
   ;;(set-face-attribute 'variable-pitch nil :height 100 :family "Libre Baskerville")
