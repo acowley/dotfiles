@@ -49,7 +49,7 @@
     };
 
     rga-run = (pkgs.steamPackages.steam-fhsenv.override {
-      nativeOnly = true;
+      # nativeOnly = true;
       extraPkgs = (pkgs: [pkgs.amdvlk]);
     }).run;
 
