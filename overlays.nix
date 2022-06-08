@@ -7,13 +7,23 @@
 
 let optOverlay = x: if builtins.pathExists x then [(import x)] else [];
 in 
-[(import (import ./emacs-overlay/nix/sources.nix).emacs-overlay)
+[# (import (import ./emacs-overlay/nix/sources.nix).emacs-overlay)
  #(import (import ./emacs-overlay/nix/sources.nix).collares)
- (import ~/dotfiles/my-emacs/emacs.nix)
+ # (import ~/dotfiles/my-emacs/emacs.nix)
  # (import ~/dotfiles/nix/mu/overlay.nix)
  (import ~/dotfiles/nix/wordnet.nix)
  (import ~/dotfiles/nix/mylatex.nix)
  (import ~/dotfiles/nix/kwin-tiling.nix)
+ # (import ~/dotfiles/nix/lean4.nix)
+
+ # See https://github.com/nix-community/nix-direnv/issues/113#issuecomment-921328351
+ # The fix https://github.com/NixOS/nixpkgs/pull/138334 was merged to staging-next
+ # This hack rebuilds nix to avoid rebuilding everything else.
+ # (self: super: {
+ #   nixUnstable = super.nixUnstable.override {
+ #     patches = [ ./nix/unset-is-macho.patch ];
+ #   };
+ # })
 ]
 ++ optOverlay ~/src/openconnect-sso/overlay.nix
 # ++ (if builtins.pathExists ~/src/nixpkgs-mozilla/rust-overlay.nix
