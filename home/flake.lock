@@ -1,12 +1,16 @@
 {
   "nodes": {
     "emacs-overlay": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs"
+      },
       "locked": {
-        "lastModified": 1650278072,
-        "narHash": "sha256-uKnIAWPODL1Bj6No0wEzR9yNNAlfy0S0ptyxKtxTE48=",
+        "lastModified": 1654685982,
+        "narHash": "sha256-a+VtGW8QsCpLX6v8wWKEguUNTfTklcPS6HtzC8ygfnI=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "1d1478b3b1f1ac68924705a77bcdc655925cf408",
+        "rev": "71a37a76c851547a0241d7f6ba25a751bc337b92",
         "type": "github"
       },
       "original": {
@@ -16,6 +20,21 @@
       }
     },
     "flake-utils": {
+      "locked": {
+        "lastModified": 1653893745,
+        "narHash": "sha256-0jntwV3Z8//YwuOjzhV2sgJJPt+HY6KhU7VZUL0fKZQ=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "1ed9fb1935d260de5fe1c2f7ee0ebaae17ed2fa1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
       "locked": {
         "lastModified": 1638122382,
         "narHash": "sha256-sQzZzAbvKEqN9s0bzWuYmRaA03v40gaJ4+iL1LXjaeI=",
@@ -52,11 +71,11 @@
     },
     "my-emacs": {
       "locked": {
-        "lastModified": 1652191252,
-        "narHash": "sha256-FeiczYjeewji9xyZZJ2Ix97KaOYaPR9zo5DrXK/E4gU=",
+        "lastModified": 1654700268,
+        "narHash": "sha256-wOoq37fhLF6S9Es/F8E2JbPQhmybi5aNXJRPFUGInxU=",
         "owner": "acowley",
         "repo": "my-emacs",
-        "rev": "0011858f2dc79d7da677a3e00abae68f13884ada",
+        "rev": "ef381692df19f0d44c8736978d7d07f8750c564e",
         "type": "github"
       },
       "original": {
@@ -79,7 +98,20 @@
     },
     "nixpkgs": {
       "locked": {
-        "narHash": "sha256-B2b8FZzj22p88v8nvY61K16CryTmFYrTUYrp6KbpCYs=",
+        "lastModified": 1654699822,
+        "narHash": "sha256-o/tzo6eN5qvFDFGVA2jVVwQgIZEu3ZbQgKQaD8XMJQI=",
+        "path": "/home/acowley/src/nixpkgs",
+        "type": "path"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1654699822,
+        "narHash": "sha256-o/tzo6eN5qvFDFGVA2jVVwQgIZEu3ZbQgKQaD8XMJQI=",
         "path": "/home/acowley/src/nixpkgs",
         "type": "path"
       },
@@ -91,11 +123,11 @@
     "root": {
       "inputs": {
         "emacs-overlay": "emacs-overlay",
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "homeManager": "homeManager",
         "my-emacs": "my-emacs",
         "my-latex": "my-latex",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },

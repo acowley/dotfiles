@@ -1134,7 +1134,8 @@ project's type."
                           (bookmarks . 5)
                           (projects . 5))
         dashboard-set-heading-icons t
-        dashboard-set-file-icons t))
+        dashboard-set-file-icons t)
+  (dashboard-refresh-buffer))
 
 (use-package page-break-lines
   ;; Used by the dashboard package
@@ -1195,6 +1196,8 @@ project's type."
   (org-block ((t (:slant normal))))
   (org-quote ((t (:font "Roboto" :slant italic :height 150))))
   :config
+
+  (require 'org-element)
 
   ;; Swap the tilde and backtick keys in orgmode
   ;; From http://mbork.pl/2022-01-17_Making_code_snippets_in_Org-mode_easier_to_type

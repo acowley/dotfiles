@@ -17,11 +17,8 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1637595801,
-        "narHash": "sha256-LkIMwVFKCuEqidaUdg8uxwpESAXjsPo4oCz3eJ7RaRw=",
-        "ref": "HEAD",
-        "rev": "263ef4cc4146c9fab808085487438c625d4426a9",
-        "revCount": 333218,
+        "lastModified": 1654593855,
+        "narHash": "sha256-w+tnRF2XNLjroQXt3RBsukX9TDjqbEuDFCuJZxhI9s4=",
         "type": "git",
         "url": "file:///home/acowley/src/nixpkgs"
       },
