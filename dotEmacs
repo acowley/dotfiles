@@ -1198,6 +1198,7 @@ project's type."
   :config
 
   (require 'org-element)
+  (require 'org-id)
 
   ;; Swap the tilde and backtick keys in orgmode
   ;; From http://mbork.pl/2022-01-17_Making_code_snippets_in_Org-mode_easier_to_type
