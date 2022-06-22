@@ -1295,6 +1295,8 @@ project's type."
         org-outline-path-complete-in-steps nil
         org-duration-format 'h:mm
         org-id-link-to-org-use-id t
+        org-refile-use-outline-path t
+        org-refile-targets '((nil :maxlevel . 9))
         )
 
   ;; org-mode supports inline map demarcated with \(...\) somewhat
