@@ -30,6 +30,7 @@ in
   programs.bash = {
     bashrcExtra = ''
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
+      . /etc/bash_completion.d/bazel-complete.bash
     '';
 
     sessionVariables = {
