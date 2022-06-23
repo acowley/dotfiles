@@ -20,6 +20,7 @@ in
   home.packages = with pkgs; [
     google-cloud-sdk
     kdenlive
+    buildifier
     myNixGLNvidia
     myNixGLIntel
   ];
