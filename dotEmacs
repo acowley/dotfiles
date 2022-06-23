@@ -896,7 +896,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   (company-tooltip-common-selection ((t (:foreground "black" :background "DeepSkyBlue"))))
   (company-tooltip-common ((t (:foreground "DeepSkyBlue"))))
   (lsp-ui-peek-selection ((t (:background "DeepSkyBlue"))))
-  (lsp-ui-peek-highlight ((t (:foreground "gold")))))
+  (lsp-ui-peek-highlight ((t (:foreground "gold"))))
+  (mode-line-inactive ((t (:background "gray16" :box nil)))))
 
 ;;; emacs server
 (use-package server
