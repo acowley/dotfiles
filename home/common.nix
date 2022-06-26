@@ -90,6 +90,8 @@ in {
 
     shellAliases = {
       nrepl = "nix repl '<nixpkgs>'";
+      today = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d'";
+      yesterday = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d' -d '1 day ago'";
     };
   };
 
