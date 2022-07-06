@@ -6,11 +6,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1654685982,
-        "narHash": "sha256-a+VtGW8QsCpLX6v8wWKEguUNTfTklcPS6HtzC8ygfnI=",
+        "lastModified": 1657045122,
+        "narHash": "sha256-YMZE+NsnhC36YqtMnsDYV2WsHUHLMffM56lNXyHxOSA=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "71a37a76c851547a0241d7f6ba25a751bc337b92",
+        "rev": "6ad17c8e39b64221557d1753252850f8f0b8a275",
         "type": "github"
       },
       "original": {
@@ -21,11 +21,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1653893745,
-        "narHash": "sha256-0jntwV3Z8//YwuOjzhV2sgJJPt+HY6KhU7VZUL0fKZQ=",
+        "lastModified": 1656928814,
+        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "1ed9fb1935d260de5fe1c2f7ee0ebaae17ed2fa1",
+        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
         "type": "github"
       },
       "original": {
@@ -71,11 +71,11 @@
     },
     "my-emacs": {
       "locked": {
-        "lastModified": 1654700268,
-        "narHash": "sha256-wOoq37fhLF6S9Es/F8E2JbPQhmybi5aNXJRPFUGInxU=",
+        "lastModified": 1655994104,
+        "narHash": "sha256-wlAucb3Is4HgQqy72hbX6J7EDKaiZIhADFrC55QN6+8=",
         "owner": "acowley",
         "repo": "my-emacs",
-        "rev": "ef381692df19f0d44c8736978d7d07f8750c564e",
+        "rev": "e630b735bdbc31c4c22a8d4dd314973419700bf1",
         "type": "github"
       },
       "original": {
@@ -98,8 +98,8 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1654699822,
-        "narHash": "sha256-o/tzo6eN5qvFDFGVA2jVVwQgIZEu3ZbQgKQaD8XMJQI=",
+        "lastModified": 1657057340,
+        "narHash": "sha256-b2jAZRqkYEzRq4OkizXCeo5IgQnsWUGayXz0rY0B2pA=",
         "path": "/home/acowley/src/nixpkgs",
         "type": "path"
       },
@@ -110,8 +110,8 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1654699822,
-        "narHash": "sha256-o/tzo6eN5qvFDFGVA2jVVwQgIZEu3ZbQgKQaD8XMJQI=",
+        "lastModified": 1657057340,
+        "narHash": "sha256-b2jAZRqkYEzRq4OkizXCeo5IgQnsWUGayXz0rY0B2pA=",
         "path": "/home/acowley/src/nixpkgs",
         "type": "path"
       },
