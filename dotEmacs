@@ -1023,6 +1023,9 @@ Make sure to put cursor on date heading that contains a list of urls."
   :commands (consult-projectile)
   :bind (("C-x C-p" . consult-projectile)))
 
+(use-package consult-org-roam
+  :commands (consult-org-roam-file-find consult-org-roam-search))
+
 ;;; marginalia
 (use-package marginalia
   :commands (marginalia-mode)
