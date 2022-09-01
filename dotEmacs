@@ -2430,7 +2430,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   (org-books-file "~/org/home.org")
   :init
   (defun my/add-org-book (title author)
-    "Add a book (specified by TITLE and AUTHOR) to the `org-books-file::BOOKS' heading."
+    "Add a book (specified by TITLE and AUTHOR) to the `org-books-file::BOOKS' heading. If a prefix argument is given, the book is added to the `org-books-file::Owen's Books` heading.'"
     (interactive
      (let ((completion-ignore-case t))
        (list
@@ -2439,7 +2439,9 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     (if org-books-file
         (save-excursion
           (with-current-buffer (find-file-noselect org-books-file)
-            (let ((pos (org-find-exact-headline-in-buffer "Books" (current-buffer) t)))
+            (let ((pos (org-find-exact-headline-in-buffer
+                        (if (null current-prefix-arg) "Books" "Owen's Books")
+                        (current-buffer) t)))
               (if pos
                   (org-books--insert-at-pos pos title author nil)
                 (message "Couldn't find `Books' header")))))
