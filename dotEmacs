@@ -942,6 +942,7 @@ Make sure to put cursor on date heading that contains a list of urls."
 (use-package selectrum
   ;; :defer 1
   ;; :commands (selectrum-mode)
+  :disabled t
   :demand
   :config
   ;; (set-face-background 'selectrum-current-candidate "DeepSkyBlue")
@@ -950,6 +951,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (selectrum-mode +1))
 ;;; selectrum-prescient
 (use-package selectrum-prescient
+  :disabled t
   :commands (selectrum-prescient-mode)
   :after selectrum
   :demand
@@ -957,6 +959,18 @@ Make sure to put cursor on date heading that contains a list of urls."
   ;; (add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
   ;; :hook (selectrum-mode-hook . selectrum-prescient-mode)
   (selectrum-prescient-mode +1))
+;;; vertico
+(use-package vertico
+  :config
+  (vertico-mode))
+(use-package savehist
+  :init
+  (savehist-mode))
+(use-package orderless
+  :config
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
 ;;; consult
 (use-package consult
   :commands (consult-line consult-buffer consult-yank-from-kill-ring consult-goto-line consult-ripgrep consult-locate)
