@@ -967,7 +967,13 @@ Make sure to put cursor on date heading that contains a list of urls."
 (use-package corfu
   :custom
   (corfu-auto t)          ;; Enable auto completion
+  ;; :bind (:map corfu-map
+  ;;             (("M-SPC" . corfu-insert-separator)))
+
+  :bind (("M-SPC" . corfu-insert-separator))
+
   :config
+  (setq corfu-auto-delay 0.0)
   (global-corfu-mode)
   (require 'corfu-history)
   (corfu-history-mode))
@@ -980,7 +986,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (savehist-mode))
 (use-package orderless
   :config
-  (setq completion-styles '(orderless basic)
+  (setq completion-styles '(orderless partial-completion basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 ;;; consult
@@ -3473,6 +3479,7 @@ sorted block."
   :defer t
   :commands lsp
   :custom
+  (lsp-completion-provider :none) ;; Using corfu
   (lsp-keymap-prefix "C-c C-l")
   (lsp-configure-hook nil)
   ;; (lsp-semantic-tokens-enable t)
@@ -3555,6 +3562,10 @@ sorted block."
   (require 'lsp-modeline)
   (require 'lsp-headerline)
   (require 'lsp-lens)
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+  (add-hook 'lsp-completion-mode-hook #'my/lsp-mode-setup-completion)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
   (add-hook 'lsp-mode-hook 'lsp-completion-mode)
