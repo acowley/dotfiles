@@ -891,10 +891,10 @@ Make sure to put cursor on date heading that contains a list of urls."
   :custom-face
   (region ((t (:background "gray22"))))
   (helm-match ((t (:foreground "gold"))))
-  (company-tooltip-selection ((t (:background "SteelBlue"))))
-  (company-tooltip-annotation-selection ((t (:background "SteelBlue"))))
-  (company-tooltip-common-selection ((t (:foreground "black" :background "DeepSkyBlue"))))
-  (company-tooltip-common ((t (:foreground "DeepSkyBlue"))))
+  ;; (company-tooltip-selection ((t (:background "SteelBlue"))))
+  ;; (company-tooltip-annotation-selection ((t (:background "SteelBlue"))))
+  ;; (company-tooltip-common-selection ((t (:foreground "black" :background "DeepSkyBlue"))))
+  ;; (company-tooltip-common ((t (:foreground "DeepSkyBlue"))))
   (lsp-ui-peek-selection ((t (:background "DeepSkyBlue"))))
   (lsp-ui-peek-highlight ((t (:foreground "gold"))))
   (mode-line-inactive ((t (:background "gray16" :box nil)))))
@@ -908,6 +908,7 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; company-mode
 (use-package company
   ;; :defer nil
+  :disabled t
   :commands (company-mode)
   :hook (prog-mode . company-mode)
   ;; :init
@@ -921,6 +922,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   )
 ;;; prescient
 (use-package prescient
+  :disabled t
   :custom (company-prescient-sort-length-enable nil)
   :commands (prescient-persist-mode)
   :hook (company-mode . prescient-persist-mode)
@@ -928,6 +930,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (prescient-persist-mode +1))
 ;;; company-prescient
 (use-package company-prescient
+  :disabled t
   :commands (company-prescient-mode)
   :hook (company-mode . company-prescient-mode)
   :config
@@ -959,6 +962,14 @@ Make sure to put cursor on date heading that contains a list of urls."
   ;; (add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
   ;; :hook (selectrum-mode-hook . selectrum-prescient-mode)
   (selectrum-prescient-mode +1))
+;;; corfu
+(use-package corfu
+  :custom
+  (corfu-auto t)          ;; Enable auto completion
+  :config
+  (global-corfu-mode)
+  (require 'corfu-history)
+  (corfu-history-mode))
 ;;; vertico
 (use-package vertico
   :config
