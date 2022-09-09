@@ -978,14 +978,16 @@ Make sure to put cursor on date heading that contains a list of urls."
   (setq corfu-auto-delay 0.0)
   (global-corfu-mode)
   (require 'corfu-history)
-  (corfu-history-mode))
+  (corfu-history-mode)
+  (setq corfu-history-length 100))
 ;;; vertico
 (use-package vertico
   :config
   (vertico-mode))
 (use-package savehist
   :init
-  (savehist-mode))
+  (savehist-mode)
+  (add-to-list 'savehist-additional-variables 'corfu-history))
 (use-package orderless
   :config
   (setq completion-styles '(orderless partial-completion basic)
