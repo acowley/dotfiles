@@ -480,6 +480,8 @@ Haskell programs as it may be applied to all numbers in region."
 ;; (add-hook 'prog-mode-hook (lambda () (auto-composition-mode -1)))
 ;; (add-hook 'text-mode-hook (lambda () (auto-composition-mode -1)))
 
+(setq tab-always-indent 'complete)
+
 (setq display-line-numbers-type 'relative)
 
 ;; Let us use a minibuffer command (as with a package like consult)
@@ -975,10 +977,12 @@ Make sure to put cursor on date heading that contains a list of urls."
   :bind (("M-SPC" . corfu-insert-separator))
 
   :config
-  (setq corfu-auto-delay 0.0)
-  (global-corfu-mode)
+  (setq corfu-auto-delay 0.0
+        ;; This lets us use separators (spaces) whenever we want
+        corfu-quit-at-boundary nil)
+  (global-corfu-mode 1)
   (require 'corfu-history)
-  (corfu-history-mode)
+  (corfu-history-mode 1)
   (setq corfu-history-length 100))
 ;;; vertico
 (use-package vertico
