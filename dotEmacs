@@ -913,7 +913,6 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; company-mode
 (use-package company
   ;; :defer nil
-  :disabled t
   :commands (company-mode)
   :hook (prog-mode . company-mode)
   ;; :init
@@ -927,7 +926,6 @@ Make sure to put cursor on date heading that contains a list of urls."
   )
 ;;; prescient
 (use-package prescient
-  :disabled t
   :custom (company-prescient-sort-length-enable nil)
   :commands (prescient-persist-mode)
   :hook (company-mode . prescient-persist-mode)
@@ -935,7 +933,6 @@ Make sure to put cursor on date heading that contains a list of urls."
   (prescient-persist-mode +1))
 ;;; company-prescient
 (use-package company-prescient
-  :disabled t
   :commands (company-prescient-mode)
   :hook (company-mode . company-prescient-mode)
   :config
@@ -969,6 +966,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (selectrum-prescient-mode +1))
 ;;; corfu
 (use-package corfu
+  :disabled t
   :custom
   (corfu-auto t)          ;; Enable auto completion
   ;; :bind (:map corfu-map
@@ -979,7 +977,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   :config
   (setq corfu-auto-delay 0.0
         ;; This lets us use separators (spaces) whenever we want
-        corfu-quit-at-boundary nil)
+        corfu-quit-at-boundary nil
+        corfu-echo-documentation nil)
   (global-corfu-mode 1)
   (require 'corfu-history)
   (corfu-history-mode 1)
@@ -3552,6 +3551,7 @@ sorted block."
     ;; Typeset fields of structures in italic. This helps them stand
     ;; out from local variables or function parameters.
     (set-face-attribute 'lsp-face-semhl-property nil :slant 'italic)
+    (set-face-attribute 'lsp-face-semhl-member nil :slant 'italic)
     ;; Make the lsp-ui-peek overlay stand out a bit better
     (set-face-background 'lsp-ui-peek-peek "dark slate gray")
 
