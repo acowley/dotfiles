@@ -1017,7 +1017,14 @@ Make sure to put cursor on date heading that contains a list of urls."
         consult-async-input-debounce 0.1
         consult-locate-args (if (memq window-system '(mac ns))
                                 "mdfind -onlyin /Users/acowley -name"
-                                "/run/wrappers/bin/locate -e -A --regex"))
+                              "/run/wrappers/bin/locate -e -A --regex"))
+
+  (setq completion-in-region-function
+      (lambda (&rest args)
+        (apply (if vertico-mode
+                   #'consult-completion-in-region
+                 #'completion--in-region)
+               args)))
 
   ;; I use consult-buffer to visit recent files, but previewing any
   ;; file I touch while navigating the list of completions is too
