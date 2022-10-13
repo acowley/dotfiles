@@ -8,6 +8,7 @@
                         gc-cons-percentage   0.1
                         file-name-handler-alist old--file-name-handler-alist)))
 
+(setq frame-resize-pixelwise t)
 (setq frame-inhibit-implied-resize t)
 (tool-bar-mode -1)
 (setq package-enable-at-startup nil)
