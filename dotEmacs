@@ -1076,6 +1076,8 @@ Make sure to put cursor on date heading that contains a list of urls."
 (use-package consult-org-roam
   :commands (consult-org-roam-file-find consult-org-roam-search))
 
+(use-package consult-notmuch
+  :commands (consult-notmuch consult-notmuch-tree))
 ;;; marginalia
 (use-package marginalia
   :commands (marginalia-mode)
