@@ -4137,6 +4137,14 @@ sorted block."
 ;;; dired-du
 (use-package dired-du
   :commands (dired-du-mode))
+;;; dired-narrow
+(use-package dired-narrow
+  ;; Suggested setting from
+  ;; https://pragmaticemacs.wordpress.com/2016/03/01/dynamically-filter-directory-listing-with-dired-narrow/
+  :after dired
+  :commands (dired-narrow)
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
 ;;; nix-buffer
 (use-package nix-buffer
   :defer t
