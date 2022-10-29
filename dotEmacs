@@ -4460,6 +4460,9 @@ sorted block."
 ;;; zig
 (use-package zig-mode
   :mode "\\.zig\\'")
+;;; expand-region
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
