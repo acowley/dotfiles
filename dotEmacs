@@ -1001,6 +1001,9 @@ Make sure to put cursor on date heading that contains a list of urls."
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))
         orderless-component-separator #'orderless-escapable-split-on-space))
+(use-package vertico-prescient
+  :config
+  (vertico-prescient-mode))
 ;;; consult
 (use-package consult
   :commands (consult-line consult-buffer consult-yank-from-kill-ring consult-goto-line consult-ripgrep consult-locate)
