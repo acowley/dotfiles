@@ -1679,6 +1679,12 @@ evaluation may begin anew."
     :defer t
     :commands (org-babel-execute:js org-babel-expand-body:js))
 
+  (use-package ob-python
+    :defer t
+    :commands (org-babel-execute:python org-babel-expand-body:python)
+    :config
+    (setq org-babel-python-command "python3"))
+
   (defun org-babel-execute:runhaskell (body params)
     (org-babel-eval "runhaskell"
                     (org-babel-expand-body:generic body params)))
