@@ -934,7 +934,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   :commands (prescient-persist-mode)
   :hook (company-mode . prescient-persist-mode)
   :config
-  (prescient-persist-mode +1))
+  (prescient-persist-mode +1)
+  (setq prescient-filter-method '(literal fuzzy)))
 ;;; company-prescient
 (use-package company-prescient
   :commands (company-prescient-mode)
