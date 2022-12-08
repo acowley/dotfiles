@@ -4032,7 +4032,10 @@ sorted block."
   (setq rustic-analyzer-command '("rust-analyzer")
         lsp-rust-analyzer-server-command '("rust-analyzer")
         lsp-rust-analyzer-proc-macro-enable t
-        lsp-rust-analyzer-diagnostics-disabled ["inactive-code"])
+        lsp-rust-analyzer-diagnostics-disabled ["inactive-code"]
+        lsp-rust-analyzer-server-format-inlay-hints t
+        lsp-rust-analyzer-server-display-inlay-hints t
+        lsp-ui-sideline-show-code-actions t)
   (add-hook 'rustic-mode-hook #'my/rustic-hook))
 
 (use-package rust-mode
