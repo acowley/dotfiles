@@ -4,6 +4,7 @@
     xclip
     afew
   ];
+  home.homeDirectory = "/home/acowley";
   programs.bash = {
     enableVteIntegration = true;
     sessionVariables = {

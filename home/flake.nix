@@ -13,6 +13,7 @@
     homeManager.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     my-emacs.url = "github:acowley/my-emacs";
+    # my-emacs.url = "path:/Users/acowley/dotfiles/my-emacs";
     # my-emacs.url = "path:/home/acowley/dotfiles/my-emacs";
     my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
     my-latex.flake = false;
@@ -25,20 +26,38 @@
                    homeDirectory ? "/home/acowley"
                  }:
           homeManager.lib.homeManagerConfiguration {
-            configuration = { pkgs, lib, ... }: {
-              imports = [ ./common.nix ] ++ extraImports;
-              nixpkgs = {
-                overlays = [
+            pkgs = import nixpkgs {
+              inherit system;
+              config = {
+                allowBroken = true;
+                allowUnfreePredicate = (_: true);
+              };
+              overlays = [
                   emacs-overlay.overlay
                   my-emacs.overlay
                   (final: prev: import my-latex final prev)
                 ];
-                config = { allowUnfree = true; };
-              };
             };
-            inherit system homeDirectory;
-            username = "acowley";
-            stateVersion = "21.11";
+            modules = [./common.nix] ++ extraImports;
+            # configuration = { pkgs, lib, ... }: {
+            #   imports = [ ./common.nix ] ++ extraImports;
+            #   # manual.manpages.enable = false;
+            #   nixpkgs = {
+            #     overlays = [
+            #       emacs-overlay.overlay
+            #       my-emacs.overlay
+            #       (final: prev: import my-latex final prev)
+            #     ];
+            #     config = {
+            #       # allowUnfree = true;
+            #       allowUnfreePredicate = (_: true);
+            #     };
+            #   };
+            # };
+            # inherit system homeDirectory;
+            # home.homeDirectory = homeDirectory;
+            # username = "acowley";
+            # stateVersion = "21.11";
           };
         mkLinux = machine: mkHome { extraImports = [ ./linux.nix machine ]; };
     in {

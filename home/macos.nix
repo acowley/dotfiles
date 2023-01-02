@@ -13,6 +13,7 @@
     mosh
     tarsnap
   ];
+  home.homeDirectory = "/Users/acowley";
   home.sessionPath = [
     "/opt/homebrew/bin"
   ];
