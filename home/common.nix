@@ -25,6 +25,7 @@ in {
     tree
     libqalculate
     # afew
+    nix-output-monitor
 
     # fonts
     powerline-fonts
