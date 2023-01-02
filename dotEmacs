@@ -916,6 +916,7 @@ Make sure to put cursor on date heading that contains a list of urls."
                            (or (server-running-p) (server-mode))))))
 ;;; company-mode
 (use-package company
+  :disabled t
   ;; :defer nil
   :commands (company-mode)
   :hook (prog-mode . company-mode)
@@ -938,6 +939,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (setq prescient-filter-method '(literal regexp initialism)))
 ;;; company-prescient
 (use-package company-prescient
+  :disabled t
   :commands (company-prescient-mode)
   :hook (company-mode . company-prescient-mode)
   :config
@@ -969,20 +971,34 @@ Make sure to put cursor on date heading that contains a list of urls."
   ;; (add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
   ;; :hook (selectrum-mode-hook . selectrum-prescient-mode)
   (selectrum-prescient-mode +1))
+;;; orderless
+(use-package orderless
+  :init
+  (setq completion-styles '(orderless partial-completion basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))
+        orderless-component-separator #'orderless-escapable-split-on-space))
+;;; cape
+(use-package cape
+  :commands (cape-capf-buster))
 ;;; corfu
 (use-package corfu
-  :disabled t
+  :defer nil
   :custom
   (corfu-auto t)          ;; Enable auto completion
-  ;; :bind (:map corfu-map
-  ;;             (("M-SPC" . corfu-insert-separator)))
+  :bind (:map corfu-map
+              ;; (("M-SPC" . corfu-insert-separator))
+              (("S-SPC" . corfu-insert-separator))
+              )
 
-  :bind (("M-SPC" . corfu-insert-separator))
-
+  ;; :bind (("M-SPC" . corfu-insert-separator))
+  :commands (global-corfu-mode)
   :config
   (setq corfu-auto-delay 0.0
         ;; This lets us use separators (spaces) whenever we want
-        corfu-quit-at-boundary nil
+        ;; corfu-quit-at-boundary nil
+        corfu-quit-at-boundary 'separator
+        corfu-quit-no-match t
         corfu-echo-documentation nil)
   (global-corfu-mode 1)
   (require 'corfu-history)
@@ -996,12 +1012,6 @@ Make sure to put cursor on date heading that contains a list of urls."
   :init
   (savehist-mode)
   (add-to-list 'savehist-additional-variables 'corfu-history))
-(use-package orderless
-  :config
-  (setq completion-styles '(orderless partial-completion basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))
-        orderless-component-separator #'orderless-escapable-split-on-space))
 (use-package vertico-prescient
   :config
   (vertico-prescient-mode))
@@ -3599,9 +3609,22 @@ sorted block."
   (require 'lsp-modeline)
   (require 'lsp-headerline)
   (require 'lsp-lens)
+  ;; Use cape-capf-buster for better handling of deleting characters
+  ;; from a completion prefix. This invalidates the completion cache.
+  (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
+
+  ;; From the corfu wiki
+  (defun my/orderless-dispatch-flex-first (_pattern index _total)
+    (and (eq index 0) 'orderless-flex))
+
+  ;; Configure the first word as flex filtered
+  (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
+
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
+          ;; '(orderless)
+          '(prescient)
+          ))
   (add-hook 'lsp-completion-mode-hook #'my/lsp-mode-setup-completion)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
