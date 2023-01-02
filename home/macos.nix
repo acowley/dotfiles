@@ -24,6 +24,8 @@
       TMPDIR = "/tmp";
       # DICPATH = "/Users/acowley/.nix-profile/share/hunspell";
       EMACS_SOCKET_NAME = "/tmp/emacs501/server";
+      # DYLD_LIBRARY_PATH = "${DYLD_LIBRARY_PATH}:/Applications/MATLAB/MATLAB_Runtime/v97/runtime/maci64:MR/v97/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v97/bin/maci64";
+      DYLD_LIBRARY_PATH = "/Applications/MATLAB/MATLAB_Runtime/v97/runtime/maci64:MR/v97/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v97/bin/maci64";
     };
     bashrcExtra = ''
       export TMPDIR=/tmp
