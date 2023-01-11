@@ -974,10 +974,17 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; orderless
 (use-package orderless
   :init
+  ;; From the corfu wiki
+  (defun my/orderless-dispatch-flex-first (_pattern index _total)
+    (and (eq index 0) 'orderless-flex))
+
   (setq completion-styles '(orderless partial-completion basic)
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))
-        orderless-component-separator #'orderless-escapable-split-on-space))
+        orderless-component-separator #'orderless-escapable-split-on-space
+
+        ;; Configure the first word as flex filtered
+        orderless-style-dispatchers (list #'my/orderless-dispatch-flex-first)))
 ;;; cape
 (use-package cape
   :commands (cape-capf-buster))
@@ -3612,18 +3619,12 @@ sorted block."
   ;; from a completion prefix. This invalidates the completion cache.
   (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point)))
 
-  ;; From the corfu wiki
-  (defun my/orderless-dispatch-flex-first (_pattern index _total)
-    (and (eq index 0) 'orderless-flex))
-
-  ;; Configure the first word as flex filtered
-  (add-hook 'orderless-style-dispatchers #'my/orderless-dispatch-flex-first nil 'local)
-
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          ;; '(orderless)
-          '(prescient)
-          ))
+          '(orderless)
+          ;; '(prescient)
+          )
+    )
   (add-hook 'lsp-completion-mode-hook #'my/lsp-mode-setup-completion)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'lsp-mode-hook 'lsp-diagnostics-mode)
