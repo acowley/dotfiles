@@ -4493,6 +4493,33 @@ sorted block."
 ;;; package-lint
 (use-package package-lint
   :commands (package-lint-buffer))
+;;; unison-mode
+(use-package unisonlang-mode
+  :mode "\\.u\\'"
+  :config
+  (require 'lsp-mode)
+  (add-to-list 'lsp-language-id-configuration '("\\.u\\'" . "unisonlang"))
+  (setq-local lsp-tcp-connection-timeout 10)
+  (lsp-register-client
+   (make-lsp-client
+    :language-id "unisonlang"
+    :new-connection
+    (list
+     :connect (lambda (filter sentinel name _environment-fn _workspace)
+                (let* ((host "localhost")
+                       (port 5757)
+                       (tcp-proc (lsp--open-network-stream host port (concat name "::tcp"))))
+
+                  (set-process-query-on-exit-flag tcp-proc nil)
+                  (set-process-filter tcp-proc filter)
+                  (set-process-sentinel tcp-proc sentinel)
+                  (cons tcp-proc tcp-proc)))
+     :test? (lambda () t))
+    :major-modes '(unisonlang-mode)
+    :server-id 'unisonlang
+    ;; :initialization-options (lambda () ccls-initialization-options)
+    ))
+)
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
