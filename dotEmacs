@@ -3419,7 +3419,7 @@ predicate returns true."
   (use-package haskell-doc
     :commands (haskell-doc-current-info))
   (set-face-attribute 'haskell-keyword-face nil :slant 'italic)
-  (company-mode)
+  ;; (company-mode)
   (use-package shm
     :disabled
     :bind (("M-A" . shm/goto-parent-end))
