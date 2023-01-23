@@ -4467,7 +4467,7 @@ sorted block."
   :commands (nim-mode))
 ;;; bazel
 (use-package bazel
-  :mode (("BUILD" . bazel-build-mode)
+  :mode (("BUILD\\'" . bazel-build-mode)
          ("WORKSPACE" . bazel-workspace-mode)
          ("\\.bzl\\'" . bazel-starlark-mode)
          ("\\.bazelrc" . bazelrc-mode)))
