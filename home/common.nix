@@ -142,6 +142,9 @@ in {
   programs.atuin = {
     enable = true;
     enableBashIntegration = true;
+    settings = {
+      auto_sync = false;
+    };
   };
 
   # This value determines the Home Manager release that your
