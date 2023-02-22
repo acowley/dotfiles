@@ -144,6 +144,7 @@ in {
     enableBashIntegration = true;
     settings = {
       auto_sync = false;
+      search_mode = "fuzzy";
     };
   };
 
