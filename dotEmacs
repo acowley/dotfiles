@@ -1024,6 +1024,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (vertico-prescient-mode))
 ;;; consult
 (use-package consult
+  :defer nil
   :commands (consult-line consult-buffer consult-yank-from-kill-ring consult-goto-line consult-ripgrep consult-locate)
   :bind (("C-x C-b" . consult-buffer)
          ("C-y" . my/yank)
