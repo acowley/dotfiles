@@ -145,6 +145,7 @@ in {
     settings = {
       auto_sync = false;
       search_mode = "fuzzy";
+      update_check = false;
     };
   };
 
