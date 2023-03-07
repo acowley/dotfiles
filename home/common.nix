@@ -146,6 +146,7 @@ in {
       auto_sync = false;
       search_mode = "fuzzy";
       update_check = false;
+      filter_mode_shell_up_key_binding = "session";
     };
   };
 
