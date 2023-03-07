@@ -1011,6 +1011,15 @@ Make sure to put cursor on date heading that contains a list of urls."
   (require 'corfu-history)
   (corfu-history-mode 1)
   (setq corfu-history-length 100))
+;;; corfu-prescient
+(use-package corfu-prescient
+  :hook ((corfu-mode . corfu-prescient-mode)
+         ;; (global-corfu-mode . corfu-prescient-mode)
+         )
+  :init
+  (setq corfu-prescient-override-sorting t)
+  :config
+  (setq completion-styles '(prescient partial-completion basic)))
 ;;; vertico
 (use-package vertico
   :config
