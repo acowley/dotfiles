@@ -1474,7 +1474,7 @@ project's type."
           ;; nicely. Namely priorities. While other aspects of
           ;; svg-tag-mode are nice, they impose too large a
           ;; performance hit.
-          org-modern-todo t
+          org-modern-todo nil
           org-modern-priority nil
           org-modern-progress nil))
 
