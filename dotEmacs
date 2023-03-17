@@ -1840,7 +1840,10 @@ This function is called by `org-babel-execute-src-block'."
   ;; (set-face-attribute 'org-code nil :inherit 'fixed-pitch)
   ;; (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
 
-  (set-face-attribute 'org-block nil :background "#323232")
+  ;; (set-face-attribute 'org-block nil :background "#323232")
+  (set-face-attribute 'org-block nil
+                      :background "#161616"
+                      :foreground "systemBrownColor")
 
   ;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook
