@@ -1312,6 +1312,7 @@ project's type."
   (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos")))
       (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
     (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
+  (set-face-attribute 'org-headline-done nil :foreground "#B199BA")
 
   (setq org-src-fontify-natively 't
         org-use-speed-commands 't
