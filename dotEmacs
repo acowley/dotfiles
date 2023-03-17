@@ -1475,7 +1475,7 @@ project's type."
           ;; performance hit.
           org-modern-todo t
           org-modern-priority nil
-          org-modern-progress t))
+          org-modern-progress nil))
 
   (use-package svg-tag-mode
     :commands (svg-tag-mode)
