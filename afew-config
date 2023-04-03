@@ -59,7 +59,7 @@ pattern = (serve-robotics/(skel|x)|@serverobotics.com)
 tags = +serve
 [HeaderMatchingFilter.10]
 header = From
-pattern = Chartwell
+pattern = (Chartwell|Bear Paddle Swim)
 tags = +Owen
 [InboxFilter]
 tags = -new;-important;
