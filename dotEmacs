@@ -1070,7 +1070,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   ;; using consult-buffer, but otherwise leave it at its default of
   ;; 'any.
   (defun my/disable-consult-preview ()
-    (setq consult-preview-key (kbd "M-.")))
+    (setq consult-preview-key "M-."))
   (defun my/enable-consult-preview ()
     (setq consult-preview-key 'any))
   (advice-add #'consult-buffer :before #'my/disable-consult-preview)
