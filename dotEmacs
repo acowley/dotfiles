@@ -61,10 +61,10 @@
 
 (defun my/set-font ()
   (if (and nil (memq window-system '(mac ns)))
-      (set-frame-font "Monaco 14")
+      (set-frame-font "Monaco 14" nil t)
     (let ((size (my/preferred-font-size)))
       (set-face-font 'default (format "Victor Mono-%d:weight=demi" size))
-      (set-frame-font (format "Victor Mono-%d:weight=demi" size)))
+      (set-frame-font (format "Victor Mono-%d:weight=demi" size) nil t))
     ;; (if (or (memq window-system '(mac ns))
     ;;         ;; (file-exists-p "/etc/lsb-release")
     ;;         )
