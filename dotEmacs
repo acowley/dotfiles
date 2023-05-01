@@ -1844,7 +1844,9 @@ This function is called by `org-babel-execute-src-block'."
   ;; (set-face-attribute 'org-block nil :background "#323232")
   (set-face-attribute 'org-block nil
                       :background "#161616"
-                      :foreground "systemBrownColor")
+                      ;; :foreground "systemBrownColor"
+                      ;; :foreground "DarkOrange"
+                      )
 
   ;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook
