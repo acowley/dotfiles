@@ -3430,56 +3430,12 @@ predicate returns true."
          ("C-c M-." . nil)
          ("C-c C-d" . nil))
   :config
+  (require 'haskell-hoogle)
   (setq haskell-hoogle-command "hoogle")
   ;; (electric-indent-local-mode -1)
   (use-package haskell-doc
     :commands (haskell-doc-current-info))
   (set-face-attribute 'haskell-keyword-face nil :slant 'italic)
-  ;; (company-mode)
-  (use-package shm
-    :disabled
-    :bind (("M-A" . shm/goto-parent-end))
-    :config
-    ;; Appropriate for light themes
-    ;; (set-face-background 'shm-current-face "#eee8d5")
-    ;; (set-face-background 'shm-quarantine-face "lemonchiffon")
-
-    ;; For dark themes
-    (set-face-background 'shm-current-face "#303030")
-    (set-face-background 'shm-quarantine-face "#550505")
-    )
-  (use-package intero
-    :disabled
-    ;; :load-path "~/src/intero/elisp"
-    :commands (intero-mode intero-global-mode)
-    :bind (("M-n" . flycheck-next-error)
-           ("M-p" . flycheck-previous-error)
-           ;; :map intero-mode-map
-           ;; ("C-c [\\C-?\t]" . haskell-indentation-indent-line)
-           ;; ("M-?" . flycheck-display-error-at-point)
-           )
-    :config
-
-    (define-key intero-mode-map (kbd "C-c <C-tab>") #'haskell-indentation-indent-line)
-    (defun my-intero-repl-hook ()
-      (company-mode -1))
-    (add-hook 'intero-repl-mode-hook #'my-intero-repl-hook)
-    (setq intero-whitelist (append (mapcar (lambda (p) (concat "~/Documents/Projects/" p))
-                                           '("VinylRecords"
-                                             "concurrent-machines"
-                                             "ffmpeg-light"
-                                             "GLUtil"
-                                             "CLUtil"
-                                             "llvm-hs"
-                                             "llvm-hs-pure"
-                                             "HoclSuite"
-                                             "yaml-light-lens"
-                                             "hpp"))
-                                   (mapcar (lambda (p) (concat "~/Projects/" p))
-                                           '("MotionCT" "hpp" "Frames" "Vinyl"))
-                                   )))
-  ;; (use-package hindent)
-
   (use-package lsp-haskell
     ;; :defer t
     ;; :commands lsp-haskell-enable
@@ -3526,17 +3482,6 @@ sorted block."
       (let ((pragmas (haskell-find-pragmas)))
         (delete-char (-(1- (point))))
         (insert (fill-list pragmas ", " "{-# LANGUAGE " " #-}"))))))
-
-(use-package dante
-  :after haskell-mode
-  :commands 'dante-mode
-  :config
-  (defun my-dante-hook ()
-    (intero-mode -1)
-    (flycheck-mode)
-    ;(flycheck-add-next-checker 'haskell-dante '(warning . haskell-hlint))
-    )
-  (add-hook 'dante-mode-hook #'my-dante-hook))
 
 ;; (add-to-list 'load-path "~/.emacs.d/misc")
 ;; (add-to-list 'auto-mode-alist '("\\.l[gh]s\\'" . haskell-latex-mode))
