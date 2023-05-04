@@ -18,9 +18,10 @@
     my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
     my-latex.flake = false;
     flake-utils.url = "github:numtide/flake-utils";
+    unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex }:
+  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex, unstable }:
     let mkHome = { extraImports,
                    system ? "x86_64-linux",
                    homeDirectory ? "/home/acowley"
@@ -64,8 +65,10 @@
       homeConfigurations = {
         serve = mkLinux ./serve.nix;
         home = mkLinux ./home.nix;
-        macos = mkHome {
-          extraImports = [ ./macos.nix ];
+        macos = mkHome rec {
+          extraImports = [ (import ./macos.nix {
+            unstable = import unstable { inherit system; };
+          })];
           #system = "x86_64-darwin";
           system = "aarch64-darwin";
           homeDirectory = "/Users/acowley";
