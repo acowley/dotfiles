@@ -3295,6 +3295,8 @@ predicate returns true."
         (mapcar (lambda (account) (cadr (assq 'user-mail-address account)))
                 my-mu4e-account-alist))
 )
+;;; nerd-icons
+(use-package nerd-icons)
 ;;; doom-modeline
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
