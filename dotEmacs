@@ -2477,6 +2477,7 @@ entire source file is loaded."
                               'notifications)))
 ;;; org-clock-reminder
 (use-package org-clock-reminder
+  :disabled t
   :after org
   :config
   (setq org-clock-reminder-remind-inactivity 't)
