@@ -6,7 +6,10 @@
   ];
   home.homeDirectory = "/home/acowley";
   programs.bash = {
-    enableVteIntegration = true;
+    ## This causes some trouble with atuin integration. The VTE
+    ## settings end up in .bashrc after the atuin setup, resulting in
+    ## the atuin history database not being updated as expected.
+    # enableVteIntegration = true;
     sessionVariables = {
       NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
     };
