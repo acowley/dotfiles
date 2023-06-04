@@ -28,6 +28,7 @@
       # DYLD_LIBRARY_PATH = "${DYLD_LIBRARY_PATH}:/Applications/MATLAB/MATLAB_Runtime/v97/runtime/maci64:MR/v97/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v97/bin/maci64";
       DYLD_LIBRARY_PATH = "/Applications/MATLAB/MATLAB_Runtime/v97/runtime/maci64:MR/v97/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v97/bin/maci64";
     };
+
     bashrcExtra = ''
       export TMPDIR=/tmp
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
@@ -35,6 +36,16 @@
       do
         source "''${completion_script}"
       done
+      if [ -f /opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh ]; then
+        source /opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh
+      fi
+    '';
+
+    initExtra = pkgs.lib.mkOrder 1501 ''
+      if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
+        source "${pkgs.bash-preexec}/share/bash/bash-preexec.sh"
+        eval "$(${unstable.atuin}/bin/atuin init bash)"
+      fi
     '';
   };
   programs.atuin.package = unstable.atuin;

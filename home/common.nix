@@ -141,7 +141,7 @@ in {
 
   programs.atuin = {
     enable = true;
-    enableBashIntegration = true;
+    enableBashIntegration = false;
     settings = {
       auto_sync = false;
       search_mode = "skim";

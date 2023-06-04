@@ -18,6 +18,13 @@
       pbcopy = "xclip -selection c";
       pbpaste = "xclip -selection clipboard -o";
     };
+
+    initExtra = pkgs.lib.mkOrder 1501 ''
+      if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
+        source "${pkgs.bash-preexec}/share/bash/bash-preexec.sh"
+        eval "$(${pkgs.atuin}/bin/atuin init bash)"
+      fi
+    '';
   };
 
   services.gpg-agent = {
