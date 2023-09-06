@@ -19,7 +19,25 @@
     "/opt/homebrew/bin"
   ];
   programs.home-manager.path = "/Users/acowley/src/home-manager";
+
+  programs.zsh = {
+    enable = true;
+    # enableCompletion = true;
+    sessionVariables = {
+      NIX_PATH = "nixpkgs=/Users/acowley/src/nixpkgs";
+      TMPDIR = "/tmp";
+      # DICPATH = "/Users/acowley/.nix-profile/share/hunspell";
+      EMACS_SOCKET_NAME = "/tmp/emacs501/server";
+      # DYLD_LIBRARY_PATH = "${DYLD_LIBRARY_PATH}:/Applications/MATLAB/MATLAB_Runtime/v97/runtime/maci64:MR/v97/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v97/bin/maci64";
+      DYLD_LIBRARY_PATH = "/Applications/MATLAB/MATLAB_Runtime/v97/runtime/maci64:MR/v97/sys/os/maci64:/Applications/MATLAB/MATLAB_Runtime/v97/bin/maci64";
+    };
+    initExtra = ''
+      export TMPDIR=/tmp
+    '';
+  };
+
   programs.bash = {
+    # enable = pkgs.lib.mkForce false;
     sessionVariables = {
       NIX_PATH = "nixpkgs=/Users/acowley/src/nixpkgs";
       TMPDIR = "/tmp";

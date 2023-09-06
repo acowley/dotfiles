@@ -55,7 +55,18 @@ in {
     (no-uuid roboto "truetype" "ttf")
     roboto-mono
     roboto-slab
+    nixfmt
   ];
+
+  programs.zsh = {
+    sessionVariables = {
+      EDITOR = "emacsclient";
+      TMPDIR="$XDG_RUNTIME_DIR";
+    };
+    # initExtra = ''
+    #   export PATH=~/.nix-profile/bin:$PATH
+    # '';
+  };
 
   programs.bash = {
     enable = true;
@@ -89,11 +100,17 @@ in {
       #       source ''${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
       # fi
 
-    shellAliases = {
-      nrepl = "nix repl '<nixpkgs>'";
-      today = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d'";
-      yesterday = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d' -d '1 day ago'";
-    };
+    # shellAliases = {
+    #   nrepl = "nix repl '<nixpkgs>'";
+    #   today = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d'";
+    #   yesterday = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d' -d '1 day ago'";
+    # };
+  };
+
+  home.shellAliases = {
+    nrepl = "nix repl '<nixpkgs>'";
+    today = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d'";
+    yesterday = "${pkgs.lib.getBin pkgs.coreutils}/bin/date +'%Y-%m-%d' -d '1 day ago'";
   };
 
   fonts.fontconfig.enable = true;
