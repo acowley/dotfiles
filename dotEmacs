@@ -1349,6 +1349,8 @@ project's type."
                              (?B . (:foreground "slate gray"))
                              (?C . (:foreground "dim gray")))
 
+        ;; To avoid giving SVG previews foreground or background colors at all,
+        ;; one can set `:foreground' and `:background' to `nil' here.
         org-format-latex-options `(:foreground default
                                    :background default
                                    :scale ,(if (memq window-system '(mac ns))
@@ -1403,6 +1405,19 @@ project's type."
         org-refile-use-outline-path t
         org-refile-targets '((nil :maxlevel . 9))
         )
+
+  ;; Resize latex preview fragments along with the text size.
+  ;; From https://www.reddit.com/r/orgmode/comments/165zeuu/delighted_by_org_svg_preview/?ref=share&ref_source=link
+  ;; (defun my/resize-org-latex-overlays ()
+  ;;   (cl-loop for o in (car (overlay-lists))
+  ;;            if (eq (overlay-get o 'org-overlay-type) 'org-latex-overlay)
+  ;;            do (plist-put (cdr (overlay-get o 'display))
+  ;;                          :scale (expt text-scale-mode-step
+  ;;                                       text-scale-mode-amount))))
+  ;; :hook
+  ;; (org-mode . (lambda ()
+  ;;               (add-hook 'text-scale-mode-hook
+  ;;                         #'my/resize-org-latex-overlays nil t)))
 
   ;; org-mode supports inline map demarcated with \(...\) somewhat
   ;; better than dollar signs. But a dollar sign is easier to type, so
