@@ -3957,7 +3957,11 @@ sorted block."
   :config
   (add-hook 'magit-log-edit-mode-hook 'turn-on-auto-fill)
   (setq magit-last-seen-setup-instructions "1.4.0")
-  (setq magit-push-always-verify nil))
+  (setq magit-push-always-verify nil)
+  ;; Next two lines intended to speed performance with large repos from:
+  ;; https://discourse.nixos.org/t/how-to-handle-nixpkgs-as-a-very-large-git-repo/24614/11?u=acowley
+  (remove-hook 'magit-status-headers-hook 'magit-insert-tags-header)
+  (setq magit-revision-insert-related-refs nil))
 
 
 
