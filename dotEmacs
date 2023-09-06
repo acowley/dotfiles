@@ -4529,6 +4529,10 @@ sorted block."
   :config
   (setq xeft-directory "~/org"
         xeft-recursive t))
+;;; editorconfig
+(use-package editorconfig
+  ;; This is used in nixpkgs
+  :commands (editorconfig-mode))
 ;;; pyvenv
 (use-package pyvenv
   :commands (pyvenv-mode))
