@@ -3644,6 +3644,7 @@ sorted block."
 
 ;;; ccls
 (use-package ccls
+  :disabled t
   :defer t
   ;; :bind (:map flymake-mode-map
   ;;             ("M-n" . flymake-goto-next-error)
