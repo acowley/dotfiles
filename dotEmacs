@@ -4529,6 +4529,9 @@ sorted block."
   :config
   (setq xeft-directory "~/org"
         xeft-recursive t))
+;;; pyvenv
+(use-package pyvenv
+  :commands (pyvenv-mode))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
