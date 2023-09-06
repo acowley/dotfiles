@@ -3465,6 +3465,7 @@ predicate returns true."
          ("C-c M-." . nil)
          ("C-c C-d" . nil))
   :config
+  (require 'haskell)
   (require 'haskell-hoogle)
   (setq haskell-hoogle-command "hoogle")
   ;; (electric-indent-local-mode -1)
