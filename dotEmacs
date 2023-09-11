@@ -551,6 +551,13 @@ Haskell programs as it may be applied to all numbers in region."
 ;; Highlight matching parentheses
 (show-paren-mode 1)
 
+;; Speed up tramp from
+;; https://emacs.stackexchange.com/a/37855
+(setq vc-ignore-dir-regexp
+      (format "%s\\|%s"
+                    vc-ignore-dir-regexp
+                    tramp-file-name-regexp))
+
 ;; Display PDFs inline
 (add-to-list 'image-type-file-name-regexps '("\\.pdf\\'" . imagemagick))
 (add-to-list 'image-file-name-extensions "pdf")
