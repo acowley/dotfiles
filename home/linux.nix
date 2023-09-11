@@ -5,6 +5,31 @@
     afew
   ];
   home.homeDirectory = "/home/acowley";
+
+  programs.zsh = {
+    enable = true;
+    # enableCompletion = true;
+    sessionVariables = {
+      NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
+      # TMPDIR = "/tmp";
+      # EMACS_SOCKET_NAME = "/tmp/emacs501/server";
+    };
+    # initExtra = ''
+    #   export TMPDIR=/tmp
+    # '';
+    shellAliases = {
+      pbcopy = "xclip -selection c";
+      pbpaste = "xclip -selection clipboard -o";
+    };
+
+    initExtra = pkgs.lib.mkOrder 1501 ''
+      if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
+        source "${pkgs.bash-preexec}/share/bash/bash-preexec.sh"
+        eval "$(${pkgs.atuin}/bin/atuin init bash)"
+      fi
+    '';
+  };
+
   programs.bash = {
     ## This causes some trouble with atuin integration. The VTE
     ## settings end up in .bashrc after the atuin setup, resulting in
