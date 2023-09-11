@@ -4535,7 +4535,8 @@ sorted block."
   :commands (xeft)
   :config
   (setq xeft-directory "~/org"
-        xeft-recursive t))
+        xeft-recursive t
+        xeft-ignore-extension '("pdf" "png" "iimg")))
 ;;; editorconfig
 (use-package editorconfig
   ;; This is used in nixpkgs
