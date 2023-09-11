@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: elisp average of a list of numbers
+# key: avg
+# --
+(let ((xs '($1))) (/ (-sum xs) (length xs)))$0
