@@ -4191,6 +4191,21 @@ sorted block."
   :commands (dired-narrow)
   :bind (:map dired-mode-map
               ("/" . dired-narrow)))
+;;; diredfl
+;; Config for this and dired-git-info from
+;; https://xenodium.com/showhide-emacs-dired-details-in-style/
+(use-package dired
+  :hook (dired-mode . dired-hide-details-mode)
+  :config
+  ;; More colorful text
+  (use-package diredfl
+    :config
+    (diredfl-global-mode 1)))
+;;; dired-git-info
+(use-package dired-git-info
+  :commands (dired-git-info-mode)
+  :bind (:map dired-mode-map
+              (")" . dired-git-info-mode)))
 ;;; nix-buffer
 (use-package nix-buffer
   :defer t
