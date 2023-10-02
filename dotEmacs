@@ -459,6 +459,10 @@ Haskell programs as it may be applied to all numbers in region."
 ;;         mode-line-misc-info
 ;;         mode-line-end-spaces))
 
+(when (display-graphic-p)
+  (global-unset-key (kbd "C-z"))
+  (global-unset-key (kbd "C-x C-z")))
+
 (setq confirm-kill-emacs #'y-or-n-p)
 
 (setq frame-resize-pixelwise t)
