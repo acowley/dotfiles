@@ -4071,7 +4071,8 @@ sorted block."
         lsp-rust-analyzer-proc-macro-enable t
         lsp-rust-analyzer-diagnostics-disabled ["inactive-code"]
         lsp-rust-analyzer-server-format-inlay-hints t
-        lsp-rust-analyzer-server-display-inlay-hints t
+        lsp-inlay-hint-enable t
+        ;; lsp-rust-analyzer-server-display-inlay-hints t
         lsp-ui-sideline-show-code-actions t)
   (add-hook 'rustic-mode-hook #'my/rustic-hook))
 
