@@ -148,6 +148,17 @@ in {
 
   programs.gpg.enable = true;
 
+  # Emacs has problems with GnuPG 2.4.1 and 2.4.2
+  # https://www.reddit.com/r/emacs/comments/137r7j7/gnupg_241_encryption_issues_with_emacs_orgmode/
+  programs.gpg.package = pkgs.gnupg24.overrideAttrs (old: rec {
+    version = "2.4.0";
+    pname = "gnupg";
+    src = pkgs.fetchurl {
+      url = "mirror://gnupg/gnupg/${pname}-${version}.tar.bz2";
+      hash = "sha256-HXkVjdAdmSQx3S4/rLif2slxJ/iXhOosthDGAPsMFIM=";
+    };
+  });
+
   programs.password-store = {
     enable = true;
     package = pkgs.pass.withExtensions (exts: [ exts.pass-otp ]);
