@@ -60,6 +60,7 @@ in {
 
   programs.zsh = {
     enableAutosuggestions = true;
+    enableCompletion = true;
     sessionVariables = {
       EDITOR = "emacsclient";
       TMPDIR="$XDG_RUNTIME_DIR";
