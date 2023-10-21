@@ -28,6 +28,11 @@
         eval "$(${pkgs.atuin}/bin/atuin init bash)"
       fi
     '';
+
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" "bazel" "docker" ];
+    };
   };
 
   programs.bash = {
