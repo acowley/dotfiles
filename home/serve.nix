@@ -23,6 +23,7 @@ in
     buildifier
     myNixGLNvidia
     myNixGLIntel
+    yaml-language-server
   ];
 
   targets.genericLinux.enable = true;
