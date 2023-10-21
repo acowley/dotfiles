@@ -65,9 +65,9 @@ in {
       EDITOR = "emacsclient";
       TMPDIR="$XDG_RUNTIME_DIR";
     };
-    # initExtra = ''
-    #   export PATH=~/.nix-profile/bin:$PATH
-    # '';
+    initExtra = ''
+      export PATH=~/.nix-profile/bin:$PATH
+    '';
   };
 
   programs.bash = {
