@@ -1054,6 +1054,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (setq corfu-history-length 100))
 ;;; corfu-prescient
 (use-package corfu-prescient
+  :disabled
   :hook ((corfu-mode . corfu-prescient-mode)
          ;; (global-corfu-mode . corfu-prescient-mode)
          )
