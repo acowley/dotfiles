@@ -510,6 +510,8 @@ Haskell programs as it may be applied to all numbers in region."
               'electric-pair-conservative-inhibit)
 (electric-pair-mode +1)
 
+(add-hook 'prog-mode-hook #'electric-indent-mode)
+
 ;; Cause use-package to install packages automatically if not already
 ;; present
 ; (setq use-package-always-ensure t)
