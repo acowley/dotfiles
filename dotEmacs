@@ -502,12 +502,12 @@ Haskell programs as it may be applied to all numbers in region."
           (lambda () (electric-quote-mode -1)))
 (electric-quote-mode -1)
 
-;; Address an issue where quote insertion goes wrong. The symptom I
-;; was seeing was that when I typed a double quote character, no
-;; paired character was inserted. Then when I closed the quote, a
-;; second character would be inserted.
-(setq-default electric-pair-inhibit-predicate
-              'electric-pair-conservative-inhibit)
+;; This was causing some odd behavior for me where the first quote I
+;; hit wouldn't create a closing quote, then when I manually added the
+;; closing quote electric-pair-mode would add a third quote which I'd
+;; have to delete!
+(setq electric-pair-preserve-balance nil)
+
 (electric-pair-mode +1)
 
 (add-hook 'prog-mode-hook #'electric-indent-mode)
