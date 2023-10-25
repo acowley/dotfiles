@@ -501,6 +501,13 @@ Haskell programs as it may be applied to all numbers in region."
 (add-hook 'after-change-major-mode-hook
           (lambda () (electric-quote-mode -1)))
 (electric-quote-mode -1)
+
+;; Address an issue where quote insertion goes wrong. The symptom I
+;; was seeing was that when I typed a double quote character, no
+;; paired character was inserted. Then when I closed the quote, a
+;; second character would be inserted.
+(setq-default electric-pair-inhibit-predicate
+              'electric-pair-conservative-inhibit)
 (electric-pair-mode +1)
 
 ;; Cause use-package to install packages automatically if not already
