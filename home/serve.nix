@@ -27,6 +27,9 @@ in
   ];
 
   targets.genericLinux.enable = true;
+  home.sessionVariables = {
+    NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
+  };
 
   programs.bash = {
     bashrcExtra = ''
