@@ -10,7 +10,7 @@
     enable = true;
     # enableCompletion = true;
     sessionVariables = {
-      NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
+      # NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
       # TMPDIR = "/tmp";
       # EMACS_SOCKET_NAME = "/tmp/emacs501/server";
     };
@@ -40,9 +40,10 @@
     ## settings end up in .bashrc after the atuin setup, resulting in
     ## the atuin history database not being updated as expected.
     # enableVteIntegration = true;
-    sessionVariables = {
-      NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
-    };
+
+    # sessionVariables = {
+    #   NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
+    # };
 
     shellAliases = {
       pbcopy = "xclip -selection c";
