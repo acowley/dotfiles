@@ -3578,6 +3578,7 @@ sorted block."
   ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
   (lsp-face-highlight-textual ((t (:background "gold4"))))
   :config
+  (setq lsp-pylsp-plugins-yapf-enabled t)
   (advice-add 'lsp :before #'direnv-update-environment)
   (setq lsp-prefer-flymake nil
         ;; lsp-prefer-capf t
