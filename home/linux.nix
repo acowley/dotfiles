@@ -29,10 +29,10 @@
       fi
     '';
 
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" "bazel" "docker" ];
-    };
+    # oh-my-zsh = {
+    #   enable = true;
+    #   plugins = [ "git" "bazel" "docker" ];
+    # };
   };
 
   programs.bash = {
