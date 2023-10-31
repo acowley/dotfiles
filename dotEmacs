@@ -4154,12 +4154,15 @@ sorted block."
               ("DEL" . nil))
   :init
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-  (add-hook 'ielm-mode-hook #'paredit-mode)
-
-  ;; Don't override ielm-return!
-  ;; See: https://www.n16f.net/blog/making-ielm-more-comfortable/
-  (define-key paredit-mode-map (kbd "RET") nil)
-  (define-key paredit-mode-map (kbd "C-j") 'paredit-newline))
+  (defun my/ielm-hook ()
+    (paredit-mode 1)
+    ;; Don't override ielm-return!
+    ;; See: https://www.n16f.net/blog/making-ielm-more-comfortable/
+    (define-key paredit-mode-map (kbd "RET") nil)
+    (define-key paredit-mode-map (kbd "C-j") 'paredit-newline))
+  (add-hook 'ielm-mode-hook #'my/ielm-hook)
+  ;; (add-hook 'ielm-mode-hook #'paredit-mode)
+  )
 
 ;;; PlatformIO
 ;; From github user @pashky
