@@ -747,7 +747,8 @@ end tell" uri)))
 ;; (customize-set-variable pixel-scroll-precision-mode t)
 
 ;; Kills the whole line (incuding the newline) if at column zero.
-(setq kill-whole-line t)
+;; Note: this is killing the whole line even when not at column zero.
+;; (setq kill-whole-line t)
 
 ;; Add Byte as a unit to `calc`
 ;; From /u/politza https://www.reddit.com/r/emacs/comments/31xezm/common_byte_units_in_calc/cq6ef06?utm_source=share&utm_medium=web2x
