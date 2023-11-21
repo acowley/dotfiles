@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable, ... }:
 let no-uuid = drv: font-dir: extension: pkgs.stdenv.mkDerivation {
       name = "my-${drv.name}";
       builder = pkgs.writeText "builder.sh" ''
@@ -172,12 +172,14 @@ in {
   programs.atuin = {
     enable = true;
     enableBashIntegration = false;
+    package = unstable.atuin;
     settings = {
       auto_sync = false;
       search_mode = "skim";
       update_check = false;
       filter_mode_shell_up_key_binding = "session";
       show_preview = true;
+      enter_accept = true;
     };
   };
 
