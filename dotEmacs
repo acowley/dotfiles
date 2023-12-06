@@ -4591,7 +4591,12 @@ sorted block."
   :commands (pyvenv-mode))
 ;;; surround
 (use-package surround
-  :bind-keymap ("C-c s" . surround-keymap))
+  :defer nil
+  :after god-mode
+  :bind-keymap ("C-c s" . surround-keymap)
+  :config
+  (require 'surround)
+  (bind-key "C-c s" surround-keymap god-local-mode-map))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
