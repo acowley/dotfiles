@@ -4629,7 +4629,7 @@ sorted block."
   (kagi-api-token (lambda () (password-store-get "kagi-api")))
   (kagi-summarizer-engine "cecil")
   (kagi-summarize-default-language "EN")
-  (kagi-summarize-cache t))
+  (kagi-summarize-cache nil))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
