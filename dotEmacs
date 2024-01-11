@@ -4597,6 +4597,39 @@ sorted block."
   :config
   (require 'surround)
   (bind-key "C-c s" surround-keymap god-local-mode-map))
+;;; password-store
+(use-package password-store
+  :commands
+  password-store-edit
+  password-store-get
+  password-store-get-field
+  password-store-url
+  password-store-clear
+  password-store-rename
+  password-store-insert
+  password-store-generate
+  password-store-generate-no-symbols
+  password-store-copy
+  password-store-copy-field)
+(use-package password-store-otp
+  :commands
+  password-store-otp-token-copy
+  password-store-otp-uri-copy
+  password-store-otp-insert
+  password-store-otp-append
+  password-store-otp-append-from-image)
+;;; kagi
+(use-package kagi
+  :commands
+  kagi-fastgpt-shell
+  kagi-summarize-buffer
+  kagi-summarize-region
+  kagi-summarize-url
+  :custom
+  (kagi-api-token (lambda () (password-store-get "kagi-api")))
+  (kagi-summarizer-engine "cecil")
+  (kagi-summarize-default-language "EN")
+  (kagi-summarize-cache t))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
