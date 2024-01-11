@@ -4224,13 +4224,13 @@ sorted block."
 ;;; diredfl
 ;; Config for this and dired-git-info from
 ;; https://xenodium.com/showhide-emacs-dired-details-in-style/
-(use-package dired
-  :hook (dired-mode . dired-hide-details-mode)
-  :config
-  ;; More colorful text
-  (use-package diredfl
-    :config
-    (diredfl-global-mode 1)))
+;; (use-package dired
+;;   :hook (dired-mode . dired-hide-details-mode)
+;;   :config
+;;   ;; More colorful text
+;;   (use-package diredfl
+;;     :config
+;;     (diredfl-global-mode 1)))
 ;;; dired-git-info
 (use-package dired-git-info
   :commands (dired-git-info-mode)
