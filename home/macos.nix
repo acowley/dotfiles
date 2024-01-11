@@ -13,6 +13,7 @@
     ledger
     mosh
     tarsnap
+    emacs-lsp-booster
   ];
   home.homeDirectory = "/Users/acowley";
   home.sessionPath = [
