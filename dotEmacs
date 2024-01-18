@@ -4662,6 +4662,25 @@ sorted block."
   (kagi-summarizer-engine "cecil")
   (kagi-summarize-default-language "EN")
   (kagi-summarize-cache nil))
+;;; org-present
+(use-package org-present
+  :commands
+  org-present
+  org-present-narrow)
+;;; visual-fill-column
+(use-package visual-fill-column
+  :commands (visual-fill-column-mode visual-line-mode)
+  ;; Based on https://systemcrafters.net/emacs-tips/presentations-with-org-present/
+  :init
+  (defun my/org-present-start ()
+    (visual-fill-column-mode 1))
+  (defun my/org-present-end ()
+    (visual-fill-column-mode 0))
+  :hook ((org-present-mode . my/org-present-start)
+         (org-present-mode-quit . my/org-present-end))
+  :config
+  (setq visual-fill-column-width 110
+        visual-fill-column-center-text t))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
