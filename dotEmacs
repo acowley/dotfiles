@@ -4388,7 +4388,10 @@ sorted block."
   :mode (rx ".plantuml" eos)
   :commands (plantuml-mode))
 ;;; ESS (R)
-(use-package ess-site :mode (("\\.[rR]\\'" . R-mode)) :commands R)
+(use-package ess-site :mode (("\\.[rR]\\'" . R-mode))
+  :commands R
+  :config
+  (setq ess-indent-level 2))
 ;;; docker
 ;; (use-package docker :defer t)
 (use-package dockerfile-mode
