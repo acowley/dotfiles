@@ -4391,7 +4391,8 @@ sorted block."
 (use-package ess-site :mode (("\\.[rR]\\'" . R-mode))
   :commands R
   :config
-  (setq ess-indent-level 2))
+  (setq ess-indent-offset 2)
+  (setq-local ess-indent-offset 2))
 ;;; docker
 ;; (use-package docker :defer t)
 (use-package dockerfile-mode
