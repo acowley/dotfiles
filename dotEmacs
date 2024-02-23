@@ -2530,7 +2530,9 @@ entire source file is loaded."
 ;;;; org-tidy
 (use-package org-tidy
   :commands (org-tidy-mode org-tidy-toggle)
-  :hook (org-mode . org-tidy-mode))
+  ;;; This slows down the loading of large org-mode files
+  ;; :hook (org-mode . org-tidy-mode)
+  )
 
 ;;; alert
 (use-package alert
