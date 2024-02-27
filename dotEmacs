@@ -973,6 +973,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   )
 ;;; prescient
 (use-package prescient
+  :defer nil
   :custom (company-prescient-sort-length-enable nil)
   :commands (prescient-persist-mode)
   :hook (company-mode . prescient-persist-mode)
@@ -1072,6 +1073,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (savehist-mode)
   (add-to-list 'savehist-additional-variables 'corfu-history))
 (use-package vertico-prescient
+  :commands (vertico-prescient-mode)
   :config
   (vertico-prescient-mode))
 ;;; consult
@@ -2526,7 +2528,11 @@ entire source file is loaded."
 
 ;;;; org-ql
 (use-package org-ql
-  :commands (org-ql-query org-ql-search org-ql-select org-ql))
+  :commands (org-ql-query org-ql-search org-ql-find)
+  :config
+  (require 'org-ql-find)
+  (require 'org-ql-search)
+  (require 'org-ql-view))
 ;;;; org-tidy
 (use-package org-tidy
   :commands (org-tidy-mode org-tidy-toggle)
