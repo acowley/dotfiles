@@ -1177,8 +1177,9 @@ Make sure to put cursor on date heading that contains a list of urls."
   :bind (("C-S-e" . embark-dwim) 
          ("C-S-a" . embark-act)
          :map minibuffer-local-map
-              ("C-." . embark-act)
-              ("C-h B" . embark-bindings))
+         ("C-." . embark-export)
+         ("C->" . embark-act)
+         ("C-h B" . embark-bindings))
   :config
   (defun my/occur-edit-hook ()
     (when (< (count-windows) 2)
