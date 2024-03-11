@@ -1027,7 +1027,8 @@ Make sure to put cursor on date heading that contains a list of urls."
         orderless-component-separator #'orderless-escapable-split-on-space
 
         ;; Configure the first word as flex filtered
-        orderless-style-dispatchers (list #'my/orderless-dispatch-flex-first)))
+        ;; orderless-style-dispatchers (list #'my/orderless-dispatch-flex-first)
+        ))
 ;;; cape
 (use-package cape
   :commands (cape-capf-buster))
