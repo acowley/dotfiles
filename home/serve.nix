@@ -24,6 +24,7 @@ in
     myNixGLNvidia
     myNixGLIntel
     yaml-language-server
+    tmux
   ];
 
   targets.genericLinux.enable = true;
