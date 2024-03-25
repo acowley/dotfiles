@@ -153,14 +153,14 @@ in {
   # Emacs has problems with GnuPG 2.4.1 and 2.4.2
   # https://www.reddit.com/r/emacs/comments/137r7j7/gnupg_241_encryption_issues_with_emacs_orgmode/
   # I expect 2.4.4 to resolve this problem: https://dev.gnupg.org/T6481#171399
-  programs.gpg.package = pkgs.gnupg24.overrideAttrs (old: rec {
-    version = "2.4.0";
-    pname = "gnupg";
-    src = pkgs.fetchurl {
-      url = "mirror://gnupg/gnupg/${pname}-${version}.tar.bz2";
-      hash = "sha256-HXkVjdAdmSQx3S4/rLif2slxJ/iXhOosthDGAPsMFIM=";
-    };
-  });
+  # programs.gpg.package = pkgs.gnupg24.overrideAttrs (old: rec {
+  #   version = "2.4.0";
+  #   pname = "gnupg";
+  #   src = pkgs.fetchurl {
+  #     url = "mirror://gnupg/gnupg/${pname}-${version}.tar.bz2";
+  #     hash = "sha256-HXkVjdAdmSQx3S4/rLif2slxJ/iXhOosthDGAPsMFIM=";
+  #   };
+  # });
 
   programs.password-store = {
     enable = true;
