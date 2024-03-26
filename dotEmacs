@@ -4700,6 +4700,18 @@ sorted block."
   :config
   (setq visual-fill-column-width 110
         visual-fill-column-center-text t))
+;;; easy-kill
+(use-package easy-kill
+  :config
+  ;; This enables
+  ;; M-w w: save word at point
+  ;; M-w s: save sexp at point
+  ;; M-w l: save list at point (enclosing sexp)
+  ;; M-w d: save defun at point
+  ;; M-w D: save current defun name
+  ;; M-w f: save file at point
+  ;; M-w b: save buffer-file-name or default-directory. - changes the kill to the directory name, + to full name and 0 to basename.
+  (global-set-key [remap kill-ring-save] 'easy-kill))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
