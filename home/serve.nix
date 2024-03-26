@@ -25,6 +25,7 @@ in
     myNixGLIntel
     yaml-language-server
     tmux
+    emacs-lsp-booster
   ];
 
   targets.genericLinux.enable = true;
