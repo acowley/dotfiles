@@ -1889,6 +1889,9 @@ This function is called by `org-babel-execute-src-block'."
     :config
     (when (memq window-system '(mac ns))
       (setq org-babel-C++-compiler "clang++")))
+  (use-package ob-http
+    :defer t
+    :commands (org-babel-execute:http org-babel-expand-body:http))
 
   ;; Syntax highlight dot source blocks
   ; (set-alist 'org-src-lang-modes "dot" 'graphviz-dot)
