@@ -508,6 +508,16 @@ Haskell programs as it may be applied to all numbers in region."
 ;; have to delete!
 (setq electric-pair-preserve-balance nil)
 
+;; I had this problem where if I have a line that starts with a double
+;; quote character, and I want to insert a new line before it that
+;; also starts with a double quote, when I type the new double quote
+;; character, point moves to just past the starting double quote on
+;; the next line. This is unhelpful in programming situations.
+(setq electric-pair-skip-self
+      (lambda (c)
+        (unless (and (char-equal c ?\") (eolp))
+          (electric-pair-default-skip-self c))))
+
 (electric-pair-mode +1)
 
 (add-hook 'prog-mode-hook #'electric-indent-mode)
