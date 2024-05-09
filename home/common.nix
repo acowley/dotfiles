@@ -21,6 +21,7 @@ in {
     jq
     (sqlite.override { interactive = true; })
     mylatex
+    pikchr
     ripgrep
     tree
     libqalculate
