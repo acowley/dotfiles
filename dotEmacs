@@ -1185,13 +1185,15 @@ Make sure to put cursor on date heading that contains a list of urls."
 
 ;;; embark
 (use-package embark
-  :commands (embark-act embark-bindings embark-export)
+  :commands (embark-act embark-bindings embark-export embark-prefix-help-command)
   :bind (("C-S-e" . embark-dwim) 
          ("C-S-a" . embark-act)
          :map minibuffer-local-map
          ("C-c C-e" . embark-export)
          ("C-." . embark-act)
          ("C-h B" . embark-bindings))
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
   :config
   (defun my/occur-edit-hook ()
     (when (< (count-windows) 2)
@@ -1204,10 +1206,10 @@ Make sure to put cursor on date heading that contains a list of urls."
   (add-hook 'occur-edit-mode-hook #'my/occur-edit-hook)
   (advice-add 'occur-cease-edit :after #'my/occur-edit-cease)
   (setq embark-action-indicator
-      (lambda (map _target)
-        (which-key--show-keymap "Embark" map nil nil 'no-paging)
-        #'which-key--hide-popup-ignore-command)
-      embark-become-indicator embark-action-indicator))
+        (lambda (map _target)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
   :after (embark consult)
@@ -3951,8 +3953,8 @@ sorted block."
                    (rx (or "__global__" "__device__" "__host__" "__kernel") space)
                    "\\([a-zA-Z0-9_*]+[ \t]+\\)"	; more than 3 tokens, right?
                    "\\([a-zA-Z0-9_*]+[ \t]+\\)?"
-                   "\\([*&]+[ \t]*\\)?"			; Pointer.
-                   "\\([a-zA-Z0-9_*]+\\)[ \t]*("	; Name.
+                   "\\([*&]+[ \t]*\\)?"          ; Pointer.
+                   "\\([a-zA-Z0-9_*]+\\)[ \t]*(" ; Name.
                    ) 4))
   (setq imenu-create-index-function #'my/merged-imenu)
   ;; (helm-gtags-mode 1)
