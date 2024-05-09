@@ -56,11 +56,12 @@ in {
     (no-uuid roboto "truetype" "ttf")
     roboto-mono
     roboto-slab
-    nixfmt
+    nixfmt-classic
   ];
 
   programs.zsh = {
-    enableAutosuggestions = true;
+    # enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     sessionVariables = {
       EDITOR = "emacsclient";
