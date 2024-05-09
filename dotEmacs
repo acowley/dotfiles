@@ -4726,6 +4726,10 @@ sorted block."
   ;; M-w f: save file at point
   ;; M-w b: save buffer-file-name or default-directory. - changes the kill to the directory name, + to full name and 0 to basename.
   (global-set-key [remap kill-ring-save] 'easy-kill))
+;;; pikchr-mode
+(use-package pikchr-mode
+  :mode ("\\.pikchr\\'" . pikchr-mode)
+  :commands (pikchr-mode org-babel-execute:pikchr))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
