@@ -1107,6 +1107,7 @@ Make sure to put cursor on date heading that contains a list of urls."
   (require 'consult-imenu)
   (setq consult-project-root-function #'projectile-project-root
         consult-async-input-debounce 0.1
+        consult-narrow-key "<"
         consult-locate-args (if (memq window-system '(mac ns))
                                 "mdfind -onlyin /Users/acowley -name"
                               "/run/wrappers/bin/locate -e -A --regex"))
