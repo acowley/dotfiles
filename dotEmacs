@@ -4733,6 +4733,21 @@ sorted block."
 (use-package pikchr-mode
   :mode ("\\.pikchr\\'" . pikchr-mode)
   :commands (pikchr-mode org-babel-execute:pikchr))
+;;; macro-slides
+(use-package macro-slides
+  :commands (ms-start)
+  ;; :custom (ms-breadcrumb-separator " ⊢ ")
+  :custom (ms-breadcrumb-separator " ⮑ "))
+(use-package master-of-ceremonies
+  :after macro-slides
+  :commands (mc-live-present-mode mc-present-mode)
+  :config
+  (defun my/macro-slides-start-hook ()
+    (mc-hide-markup-mode))
+  (defun my/macro-slides-narrow-hook ()
+    (mc-hide-refresh))
+  (add-hook 'ms-start-hook #'my/macro-slides-start-hook)
+  (add-hook 'ms-narrow-hook #'my/macro-slides-narrow-hook))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
