@@ -21,6 +21,7 @@ in {
     jq
     (sqlite.override { interactive = true; })
     mylatex
+    pdf2svg
     pikchr
     ripgrep
     tree
