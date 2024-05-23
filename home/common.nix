@@ -184,6 +184,7 @@ in {
       filter_mode_shell_up_key_binding = "session";
       show_preview = true;
       enter_accept = true;
+      smart_sort = true;
     };
   };
 
