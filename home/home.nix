@@ -11,6 +11,8 @@
 
     # Having this available everywhere is handy for working with YAML files
     yaml-language-server
+    emacs-lsp-booster
+    wl-clipboard
   ];
 
   home.sessionVariables = {
