@@ -632,14 +632,18 @@ Haskell programs as it may be applied to all numbers in region."
 
 (put 'dired-find-alternate-file 'disabled nil)
 (setq wdired-allow-to-change-permissions t)
-(setq dired-listing-switches "-alh"
+(use-package dired
+  :config
+  (setq dired-listing-switches "-alh"
       dired-du-size-format t
       dired-dwim-target t)
+  (add-hook 'dired-mode-hook (lambda () (recentf-add-file default-directory))))
+
 
 ;; When `'which-function` output is too long, it can interfere with
 ;; modeline rendering
 (defun truncate-function-name (s)
-"Truncates a string to 20 characters. If the name has one or more
+  "Truncates a string to 20 characters. If the name has one or more
 double colons (\"::\") in it, the part of the string after the
 last double colon is truncated to 20 characters."
   (unless (null s)
@@ -664,7 +668,8 @@ last double colon is truncated to 20 characters."
   (setq
    ;; This is an attempt to prevent recentf (that keeps track of recent
    ;; files) from stat'ing remote files.
-   recentf-keep '(file-remote-p file-readable-p)
+   ;; recentf-keep '(file-remote-p file-readable-p)
+   recentf-keep '(recentf-keep-default-predicate)
    recentf-exclude
    `("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'"
      ,(regexp-quote "/.emacs.d/elpa/")
