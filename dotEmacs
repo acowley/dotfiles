@@ -566,6 +566,9 @@ Haskell programs as it may be applied to all numbers in region."
 (global-set-key (kbd "C-/") #'undo-only)
 (global-set-key (kbd "C-_") #'undo-redo)
 
+;; More convenient binding for going to a line
+(global-set-key (kbd "C-c g") #'goto-line)
+
 ;; Use Shift+ArrowKey to move the cursor between windows.
 ;; This means you lose shift select.
 (windmove-default-keybindings)
