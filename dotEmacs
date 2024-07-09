@@ -2566,7 +2566,10 @@ entire source file is loaded."
   ;;; This slows down the loading of large org-mode files
   ;; :hook (org-mode . org-tidy-mode)
   )
-
+;;;; org-bookmark-heading
+(use-package org-bookmark-heading
+  :after org
+  :defer nil)
 ;;; alert
 (use-package alert
   :commands alert
