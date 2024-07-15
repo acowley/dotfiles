@@ -506,7 +506,12 @@ Haskell programs as it may be applied to all numbers in region."
 ;; hit wouldn't create a closing quote, then when I manually added the
 ;; closing quote electric-pair-mode would add a third quote which I'd
 ;; have to delete!
-(setq electric-pair-preserve-balance nil)
+(setq electric-pair-preserve-balance nil
+      ;; A non-nil value can make it hard to insert a quote on a
+      ;; newline if the first character of the next line is a
+      ;; quotation mark.
+      electric-pair-skip-whitespace nil)
+
 
 ;; I had this problem where if I have a line that starts with a double
 ;; quote character, and I want to insert a new line before it that
