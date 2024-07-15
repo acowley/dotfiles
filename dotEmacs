@@ -4018,7 +4018,7 @@ sorted block."
 
 ;;; python
 (defun ac/python-hook ()
-  (setq python-indent-offset 2))
+  (setq python-indent-offset 4))
 
 (add-hook 'python-mode-hook #'ac/python-hook)
 
