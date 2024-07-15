@@ -1773,7 +1773,9 @@ evaluation may begin anew."
     :commands (org-babel-execute:sh
                org-babel-expand-body:sh
                org-babel-execute:bash
-               org-babel-expand-body:bash))
+               org-babel-expand-body:bash
+               org-babel-execute:shell
+               org-babel-expand-body:shell))
   (use-package ob-haskell
     :defer t
     ; :ensure org-plus-contrib
