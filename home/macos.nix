@@ -30,7 +30,7 @@
   home.sessionPath = [
     "/opt/homebrew/bin"
   ];
-  programs.home-manager.path = "/Users/acowley/src/home-manager";
+  # programs.home-manager.path = "/Users/acowley/src/home-manager";
 
   programs.zsh = {
     enable = true;
