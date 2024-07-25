@@ -43,7 +43,8 @@
                 ];
             };
             modules = [./common.nix] ++ extraImports;
-            extraSpecialArgs = { unstable = import unstable { inherit system; }; };
+            extraSpecialArgs = { unstable = import unstable { inherit system; };
+                                 inherit nixpkgs;};
             # configuration = { pkgs, lib, ... }: {
             #   imports = [ ./common.nix ] ++ extraImports;
             #   # manual.manpages.enable = false;

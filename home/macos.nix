@@ -1,6 +1,17 @@
 {unstable}:
-{ config, pkgs, ... }:
+{ config, pkgs, nixpkgs, ... }:
 {
+  # Add a flake named "n" to the registry for use with, e.g., `nix run n#package`
+  # https://discourse.nixos.org/t/how-to-make-nix-shell-use-my-home-manager-flake-input/29957/6
+  nix.registry = {
+    n = {
+      from = {
+        type = "indirect";
+        id = "n";
+      };
+      flake = nixpkgs;
+    };
+  };
   home.packages = with pkgs; [
     ffmpeg-full
     # hunspell
@@ -67,7 +78,6 @@
       fi
     '';
   };
-  programs.atuin.package = unstable.atuin;
 
   home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /Users/acowley/dotfiles/dotEmacs;
   home.file.".emacs.d/early-init.el".source = config.lib.file.mkOutOfStoreSymlink /Users/acowley/dotfiles/early-init.el;
