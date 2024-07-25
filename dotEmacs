@@ -1077,7 +1077,25 @@ Make sure to put cursor on date heading that contains a list of urls."
   (global-corfu-mode 1)
   (require 'corfu-history)
   (corfu-history-mode 1)
-  (setq corfu-history-length 100))
+  (setq corfu-history-length 100)
+
+  ;; Combine sorting from lsp-mode and corfu-sort-function.
+  ;; The intention is to incorporate recency better than what
+  ;; lsp-mode does out of the box.
+  ;; From the corfu wiki:
+  ;; https://github.com/minad/corfu/wiki#combined-sorting
+  (defun my-corfu-combined-sort (candidates)
+    "Sort CANDIDATES using both display-sort-function and corfu-sort-function."
+    (let ((candidates
+           (let ((display-sort-func (corfu--metadata-get 'display-sort-function)))
+             (if display-sort-func
+                 (funcall display-sort-func candidates)
+               candidates))))
+      (if corfu-sort-function
+          (funcall corfu-sort-function candidates)
+        candidates)))
+
+  (setq corfu-sort-override-function #'my-corfu-combined-sort))
 ;;; corfu-prescient
 (use-package corfu-prescient
   :disabled
