@@ -576,8 +576,8 @@ Haskell programs as it may be applied to all numbers in region."
 
 ;; Use Shift+ArrowKey to move the cursor between windows.
 ;; This means you lose shift select.
-(windmove-default-keybindings)
-(setq windmove-wrap-around t)
+;; (windmove-default-keybindings)
+;; (setq windmove-wrap-around t)
 
 ;; Highlight matching parentheses
 (show-paren-mode 1)
@@ -1362,11 +1362,12 @@ project's type."
          ("C-c c" . org-capture)
          ;; Don't fight the bindings that use
          ;; shift-arrow to move focus between windows.
-         :map org-mode-map
-         ("S-<left>" . nil)
-         ("S-<right>" . nil)
-         ("S-<up>" . nil)
-         ("S-<down>" . nil))
+         ;; :map org-mode-map
+         ;; ("S-<left>" . nil)
+         ;; ("S-<right>" . nil)
+         ;; ("S-<up>" . nil)
+         ;; ("S-<down>" . nil)
+         )
   ;; :custom-face
   ;; (org-level-1 ((t (:foundry "UKWN" :family "Yanone Kaffeesatz" :weight light :height 250))))
   ;; (org-level-1 ((t (:font "Yanone Kaffeesatz Light:style=Light,Regular" :weight light :height 250))))
