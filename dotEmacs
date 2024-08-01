@@ -4773,10 +4773,10 @@ sorted block."
   :mode ("\\.pikchr\\'" . pikchr-mode)
   :commands (pikchr-mode org-babel-execute:pikchr))
 ;;; casual
-(use-package casual
+(use-package casual-calc
   :after calc
-  :commands (casual-main-menu)
-  :bind (:map calc-mode-map ("C-o" . casual-main-menu)))
+  :commands (casual-calc-tmenu)
+  :bind (:map calc-mode-map ("C-o" . casual-calc-tmenu)))
 ;;; macro-slides
 (use-package macro-slides
   :commands (ms-start)
