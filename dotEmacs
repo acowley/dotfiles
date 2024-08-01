@@ -4006,10 +4006,8 @@ sorted block."
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-(use-package opencl-mode 
-  :mode "\\.cl\\'"
-  :config
-  (add-hook 'opencl-mode-hook #'electric-indent-local-mode))
+(use-package opencl-c-mode
+  :mode "\\.cl\\'")
 
 ;;; mixed-pitch
 (use-package mixed-pitch
