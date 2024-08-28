@@ -327,6 +327,10 @@ dash) transpose chunks around that. Otherwise transpose sexps."
       (save-excursion
         (insert lhs)))))
 
+(defun my/today ()
+    "Return a string with today's date in Year-Month-Day (YYYY-MM-DD) format."
+    (format-time-string "%Y-%m-%d" (current-time)))
+
 (defun insert-include-guard ()
   "Insert a C/C++-style ‘#ifndef‘ include guard in the current buffer."
   (interactive)
