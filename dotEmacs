@@ -3034,26 +3034,37 @@ timestamp."
 ;;;; Additional SMTP Accounts
   ;; From http://varunbpatil.github.io/2013/08/19/eom/#.VQtWSFyCZSU
   (defvar my-notmuch-account-alist
-    '(("gmail"
+    `(("gmail"
        (user-mail-address "acowley@gmail.com")
-       (smtpmail-default-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-service 587)
-       (smtpmail-stream-type starttls)
-       (smtpmail-smtp-user "acowley@gmail.com")
-       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@gmail.com" nil)))
-       (smtpmail-auth-credentials
-        '(("smtp.gmail.com" 587 "acowley@gmail.com" nil))))
+       (sendmail-program "gmi")
+       (message-sendmail-extra-arguments ("send" "--quiet" "-t" "-C" "~/.mail/account.gmail"))
+       (notmuch-fcc-dirs nil)
+       (message-send-mail-function ,#'message-send-mail-with-sendmail)
+       ;; (smtpmail-default-smtp-server "smtp.gmail.com")
+       ;; (smtpmail-smtp-server "smtp.gmail.com")
+       ;; (smtpmail-smtp-service 587)
+       ;; (smtpmail-stream-type starttls)
+       ;; (smtpmail-smtp-user "acowley@gmail.com")
+       ;; (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "acowley@gmail.com" nil)))
+       ;; (smtpmail-auth-credentials
+       ;;  '(("smtp.gmail.com" 587 "acowley@gmail.com" nil)))
+       )
       ("serve"
        (user-mail-address "anthony.cowley@serverobotics.com")
-       (smtpmail-default-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-server "smtp.gmail.com")
-       (smtpmail-smtp-service 587)
-       (smtpmail-stream-type starttls)
-       (smtpmail-smtp-user "anthony.cowley@serverobotics.com")
-       (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "anthony.cowley@serverobotics.com" nil)))
-       (smtpmail-auth-credentials
-        '(("smtp.gmail.com" 587 "anthony.cowley@serverobotics.com" nil))))
+       (sendmail-program "gmi")
+       (message-sendmail-extra-arguments ("send" "--quiet" "-t" "-C" "~/.mail/account.serve"))
+       (notmuch-fcc-dirs nil)
+       ;; (send-mail-function 'message-send-mail-with-sendmail)
+       (message-send-mail-function ,#'message-send-mail-with-sendmail)
+       ;; (smtpmail-default-smtp-server "smtp.gmail.com")
+       ;; (smtpmail-smtp-server "smtp.gmail.com")
+       ;; (smtpmail-smtp-service 587)
+       ;; (smtpmail-stream-type starttls)
+       ;; (smtpmail-smtp-user "anthony.cowley@serverobotics.com")
+       ;; (smtpmail-starttls-credentials '(("smtp.gmail.com" 587 "anthony.cowley@serverobotics.com" nil)))
+       ;; (smtpmail-auth-credentials
+       ;;  '(("smtp.gmail.com" 587 "anthony.cowley@serverobotics.com" nil)))
+       )
       ("upenn"
        (user-mail-address "acowley@seas.upenn.edu")
        (smtpmail-default-smtp-server "smtp.gmail.com")
