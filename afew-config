@@ -44,7 +44,7 @@ tags = +wgpu
 [HeaderMatchingFilter.6]
 header = From
 pattern = (evesham.k12.nj.us|classroom.google.com)
-tags = +School;+Owen
+tags = +school;+owen
 [HeaderMatchingFilter.7]
 header = From
 pattern = groq.com
