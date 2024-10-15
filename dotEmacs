@@ -1564,6 +1564,22 @@ project's type."
       (color-org-header (rx "[#B]") "black" "slate gray")
       (color-org-header (rx "[#C]") "black" "dim gray")))
 
+  ;; Weekly review of completed tasks
+  ;; Adapted from https://emacs.stackexchange.com/a/53007
+  (with-eval-after-load 'org-agenda
+    (add-to-list 'org-agenda-custom-commands
+                 '("W" "Weekly review"
+                   agenda ""
+                   ((org-agenda-start-day "-8d")
+                    (org-agenda-span 8)
+                    (org-agenda-search-view-max-outline-level 2)
+                    (org-agenda-start-on-weekday nil)
+                    (org-agenda-start-with-log-mode '(closed))
+                    (org-agenda-skip-function
+                     '(org-agenda-skip-entry-if 'notregexp ;; "^\\*\\* DONE "
+                                                (rx (seq line-start (+ "*") " DONE"))
+                                                ))))))
+
   (add-hook 'org-agenda-finalize-hook #'my-agenda-colors)
 
   (setq org-image-actual-width '(800))
