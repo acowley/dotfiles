@@ -830,15 +830,16 @@ end tell" uri)))
 ;; dictionaries hunspell is using. The "personal dictionary" is just a
 ;; word list.
 (when (memq window-system '(mac ns))
-    (progn
-      (setq ispell-program-name "hunspell")
-      (setq ispell-local-dictionary "en_US")
-      (setq ispell-personal-dictionary "~/.hunspell_en_US")))
+  (progn
+    (setq ispell-program-name "hunspell")
+    (setq ispell-local-dictionary "en_US")
+    (setq ispell-personal-dictionary "~/.hunspell_en_US")))
 ;; (setq ispell-local-dictionary-alist
 ;;       '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil
 ;;          ("-d" "en_US"))
 ;;         nil utf-8))
 ;(setq ispell-extra-args '("-a" "-i" "utf-8"))
+(add-to-list 'process-coding-system-alist '("hunspell" . utf-8))
 
 ;; hunspell hacking to get ispell to actually use utf-8
 ;; See: http://stackoverflow.com/questions/3961119/working-setup-for-hunspell-in-emacs
