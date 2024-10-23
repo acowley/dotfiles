@@ -419,6 +419,18 @@ Considers entries in the current buffer whose headlines match `* DONE' and have 
         (`(,month-count . ,week-count)
          (message "%d tasks completed this week; %d this month" week-count month-count))))))
 
+(defun shuffle (xs)
+  "Construct a new list with all the elements of XS at random positions."
+  (let ((lst ())
+        (n (length xs)))
+    (while (> n 1)
+      (pcase (-split-at (random n) xs)
+        (`(,hd ,tl) (progn
+                      (push (car tl) lst)
+                      (setf n (- n 1))
+                      (setf xs (append hd (cdr tl)))))))
+    (cons (car xs) lst)))
+
 (defun quote-shell-string (str)
   "Safely embed a string in single-quotes.
 
