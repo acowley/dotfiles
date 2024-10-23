@@ -427,7 +427,7 @@ quotes within those strings need to be escaped. We use the
 technique of ending the quoted string, concatenating a literal
 single-quote character, and concatenating the remaining
 single-quoted string."
-    (concat "'" (replace-regexp-in-string "'" "'\\\\''" str) "'"))
+  (concat "'" (replace-regexp-in-string "'" "'\\\\''" str) "'"))
 
 (defun parenthesize-negatives ()
 "Wrap negative numeric literals in parentheses.
