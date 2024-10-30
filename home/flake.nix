@@ -21,9 +21,10 @@
     unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     emacs-lsp-booster.url = "github:acowley/emacs-lsp-booster-nix";
     emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
+    nix-gl-host.url = "github:numtide/nix-gl-host";
   };
 
-  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex, unstable, emacs-lsp-booster }:
+  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex, unstable, emacs-lsp-booster, nix-gl-host }:
     let mkHome = { extraImports,
                    system ? "x86_64-linux",
                    homeDirectory ? "/home/acowley"
@@ -40,6 +41,7 @@
                   my-emacs.overlay
                   (final: prev: import my-latex final prev)
                   emacs-lsp-booster.overlay
+                  nix-gl-host.overlays.default
                 ];
             };
             modules = [./common.nix] ++ extraImports;
@@ -70,6 +72,7 @@
       homeConfigurations = {
         serve = mkLinux ./serve.nix;
         home = mkLinux ./home.nix;
+        home-pop = mkLinux ./home-pop.nix;
         macos = mkHome rec {
           extraImports = [ (import ./macos.nix {
             unstable = import unstable { inherit system; };
