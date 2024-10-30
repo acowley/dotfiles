@@ -159,6 +159,10 @@ in {
   };
 
   programs.gpg.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-curses;
+  };
 
   # Emacs has problems with GnuPG 2.4.1 and 2.4.2
   # https://www.reddit.com/r/emacs/comments/137r7j7/gnupg_241_encryption_issues_with_emacs_orgmode/
