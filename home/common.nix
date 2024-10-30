@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, ... }:
+{ config, pkgs, unstable, nixpkgs, ... }:
 let no-uuid = drv: font-dir: extension: pkgs.stdenv.mkDerivation {
       name = "my-${drv.name}";
       builder = pkgs.writeText "builder.sh" ''
@@ -14,6 +14,13 @@ in {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "acowley";
+
+  nix.registry = {
+    n = {
+      from = { type = "indirect"; id = "n"; };
+      flake = nixpkgs;
+    };
+  };
 
   home.packages = with pkgs; [
     cachix
