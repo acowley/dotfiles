@@ -150,6 +150,9 @@ in {
       "\\~/Projects/serve/x" = "x";
       "\\~/Projects/serve/upslam2" = "upslam2";
     };
+    settings = {
+      hostname-only-if-ssh = true;
+    };
   };
 
   programs.direnv = {
