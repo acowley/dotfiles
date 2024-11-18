@@ -1091,7 +1091,8 @@ Make sure to put cursor on date heading that contains a list of urls."
         corfu-quit-at-boundary 'separator
         corfu-quit-no-match t
         corfu-echo-documentation nil)
-  (global-corfu-mode 1)
+  ;; (global-corfu-mode 1)
+  (add-hook 'prog-mode-hook #'corfu-mode)
   (require 'corfu-history)
   (corfu-history-mode 1)
   (setq corfu-history-length 100)
