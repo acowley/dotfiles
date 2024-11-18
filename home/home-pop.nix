@@ -19,7 +19,21 @@
     emacs-lsp-booster
     wl-clipboard
     nix-gl-host
+    mpv
+    lieer
+    notmuch
+    google-cloud-sdk
+    # gyroflow
+    # davinci-resolve
+    # (sunshine.override { cudaSupport = true; })
   ];
+
+  programs.mpv = {
+    enable = true;
+    config = {
+      hwdec = "auto";
+    };
+  };
 
   home.sessionVariables = {
     BORG_PASSCOMMAND="pass borg-nixos-hp";
