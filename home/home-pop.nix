@@ -39,4 +39,17 @@
     BORG_PASSCOMMAND="pass borg-nixos-hp";
     BORG_REPO="raspberrypi.local:/mnt/usbdrive/backups/nixos-hp";
   };
+
+  # Fix an issue where Firefox won't open .shtml files. Emails may
+  # involve such files. When one tries to open them with Firefox,
+  # Firefox asks how to handle the file and suggests using Firefox
+  # itself. When you click okay, the same dialog is presented in a new
+  # tab. This website describes the problem and solving it by adding
+  # this mime type association to SHTML files in a user ~/.mime.types
+  # file that extends the system wide /etc/mime.types file.
+  # http://tuxgraphics.org/npa/open-local-shtml-files-in-firefox/
+  home.file.".mime.types" = {
+    enable = true;
+    text = "text/html shtml";
+  };
 }
