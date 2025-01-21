@@ -31,4 +31,4 @@
 (setq native-comp-deferred-compilation nil)
 
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
-(setenv "LSP_USE_PLISTS" "true")
+(setenv "LSP_USE_PLISTS" "1")
