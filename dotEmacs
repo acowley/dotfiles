@@ -4862,10 +4862,7 @@ sorted block."
   (nova-vertico-mode 1)
   (nova-corfu-mode 1)
   (nova-corfu-popupinfo-mode 1)
-  ;; nova-eldoc-mode is raising an error atm ([2025-01-21 Tue])
-  ;(require 'nova-utils)
-  ;(nova-eldoc-mode 1)
-  )
+  (nova-eldoc-mode 1))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
