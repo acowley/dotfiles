@@ -4837,6 +4837,35 @@ sorted block."
     (mc-hide-refresh))
   (add-hook 'ms-start-hook #'my/macro-slides-start-hook)
   (add-hook 'ms-narrow-hook #'my/macro-slides-narrow-hook))
+;;; ultra-scroll
+(use-package ultra-scroll
+  :defer nil
+  :init (setq scroll-conservatively 101
+              scroll-margin 0)
+  :custom (ultra-scroll-hide-cursor 1.0)
+  :config
+  ;; Disable org-table-header-line-mode while scrolling so that we
+  ;; don't see a flickering highlight at the top of the window while
+  ;; scrolling.
+  (add-hook 'ultra-scroll-hide-functions 'org-table-header-line-mode)
+  (ultra-scroll-mode 1))
+;;; nova
+(use-package nova
+  :after (corfu vertico)
+  :config
+  ;; (require 'posframe)
+  (require 'nova-vertico)
+  (require 'nova-corfu)
+  (require 'nova-corfu-popupinfo)
+  (require 'nova-eldoc)
+
+  (nova-vertico-mode 1)
+  (nova-corfu-mode 1)
+  (nova-corfu-popupinfo-mode 1)
+  ;; nova-eldoc-mode is raising an error atm ([2025-01-21 Tue])
+  ;(require 'nova-utils)
+  ;(nova-eldoc-mode 1)
+  )
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
