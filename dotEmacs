@@ -4782,6 +4782,29 @@ sorted block."
   (kagi-summarizer-engine "cecil")
   (kagi-summarize-default-language "EN")
   (kagi-summarize-cache nil))
+;;; gptel
+(use-package gptel
+  :commands (gptel gptel-send gptel-menu gptel-add gptel-add-file gptel-org-set-topic gptel-org-set-properties gptel-make-ollama)
+  :config
+  (require 'gptel-autoloads)
+  ;; (require 'gptel-ollama)
+  ;; (require 'gptel-org)
+  ;; (require 'gptel-context)
+  ;; (require 'gptel-transient)
+  ;; (require 'gptel-curl)
+  (setq gptel-backend
+        (gptel-make-ollama "Ollama"
+          :host "kubby.local:11434"
+          :stream t
+          :models '("qwen2.5-coder:14b"))))
+
+;;; aidermacs
+(use-package aidermacs
+  :bind (("C-c a" . aidermacs-transient-menu))
+  :config
+  (aidermacs-setup-minor-mode)
+  (setq
+   aidermacs-default-model "ollama_chat/qwen2.5-coder:14b"))
 ;;; org-present
 (use-package org-present
   :commands
