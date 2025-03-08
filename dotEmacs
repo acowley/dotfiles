@@ -4804,7 +4804,14 @@ sorted block."
   :config
   (aidermacs-setup-minor-mode)
   (setq
-   aidermacs-default-model "ollama_chat/qwen2.5-coder:14b"))
+   ;; aidermacs-default-model "ollama_chat/qwen2.5-coder:14b"
+   ;; aidermacs-default-model "ollama_chat/dagbs/qwen2.5-coder-14b-instruct-abliterated"
+   aidermacs-default-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
+   aidermacs-architect-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
+   aidermacs-editor-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
+   aidermacs-use-architect-mode t
+   ;; aidermacs-extra-args '("--no-stream")
+   ))
 ;;; org-present
 (use-package org-present
   :commands
