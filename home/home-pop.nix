@@ -26,6 +26,9 @@
     # gyroflow
     # davinci-resolve
     # (sunshine.override { cudaSupport = true; })
+    cloudcompare
+    ollama-cuda
+    uv
   ];
 
   programs.mpv = {
@@ -35,9 +38,14 @@
     };
   };
 
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   home.sessionVariables = {
     BORG_PASSCOMMAND="pass borg-nixos-hp";
     BORG_REPO="raspberrypi.local:/mnt/usbdrive/backups/nixos-hp";
+    OLLAMA_API_BASE = "http://127.0.0.1:11434";
   };
 
   # Fix an issue where Firefox won't open .shtml files. Emails may
