@@ -4908,6 +4908,7 @@ sorted block."
   (ultra-scroll-mode 1))
 ;;; nova
 (use-package nova
+  :disabled t
   :after (corfu vertico)
   :config
   ;; (require 'posframe)
