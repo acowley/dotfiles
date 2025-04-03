@@ -4836,7 +4836,7 @@ sorted block."
    aidermacs-default-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
    aidermacs-architect-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
    aidermacs-editor-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
-   aidermacs-use-architect-mode t
+   ;; aidermacs-use-architect-mode t
    ;; aidermacs-extra-args '("--no-stream")
    ))
 ;;; org-present
