@@ -4022,7 +4022,7 @@ sorted block."
 
   ;; Possibly override clangd path
   (message "Checking for a CLANGD_PATH override")
-  (direnv-update-environment)
+  (ignore-errors (direnv-update-environment))
   (let ((clangd-path (getenv "CLANGD_PATH")))
     (when clangd-path
       (progn
