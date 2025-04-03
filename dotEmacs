@@ -4734,6 +4734,25 @@ sorted block."
   (setq xeft-directory "~/org"
         xeft-recursive t
         xeft-ignore-extension '("pdf" "png" "iimg")))
+
+;;; gptel
+(use-package gptel
+  :commands (gptel gptel-send gptel-make-ollama gptel-menu)
+  :config
+  (require 'gptel-transient)
+  (require 'gptel-ollama)
+  (require 'gptel-curl)
+  (setq-default ;;gptel-api-key (lambda () (auth-source-pass-get "personal-api" "openai"))
+        gptel-default-mode 'org-mode
+        gptel-model "dagbs/qwen2.5-coder-7b-instruct-abliterated"
+        gptel-backend (gptel-make-ollama
+                       "Ollama"             ;Any name of your choosing
+                       :host "kubby.local:11434"               ;Where it's running
+                       :stream t                             ;Stream responses
+                       :key nil
+                       :models ;; '("mymistral")
+                       '("mymistral" "dagbs/qwen2.5-coder-7b-instruct-abliterated")
+                       )))
 ;;; editorconfig
 (use-package editorconfig
   ;; This is used in nixpkgs
@@ -4798,6 +4817,14 @@ sorted block."
           :stream t
           :models '("qwen2.5-coder:14b"))))
 
+;;; gptel-aibo
+(use-package gptel-aibo
+  :commands (gptel-aibo
+             gptel-aibo-send
+             gptel-aibo-apply-last-suggestion
+             gptel-aibo-summon)
+  ;; :config
+  )
 ;;; aidermacs
 (use-package aidermacs
   :bind (("C-c a" . aidermacs-transient-menu))
