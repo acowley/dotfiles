@@ -4243,6 +4243,7 @@ sorted block."
   (setq corral-preserve-point t))
 ;;; rust
 (use-package rustic
+  :disabled t
   :defer t
   :mode (("\\.rs\\'" . rustic-mode))
   :config
@@ -4260,7 +4261,7 @@ sorted block."
   (add-hook 'rustic-mode-hook #'my/rustic-hook))
 
 (use-package rust-mode
-  :disabled
+  ;; :disabled
   :defer t
   :commands (rust-mode)
   :mode "\\.rs\\'"
