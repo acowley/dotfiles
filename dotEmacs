@@ -3821,6 +3821,8 @@ sorted block."
             (message "Using emacs-lsp-booster for %s!" orig-result)
             (cons "emacs-lsp-booster" orig-result))
         orig-result)))
+
+  ;; Enable lsp-booster
   (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
 
   ;; (helm-gtags-mode -1)
