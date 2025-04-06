@@ -1018,6 +1018,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   :commands (prescient-persist-mode)
   :hook (company-mode . prescient-persist-mode)
   :config
+  ;; See https://kristofferbalintona.me/posts/202504050923/
+  ;; for recommendations on configuring prescient with corfu and vertico
   (prescient-persist-mode +1)
   (setq prescient-filter-method '(literal regexp initialism)))
 ;;; company-prescient
@@ -1116,13 +1118,21 @@ Make sure to put cursor on date heading that contains a list of urls."
   (setq corfu-sort-override-function #'my-corfu-combined-sort))
 ;;; corfu-prescient
 (use-package corfu-prescient
-  :disabled
+  ;; :disabled
+  :after corfu prescient
   :hook ((corfu-mode . corfu-prescient-mode)
          ;; (global-corfu-mode . corfu-prescient-mode)
          )
-  :init
-  (setq corfu-prescient-override-sorting t)
+  :custom
+  (corfu-prescient-enable-sorting t)
+  (corfu-prescient-override-sorting nil) ; Don't override `display-sort-function'
+
+  (corfu-prescient-enable-filtering nil) ; Let orderless do the filtering
+
+  ;; :init
+  ;; (setq corfu-prescient-override-sorting t)
   :config
+  (corfu-prescient-mode 1)
   (setq completion-styles '(prescient partial-completion basic)))
 ;;; vertico
 (use-package vertico
@@ -1133,9 +1143,15 @@ Make sure to put cursor on date heading that contains a list of urls."
   (savehist-mode)
   (add-to-list 'savehist-additional-variables 'corfu-history))
 (use-package vertico-prescient
+  :after vertico prescient
   :commands (vertico-prescient-mode)
+  :custom
+  (vertico-prescient-enable-sorting t)
+  (vertico-prescient-override-sorting nil) ; Don't override `display-sort-function'
+
+  (vertico-prescient-enable-filtering nil) ; Let orderless do the filtering
   :config
-  (vertico-prescient-mode))
+  (vertico-prescient-mode 1))
 ;;; consult
 (use-package consult
   :defer nil
