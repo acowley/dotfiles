@@ -3819,7 +3819,8 @@ sorted block."
                (executable-find "emacs-lsp-booster"))
           (progn
             (message "Using emacs-lsp-booster for %s!" orig-result)
-            (cons "emacs-lsp-booster" orig-result))
+            ;; (cons "emacs-lsp-booster" orig-result)
+            (append (list "emacs-lsp-booster" "--disable-bytecode" "--") orig-result))
         orig-result)))
 
   ;; Enable lsp-booster
