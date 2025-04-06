@@ -25,12 +25,19 @@
     mosh
     tarsnap
     emacs-lsp-booster
+    uv
   ];
   home.homeDirectory = "/Users/acowley";
   home.sessionPath = [
     "/opt/homebrew/bin"
+    "/Users/acowley/.ghcup/bin"
+    "/Users/acowley/.local/bin"
   ];
   # programs.home-manager.path = "/Users/acowley/src/home-manager";
+
+  home.sessionVariables = {
+    OLLAMA_API_BASE = "http://kubby.local:11434";
+  };
 
   programs.zsh = {
     enable = true;
