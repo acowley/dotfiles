@@ -1865,7 +1865,12 @@ evaluation may begin anew."
 
   (use-package ob-duckdb
     :defer t
-    :commands (org-babel-execute:duckdb org-babel-expand-body:duckdb))
+    :commands (org-babel-execute:duckdb org-babel-expand-body:duckdb)
+    :after org
+    :config
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     (append org-babel-load-languages '((duckdb . t)))))
 
   (use-package ob-nim
     :defer t
