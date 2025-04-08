@@ -2651,6 +2651,10 @@ entire source file is loaded."
   ;;; This slows down the loading of large org-mode files
   ;; :hook (org-mode . org-tidy-mode)
   )
+;;;; org-hide-drawers
+(use-package org-hide-drawers
+  :defer t
+  :commands (org-hide-drawers-mode org-hide-drawers-toggle))
 ;;;; org-bookmark-heading
 (use-package org-bookmark-heading
   :after org
