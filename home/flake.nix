@@ -19,12 +19,12 @@
     my-latex.flake = false;
     flake-utils.url = "github:numtide/flake-utils";
     unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    emacs-lsp-booster.url = "github:acowley/emacs-lsp-booster-nix";
-    emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
+    # emacs-lsp-booster.url = "github:acowley/emacs-lsp-booster-nix";
+    # emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
     nix-gl-host.url = "github:numtide/nix-gl-host";
   };
 
-  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex, unstable, emacs-lsp-booster, nix-gl-host }:
+  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex, unstable, nix-gl-host }:
     let mkHome = { extraImports,
                    system ? "x86_64-linux",
                    homeDirectory ? "/home/acowley"
@@ -40,7 +40,6 @@
                   emacs-overlay.overlay
                   my-emacs.overlay
                   (final: prev: import my-latex final prev)
-                  emacs-lsp-booster.overlay
                   nix-gl-host.overlays.default
                 ];
             };
