@@ -462,6 +462,7 @@ Haskell programs as it may be applied to all numbers in region."
 
 ;;;; Miscellaneous Settings
 
+(setq enable-remote-dir-locals t)
 ;; A short mode line that is going to be tweaked with moody
 ;; (setq-default mode-line-format
 ;;       '("%e"
