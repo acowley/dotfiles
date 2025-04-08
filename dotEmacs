@@ -1015,9 +1015,10 @@ Make sure to put cursor on date heading that contains a list of urls."
 ;;; prescient
 (use-package prescient
   :defer nil
-  :custom (company-prescient-sort-length-enable nil)
-  :commands (prescient-persist-mode)
-  :hook (company-mode . prescient-persist-mode)
+  ;; :custom (company-prescient-sort-length-enable nil)
+  ;; :commands (prescient-persist-mode)
+  ;; :hook (company-mode . prescient-persist-mode)
+  :hook (vertico-mode . prescient-persist-mode)
   :config
   ;; See https://kristofferbalintona.me/posts/202504050923/
   ;; for recommendations on configuring prescient with corfu and vertico
@@ -1145,7 +1146,8 @@ Make sure to put cursor on date heading that contains a list of urls."
   (add-to-list 'savehist-additional-variables 'corfu-history))
 (use-package vertico-prescient
   :after vertico prescient
-  :commands (vertico-prescient-mode)
+  ;; :commands (vertico-prescient-mode)
+  :defer nil
   :custom
   (vertico-prescient-enable-sorting t)
   (vertico-prescient-override-sorting nil) ; Don't override `display-sort-function'
