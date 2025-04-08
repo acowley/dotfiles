@@ -2377,7 +2377,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   :commands (org-roam-node-find)
   :init
   (setq org-roam-v2-ack t)
-  (setq org-roam-database-connector 'sqlite-builtin)
+  ;; (setq org-roam-database-connector 'sqlite-builtin)
   :bind
   (("C-c r l" . org-roam-buffer-toggle)
    ("C-c r f" . org-roam-node-find)
