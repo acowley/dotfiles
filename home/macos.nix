@@ -26,6 +26,7 @@
     tarsnap
     emacs-lsp-booster
     uv
+    duckdb
   ];
   home.homeDirectory = "/Users/acowley";
   home.sessionPath = [
