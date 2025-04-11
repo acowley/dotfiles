@@ -2375,9 +2375,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   ;; :defer 5
   :after org
   :commands (org-roam-node-find)
-  :init
-  (setq org-roam-v2-ack t)
-  ;; (setq org-roam-database-connector 'sqlite-builtin)
+  :custom
+  (org-roam-file-exclude-regexp (list ".direnv"))
   :bind
   (("C-c r l" . org-roam-buffer-toggle)
    ("C-c r f" . org-roam-node-find)
