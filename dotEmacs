@@ -4506,6 +4506,8 @@ sorted block."
               ("M-f" . #'vterm-send-M-f)
               ("C-b" . #'vterm-send-left)
               ("M-b" . #'vterm-send-M-b)
+              ("M-v" . nil)
+              ("C-v" . nil)
               ("C-SPC" . nil)
               ("M->" . nil)
               ("M-s" . nil))
