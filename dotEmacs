@@ -361,7 +361,7 @@ dash) transpose chunks around that. Otherwise transpose sexps."
          ;; (path (upcase (file-name-directory fname)))
          ;; (guard (string-replace "/" "_" (concat path base "_" ext "_")))
          (copyright "/**
- * Copyright 2022 Serve Robotics Inc.
+ * Copyright 2025 Serve Robotics Inc.
  */\n\n"))
     (save-excursion
       (goto-char (point-min))
