@@ -4871,6 +4871,7 @@ sorted block."
    aidermacs-editor-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
    ;; aidermacs-use-architect-mode t
    ;; aidermacs-extra-args '("--no-stream")
+   aidermacs-backend 'vterm
    ))
 ;;; org-present
 (use-package org-present
