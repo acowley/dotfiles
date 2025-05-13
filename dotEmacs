@@ -4955,6 +4955,13 @@ sorted block."
   (nova-corfu-mode 1)
   (nova-corfu-popupinfo-mode 1)
   (nova-eldoc-mode 1))
+;;; jq-mode
+(use-package jq-mode
+  :commands (jq-interactively org-babel-execute:jq org-babel-expand-body:jq)
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   (append org-babel-load-languages '((jq . t)))))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
