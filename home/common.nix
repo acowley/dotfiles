@@ -79,7 +79,7 @@ in {
       EDITOR = "emacsclient";
       TMPDIR="$XDG_RUNTIME_DIR";
     };
-    initExtra = ''
+    initContent = ''
       export PATH=~/.nix-profile/bin:$PATH
     '';
   };
