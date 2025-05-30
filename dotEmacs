@@ -4860,19 +4860,45 @@ sorted block."
   )
 ;;; aidermacs
 (use-package aidermacs
-  :bind (("C-c a" . aidermacs-transient-menu))
+  ;; :bind (("C-c a" . aidermacs-transient-menu))
+  :custom
+  (aidermacs-watch-files t)
+  (aidermacs-subtree-only t)
   :config
   (aidermacs-setup-minor-mode)
   (setq
    ;; aidermacs-default-model "ollama_chat/qwen2.5-coder:14b"
    ;; aidermacs-default-model "ollama_chat/dagbs/qwen2.5-coder-14b-instruct-abliterated"
-   aidermacs-default-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
-   aidermacs-architect-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
-   aidermacs-editor-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
+
+   ;; aidermacs-default-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
+   ;; aidermacs-architect-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
+   ;; aidermacs-editor-model "ollama_chat/dagbs/qwen2.5-coder-7b-instruct-abliterated"
+
+   aidermacs-default-model "ollama_chat/qwen3"
+   aidermacs-architect-model "ollama_chat/qwen3"
+   aidermacs-editor-model "ollama_chat/qwen3"
+
    ;; aidermacs-use-architect-mode t
    ;; aidermacs-extra-args '("--no-stream")
    aidermacs-backend 'vterm
+   ;; aidermacs-backend 'comint
    ))
+;;; aider.el
+(use-package aider
+  :bind (("C-c a" . aider-transient-menu))
+  :commands (aider-transient-menu)
+  :config
+  (require 'aider-core)
+  (require 'aider-prompt-mode)
+  (require 'aider-file)
+  (require 'aider-code-change)
+  (require 'aider-discussion)
+  (require 'aider-agile)
+  (require 'aider-code-read)
+  (require 'aider-legacy-code)
+  (require 'aider-bootstrap)
+  (require 'aider-software-planning)
+  (setq aider-args '("--model" "ollama_chat/qwen3" "--subtree-only" "--no-auto-commits")))
 ;;; org-present
 (use-package org-present
   :commands
