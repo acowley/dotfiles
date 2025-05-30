@@ -22,7 +22,8 @@
       pbpaste = "xclip -selection clipboard -o";
     };
 
-    initExtra = pkgs.lib.mkOrder 1501 ''
+    # initExtra = pkgs.lib.mkOrder 1501 ''
+    initContent = pkgs.lib.mkOrder 1501 ''
       if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
         source "${pkgs.bash-preexec}/share/bash/bash-preexec.sh"
         eval "$(${pkgs.atuin}/bin/atuin init bash)"
@@ -72,7 +73,12 @@
 
   xdg = {
     enable = true;
-    mime.enable = true;
+    # mime.enable = true;
+
+    # Having mime enabled led to crashes on Ubuntu in Nautilus and the file picker in Firefox.
+    # https://github.com/nix-community/home-manager/issues/4955#issuecomment-2041447196
+    mime.enable = false;
+
     # systemDirs.data = [
     #   # These were all set in the default Ubuntu
     #   # "/usr/share/ubuntu"
