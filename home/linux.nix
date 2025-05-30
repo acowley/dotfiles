@@ -22,7 +22,6 @@
       pbpaste = "xclip -selection clipboard -o";
     };
 
-    # initExtra = pkgs.lib.mkOrder 1501 ''
     initContent = pkgs.lib.mkOrder 1501 ''
       if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
         source "${pkgs.bash-preexec}/share/bash/bash-preexec.sh"
