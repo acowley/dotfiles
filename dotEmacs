@@ -2388,7 +2388,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
          "* TODO %?\n:PROPERTIES:\n:opened: %U\n:END:\n"))))
 ;;;; org-roam
 (use-package org-roam
-  ;; :defer 5
+  :defer 1
   :after org
   :commands (org-roam-node-find)
   :custom
@@ -2427,7 +2427,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   ;;             (defun +org-roam-db-update-file (fn &rest args)
   ;;               (emacsql-with-transaction (org-roam-db)
   ;;                 (apply fn args))))
-  (org-roam-db-autosync-mode)
+
+  (run-with-idle-timer 1 nil #'org-roam-db-autosync-mode)
   ;; (org-roam-setup)
 
 
@@ -2525,7 +2526,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 
 ;;;; org-roam-bibtex
 (use-package org-roam-bibtex
-  :hook (org-roam-mode . org-roam-bibtex-mode)
+  ;; :hook (org-roam-mode . org-roam-bibtex-mode)
   :commands (org-roam-bibtex-notes-fn
              org-roam-bibtex-edit-notes-ad
              org-roam-bibtex-process-file-field
@@ -2586,7 +2587,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
    org-ref-pdf-directory "~/org/roam/references"))
 ;;;; bibtex-completion
 (use-package bibtex-completion
-  :after org-ref
+  ;; :after org-ref
   :config
   (setq bibtex-completion-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")))
 
