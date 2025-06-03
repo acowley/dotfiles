@@ -5005,6 +5005,35 @@ sorted block."
   (org-babel-do-load-languages
    'org-babel-load-languages
    (append org-babel-load-languages '((jq . t)))))
+;;; qalc
+;; Wrap qalc's CLI and manages hiding and showing the *qalc* buffer
+;; From https://leon_plickat.srht.site/writing/custom-emacs-qalc-repl-popup/article.html
+(defun lhp/replify (cmd bname)
+  (require 'xterm-color)
+  (if (string= bname (buffer-name))
+      (quit-window)
+    (pop-to-buffer
+     (or (get-buffer bname)
+         (let (;; (coding-system-for-read 'utf-8)
+               )
+           (setq comint-preoutput-filter-functions '(xterm-color-filter))
+           ;; (setenv "TERM" "xterm-256color")
+           (window-buffer
+            (async-shell-command cmd bname)))))))
+
+(defun qalc ()
+  "Open a qalc REPL"
+  (interactive)
+  (lhp/replify "qalc" "*qalc*"))
+
+(setq display-buffer-alist
+      '(("\*qalc\*"
+         (display-buffer-reuse-mode-window
+          display-buffer-in-side-window)
+         (dedicated . t)
+         (inhibit-switch-frame . t)
+         (side . bottom))))
+(global-set-key (kbd "C-c q") #'qalc)
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
