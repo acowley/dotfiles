@@ -8,14 +8,26 @@
 # or home-manager switch --flake .#macos
 {
   inputs = {
-    nixpkgs.url = "path:/home/acowley/src/nixpkgs";
-    homeManager.url = "github:nix-community/home-manager";
+    #nixpkgs.url = "path:/home/acowley/src/nixpkgs";
+    # nixpkgs.url = "path:/Users/acowley/src/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
+    #nixpkgs.url = "github:nixos/nixpkgs/release-24.11";
+
+    # See https://github.com/nix-community/home-manager/issues/4483
+    # Using nixpkgs-unstable requires home-manager master for now at least
+
+    # homeManager.url = "github:nix-community/home-manager/release-23.05";
+    # homeManager.url = "github:nix-community/home-manager/release-23.11";
+    homeManager.url = "github:nix-community/home-manager/release-25.05";
+    # homeManager.url = "github:nix-community/home-manager/master";
     homeManager.inputs.nixpkgs.follows = "nixpkgs";
+
     emacs-overlay.url = "github:nix-community/emacs-overlay";
-    my-emacs.url = "github:acowley/my-emacs";
-    # my-emacs.url = "path:/Users/acowley/dotfiles/my-emacs";
+    # my-emacs.url = "github:acowley/my-emacs";
+    my-emacs.url = "path:/Users/acowley/dotfiles/my-emacs";
     # my-emacs.url = "path:/home/acowley/dotfiles/my-emacs";
-    my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
+    #my-latex.url = "path:/home/acowley/dotfiles/nix/mylatex.nix";
+    my-latex.url = "path:/Users/acowley/dotfiles/nix/mylatex.nix";
     my-latex.flake = false;
     flake-utils.url = "github:numtide/flake-utils";
     unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
