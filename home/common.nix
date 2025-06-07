@@ -7,6 +7,36 @@ let no-uuid = drv: font-dir: extension: pkgs.stdenv.mkDerivation {
         cp ${drv}/share/fonts/${font-dir}/*.${extension} $out/share/fonts/${font-dir}
       '';
     };
+    cmake-scaffold = pkgs.writeShellScriptBin "cmake-scaffold" ''
+      #! /usr/bin/env bash
+      PROJECT_NAME=$(basename $PWD)
+
+      cat <<EOL > CMakeLists.txt
+      cmake_minimum_required(VERSION 3.10)
+      project(''${PROJECT_NAME})
+      set(CMAKE_CXX_STANDARD 20)
+      find_package(fmt REQUIRED)
+      add_executable(go main.cpp)
+      target_link_libraries(go fmt::fmt)
+      EOL
+
+      echo "CMakeLists.txt created for project: ''${PROJECT_NAME}"
+      cat <<EOL > main.cpp
+      #include <fmt/format.h>
+
+      int main() {
+        fmt::print("Hey you guys\n");
+        return 0;
+      }
+      EOL
+
+      mkdir build
+      cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=Yes
+      cd ..
+      ln -s build/compile_commands.json
+      echo "Example for running: (cd build && make -j4) && build/go"
+  '';
+
 in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -23,6 +53,7 @@ in {
   };
 
   home.packages = with pkgs; [
+    cmake-scaffold
     cachix
     imagemagick
     jq
