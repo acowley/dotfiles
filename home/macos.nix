@@ -55,11 +55,8 @@
     # Ensure the nix-daemon is running even if macOS updates roll back
     # parts of the old installation:
     # https://github.com/NixOS/nix/issues/3616#issuecomment-2743947492
-    initExtraFirst = ''
+    initContent = ''
       [[ ! $(command -v nix) && -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]] && source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-    '';
-
-    initExtra = ''
       export TMPDIR=/tmp
     '';
   };
