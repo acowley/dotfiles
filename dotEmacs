@@ -4991,6 +4991,7 @@ sorted block."
   (org-babel-do-load-languages
    'org-babel-load-languages
    (append org-babel-load-languages '((jq . t)))))
+
 ;;; qalc
 ;; Wrap qalc's CLI and manages hiding and showing the *qalc* buffer
 ;; From https://leon_plickat.srht.site/writing/custom-emacs-qalc-repl-popup/article.html
