@@ -1,5 +1,5 @@
 {unstable}:
-{ config, pkgs, nixpkgs, ... }:
+{ config, pkgs, nixpkgs, unstable, ... }:
 {
   # Add a flake named "n" to the registry for use with, e.g., `nix run n#package`
   # https://discourse.nixos.org/t/how-to-make-nix-shell-use-my-home-manager-flake-input/29957/6
@@ -27,6 +27,7 @@
     emacs-lsp-booster
     uv
     duckdb
+    unstable.goose-cli
   ];
   home.homeDirectory = "/Users/acowley";
   home.sessionPath = [
