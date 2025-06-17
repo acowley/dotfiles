@@ -103,5 +103,13 @@
           (final: prev: import my-latex final prev)
         ];
       };
+      unstable = import unstable {
+        inherit system;
+        overlays = [
+          emacs-overlay.overlay
+          my-emacs.overlay
+          (final: prev: import my-latex final prev)
+        ];
+      };
     });
 }
