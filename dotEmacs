@@ -4864,6 +4864,7 @@ sorted block."
 ;;; aidermacs
 (use-package aidermacs
   ;; :bind (("C-c a" . aidermacs-transient-menu))
+  :commands (aidermacs-transient-menu)
   :custom
   (aidermacs-watch-files t)
   (aidermacs-subtree-only t)
