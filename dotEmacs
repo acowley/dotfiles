@@ -4903,6 +4903,9 @@ sorted block."
   (require 'aider-bootstrap)
   (require 'aider-software-planning)
   (setq aider-args '("--model" "ollama_chat/qwen3" "--subtree-only" "--no-auto-commits")))
+;;; goose
+(use-package goose
+  :bind (("C-c o" . goose-transient)))
 ;;; org-present
 (use-package org-present
   :commands
