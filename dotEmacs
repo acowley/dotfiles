@@ -994,6 +994,7 @@ minibuffer, even without explicitly focusing it."
 ;; (use-package darkokai-theme :defer t)
 ;; (use-package monokai-theme :defer t)
 (use-package apropospriate-theme
+  :disabled t
   :config
   (load-theme 'apropospriate-dark t)
   :custom-face
@@ -1006,6 +1007,10 @@ minibuffer, even without explicitly focusing it."
   (lsp-ui-peek-selection ((t (:background "DeepSkyBlue"))))
   (lsp-ui-peek-highlight ((t (:foreground "gold"))))
   (mode-line-inactive ((t (:background "gray16" :box nil)))))
+
+(use-package south-theme
+  :config
+  (load-theme 'south t))
 
 ;;; emacs server
 (use-package server
