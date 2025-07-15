@@ -90,11 +90,6 @@
   (set-face-attribute 'info-title-4 nil :font yanone-font-name :weight 'light :height 150)
   (set-face-attribute 'info-menu-header nil :font yanone-font-name :weight 'light :height 175 :foreground "#E1BEE7"))
 
-(use-package hl-line
-  :commands (hl-line-mode)
-  :custom-face
-  (hl-line ((t (:background "gray20")))))
-
 ;;;; Support ligatures
 
 ;; See https://github.com/tonsky/FiraCode/wiki/Emacs-instructions#user-content-using-composition-char-table
@@ -993,10 +988,12 @@ minibuffer, even without explicitly focusing it."
 ;;; Themes
 ;; (use-package darkokai-theme :defer t)
 ;; (use-package monokai-theme :defer t)
+(defvar my-theme nil "Name of current theme as a symbol: 'apropospriate or 'south")
 (use-package apropospriate-theme
   :disabled t
   :config
   (load-theme 'apropospriate-dark t)
+  (setopt my-theme 'apropospriate)
   :custom-face
   (region ((t (:background "gray22"))))
   (helm-match ((t (:foreground "gold"))))
@@ -1010,7 +1007,8 @@ minibuffer, even without explicitly focusing it."
 
 (use-package south-theme
   :config
-  (load-theme 'south t))
+  (load-theme 'south t)
+  (setopt my-theme 'south))
 
 ;;; emacs server
 (use-package server
@@ -1018,6 +1016,16 @@ minibuffer, even without explicitly focusing it."
                (add-hook 'emacs-startup-hook
                          (lambda ()
                            (or (server-running-p) (server-mode))))))
+;;; hl-line
+(use-package hl-line
+  :commands (hl-line-mode)
+  :config
+  (when (eq my-theme 'apropospriate)
+    (set-face-background 'hl-line "gray20"))
+  ;; :custom-face
+  ;; (hl-line ((t (:background "gray20"))))
+  )
+
 ;;; company-mode
 (use-package company
   :disabled t
@@ -1364,8 +1372,14 @@ project's type."
   ;; (dashboard-heading ((t (:font yanone-font-name :weight light :height 200 :foreground "#E1BEE7"))))
   ;; (dashboard-banner-logo-title ((t (:font yanone-font-name :weight light :height 250))))
   :config
-  (set-face-attribute 'dashboard-heading nil :font yanone-font-name :weight 'light :height 200 :foreground "#E1BEE7")
-  (set-face-attribute 'dashboard-banner-logo-title nil :font yanone-font-name :weight 'light :height 250)
+  (set-face-attribute 'dashboard-heading nil :font yanone-font-name :weight 'heavy :height 400 ;; :foreground "#E1BEE7"
+                      )
+  (when (eq my-theme 'apropospriate)
+    (set-face-foreground 'dashboard-heading "#E1BEE7"))
+  (set-face-attribute 'dashboard-banner-logo-title nil
+                      :font yanone-font-name
+                      :weight (if (eq my-theme 'apropospriate) 'light 'medium)
+                      :height 250)
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents  . 10)
                           (bookmarks . 5)
@@ -1461,9 +1475,12 @@ project's type."
   ;; (set-face-attribute 'org-quote nil :font "Roboto" :slant 'italic :height 150)
   (set-face-font 'org-level-1 yanone-font-name)
   (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos")))
-      (set-face-attribute 'org-level-1 nil :height 400 :weight 'light)
+      (set-face-attribute 'org-level-1 nil
+                          :height 400
+                          :weight (if (eq my-theme 'apropospriate) 'light 'bold))
     (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
-  (set-face-attribute 'org-headline-done nil :foreground "#B199BA")
+  (when (eq my-theme 'apropospriate)
+    (set-face-attribute 'org-headline-done nil :foreground "#B199BA"))
 
   (setq org-src-fontify-natively 't
         org-use-speed-commands 't
@@ -2041,11 +2058,11 @@ This function is called by `org-babel-execute-src-block'."
   ;; (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
 
   ;; (set-face-attribute 'org-block nil :background "#323232")
-  (set-face-attribute 'org-block nil
-                      :background "#161616"
+  (when (eq my-theme 'apropospriate)
+    (set-face-attribute 'org-block nil :background "#161616"
                       ;; :foreground "systemBrownColor"
                       ;; :foreground "DarkOrange"
-                      )
+                      ))
 
   ;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook
@@ -3746,8 +3763,10 @@ sorted block."
   :custom-face
   ;; Make the symbol-at-point highlight a bit dimmer than the default
   ;; (lsp-face-highlight-textual ((t (:background "#757500"))))
-  (lsp-face-highlight-textual ((t (:background "gold4"))))
+  ;; (lsp-face-highlight-textual ((t (:background "gold4"))))
   :config
+  (when (eq my-theme 'apropospriate)
+    (set-face-background 'lsp-face-highlight-textual "gold4"))
   (setq lsp-pylsp-plugins-yapf-enabled t)
   (advice-add 'lsp :before #'direnv-update-environment)
   (setq lsp-prefer-flymake nil
@@ -3793,10 +3812,20 @@ sorted block."
     (set-face-attribute 'lsp-face-semhl-property nil :slant 'italic)
     (set-face-attribute 'lsp-face-semhl-member nil :slant 'italic)
     ;; Make the lsp-ui-peek overlay stand out a bit better
-    (set-face-background 'lsp-ui-peek-peek "dark slate gray")
+    (when (eq my-theme 'apropospriate)
+      (set-face-background 'lsp-ui-peek-peek "dark slate gray"))
 
     ;; Highlight the symbol we're looking for in yellow
-    (set-face-foreground 'lsp-ui-peek-highlight "yellow"))
+
+    (when (eq my-theme 'apropospriate)
+      (set-face-foreground 'lsp-ui-peek-highlight "yellow")
+      (set-face-background 'lsp-ui-doc-background "#d9edfc") ; crystal (light blue) from the south theme
+      )
+
+    (when (eq my-theme 'south)
+      (set-face-background 'lsp-face-highlight-textual "#f9e7c3") ; soft-yellow from the south theme
+      (set-face-background 'lsp-ui-doc-background "#e4eaf3") ; cool-light-gray from the south theme
+      ))
   (use-package lsp-treemacs
     :commands (lsp-treemacs-symbols
                lsp-treemacs-errors-list
