@@ -4830,15 +4830,14 @@ sorted block."
   (require 'gptel-curl)
   (setq-default ;;gptel-api-key (lambda () (auth-source-pass-get "personal-api" "openai"))
         gptel-default-mode 'org-mode
-        gptel-model 'qwen3
+        gptel-model "ollama_chat/qwen3"
         gptel-backend (gptel-make-ollama
                        "Ollama"             ;Any name of your choosing
                        :host "kubby.local:11434"               ;Where it's running
                        :stream t                             ;Stream responses
                        :key nil
                        :models ;; '("mymistral")
-                       '("qwen3" "mymistral" "dagbs/qwen2.5-coder-7b-instruct-abliterated")
-                       )))
+                       '("ollama_chat/qwen3" "mymistral" "dagbs/qwen2.5-coder-7b-instruct-abliterated"))))
 ;;; editorconfig
 (use-package editorconfig
   ;; This is used in nixpkgs
