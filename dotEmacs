@@ -4897,7 +4897,7 @@ sorted block."
   )
 ;;; aidermacs
 (use-package aidermacs
-  ;; :bind (("C-c a" . aidermacs-transient-menu))
+  :bind (("C-c a" . aidermacs-transient-menu))
   :commands (aidermacs-transient-menu)
   :custom
   (aidermacs-watch-files t)
@@ -4918,12 +4918,13 @@ sorted block."
 
    ;; aidermacs-use-architect-mode t
    ;; aidermacs-extra-args '("--no-stream")
-   aidermacs-backend 'vterm
-   ;; aidermacs-backend 'comint
+   aidermacs-extra-args '("--no-gitignore")
+   ;; aidermacs-backend 'vterm
+   aidermacs-backend 'comint
    ))
 ;;; aider.el
 (use-package aider
-  :bind (("C-c a" . aider-transient-menu))
+  ;; :bind (("C-c a" . aider-transient-menu))
   :commands (aider-transient-menu)
   :config
   (require 'aider-core)
