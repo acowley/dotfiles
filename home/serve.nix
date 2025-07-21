@@ -33,6 +33,7 @@ in
     nix-gl-host.defaultPackage.x86_64-linux
     uv
     # cloudcompare
+    duckdb
   ] ++ [stable.cloudcompare];
   home.sessionPath = [
     # Path where uv installs tools
