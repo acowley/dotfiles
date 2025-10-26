@@ -164,9 +164,11 @@ in {
 
   programs.git = {
     enable = true;
-    userEmail = "acowley@gmail.com";
-    userName = "Anthony Cowley";
-    extraConfig = {
+    settings = {
+      user = {
+        email = "acowley@gmail.com";
+        name = "Anthony Cowley";
+      };
       init = { defaultBranch = "main"; };
     };
   };
