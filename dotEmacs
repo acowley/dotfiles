@@ -1493,8 +1493,8 @@ project's type."
   (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos")))
       (set-face-attribute 'org-level-1 nil
                           :height 400
-                          :weight (if (eq my-theme 'apropospriate) 'light 'bold))
-    (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
+                          :weight (if (eq my-theme 'apropospriate) 'light 'medium)
+  )  (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
   (when (eq my-theme 'apropospriate)
     (set-face-attribute 'org-headline-done nil :foreground "#B199BA"))
 
