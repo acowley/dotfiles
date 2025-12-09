@@ -5075,6 +5075,9 @@ sorted block."
          (inhibit-switch-frame . t)
          (side . bottom))))
 (global-set-key (kbd "C-c q") #'qalc)
+;;; outli
+(use-package outli
+  :commands (outli-mode))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
@@ -5083,6 +5086,6 @@ sorted block."
 ;; Local Variables:
 ;; mode: emacs-lisp
 ;; eval: (outline-minor-mode)
-;; eval: (outshine-mode)
-;; eval: (outshine-cycle-buffer)
+;; eval: (outli-mode)
+;; eval: (outline-cycle-buffer)
 ;; End:
