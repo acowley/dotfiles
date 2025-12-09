@@ -828,6 +828,22 @@ end tell" uri)))
 
 ;;;; Spell checking
 
+(use-package flyspell
+  :config
+  ;; From https://emacs.stackexchange.com/a/78613
+  (defun my/fix-ispell-contraction ()
+    "Fixes contractions (e.g. shouldn't) aren't not being checked properly.
+See https://github.com/casouri/lunarymacs/blob/master/star/checker.el#L44-L49."
+    ;; (add-to-list 'ispell-dictionary-alist
+    ;;              '("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))
+
+    ;; NOTE: this isn't working properly.
+    (add-to-list 'ispell-dictionary-alist
+                 '(nil "[[:alpha:]]"
+                       "[^[:alpha:]]"
+                       "['’]" nil nil nil utf-8)))
+  (add-hook 'flyspell-mode-hook #'my/fix-ispell-contraction))
+
 ;; brew install hunspell
 
 ;; Download the OpenOffice dictionary for the language you want. The
