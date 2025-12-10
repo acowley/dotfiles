@@ -4939,6 +4939,7 @@ sorted block."
    ))
 ;;; aider.el
 (use-package aider
+  :disabled t
   ;; :bind (("C-c a" . aider-transient-menu))
   :commands (aider-transient-menu)
   :config
