@@ -10,7 +10,7 @@
   inputs = {
     #nixpkgs.url = "path:/home/acowley/src/nixpkgs";
     # nixpkgs.url = "path:/Users/acowley/src/nixpkgs";
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     #nixpkgs.url = "github:nixos/nixpkgs/release-24.11";
 
     # See https://github.com/nix-community/home-manager/issues/4483
@@ -18,7 +18,7 @@
 
     # homeManager.url = "github:nix-community/home-manager/release-23.05";
     # homeManager.url = "github:nix-community/home-manager/release-23.11";
-    homeManager.url = "github:nix-community/home-manager/release-25.05";
+    homeManager.url = "github:nix-community/home-manager/release-25.11";
     # homeManager.url = "github:nix-community/home-manager/master";
     homeManager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -56,8 +56,12 @@
                 ];
             };
             modules = [./common.nix] ++ extraImports;
-            extraSpecialArgs = { unstable = import unstable { inherit system; };
-                                 inherit nixpkgs;};
+            extraSpecialArgs = {
+              unstable = import unstable {
+                inherit system;
+              };
+              inherit nixpkgs;
+            };
             # configuration = { pkgs, lib, ... }: {
             #   imports = [ ./common.nix ] ++ extraImports;
             #   # manual.manpages.enable = false;
