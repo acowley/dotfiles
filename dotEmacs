@@ -5079,6 +5079,19 @@ sorted block."
 ;;; outli
 (use-package outli
   :commands (outli-mode))
+;;; file-info
+;; Show information about the current buffer such as the file name,
+;; full path, containing directory, project info, etc. in a popup
+;; window with shortcuts to copy any individual piece of metadata to
+;; the clipboard.
+(use-package file-info
+  ;; (setq hydra-hint-display-type 'posframe)
+  ;; (setq hydra-posframe-show-params `(:poshandler posframe-poshandler-frame-center
+  ;;                                                :internal-border-width 2
+  ;;                                                :internal-border-color "#61AFEF"
+  ;;                                                :left-fringe 16
+  ;;                                                :right-fringe 16))
+  )
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
