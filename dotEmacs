@@ -5092,6 +5092,10 @@ sorted block."
   ;;                                                :left-fringe 16
   ;;                                                :right-fringe 16))
   )
+;;; tramp-hlo
+(use-package tramp-hlo
+  :config
+  (tramp-hlo-setup))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
