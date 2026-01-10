@@ -5109,6 +5109,56 @@ sorted block."
   :defer t
   :mode "\\.lua\\'")
 
+;;; eglot
+(use-package eglot
+  :commands (eglot)
+  :bind (:map eglot-mode-map
+              ("C-c C-l C-f" . eglot-format-buffer)
+              ("C-c C-l C-r" . eglot-rename)
+              ("C-c C-l r" . eglot-rename)
+              ("C-c C-l C-a" . eglot-code-action-quickfix))
+  :config
+  (when (eq my-theme 'south)
+    (set-face-background 'eglot-highlight-symbol-face "#f9e7c3") ; soft-yellow from the south theme
+    )
+  ;; (require 'eglot-signature-eldoc-talkative)
+  ;; (add-to-list 'eldoc-display-functions #'eglot-signature-eldoc-talkative)
+  ;; (advice-add #'eglot-signature-eldoc-function
+  ;;             :override #'eglot-signature-eldoc-talkative)
+  (add-to-list 'eglot-server-programs
+                '((c-mode c-ts-mode c++-mode c++-ts-mode) "clangd-17" "--header-insertion=never" "-j=8" "--header-insertion-decorators=0"))
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode) "pylsp"))
+
+  ;; (require 'eldoc-box)
+  ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+  ;; (set-face-background 'eldoc-box-body "#e4eaf3") ; cool-light-gray from the south theme
+  )
+(use-package eldoc-box
+  :after eglot
+  ;; :hook (eglot-managed-mode-hook . eldoc-box-hover-mode)
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+  (when (eq my-theme 'south)
+    (set-face-background 'eldoc-box-body "#e4eaf3") ; cool-light-gray from the south theme
+    )
+  (setq eldoc-box-max-pixel-height 200))
+
+(use-package sideline-eglot
+  :hook (eglot-mode . sideline-mode)
+  :init
+  ;; (setq sideline-backends-right `(((when (featurep 'eglot) 'sideline-eglot))))
+  (setq sideline-backends-right '(sideline-eglot))
+  )
+(use-package eglot-header-line
+  :after eglot
+  :hook (eglot-mode . eglot-header-line-mode))
+;;; flymake
+(use-package flymake
+  :bind (:map flymake-mode-map
+              ("M-n" . flymake-goto-next-error)
+              ("M-p" . flymake-goto-prev-error)))
+
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
