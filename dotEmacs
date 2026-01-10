@@ -5133,7 +5133,7 @@ sorted block."
                 '((c-mode c-ts-mode c++-mode c++-ts-mode) "clangd-17" "--header-insertion=never" "-j=8" "--header-insertion-decorators=0"))
   (add-to-list 'eglot-server-programs
                ;; '((python-mode python-ts-mode) "pylsp")
-               '((python-mode python-ts-mode) . ("ty" "server")))
+               '((python-mode python-ts-mode) . ("rass" "--" "ty" "server" "--" "ruff" "server")))
 
   ;; (require 'eldoc-box)
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
