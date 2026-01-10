@@ -56,7 +56,7 @@
   (cond 
    ((memq window-system '(mac ns)) 15)
    ((file-exists-p "/etc/nixos") 11)
-   ((file-exists-p "/etc/lsb-release") 18)
+   ((file-exists-p "/etc/lsb-release") 11)
    (t 11)))
 
 (defun my/set-font ()
@@ -4174,7 +4174,7 @@ sorted block."
                       :height (cond 
                                ((memq window-system '(mac ns)) 170)
                                ((file-exists-p "/etc/nixos") 110)
-                               ((file-exists-p "/etc/lsb-release") 200)
+                               ((file-exists-p "/etc/lsb-release") 110)
                                (t 140))
                       :family "Montserrat"
                       :weight 'normal)
@@ -5021,6 +5021,7 @@ sorted block."
 ;;; ultra-scroll
 (use-package ultra-scroll
   :defer nil
+  :disabled t
   :init (setq scroll-conservatively 101
               scroll-margin 0)
   :custom (ultra-scroll-hide-cursor 1.0)
@@ -5102,6 +5103,12 @@ sorted block."
 (use-package tramp-hlo
   :config
   (tramp-hlo-setup))
+
+;;; lua-mode
+(use-package lua-mode
+  :defer t
+  :mode "\\.lua\\'")
+
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
