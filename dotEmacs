@@ -1498,8 +1498,8 @@ project's type."
   (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos")))
       (set-face-attribute 'org-level-1 nil
                           :height 400
-                          :weight (if (eq my-theme 'apropospriate) 'light 'medium)
-  )  (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
+                          :weight (if (eq my-theme 'apropospriate) 'light 'medium))
+    (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
   (when (eq my-theme 'apropospriate)
     (set-face-attribute 'org-headline-done nil :foreground "#B199BA"))
 
@@ -3084,16 +3084,17 @@ under the current project's root directory."
   ;; (notmuch-search-matching-authors ((t (:foreground "CadetBlue"))))
   (notmuch-search-matching-authors ((t (:foreground "DeepSkyBlue"))))
   ;; (notmuch-search-subject ((t (:foreground "DeepSkyBlue"))))
-  (notmuch-search-subject ((t (:foreground "white"))))
+  ;; (notmuch-search-subject ((t (:foreground "white"))))
+  (notmuch-search-subject ((t (:foreground "black"))))
   (notmuch-search-unread-face ((t (:foreground "CadetBlue"))))
-  (notmuch-search-subject ((t (:family "Montserrat" :weight light :height 120 :foreground "white"))))
+  (notmuch-search-subject ((t (:family "Montserrat" :weight light :height 120 :foreground "black"))))
 
   :config
   (add-to-list 'notmuch-saved-searches 
                '(:name "lists" :query "tag:unread AND (tag:haskell OR tag:orgmode OR tag:rocm OR tag:wgpu OR tag:srht)" :key "l"))
   (set-face-attribute 'notmuch-search-subject nil :font "Montserrat" :weight 'normal :height 120 :foreground "gainsboro")
   (set-face-attribute 'notmuch-tag-face nil :foreground "olive drab")
-  (set-face-attribute 'notmuch-search-subject nil :font "Victor Mono" :weight 'normal :height 120 :foreground "white")
+  (set-face-attribute 'notmuch-search-subject nil :font "Victor Mono" :weight 'normal :height 120 :foreground "black")
   (set-face-attribute 'notmuch-search-unread-face nil :foreground "CadetBlue")
 
   ;; From https://www.reddit.com/r/emacs/comments/aja2ov/notmuch_thread_sort_order/eeujv47/
