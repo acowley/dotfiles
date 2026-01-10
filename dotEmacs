@@ -733,7 +733,7 @@ end tell" uri)))
 
 (if (memq window-system '(mac ns))
     (setq browse-url-browser-function #'browse-url-safari)
-  (setq browse-url-browser-function #'browse-url-firefox))
+  (setq browse-url-browser-function #'browse-url-default-browser))
 
 ;; From http://emacsredux.com/blog/2013/06/21/eval-and-replace/
 (defun eval-and-replace ()
@@ -1393,7 +1393,7 @@ project's type."
   ;; (dashboard-heading ((t (:font yanone-font-name :weight light :height 200 :foreground "#E1BEE7"))))
   ;; (dashboard-banner-logo-title ((t (:font yanone-font-name :weight light :height 250))))
   :config
-  (set-face-attribute 'dashboard-heading nil :font yanone-font-name :weight 'heavy :height 400 ;; :foreground "#E1BEE7"
+  (set-face-attribute 'dashboard-heading nil :font yanone-font-name :weight 'heavy :height 200 ;; :foreground "#E1BEE7"
                       )
   (when (eq my-theme 'apropospriate)
     (set-face-foreground 'dashboard-heading "#E1BEE7"))
@@ -1497,8 +1497,8 @@ project's type."
   (set-face-font 'org-level-1 yanone-font-name)
   (if (or (memq window-system '(mac ns)) (not (file-exists-p "/etc/nixos")))
       (set-face-attribute 'org-level-1 nil
-                          :height 400
-                          :weight (if (eq my-theme 'apropospriate) 'light 'medium))
+                          :height 250 ;;400
+                          :weight (if (eq my-theme 'apropospriate) 'light 'bold))
     (set-face-attribute 'org-level-1 nil :height 250 :weight 'light))
   (when (eq my-theme 'apropospriate)
     (set-face-attribute 'org-headline-done nil :foreground "#B199BA"))
@@ -1659,6 +1659,7 @@ project's type."
   ;; Weekly review of completed tasks
   ;; Adapted from https://emacs.stackexchange.com/a/53007
   (with-eval-after-load 'org-agenda
+    (setq org-agenda-files (list "/home/acowley/org/serve.org"))
     (add-to-list 'org-agenda-custom-commands
                  '("W" "Weekly review"
                    agenda ""
@@ -3603,6 +3604,7 @@ predicate returns true."
   (setq ;mc/always-repeat-command t
         ;mc/always-run-for-all t
         mc/cmds-to-run-once '(god-mode-all))
+  (set-face-background 'mc/cursor-face "light gray")
   (defun ac/insert-numbers1 ()
     "Insert a number at each cursor counting up from 1."
     (interactive)
@@ -3629,6 +3631,8 @@ predicate returns true."
          ("M-p" . flycheck-previous-error)
          ;; ("M-?" . flycheck-display-error-at-point)
          )
+  :custom-face
+  (flycheck-error ((t (:underline (:color "red"  :style wave :position nil)) :box (:line-width (2 . 2) :color "red" :style released-button))))
   :config
 
   ;; When there are errors at this level, skip everything of a lesser
@@ -3790,7 +3794,7 @@ sorted block."
   (when (eq my-theme 'apropospriate)
     (set-face-background 'lsp-face-highlight-textual "gold4"))
   (setq lsp-pylsp-plugins-yapf-enabled t)
-  (advice-add 'lsp :before #'direnv-update-environment)
+  ;; (advice-add 'lsp :before #'direnv--maybe-update-environment)
   (setq lsp-prefer-flymake nil
         ;; lsp-prefer-capf t
         read-process-output-max (* 1024 1024))
