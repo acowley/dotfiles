@@ -73,6 +73,11 @@
     ))
 (my/set-font)
 
+;; Set a default fontset that has symbols. This can speed up the use of unicode.
+(set-fontset-font "fontset-default" nil
+                  (font-spec :name "Symbola"))
+
+
 (defvar yanone-font-name "Yanone Kaffeesatz")
 
 (use-package info
