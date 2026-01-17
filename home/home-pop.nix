@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable, ... }:
+let
+  btop = pkgs.btop.override {
+    cudaSupport = true;
+  };
+in
 {
   # programs.bash = {
   #   sessionVariables = {
@@ -29,12 +34,18 @@
     cloudcompare
     ollama-cuda
     uv
+    # unstable.goose-cli
+    tmux
+    byobu
+    claude-code-bun
+    btop
   ];
 
   programs.mpv = {
     enable = true;
     config = {
       hwdec = "auto";
+      keep-open = "always";
     };
   };
 

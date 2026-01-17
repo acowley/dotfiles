@@ -34,9 +34,11 @@
     # emacs-lsp-booster.url = "github:acowley/emacs-lsp-booster-nix";
     # emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
     nix-gl-host.url = "github:numtide/nix-gl-host";
+    claude-code.url = "github:sadjow/claude-code-nix";
   };
 
-  outputs = { self, nixpkgs, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex, unstable, nix-gl-host }:
+  outputs = { self, nixpkgs, unstable, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex,
+              nix-gl-host, claude-code }:
     let mkHome = { extraImports,
                    system ? "x86_64-linux",
                    homeDirectory ? "/home/acowley"
@@ -53,6 +55,7 @@
                   my-emacs.overlay
                   (final: prev: import my-latex final prev)
                   nix-gl-host.overlays.default
+                  claude-code.overlays.default
                 ];
             };
             modules = [./common.nix] ++ extraImports;
