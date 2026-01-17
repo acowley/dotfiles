@@ -8,7 +8,8 @@
 
   programs.zsh = {
     enable = true;
-    # enableCompletion = true;
+    enableCompletion = true;
+    dotDir = "${config.xdg.configHome}/zsh";
     sessionVariables = {
       # NIX_PATH = "nixpkgs=/home/acowley/src/nixpkgs";
       # TMPDIR = "/tmp";
