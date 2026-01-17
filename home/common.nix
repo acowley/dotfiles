@@ -81,6 +81,8 @@ in {
     # })
     (no-uuid yanone-kaffeesatz "opentype" "otf")
     montserrat
+    stix-two
+    julia-mono
     # (nerdfonts.override { fonts = [ "Hack" "FiraCode" "VictorMono" "DejaVuSansMono" ]; })
     nerd-fonts.hack
     nerd-fonts.fira-code
