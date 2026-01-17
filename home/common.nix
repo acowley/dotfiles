@@ -113,6 +113,11 @@ in {
       TMPDIR="$XDG_RUNTIME_DIR";
     };
     initContent = ''
+	if [[ $TERM == "dumb" ]]; thenAdd commentMore actions
+          unsetopt zle
+          PS1='$ '
+          return
+        fi
       export PATH=~/.nix-profile/bin:$PATH
     '';
   };
@@ -131,6 +136,9 @@ in {
     # the store path of the `lib` output xoof the `gcc.cc.lib`
     # derivation.
     bashrcExtra = ''
+      if [[ $TERM = dumb ]]; then
+        return
+      fi
       if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
         source $HOME/.nix-profile/etc/profile.d/nix.sh
       fi
