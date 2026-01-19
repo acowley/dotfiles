@@ -5408,27 +5408,32 @@ FILEPATHS should be a list of paths."
     (claude-code-ide-mcp-server-with-session-context nil
       (let ((full-path (expand-file-name filepath default-directory)))
         (if (not (file-exists-p full-path))
-           (format "Error: File not found: %s" full-path)
+            (format "Error: File not found: %s" full-path)
           (let ((buf (find-file-noselect full-path)))
-            (if (one-window-p)
-                (split-window-horizontally))
-            (other-window 1)
-            (switch-to-buffer buf)
-            (goto-char (point-min))
-            (forward-line (1- start-line))
-            (let ((start-pos (point)))
-              (forward-line (- end-line start-line -1))
-              (pulse-momentary-highlight-region start-pos (point))
-              (goto-char start-pos)
-              (recenter)
-              (format "Highlighted %s lines %d-%d"
-                      (file-name-nondirectory full-path)
-                      start-line end-line)))))))
+            ;; Display without selecting
+            (unless (get-buffer-window buf)
+              (display-buffer buf '(nil (inhibit-same-window . t))))
+            ;; Do the pulsing in the buffer
+            (with-current-buffer buf
+              (goto-char (point-min))
+              (forward-line (1- start-line))
+              (let ((start-pos (point)))
+                (forward-line (- end-line start-line -1))
+                (let ((end-pos (point)))
+                  (pulse-momentary-highlight-region start-pos end-pos)
+                  ;; Scroll the window to show the region without selecting it
+                  (when-let ((win (get-buffer-window buf)))
+                    (set-window-point win start-pos)
+                    (with-selected-window win
+                      (recenter)))
+                  (format "Highlighted %s lines %d-%d"
+                          (file-name-nondirectory full-path)
+                          start-line end-line)))))))))
 
   (claude-code-ide-make-tool
    :function #'my-claude-pulse-region
    :name "flash_code"
-   :description "Open a file and briefly flash/pulse a region to draw attention to it."
+   :description "Open a file and briefly flash/pulse/highlight a region to draw attention to it."
    :args '((:name "filepath"
                    :type string
                    :description "Path to the file")
