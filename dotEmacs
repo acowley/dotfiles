@@ -5216,7 +5216,6 @@ sorted block."
 (use-package claude-code-ide
   :bind ("C-c C-'" . claude-code-ide-menu)
   :config
-  (claude-code-ide-emacs-tools-setup)
   (setq claude-code-ide-cli-path "claude-bun")
 ;;;; MCP Tools
 ;;;;; Image Viewer for Claude Code IDE
@@ -5232,32 +5231,33 @@ sorted block."
     "Buffer name for displaying images.")
 
   (defun my-claude-image--display-current ()
-  "Display the current image from the list without stealing focus."
-  (when (and my-claude-image-list
-             (>= my-claude-image-index 0)
-             (< my-claude-image-index (length my-claude-image-list)))
-    (let* ((filepath (nth my-claude-image-index my-claude-image-list))
-           (buf (get-buffer my-claude-image-buffer-name)))
-      (unless buf
-        (setq buf (get-buffer-create my-claude-image-buffer-name))
+    "Display the current image from the list without stealing focus."
+    (when (and my-claude-image-list
+               (>= my-claude-image-index 0)
+               (< my-claude-image-index (length my-claude-image-list)))
+      (let* ((filepath (nth my-claude-image-index my-claude-image-list))
+             (buf (get-buffer my-claude-image-buffer-name)))
+        (unless buf
+          (setq buf (get-buffer-create my-claude-image-buffer-name))
+          (with-current-buffer buf
+            (setq buffer-save-without-query t)))
         (with-current-buffer buf
-          (setq buffer-save-without-query t)))
-      (with-current-buffer buf
-        (let ((inhibit-read-only t))
-          (erase-buffer)
-          (setq buffer-file-name filepath)
-          (insert-file-contents filepath)
-          (set-buffer-modified-p nil)
-          (set-visited-file-modtime)
-          (image-mode)
-          (auto-revert-mode 1)
-          (setq header-line-format
-                (format " Image %d/%d: %s"
-                        (1+ my-claude-image-index)
-                        (length my-claude-image-list)
-                        (file-name-nondirectory filepath)))))
-      ;; Display without selecting
-      (display-buffer buf '(nil (inhibit-same-window . t)))
+          (let ((inhibit-read-only t))
+            (erase-buffer)
+            (setq buffer-file-name filepath)
+            (insert-file-contents filepath)
+            (set-buffer-modified-p nil)
+            (set-visited-file-modtime)
+            (image-mode)
+            (auto-revert-mode 1)
+            (setq header-line-format
+                  (format " Image %d/%d: %s"
+                          (1+ my-claude-image-index)
+                          (length my-claude-image-list)
+                          (file-name-nondirectory filepath)))))
+      ;; Only display if not already visible
+      (unless (get-buffer-window buf)
+        (display-buffer buf '(nil (inhibit-same-window . t))))
       (format "Displaying image %d/%d: %s"
               (1+ my-claude-image-index)
               (length my-claude-image-list)
@@ -5429,7 +5429,7 @@ FILEPATHS should be a list of paths."
    :function #'my-claude-pulse-region
    :name "flash_code"
    :description "Open a file and briefly flash/pulse a region to draw attention to it."
-   :args '((:named "filepath"
+   :args '((:name "filepath"
                    :type string
                    :description "Path to the file")
            (:name "start_line"
