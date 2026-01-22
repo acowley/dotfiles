@@ -5231,31 +5231,34 @@ sorted block."
     "Buffer name for displaying images.")
 
   (defun my-claude-image--display-current ()
-    "Display the current image from the list without stealing focus."
-    (when (and my-claude-image-list
-               (>= my-claude-image-index 0)
-               (< my-claude-image-index (length my-claude-image-list)))
-      (let* ((filepath (nth my-claude-image-index my-claude-image-list))
-             (buf (get-buffer my-claude-image-buffer-name)))
-        (unless buf
-          (setq buf (get-buffer-create my-claude-image-buffer-name))
-          (with-current-buffer buf
-            (setq buffer-save-without-query t)))
+  "Display the current image from the list without stealing focus."
+  (when (and my-claude-image-list
+             (>= my-claude-image-index 0)
+             (< my-claude-image-index (length my-claude-image-list)))
+    (let* ((filepath (nth my-claude-image-index my-claude-image-list))
+           (buf (get-buffer my-claude-image-buffer-name)))
+      (unless buf
+        (setq buf (get-buffer-create my-claude-image-buffer-name))
         (with-current-buffer buf
-          (let ((inhibit-read-only t))
-            (erase-buffer)
-            (setq buffer-file-name filepath)
-            (insert-file-contents filepath)
-            (set-buffer-modified-p nil)
-            (set-visited-file-modtime)
-            (image-mode)
-            (auto-revert-mode 1)
-            (setq header-line-format
-                  (format " Image %d/%d: %s"
-                          (1+ my-claude-image-index)
-                          (length my-claude-image-list)
-                          (file-name-nondirectory filepath)))))
-      ;; Only display if not already visible
+          (setq buffer-save-without-query t)))
+      (with-current-buffer buf
+        (let ((inhibit-read-only t))
+          (erase-buffer)
+          (setq buffer-file-name filepath)
+          (insert-file-contents filepath)
+          (image-mode)
+          (setq header-line-format
+                (format " Image %d/%d: %s"
+                        (1+ my-claude-image-index)
+                        (length my-claude-image-list)
+                        (file-name-nondirectory filepath)))
+          ;; These must come AFTER image-mode and other setup
+          (set-visited-file-modtime)
+          (set-buffer-modified-p nil)
+          ;; Revert silently without prompting
+          (setq-local auto-revert-verbose nil)
+          (setq-local revert-buffer-in-progress-p nil)
+          (auto-revert-mode 1)))
       (unless (get-buffer-window buf)
         (display-buffer buf '(nil (inhibit-same-window . t))))
       (format "Displaying image %d/%d: %s"
