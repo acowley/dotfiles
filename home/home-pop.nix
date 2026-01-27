@@ -3,6 +3,16 @@ let
   btop = pkgs.btop.override {
     cudaSupport = true;
   };
+
+  # We move temporary files to ~/Downloads because the Firefox snap
+  # can access that directory. This is used to view HTML emails from
+  # notmuch in emacs.
+  firefox-delayed = pkgs.writeShellScriptBin "firefox-delayed" ''
+    persistent="$HOME/Downloads/.email-html-$$.html"
+    cp "$1" "$persistent"
+    firefox "$persistent" &
+    (sleep 300 && rm -f "$persistent") &
+  '';
 in
 {
   # programs.bash = {
@@ -39,6 +49,7 @@ in
     byobu
     claude-code-bun
     btop
+    firefox-delayed
   ];
 
   programs.mpv = {
