@@ -5263,7 +5263,16 @@ sorted block."
           ;; Revert silently without prompting
           (setq-local auto-revert-verbose nil)
           (setq-local revert-buffer-in-progress-p nil)
-          (auto-revert-mode 1)))
+          (auto-revert-mode 1))
+        ;; Critical: set up revert to not prompt
+        (setq-local revert-without-query '(".*"))
+        (setq-local buffer-stale-function (lambda (&rest _) nil))
+        (set-visited-file-modtime)
+        (set-buffer-modified-p nil)
+        (setq buffer-read-only t)
+        ;; Use auto-revert without prompting
+        (setq-local auto-revert-verbose nil)
+        (auto-revert-mode 1))
       (unless (get-buffer-window buf)
         (display-buffer buf '(nil (inhibit-same-window . t))))
       (format "Displaying image %d/%d: %s"
@@ -5455,9 +5464,47 @@ FILEPATHS should be a list of paths."
   ;; Enable the MCP server
   (claude-code-ide-emacs-tools-setup)
 
+;;;; Emacs Helpers
+
+(defvar-local my-claude-prompt-target nil
+  "Target Claude buffer for sending prompt.")
+
+(defun my-claude-prompt-send ()
+  "Send the prompt buffer contents to Claude."
+  (interactive)
+  (let ((text (buffer-substring-no-properties (point-min) (point-max)))
+        (target my-claude-prompt-target))
+    (quit-window t)
+    (when target
+      (pop-to-buffer target)
+      (vterm-send-string text)
+      ;; (vterm-send-return)
+      )))
+
+(defun my-claude-prompt ()
+  "Open a buffer to compose a Claude prompt, send with C-c C-c."
+  (interactive)
+  (let* ((proj (project-current))
+         (project-name (when proj
+                         (file-name-nondirectory
+                          (directory-file-name (project-root proj)))))
+         (claude-buf (cl-find-if
+                      (lambda (b)
+                        (and (string-prefix-p "*claude-code" (buffer-name b))
+                             (or (null project-name)
+                                 (string-match-p project-name (buffer-name b)))))
+                      (buffer-list)))
+         (buf (get-buffer-create "*claude-prompt*")))
+    (pop-to-buffer buf)
+    (erase-buffer)
+    (text-mode)
+    (setq my-claude-prompt-target claude-buf)
+    (local-set-key (kbd "C-c C-c") #'my-claude-prompt-send)))
+
+
 ;;;; Terminal setup
   ;; Maybe has different problems to the default 'vterm backend.
-  ; (setq claude-code-ide-terminal-backend 'eat)
+                                        ; (setq claude-code-ide-terminal-backend 'eat)
 
   (defun my-god-mode-eat-toggle ()
     "Toggle god-mode and eat's input mode together."
@@ -5495,7 +5542,23 @@ KEEP-PERCENT is how much to keep (default 50)."
           (setq delete-to (point)))
         (delete-region (point-min) delete-to)
         (message "Trimmed buffer to %d%% (%d lines)" pct lines-to-keep)))))
-  )
+
+(defun my-vterm-copy-region-clean (start end)
+  "Copy region, removing vterm artifacts."
+  (interactive "r")
+  (let ((text (buffer-substring-no-properties start end)))
+    ;; Remove zero-width spaces, excessive whitespace, etc.
+    (setq text (replace-regexp-in-string "[\u200B\u200C\u200D\uFEFF]" "" text))
+    (setq text (replace-regexp-in-string "\t" " " text))
+    (setq text (replace-regexp-in-string " +" " " text))  ; collapse multiple spaces
+    (kill-new text)
+    (message "Copied cleaned text")))
+
+(with-eval-after-load 'vterm
+  (define-key vterm-copy-mode-map (kbd "M-w") #'my-vterm-copy-region-clean)
+  (define-key vterm-copy-mode-map (kbd "C-e") #'end-of-visual-line)
+  (define-key vterm-copy-mode-map (kbd "C-a") #'beginning-of-visual-line))
+)
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
