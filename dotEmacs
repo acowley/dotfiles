@@ -527,6 +527,11 @@ Haskell programs as it may be applied to all numbers in region."
   (global-unset-key (kbd "C-z"))
   (global-unset-key (kbd "C-x C-z")))
 
+;; Disable key binding that sets the system wallpaper on the W key. I
+;; hit this accidentally too often.
+(with-eval-after-load 'image-mode
+  (define-key image-mode-map (kbd "W") nil))
+
 (setq confirm-kill-emacs #'y-or-n-p)
 
 (setq frame-resize-pixelwise t)
