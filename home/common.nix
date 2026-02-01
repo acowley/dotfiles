@@ -101,7 +101,7 @@ in {
     (no-uuid roboto "truetype" "ttf")
     roboto-mono
     roboto-slab
-    nixfmt-classic
+    nixfmt
   ];
 
   programs.zsh = {
