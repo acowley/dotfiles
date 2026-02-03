@@ -5225,7 +5225,8 @@ sorted block."
 (use-package claude-code-ide
   :bind ("C-c C-'" . claude-code-ide-menu)
   :config
-  (setq claude-code-ide-cli-path "claude-bun")
+  (setq claude-code-ide-cli-path "claude")
+  (setq claude-code-ide-use-ide-diff nil)
 ;;;; MCP Tools
 ;;;;; Image Viewer for Claude Code IDE
 
