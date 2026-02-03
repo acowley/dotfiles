@@ -1268,6 +1268,7 @@ minibuffer, even without explicitly focusing it."
          ;; ("C-s" . consult-line)
          ("C-s" . my/search-forward)
          ("C-x l" . consult-locate)
+         ("M-g f" . consult-flymake)
          )
   :after projectile
   :custom (consult-locate-command (if (memq window-system '(mac ns))
@@ -1275,6 +1276,7 @@ minibuffer, even without explicitly focusing it."
                                       "/run/wrappers/bin/locate --ignore-case --existing --regexp ARG OPTS"))
   :config
   (require 'consult-imenu)
+  (require 'consult-flymake)
   (setq consult-project-root-function #'projectile-project-root
         consult-async-input-debounce 0.1
         consult-narrow-key "<"
@@ -1318,6 +1320,7 @@ minibuffer, even without explicitly focusing it."
       (clipboard-yank))))
 
 (use-package consult-flycheck
+  :disabled t
   :commands (consult-flycheck))
 
 (use-package consult-dir
