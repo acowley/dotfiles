@@ -4633,7 +4633,6 @@ sorted block."
               ;;;("C-a" . nil)
               ;; ("C-e" . nil)
               ;; ("C-e" . #'vterm-end-of-line)
-              ("C-e" . #'vterm-end-of-line)
               ;; ("C-f" . nil)
               ;; ("C-b" . nil)
               ;; ("M-b" . nil)
