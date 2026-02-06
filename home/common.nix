@@ -113,7 +113,7 @@ in {
       TMPDIR="$XDG_RUNTIME_DIR";
     };
     initContent = ''
-	if [[ $TERM == "dumb" ]]; thenAdd commentMore actions
+	if [[ $TERM == "dumb" ]]; then
           unsetopt zle
           PS1='$ '
           return
