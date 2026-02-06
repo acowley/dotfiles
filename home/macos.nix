@@ -38,12 +38,14 @@
   ];
   # programs.home-manager.path = "/Users/acowley/src/home-manager";
 
+  xdg.enable = true;
   home.sessionVariables = {
     OLLAMA_API_BASE = "http://kubby.local:11434";
   };
 
   programs.zsh = {
     enable = true;
+    dotDir = "${config.xdg.configHome}/zsh";
     # enableCompletion = true;
     sessionVariables = {
       NIX_PATH = "nixpkgs=/Users/acowley/src/nixpkgs";
