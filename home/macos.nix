@@ -28,6 +28,7 @@
     uv
     duckdb
     unstable.goose-cli
+    claude-code
   ];
   home.homeDirectory = "/Users/acowley";
   home.sessionPath = [
