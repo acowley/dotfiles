@@ -41,13 +41,13 @@ in
     # gyroflow
     # davinci-resolve
     # (sunshine.override { cudaSupport = true; })
-    cloudcompare
+    # cloudcompare
     ollama-cuda
     uv
     # unstable.goose-cli
     tmux
     byobu
-    claude-code-bun
+    claude-code
     btop
     firefox-delayed
   ];
