@@ -527,6 +527,11 @@ Haskell programs as it may be applied to all numbers in region."
   (global-unset-key (kbd "C-z"))
   (global-unset-key (kbd "C-x C-z")))
 
+;; Preserve highlights even when switching to another window. This
+;; makes it easier to send highlights to other windows (e.g. with
+;; `claude-code-ide')
+(setq highlight-nonselected-windows t)
+
 ;; Disable key binding that sets the system wallpaper on the W key. I
 ;; hit this accidentally too often.
 (with-eval-after-load 'image-mode
@@ -3188,7 +3193,9 @@ timestamp."
     (setq line-spacing 0.2))
   ;; Associate firefox with the `text/html' MIME type so that typing
   ;; ".v" opens an HTML part of an email message in firefox.
-  (setq mailcap-user-mime-data '(((viewer . "firefox %s") (type . "text/html"))))
+  ;; (setq mailcap-user-mime-data '(((viewer . "firefox %s") (type . "text/html"))))
+  (setq mailcap-user-mime-data '(((viewer . "firefox-delayed %s") (type . "text/html"))))
+  ;; (mailcap-add-mailcap-entry "text" "html" '((viewer . browse-url-file-url) (type . "text/html")))
   (defface notmuch-search-deleted-face
     '((t (:foreground "tomato")))
     "Face for the `deleted' tag."
@@ -5228,243 +5235,15 @@ sorted block."
   (setq claude-code-ide-cli-path "claude")
   (setq claude-code-ide-use-ide-diff nil)
 ;;;; MCP Tools
-;;;;; Image Viewer for Claude Code IDE
+;; Add the directory containing this init file to load-path
+(let ((dotfiles-dir (file-name-directory
+                     (file-truename
+                      (or load-file-name buffer-file-name)))))
+  (add-to-list 'load-path dotfiles-dir))
 
-  ;; State for tracking images
-  (defvar my-claude-image-list nil
-    "List of image filepaths currently being viewed.")
+;; Now you can require your files
+(require 'claude-mcp-tools)
 
-  (defvar my-claude-image-index 0
-    "Current index in `my-claude-image-list'.")
-
-  (defvar my-claude-image-buffer-name "*claude-images*"
-    "Buffer name for displaying images.")
-
-  (defun my-claude-image--display-current ()
-  "Display the current image from the list without stealing focus."
-  (when (and my-claude-image-list
-             (>= my-claude-image-index 0)
-             (< my-claude-image-index (length my-claude-image-list)))
-    (let* ((filepath (nth my-claude-image-index my-claude-image-list))
-           (buf (get-buffer my-claude-image-buffer-name)))
-      (unless buf
-        (setq buf (get-buffer-create my-claude-image-buffer-name))
-        (with-current-buffer buf
-          (setq buffer-save-without-query t)))
-      (with-current-buffer buf
-        (let ((inhibit-read-only t))
-          (erase-buffer)
-          (setq buffer-file-name filepath)
-          (insert-file-contents filepath)
-          (image-mode)
-          (setq header-line-format
-                (format " Image %d/%d: %s"
-                        (1+ my-claude-image-index)
-                        (length my-claude-image-list)
-                        (file-name-nondirectory filepath)))
-          ;; These must come AFTER image-mode and other setup
-          (set-visited-file-modtime)
-          (set-buffer-modified-p nil)
-          ;; Revert silently without prompting
-          (setq-local auto-revert-verbose nil)
-          (setq-local revert-buffer-in-progress-p nil)
-          (auto-revert-mode 1))
-        ;; Critical: set up revert to not prompt
-        (setq-local revert-without-query '(".*"))
-        (setq-local buffer-stale-function (lambda (&rest _) nil))
-        (set-visited-file-modtime)
-        (set-buffer-modified-p nil)
-        (setq buffer-read-only t)
-        ;; Use auto-revert without prompting
-        (setq-local auto-revert-verbose nil)
-        (auto-revert-mode 1))
-      (unless (get-buffer-window buf)
-        (display-buffer buf '(nil (inhibit-same-window . t))))
-      (format "Displaying image %d/%d: %s"
-              (1+ my-claude-image-index)
-              (length my-claude-image-list)
-              filepath))))
-
-  (defun my-claude-open-image (filepath)
-    "Open a single image, replacing the current list."
-    (claude-code-ide-mcp-server-with-session-context nil
-      (let ((full-path (expand-file-name filepath default-directory)))
-        (if (file-exists-p full-path)
-            (progn
-              (setq my-claude-image-list (list full-path))
-              (setq my-claude-image-index 0)
-              (my-claude-image--display-current))
-          (format "Error: File not found: %s" full-path)))))
-
-  (defun my-claude-open-images (filepaths)
-    "Open multiple images for cycling through.
-FILEPATHS should be a list of paths."
-    (claude-code-ide-mcp-server-with-session-context nil
-      (let* ((paths (if (stringp filepaths)
-                        (json-parse-string filepaths :array-type 'list)
-                      filepaths))
-             (full-paths (mapcar (lambda (p) (expand-file-name p default-directory)) paths))
-             (existing (seq-filter #'file-exists-p full-paths))
-             (missing (seq-remove #'file-exists-p full-paths)))
-        (if existing
-            (progn
-              (setq my-claude-image-list existing)
-              (setq my-claude-image-index 0)
-              (let ((result (my-claude-image--display-current)))
-                (if missing
-                    (format "%s\nWarning: %d file(s) not found: %s"
-                            result (length missing) (string-join missing ", "))
-                  result)))
-          (format "Error: No valid files found. Missing: %s" (string-join missing ", "))))))
-
-  (defun my-claude-next-image ()
-    "Show the next image in the list."
-    (interactive)
-    (if (null my-claude-image-list)
-        "No images loaded"
-      (setq my-claude-image-index
-            (mod (1+ my-claude-image-index) (length my-claude-image-list)))
-      (my-claude-image--display-current)))
-
-  (defun my-claude-previous-image ()
-    "Show the previous image in the list."
-    (interactive)
-    (if (null my-claude-image-list)
-        "No images loaded"
-      (setq my-claude-image-index
-            (mod (1- my-claude-image-index) (length my-claude-image-list)))
-      (my-claude-image--display-current)))
-
-  (defun my-claude-goto-image (index)
-    "Jump to a specific image by INDEX (1-based)."
-    (if (null my-claude-image-list)
-        "No images loaded"
-      (let ((idx (1- index)))           ; Convert to 0-based
-        (if (and (>= idx 0) (< idx (length my-claude-image-list)))
-            (progn
-              (setq my-claude-image-index idx)
-              (my-claude-image--display-current))
-          (format "Error: Index %d out of range (1-%d)"
-                  index (length my-claude-image-list))))))
-
-  (defun my-claude-list-images ()
-    "Return a list of currently loaded images."
-    (if (null my-claude-image-list)
-        "No images loaded"
-      (format "Loaded %d images (currently showing #%d):\n%s"
-              (length my-claude-image-list)
-              (1+ my-claude-image-index)
-              (string-join
-               (cl-loop for path in my-claude-image-list
-                        for i from 1
-                        collect (format "  %d. %s%s"
-                                        i
-                                        (file-name-nondirectory path)
-                                        (if (= i (1+ my-claude-image-index)) " <-- current" "")))
-               "\n"))))
-
-  ;; Register all tools with Claude Code
-  (claude-code-ide-make-tool
-   :function #'my-claude-open-image
-   :name "open_image"
-   :description "Open a single image file in Emacs. Replaces any previously loaded images."
-   :args '((:name "filepath"
-                  :type string
-                  :description "Path to the image file (absolute or relative to project)")))
-
-  (claude-code-ide-make-tool
-   :function #'my-claude-open-images
-   :name "open_images"
-   :description "Open multiple images for cycling through. Pass a JSON array of paths."
-   :args '((:name "filepaths"
-                  :type string
-                  :description "JSON array of image paths, e.g. [\"img1.png\", \"img2.png\"]")))
-
-  (claude-code-ide-make-tool
-   :function #'my-claude-next-image
-   :name "next_image"
-   :description "Show the next image in the loaded image list."
-   :args '())
-
-  (claude-code-ide-make-tool
-   :function #'my-claude-previous-image
-   :name "previous_image"
-   :description "Show the previous image in the loaded image list."
-   :args '())
-
-  (claude-code-ide-make-tool
-   :function #'my-claude-goto-image
-   :name "goto_image"
-   :description "Jump to a specific image by its number (1-based index)."
-   :args '((:name "index"
-                  :type integer
-                  :description "Image number to display (1-based)")))
-
-  (claude-code-ide-make-tool
-   :function #'my-claude-list-images
-   :name "list_images"
-   :description "List all currently loaded images and which one is being displayed."
-   :args '())
-
-  ;; Keybindings for manual cycling (optional)
-  (defvar my-claude-image-mode-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "n") #'my-claude-next-image)
-      (define-key map (kbd "p") #'my-claude-previous-image)
-      (define-key map (kbd "q") #'quit-window)
-      map)
-    "Keymap for claude image viewer.")
-
-  ;; Apply keymap to the image buffer
-  (add-hook 'image-mode-hook
-            (lambda ()
-              (when (string= (buffer-name) my-claude-image-buffer-name)
-                (use-local-map (make-composed-keymap
-                                my-claude-image-mode-map
-                                image-mode-map)))))
-;;;;; MCP Tool to load and highlight a range from a file
-  (require 'pulse)
-
-  (defun my-claude-pulse-region (filepath start-line end-line)
-    "Open FILEPATH and briefly pulse lines START-LINE to END-LINE."
-    (claude-code-ide-mcp-server-with-session-context nil
-      (let ((full-path (expand-file-name filepath default-directory)))
-        (if (not (file-exists-p full-path))
-            (format "Error: File not found: %s" full-path)
-          (let ((buf (find-file-noselect full-path)))
-            ;; Display without selecting
-            (unless (get-buffer-window buf)
-              (display-buffer buf '(nil (inhibit-same-window . t))))
-            ;; Do the pulsing in the buffer
-            (with-current-buffer buf
-              (goto-char (point-min))
-              (forward-line (1- start-line))
-              (let ((start-pos (point)))
-                (forward-line (- end-line start-line -1))
-                (let ((end-pos (point)))
-                  (pulse-momentary-highlight-region start-pos end-pos)
-                  ;; Scroll the window to show the region without selecting it
-                  (when-let ((win (get-buffer-window buf)))
-                    (set-window-point win start-pos)
-                    (with-selected-window win
-                      (recenter)))
-                  (format "Highlighted %s lines %d-%d"
-                          (file-name-nondirectory full-path)
-                          start-line end-line)))))))))
-
-  (claude-code-ide-make-tool
-   :function #'my-claude-pulse-region
-   :name "flash_code"
-   :description "Open a file and briefly flash/pulse/highlight a region to draw attention to it."
-   :args '((:name "filepath"
-                   :type string
-                   :description "Path to the file")
-           (:name "start_line"
-                  :type integer
-                  :description "Starting line number (1-based)")
-           (:name "end_line"
-                  :type integer
-                  :description "Ending line number (1-based)")))
 ;;;;; Enable MCP
   ;; Enable the MCP server
   (claude-code-ide-emacs-tools-setup)
