@@ -4731,8 +4731,20 @@ sorted block."
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 ;;; avy
 (use-package avy
+  :disabled t
   :bind (("M-s" . avy-goto-word-1)
          ("M-S" . avy-goto-char-2)))
+;;; flash
+(use-package flash
+  :commands (flash-jump flash-jump-continue
+             flash-treesitter)
+  :bind ("M-s" . flash-jump)
+  ;; :custom
+  ;; (flash-multi-window t)
+  :config
+  ;; Search integration (labels during C-s, /, ?)
+  (require 'flash-isearch)
+  (flash-isearch-mode 1))
 ;;; proofgeneral
 ;; (use-package proof-general
 ;;   :mode (rx ".v" eos))
