@@ -1988,6 +1988,10 @@ evaluation may begin anew."
     :defer t
     :commands (org-babel-execute:sqlite org-babel-expand-body:sqlite))
 
+  (use-package ob-mermaid
+    :defer t
+    :commands (org-babel-execute:mermaid))
+
   (use-package ob-duckdb
     :defer t
     :commands (org-babel-execute:duckdb org-babel-expand-body:duckdb)
