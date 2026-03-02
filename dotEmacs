@@ -5245,61 +5245,62 @@ sorted block."
               ("M-p" . flymake-goto-prev-error)))
 
 ;;; claude-code-ide
-(use-package claude-code-ide
-  :bind ("C-c C-'" . claude-code-ide-menu)
-  :config
-  (setq claude-code-ide-cli-path "claude")
-  (setq claude-code-ide-use-ide-diff nil)
-;;;; MCP Tools
 ;; Add the directory containing this init file to load-path
 (let ((dotfiles-dir (file-name-directory
                      (file-truename
                       (or load-file-name buffer-file-name)))))
   (add-to-list 'load-path dotfiles-dir))
 
-;; Now you can require your files
-(require 'claude-mcp-tools)
+(use-package claude-code-ide
+  :bind ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (setq claude-code-ide-cli-path "claude")
+  (setq claude-code-ide-use-ide-diff nil)
+;;; MCP Tools
 
-;;;;; Enable MCP
+  ;; Now you can require your files
+  (require 'claude-mcp-tools)
+
+;;;; Enable MCP
   ;; Enable the MCP server
   (claude-code-ide-emacs-tools-setup)
 
 ;;;; Emacs Helpers
 
-(defvar-local my-claude-prompt-target nil
-  "Target Claude buffer for sending prompt.")
+  (defvar-local my-claude-prompt-target nil
+    "Target Claude buffer for sending prompt.")
 
-(defun my-claude-prompt-send ()
-  "Send the prompt buffer contents to Claude."
-  (interactive)
-  (let ((text (buffer-substring-no-properties (point-min) (point-max)))
-        (target my-claude-prompt-target))
-    (quit-window t)
-    (when target
-      (pop-to-buffer target)
-      (vterm-send-string text)
-      ;; (vterm-send-return)
-      )))
+  (defun my-claude-prompt-send ()
+    "Send the prompt buffer contents to Claude."
+    (interactive)
+    (let ((text (buffer-substring-no-properties (point-min) (point-max)))
+          (target my-claude-prompt-target))
+      (quit-window t)
+      (when target
+        (pop-to-buffer target)
+        (vterm-send-string text)
+        ;; (vterm-send-return)
+        )))
 
-(defun my-claude-prompt ()
-  "Open a buffer to compose a Claude prompt, send with C-c C-c."
-  (interactive)
-  (let* ((proj (project-current))
-         (project-name (when proj
-                         (file-name-nondirectory
-                          (directory-file-name (project-root proj)))))
-         (claude-buf (cl-find-if
-                      (lambda (b)
-                        (and (string-prefix-p "*claude-code" (buffer-name b))
-                             (or (null project-name)
-                                 (string-match-p project-name (buffer-name b)))))
-                      (buffer-list)))
-         (buf (get-buffer-create "*claude-prompt*")))
-    (pop-to-buffer buf)
-    (erase-buffer)
-    (text-mode)
-    (setq my-claude-prompt-target claude-buf)
-    (local-set-key (kbd "C-c C-c") #'my-claude-prompt-send)))
+  (defun my-claude-prompt ()
+    "Open a buffer to compose a Claude prompt, send with C-c C-c."
+    (interactive)
+    (let* ((proj (project-current))
+           (project-name (when proj
+                           (file-name-nondirectory
+                            (directory-file-name (project-root proj)))))
+           (claude-buf (cl-find-if
+                        (lambda (b)
+                          (and (string-prefix-p "*claude-code" (buffer-name b))
+                               (or (null project-name)
+                                   (string-match-p project-name (buffer-name b)))))
+                        (buffer-list)))
+           (buf (get-buffer-create "*claude-prompt*")))
+      (pop-to-buffer buf)
+      (erase-buffer)
+      (text-mode)
+      (setq my-claude-prompt-target claude-buf)
+      (local-set-key (kbd "C-c C-c") #'my-claude-prompt-send)))
 
 
 ;;;; Terminal setup
@@ -5321,44 +5322,44 @@ sorted block."
           (eat-emacs-mode))
         (god-local-mode 1))))
 
-(with-eval-after-load 'eat
-  (define-key eat-char-mode-map (kbd "<escape>") #'my-god-mode-eat-toggle)
-  (define-key eat-mode-map (kbd "<escape>") #'my-god-mode-eat-toggle)
+  (with-eval-after-load 'eat
+    (define-key eat-char-mode-map (kbd "<escape>") #'my-god-mode-eat-toggle)
+    (define-key eat-mode-map (kbd "<escape>") #'my-god-mode-eat-toggle)
 
-  (defun my-eat-trim-scrollback (&optional keep-percent)
-    "Delete the oldest part of the eat buffer.
+    (defun my-eat-trim-scrollback (&optional keep-percent)
+      "Delete the oldest part of the eat buffer.
 KEEP-PERCENT is how much to keep (default 50)."
-    (interactive "P")
-    (when (derived-mode-p 'eat-mode)
-      (let* ((inhibit-read-only t)
-             (pct (or keep-percent 50))
-             (total-lines (count-lines (point-min) (point-max)))
-             (lines-to-keep (floor (* total-lines (/ pct 100.0))))
-             (delete-to nil))
-        (save-excursion
-          (goto-char (point-max))
-          (forward-line (- lines-to-keep))
-          (beginning-of-line)
-          (setq delete-to (point)))
-        (delete-region (point-min) delete-to)
-        (message "Trimmed buffer to %d%% (%d lines)" pct lines-to-keep)))))
+      (interactive "P")
+      (when (derived-mode-p 'eat-mode)
+        (let* ((inhibit-read-only t)
+               (pct (or keep-percent 50))
+               (total-lines (count-lines (point-min) (point-max)))
+               (lines-to-keep (floor (* total-lines (/ pct 100.0))))
+               (delete-to nil))
+          (save-excursion
+            (goto-char (point-max))
+            (forward-line (- lines-to-keep))
+            (beginning-of-line)
+            (setq delete-to (point)))
+          (delete-region (point-min) delete-to)
+          (message "Trimmed buffer to %d%% (%d lines)" pct lines-to-keep)))))
 
-(defun my-vterm-copy-region-clean (start end)
-  "Copy region, removing vterm artifacts."
-  (interactive "r")
-  (let ((text (buffer-substring-no-properties start end)))
-    ;; Remove zero-width spaces, excessive whitespace, etc.
-    (setq text (replace-regexp-in-string "[\u200B\u200C\u200D\uFEFF]" "" text))
-    (setq text (replace-regexp-in-string "\t" " " text))
-    (setq text (replace-regexp-in-string " +" " " text))  ; collapse multiple spaces
-    (kill-new text)
-    (message "Copied cleaned text")))
+  (defun my-vterm-copy-region-clean (start end)
+    "Copy region, removing vterm artifacts."
+    (interactive "r")
+    (let ((text (buffer-substring-no-properties start end)))
+      ;; Remove zero-width spaces, excessive whitespace, etc.
+      (setq text (replace-regexp-in-string "[\u200B\u200C\u200D\uFEFF]" "" text))
+      (setq text (replace-regexp-in-string "\t" " " text))
+      (setq text (replace-regexp-in-string " +" " " text)) ; collapse multiple spaces
+      (kill-new text)
+      (message "Copied cleaned text")))
 
-(with-eval-after-load 'vterm
-  (define-key vterm-copy-mode-map (kbd "M-w") #'my-vterm-copy-region-clean)
-  (define-key vterm-copy-mode-map (kbd "C-e") #'end-of-visual-line)
-  (define-key vterm-copy-mode-map (kbd "C-a") #'beginning-of-visual-line))
-)
+  (with-eval-after-load 'vterm
+    (define-key vterm-copy-mode-map (kbd "M-w") #'my-vterm-copy-region-clean)
+    (define-key vterm-copy-mode-map (kbd "C-e") #'end-of-visual-line)
+    (define-key vterm-copy-mode-map (kbd "C-a") #'beginning-of-visual-line))
+  )
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
