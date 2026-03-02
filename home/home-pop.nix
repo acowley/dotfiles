@@ -13,6 +13,20 @@ let
     firefox "$persistent" &
     (sleep 300 && rm -f "$persistent") &
   '';
+
+  puppeteerConfig = pkgs.writeText "mmdc-puppeteer-config.json" (builtins.toJSON {
+    args = [ "--no-sandbox" "--disable-setuid-sandbox" ];
+  });
+
+  mmdc-wrapped = pkgs.symlinkJoin {
+    name = "mermaid-cli-wrapped";
+    paths = [ pkgs.mermaid-cli ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/mmdc \
+        --add-flags "-p ${puppeteerConfig}"
+    '';
+  };
 in
 {
   # programs.bash = {
@@ -50,6 +64,8 @@ in
     claude-code
     btop
     firefox-delayed
+    gh
+    mmdc-wrapped
   ];
 
   programs.mpv = {
