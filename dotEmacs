@@ -77,6 +77,10 @@
 (set-fontset-font "fontset-default" nil
                   (font-spec :name "Symbola"))
 
+;; If we do this then we get the semi-script italics of the Victor
+;; Mono font in comments.
+(set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+
 
 ;; ;; From: https://github.com/stevemolitor/claude-code.el?tab=readme-ov-file#font-setup
 ;; ;; An attempt to have fallbacks for uncommon unicode symbols.
