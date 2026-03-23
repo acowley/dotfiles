@@ -3658,7 +3658,8 @@ predicate returns true."
   ;; (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
 
   (setq doom-modeline-buffer-encoding nil
-        doom-modeline-buffer-file-name-style 'truncate-all))
+        doom-modeline-buffer-file-name-style 'truncate-all
+        doom-modeline-modal-icon t))
 ;;; Multiple-cursors
 
 ;; multiple-cursors setup
