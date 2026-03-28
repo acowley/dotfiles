@@ -181,6 +181,7 @@ in {
       };
       init = { defaultBranch = "main"; };
     };
+    signing.format = "openpgp";
   };
 
   programs.emacs = {
