@@ -37,6 +37,8 @@ in
     uv
     # cloudcompare
     duckdb
+    claude-code
+    gh
     mpv-wrapped
   ] ++ [stable.cloudcompare];
   home.sessionPath = [
