@@ -18,6 +18,9 @@ let nixGL = fetchTarball {
     btop = pkgs.btop.override {
       cudaSupport = true;
     };
+    mpv-wrapped = pkgs.writeShellScriptBin "mpv" ''
+      exec ${nix-gl-host.defaultPackage.x86_64-linux}/bin/nixglhost ${pkgs.mpv}/bin/mpv "$@"
+    '';
 in
 {
   home.packages = with pkgs; [
@@ -34,6 +37,7 @@ in
     uv
     # cloudcompare
     duckdb
+    mpv-wrapped
   ] ++ [stable.cloudcompare];
   home.sessionPath = [
     # Path where uv installs tools
@@ -56,4 +60,21 @@ in
       GIT_SSH_COMMAND = "ssh";
     };
   };
+
+  # programs.mpv = {
+  #   enable = true;
+  #   # config = {
+  #   #   hwdec = "nvdec";
+  #   #   keep-open = "always";
+  #   # };
+  #   # config = {};
+  #   # extraConfig = ''
+  #   #   hwdec=auto
+  #   #   keep-open=always
+  #   # '';
+  # };
+  xdg.configFile."mpv/mpv.conf".text = ''
+    hwdec=auto
+    keep-open=always
+  '';
 }
