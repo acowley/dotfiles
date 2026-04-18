@@ -233,7 +233,11 @@ in {
 
     # The default here is $XDG_DATA_HOME/password-store (aka ~/.local/share/password-store)
     # settings = { PASSWORD_STORE_DIR = "$HOME/.password-store"; };
-    settings = { PASSWORD_STORE_DIR = "$XDG_DATA_HOME/password-store"; };
+    # settings = { PASSWORD_STORE_DIR = "$XDG_DATA_HOME/password-store"; };
+
+    # Avoid problems where XDG_DATA_HOME might be defined after
+    # PASSWORD_STORE_DIR (this happened to me on macOS)
+    settings = { PASSWORD_STORE_DIR = "${config.xdg.dataHome}/password-store"; };
   };
 
   programs.atuin = {
