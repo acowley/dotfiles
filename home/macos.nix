@@ -25,9 +25,11 @@
     mosh
     tarsnap
     emacs-lsp-booster
+    # vscodium
+    elan
     uv
     duckdb
-    unstable.goose-cli
+    # unstable.goose-cli
     claude-code
   ];
   home.homeDirectory = "/Users/acowley";
