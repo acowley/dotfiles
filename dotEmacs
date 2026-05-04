@@ -1231,7 +1231,6 @@ minibuffer, even without explicitly focusing it."
   (setq corfu-sort-override-function #'my-corfu-combined-sort))
 ;;; corfu-prescient
 (use-package corfu-prescient
-  ;; :disabled
   :after corfu prescient
   :hook ((corfu-mode . corfu-prescient-mode)
          ;; (global-corfu-mode . corfu-prescient-mode)
@@ -4462,6 +4461,7 @@ sorted block."
 
 ;;; purescript
 (use-package purescript-mode
+  :disabled t
   :defer t
   :mode "\\.purs\\'"
   :config
@@ -4473,15 +4473,15 @@ sorted block."
   (defun my/purescript-hook ()
     (psc-ide-mode)
     (company-mode t)
-    (flycheck-mode t)
+    (flymake-mode t)
     (turn-on-purescript-indentation))
   (add-hook 'purescript-mode-hook #'my/purescript-hook))
 ;;; elisp
 (use-package paredit
   :commands paredit-mode
-  :bind (:map paredit-mode-map
-              ("M-s" . nil)
-              ("DEL" . nil))
+  ;; :bind (:map paredit-mode-map
+  ;;             ("M-s" . nil)
+  ;;             ("DEL" . nil))
   :init
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
   (defun my/ielm-hook ()
@@ -5189,6 +5189,7 @@ sorted block."
   )
 ;;; tramp-hlo
 (use-package tramp-hlo
+  :disabled t
   :config
   (tramp-hlo-setup))
 
@@ -5366,8 +5367,8 @@ KEEP-PERCENT is how much to keep (default 50)."
     (define-key vterm-copy-mode-map (kbd "C-a") #'beginning-of-visual-line))
   )
 ;;; mermaid-mode
-(use-package mermaid-mode
-  :mode "\\.mermaid\\'")
+;; (use-package mermaid-mode
+;;   :mode "\\.mermaid\\'")
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
