@@ -5050,6 +5050,7 @@ sorted block."
   (setq aider-args '("--model" "ollama_chat/qwen3" "--subtree-only" "--no-auto-commits")))
 ;;; goose
 (use-package goose
+  :disabled t
   :bind (("C-c o" . goose-transient)))
 ;;; org-present
 (use-package org-present
