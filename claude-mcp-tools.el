@@ -450,5 +450,38 @@ Uses existing buffer if file is open, otherwise reads from disk."
           :type integer
           :description "Line number where the heading starts")))
 
+(defun my-claude-get-cursor-position ()
+  "Return the current cursor position in the active Emacs buffer.
+Includes file path, line number, and org heading if applicable.
+Skips the *claude-code* buffer to find the user's actual editing buffer."
+  (claude-code-ide-mcp-server-with-session-context nil
+    (let* ((buf (or (cl-find-if
+                     (lambda (w)
+                       (not (string-prefix-p "*claude-code"
+                                             (buffer-name (window-buffer w)))))
+                     (window-list nil 'no-minibuf))
+                    (selected-window)))
+           (buf (if (windowp buf) (window-buffer buf) buf))
+           (file (buffer-file-name buf))
+           (line (with-current-buffer buf (line-number-at-pos))))
+      (with-current-buffer buf
+        (let ((org-heading
+               (when (derived-mode-p 'org-mode)
+                 (save-excursion
+                   (org-back-to-heading-or-point-min t)
+                   (when (org-at-heading-p)
+                     (org-get-heading t t t t))))))
+          (if org-heading
+              (format "file: %s\nline: %d\norg-heading: %s"
+                      (or file (buffer-name)) line org-heading)
+            (format "file: %s\nline: %d"
+                    (or file (buffer-name)) line)))))))
+
+(claude-code-ide-make-tool
+ :function #'my-claude-get-cursor-position
+ :name "get_cursor_position"
+ :description "Get the current cursor position in the active Emacs buffer: file path, line number, and (if in an org file) the heading the cursor is under."
+ :args '())
+
 (provide 'claude-mcp-tools)
 ;;; claude-mcp-tools.el ends here
