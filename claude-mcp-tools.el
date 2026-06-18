@@ -1,5 +1,47 @@
 ;;; claude-mcp-tools.el --- MCP tools for Claude Code -*- lexical-binding: t -*-
 
+;; --- emacsclient access shim ----------------------------------------------
+;; Makes the existing tool functions callable over `emacsclient --eval'.
+;;
+;; Each tool body runs inside
+;;   (claude-code-ide-mcp-server-with-session-context nil ...)
+;; which errors with "No session context found" when there is no live MCP
+;; request (i.e. when called from emacsclient). That macro's only runtime
+;; dependency is `claude-code-ide-mcp-server-get-session-context', so we
+;; advise it to supply a fallback context when none exists.
+
+(defvar cet-cli-directory nil
+  "Fallback session project directory for emacsclient/CLI calls.
+Bound per-call by the wrapper script; nil during real MCP use.")
+
+(with-eval-after-load 'claude-code-ide-mcp-server
+  (defun cet--fallback-session-context (orig &rest args)
+    "Real session context if one is bound during a request; otherwise the
+registered session whose project directory contains `cet-cli-directory';
+otherwise a synthetic context built from `cet-cli-directory'."
+    (or (apply orig args)
+        (when cet-cli-directory
+          (let (best)
+            (maphash (lambda (_id ctx)
+                       (let ((dir (plist-get ctx :project-dir)))
+                         (when (and dir (file-in-directory-p cet-cli-directory dir))
+                           (setq best ctx))))
+                     claude-code-ide-mcp-server--sessions)
+            (or best (list :project-dir cet-cli-directory :buffer nil))))))
+  (advice-add 'claude-code-ide-mcp-server-get-session-context
+              :around #'cet--fallback-session-context))
+
+(defun cet-eval-to-file (out-file form)
+  "Eval FORM and write its string result to OUT-FILE. Used by the CLI wrapper.
+Errors are caught and written as text so the caller always gets output."
+  (let ((result (condition-case err (eval form t)
+                  (error (format "Error: %s" (error-message-string err))))))
+    (with-temp-file out-file
+      (insert (if (stringp result) result (format "%S" result))))
+    nil))
+
+;; ---------------------------------------------------------------------------
+
 ;;; Image Viewer for Claude Code IDE
 
 ;; State for tracking images
