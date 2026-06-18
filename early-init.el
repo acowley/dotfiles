@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defvar old--file-name-handler-alist file-name-handler-alist)
 (setq gc-cons-threshold 100000000; ie 100mb, default is 800kb
       gc-cons-percentage 0.6
