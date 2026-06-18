@@ -1065,6 +1065,18 @@ minibuffer, even without explicitly focusing it."
     (keyboard-quit)))
 
 (global-set-key [remap keyboard-quit] #'er-keyboard-quit)
+
+;;;; Auto-revert for certain TRAMP buffers
+(defun my/auto-revert-for-containers ()
+  "Enable polling-based auto-revert for container TRAMP buffers."
+  (let ((method (file-remote-p default-directory 'method)))
+    (when (and method (member method '("docker" "podman" "kubernetes")))
+      (setq-local auto-revert-use-notify nil)
+      (setq-local auto-revert-remote-files t)
+      (auto-revert-mode 1))))
+
+(add-hook 'find-file-hook #'my/auto-revert-for-containers)
+
 ;;; Diminish
 (use-package diminish :disabled t)
 ;;; Themes
