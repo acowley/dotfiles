@@ -5370,6 +5370,14 @@ KEEP-PERCENT is how much to keep (default 50)."
 ;;; mermaid-mode
 ;; (use-package mermaid-mode
 ;;   :mode "\\.mermaid\\'")
+;;; dired-toggle-sudo
+(use-package dired-toggle-sudo
+  :bind (("C-c C-s" . dired-toggle-sudo)))
+;;; ghostel
+(use-package ghostel
+  :commands (ghostel)
+  :config
+  (setopt ghostel-keymap-exceptions (cons "<escape>" ghostel-keymap-exceptions)))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
