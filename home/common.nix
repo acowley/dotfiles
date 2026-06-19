@@ -186,7 +186,7 @@ in {
 
   programs.emacs = {
     enable = true;
-    package = pkgs.myemacsGcc;
+    package = unstable.myemacsGcc;
   };
 
   programs.powerline-go = {

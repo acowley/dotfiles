@@ -62,6 +62,15 @@
             extraSpecialArgs = {
               unstable = import unstable {
                 inherit system;
+                config = {
+                  allowBroken = true;
+                  allowUnfreePredicate = (_: true);
+                };
+                overlays = [
+                  emacs-overlay.overlay
+                  my-emacs.overlay
+                  (final: prev: import my-latex final prev)
+                ];
               };
               inherit nixpkgs;
             };
