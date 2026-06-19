@@ -258,7 +258,7 @@ FILEPATHS should be a list of paths."
               (let ((end-pos (point)))
                 (pulse-momentary-highlight-region start-pos end-pos)
                 ;; Scroll the window to show the region without selecting it
-                (when-let ((win (get-buffer-window buf)))
+                (when-let* ((win (get-buffer-window buf)))
                   (set-window-point win start-pos)
                   (with-selected-window win
                     (recenter)))
