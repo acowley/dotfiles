@@ -89,6 +89,7 @@ in {
     nerd-fonts.victor-mono
     nerd-fonts.dejavu-sans-mono
     (pkgs.callPackage ./pkgs/poppins.nix {})
+    symbola
     # roboto
     # (stdenv.mkDerivation {
     #   name = "my-roboto-2.138";
