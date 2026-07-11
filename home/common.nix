@@ -259,6 +259,9 @@ in {
   programs.fzf = {
     enable = true;
     enableBashIntegration = true;
+
+    # We use atuin for history management
+    historyWidget.command = "";
   };
 
   programs.zoxide = {
