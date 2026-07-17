@@ -1300,6 +1300,7 @@ minibuffer, even without explicitly focusing it."
   :config
   (require 'consult-imenu)
   (require 'consult-flymake)
+  (require 'consult-xref)
   (setq consult-project-root-function #'projectile-project-root
         consult-async-input-debounce 0.1
         consult-narrow-key "<"
