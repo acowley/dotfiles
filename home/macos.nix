@@ -31,6 +31,7 @@
     duckdb
     # unstable.goose-cli
     claude-code
+    omp
   ];
   home.homeDirectory = "/Users/acowley";
   home.sessionPath = [

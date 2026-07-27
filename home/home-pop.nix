@@ -62,6 +62,7 @@ in
     tmux
     byobu
     claude-code
+    # omp
     btop
     firefox-delayed
     gh

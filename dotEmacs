@@ -5072,6 +5072,46 @@ sorted block."
 (use-package goose
   :disabled t
   :bind (("C-c o" . goose-transient)))
+
+;;; agent-shell
+(use-package agent-shell
+  :commands (agent-shell-omp-start)
+  :bind ("C-c C-o" . agent-shell-omp-start)
+  :config
+  (require 'agent-shell-omp)
+  (add-hook 'agent-shell-mode-hook
+          (lambda ()
+            (setq-local corfu-auto t)
+            (corfu-mode 1)))
+  (defun agent-shell--cursor-context ()
+    "Return cursor position info for the last file-visiting buffer before this one."
+    (let ((prev-buf (other-buffer (current-buffer) t)))
+      (when (and prev-buf (buffer-file-name prev-buf))
+        (with-current-buffer prev-buf
+          (let ((file (buffer-file-name))
+                (line (line-number-at-pos))
+                (heading (when (derived-mode-p 'org-mode)
+                           (org-get-heading t t t t))))
+            (format "<cursor file=\"%s\" line=\"%d\"%s/>"
+                    file line
+                    (if heading (format " heading=\"%s\"" heading) "")))))))
+
+  (advice-add 'agent-shell--send-command :filter-args
+              (lambda (args)
+                (when-let* ((prompt (plist-get args :prompt))
+                            ; Don't add context to slash commands or
+                            ; they are not recognized by the ACP
+                            ; server (which is looking for a leading
+                            ; forward slash).
+                            ((not (string-match-p "\\`\\s-*/" prompt)))
+                            (ctx (agent-shell--cursor-context)))
+                  (plist-put args :prompt (concat ctx "\n" prompt)))
+                args)))
+;;; agent-shell-math-renderer
+(use-package agent-shell-math-renderer
+  :after agent-shell
+  :config
+  (setq agent-shell-math-renderer-enabled t))
 ;;; org-present
 (use-package org-present
   :commands

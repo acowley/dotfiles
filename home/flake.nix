@@ -7,6 +7,10 @@
 # or home-manager switch --flake .#home
 # or home-manager switch --flake .#macos
 {
+  nixConfig = {
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [ "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=" ];
+  };
   inputs = {
     #nixpkgs.url = "path:/home/acowley/src/nixpkgs";
     # nixpkgs.url = "path:/Users/acowley/src/nixpkgs";
@@ -35,10 +39,11 @@
     # emacs-lsp-booster.inputs.nixpkgs.follows = "nixpkgs";
     nix-gl-host.url = "github:numtide/nix-gl-host";
     claude-code.url = "github:sadjow/claude-code-nix";
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   outputs = { self, nixpkgs, unstable, flake-utils, homeManager, emacs-overlay, my-emacs, my-latex,
-              nix-gl-host, claude-code }:
+              nix-gl-host, claude-code, llm-agents }:
     let mkHome = { extraImports,
                    system ? "x86_64-linux",
                    homeDirectory ? "/home/acowley"
@@ -56,6 +61,9 @@
                   (final: prev: import my-latex final prev)
                   nix-gl-host.overlays.default
                   claude-code.overlays.default
+                  (final: prev: {
+                    inherit (llm-agents.packages.${prev.stdenv.hostPlatform.system}) omp;
+                  })
                 ];
             };
             modules = [./common.nix] ++ extraImports;
