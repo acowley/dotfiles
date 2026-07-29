@@ -3534,14 +3534,23 @@ predicate returns true."
   (use-package haskell-doc
     :commands (haskell-doc-current-info))
   (set-face-attribute 'haskell-keyword-face nil :slant 'italic)
-  (use-package lsp-haskell
-    ;; :defer t
-    ;; :commands lsp-haskell-enable
-    :custom
-    ;; (lsp-haskell-formatting-provider "brittany")
-    (lsp-haskell-formatting-provider "fourmolu"))
+  ;; lsp-haskell is an lsp-mode client -- it `require's lsp-mode and
+  ;; declares its settings with `lsp-defcustom', so it can't be used with
+  ;; eglot. eglot has a built-in entry for haskell-mode that runs
+  ;; `haskell-language-server-wrapper --lsp', so nothing replaces it; the
+  ;; formatting-provider setting moves to the hook below.
+  ;; (use-package lsp-haskell
+  ;;   ;; :defer t
+  ;;   ;; :commands lsp-haskell-enable
+  ;;   :custom
+  ;;   ;; (lsp-haskell-formatting-provider "brittany")
+  ;;   (lsp-haskell-formatting-provider "fourmolu"))
 
   (defun my-haskell-mode-hook ()
+    ;; Sent to HLS via workspace/didChangeConfiguration. The plist keys
+    ;; are HLS's own, so this is the `haskell.formattingProvider' setting.
+    (setq-local eglot-workspace-configuration
+                '(:haskell (:formattingProvider "fourmolu")))
     ;; (structured-haskell-mode)
     ;; (electric-indent-local-mode -1)
     ;; (electric-pair-local-mode -1)
@@ -3588,6 +3597,7 @@ sorted block."
 
 ;;; Language Server Protocol (LSP)
 (use-package lsp-mode
+  :disabled t
   :defer t
   :commands lsp
   :custom
@@ -3994,8 +4004,11 @@ sorted block."
   ;;     (company-mode)
   ;;     (setq company-tooltip-align-annotations t))
   ;;   (add-hook 'racer-mode-hook #'eldoc-mode))
-  (require 'lsp-mode)
-  (require 'lsp-rust)
+  ;; Using eglot, which has a built-in rust-analyzer entry for
+  ;; rust-mode. lsp-rust is part of the lsp-mode package and requires it,
+  ;; so it has to go too or lsp-mode loads anyway.
+  ;; (require 'lsp-mode)
+  ;; (require 'lsp-rust)
   (setq lsp-rust-server 'rust-analyzer
         lsp-rust-analyzer-server-command '("rust-analyzer")
         lsp-rust-unstable-features t
