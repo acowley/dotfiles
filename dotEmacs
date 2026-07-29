@@ -25,13 +25,6 @@
 
 ;;; Package setup
 
-; If we run package-initialize, then add-to-list melpa, the
-; package-install invocation will fail. We need the package-archives
-; list setup before calling package-initialize.
-(setq package-archives '(("org" . "http://orgmode.org/elpa/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
-
 ;; (package-initialize)
 
 (require 'use-package)
@@ -632,13 +625,6 @@ Haskell programs as it may be applied to all numbers in region."
             (lambda ()
               (setq auto-composition-mode nil)))
 
-;; Use the exec-path-from-shell package to set the PATH
-;; (use-package exec-path-from-shell
-;;   :if (memq window-system '(mac ns))
-;;   :config
-;;   (setq exec-path-from-shell-arguments (list "-l"))
-;;   (exec-path-from-shell-initialize))
-
 ;; Move point to farthest possible position when scrolling the window
 ;; has reached the beginning or end of the buffer
 (setq scroll-error-top-bottom t)
@@ -681,15 +667,6 @@ Haskell programs as it may be applied to all numbers in region."
 (add-to-list 'imagemagick-enabled-types 'PDF)
 (add-hook 'emacs-startup-hook (lambda ()
                                 (imagemagick-register-types)))
-
-;; (use-package session
-;;   :commands (session-initialize)
-;;   :init
-;;   ;; Preserve history between sessions
-;;   (add-hook 'after-init-hook 'session-initialize)
-
-;;   ;; Don't interfere with helm-show-kill-ring
-;;   (setq session-save-print-spec '(t nil 40000)))
 
 ; yank will replace the active region's contents
 (delete-selection-mode 1)
@@ -1084,11 +1061,7 @@ minibuffer, even without explicitly focusing it."
 
 (add-hook 'find-file-hook #'my/auto-revert-for-containers)
 
-;;; Diminish
-(use-package diminish :disabled t)
 ;;; Themes
-;; (use-package darkokai-theme :defer t)
-;; (use-package monokai-theme :defer t)
 (defvar my-theme nil "Name of current theme as a symbol: 'apropospriate or 'south")
 (use-package apropospriate-theme
   :disabled t
@@ -1161,33 +1134,6 @@ minibuffer, even without explicitly focusing it."
   :hook (company-mode . company-prescient-mode)
   :config
   (setq company-prescient-sort-length-enable nil))
-;;; company-box
-(use-package company-box
-  :disabled
-  :defer t
-  :hook (company-mode . company-box-mode)
-  :custom (company-box-icons-alist 'company-box-icons-all-the-icons))
-;;; selectrum
-(use-package selectrum
-  ;; :defer 1
-  ;; :commands (selectrum-mode)
-  :disabled t
-  :demand
-  :config
-  ;; (set-face-background 'selectrum-current-candidate "DeepSkyBlue")
-  (set-face-background 'selectrum-current-candidate "gray31")
-  (set-face-foreground 'selectrum-current-candidate "DeepSkyBlue")
-  (selectrum-mode +1))
-;;; selectrum-prescient
-(use-package selectrum-prescient
-  :disabled t
-  :commands (selectrum-prescient-mode)
-  :after selectrum
-  :demand
-  :config
-  ;; (add-hook 'selectrum-mode-hook #'selectrum-prescient-mode)
-  ;; :hook (selectrum-mode-hook . selectrum-prescient-mode)
-  (selectrum-prescient-mode +1))
 ;;; orderless
 (use-package orderless
   :init
@@ -1470,7 +1416,6 @@ project's type."
 
 ;;; Dashboard
 (use-package dashboard
-  ;; :load-path "~/src/emacs-dashboard"
   ;; :commands dashboard-insert-startupify-lists
   :custom-face
   ;; (dashboard-heading ((t (:family "Yanone Kaffeesatz" :weight light :height 200 :foreground "#E1BEE7"))))
@@ -1499,31 +1444,6 @@ project's type."
 (use-package page-break-lines
   ;; Used by the dashboard package
   :commands (page-break-lines-mode))
-
-;;; impatient-mode
-(use-package impatient-mode
-  :disabled
-  :defer t
-  :config
-  ;; Use with `impatient-mode' by running `M-x imp-set-user-filter' in a
-  ;; markdown buffer, and supplying `markdown-html' as the argument.
-  (defun markdown-html (buffer)
-    (princ (with-current-buffer buffer
-             (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
-           (current-buffer)))
-
-  (defun impatient-markdown ()
-    "Serve markdown text as formatted HTML.
-
-   Start up the simple HTTP server if it isn't running, enable
-   `impatient-mode', and set the user filter to embed buffer
-   contents in an HTML skeleton that invokes a Markdown processor
-   on the text."
-    (interactive)
-    (unless (get-buffer "*httpd*") (httpd-start))
-    (impatient-mode)
-    (imp-set-user-filter #'markdown-html)))
-
 
 ;;; esup
 ;; (use-package esup
@@ -1887,7 +1807,6 @@ project's type."
 
   ;; This is slow to load
   (use-package ox-tufte
-    :load-path "~/src/ox-tufte"
     :defer t
     :commands (org-html-publish-to-tufte-html))
 
@@ -2059,7 +1978,6 @@ evaluation may begin anew."
 
   (add-to-list 'org-src-lang-modes '("nix-shell" . sh))
   (add-to-list 'org-src-lang-modes '("dhall" . dhall))
-  (add-to-list 'org-src-lang-modes '("rust" . rustic))
 
   (use-package ob-emacs-lisp
     :defer t
@@ -2089,9 +2007,6 @@ evaluation may begin anew."
   (use-package ob-R
     :defer t
     :commands (org-babel-execute:R org-babel-expand-body:R))
-  (use-package ob-rust
-    :defer t
-    :commands (org-babel-execute:rustic))
   (use-package ob-awk
     :defer t
     :commands (org-babel-execute:awk org-babel-expand-body:awk))
@@ -2465,19 +2380,6 @@ prompting for the article's title."
   ;;; org-noter
   (use-package org-noter :defer t :commands (org-noter))
 
-  ;;; org-noter-pdftools
-  (use-package org-noter-pdftools
-    :after org-noter
-    :config
-    (with-eval-after-load 'pdf-annot
-      (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
-
-  ;;; org-pdftools
-  (use-package org-pdftools
-    :after org-noter
-    :config
-    (with-eval-after-load 'org (org-pdftools-setup-link)))
-
 ;;;; org-clock
 
 (defun my-org-clocktable-notodo (ipos tables params)
@@ -2823,46 +2725,6 @@ entire source file is loaded."
   (setq alert-default-style (if (memq window-system '(mac ns))
                                 'notifier
                               'notifications)))
-;;; org-clock-reminder
-(use-package org-clock-reminder
-  :disabled t
-  :after org
-  :config
-  (setq org-clock-reminder-remind-inactivity 't)
-  (org-clock-reminder-activate))
-;;; elegant-agenda
-(use-package elegant-agenda-mode 
-  :hook org-agenda-mode
-  :disabled
-  :init
-  (defun air-org-skip-subtree-if-priority (priority)
-  "Skip an agenda subtree if it has a priority of PRIORITY.
-
-PRIORITY may be one of the characters ?A, ?B, or ?C."
-  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-        (pri-value (* 1000 (- org-lowest-priority priority)))
-        (pri-current (org-get-priority (thing-at-point 'line t))))
-    (if (= pri-value pri-current)
-        subtree-end
-      nil)))
-  (setq org-agenda-custom-commands
-      '(("d" "Today"
-         (;; (tags-todo "SCHEDULED<\"<+1d>\"&PRIORITY=\"A\""
-          ;;            ((org-agenda-skip-function
-          ;;              '(org-agenda-skip-entry-if 'todo 'done))
-          ;;             (org-agenda-overriding-header "High-priority unfinished tasks:")))
-          (tags-todo "PRIORITY=\"A\""
-                     ((org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "High-priority unfinished tasks:")))
-          (agenda "" ((org-agenda-span 'day)
-                      (org-scheduled-delay-days -14)
-                      (org-agenda-overriding-header "Schedule")))
-          (tags-todo "SCHEDULED<\"<+1d>\""
-                     ((org-agenda-skip-function
-                       '(or (org-agenda-skip-entry-if 'done)
-                            (air-org-skip-subtree-if-priority ?A)))
-                      (org-agenda-overriding-header "Tasks:"))))))))
 ;;; org-books
 (use-package org-books
   :commands (org-books-add-book
@@ -4149,23 +4011,6 @@ sorted block."
     )
   (add-hook 'rust-mode-hook #'my/rust-hook))
 
-;;; purescript
-(use-package purescript-mode
-  :disabled t
-  :defer t
-  :mode "\\.purs\\'"
-  :config
-  ;(use-package flycheck-purescript)
-  ;; (add-hook 'purescript-mode-hook #'flycheck-mode)
-  (use-package psc-ide
-    :config
-    (setq psc-ide-use-npm-bin t))
-  (defun my/purescript-hook ()
-    (psc-ide-mode)
-    (company-mode t)
-    (flymake-mode t)
-    (turn-on-purescript-indentation))
-  (add-hook 'purescript-mode-hook #'my/purescript-hook))
 ;;; elisp
 (use-package paredit
   :commands paredit-mode
@@ -4428,11 +4273,6 @@ sorted block."
   :bind (("M-o" . ace-window))
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-;;; avy
-(use-package avy
-  :disabled t
-  :bind (("M-s" . avy-goto-word-1)
-         ("M-S" . avy-goto-char-2)))
 ;;; flash
 (use-package flash
   :commands (flash-jump flash-jump-continue
@@ -4814,34 +4654,6 @@ sorted block."
 (use-package pikchr-mode
   :mode ("\\.pikchr\\'" . pikchr-mode)
   :commands (pikchr-mode org-babel-execute:pikchr))
-;;; ultra-scroll
-(use-package ultra-scroll
-  :defer nil
-  :disabled t
-  :init (setq scroll-conservatively 101
-              scroll-margin 0)
-  :custom (ultra-scroll-hide-cursor 1.0)
-  :config
-  ;; Disable org-table-header-line-mode while scrolling so that we
-  ;; don't see a flickering highlight at the top of the window while
-  ;; scrolling.
-  (add-hook 'ultra-scroll-hide-functions 'org-table-header-line-mode)
-  (ultra-scroll-mode 1))
-;;; nova
-(use-package nova
-  :disabled t
-  :after (corfu vertico)
-  :config
-  ;; (require 'posframe)
-  (require 'nova-vertico)
-  (require 'nova-corfu)
-  (require 'nova-corfu-popupinfo)
-  (require 'nova-eldoc)
-
-  (nova-vertico-mode 1)
-  (nova-corfu-mode 1)
-  (nova-corfu-popupinfo-mode 1)
-  (nova-eldoc-mode 1))
 ;;; jq-mode
 (use-package jq-mode
   :commands (jq-interactively org-babel-execute:jq org-babel-expand-body:jq)
