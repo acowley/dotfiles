@@ -4808,7 +4808,8 @@ sorted block."
       (quit-window t)
       (when target
         (pop-to-buffer target)
-        (vterm-send-string text)
+        ;; (vterm-send-string text)
+        (ghostel-send-string text)
         ;; (vterm-send-return)
         )))
 
