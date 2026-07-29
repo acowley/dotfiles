@@ -4583,7 +4583,7 @@ sorted block."
 ;;; agent-shell
 (use-package agent-shell
   :commands (agent-shell-omp-start)
-  :bind ("C-c C-o" . agent-shell-omp-start)
+  :bind ("C-c o" . agent-shell-omp-start)
   :config
   (require 'agent-shell-omp)
   (add-hook 'agent-shell-mode-hook
