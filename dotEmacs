@@ -1,6 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 (require 'package)
-(setq package-quickstart t)
+;; Quickstart caches absolute /nix/store paths, which every rebuild
+;; invalidates -- and `package-activate-all' prefers the cache file whenever
+;; it exists (errors swallowed by `with-demoted-errors'), so a stale one
+;; silently suppresses every autoload. nil also makes package.el delete the
+;; files itself via `package--quickstart-maybe-refresh'.
+(setq package-quickstart nil)
 
 ;; This can fix some troubles with native compilation
 ;; (setq load-no-native t)
