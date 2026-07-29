@@ -1660,6 +1660,7 @@ project's type."
         org-id-link-to-org-use-id t
         org-refile-use-outline-path t
         org-refile-targets '((nil :maxlevel . 9))
+        org-time-stamp-formats '("%Y-%m-%d %a" . "%Y-%m-%d %a %H:%M %Z")
         )
 
   ;; Resize latex preview fragments along with the text size.
