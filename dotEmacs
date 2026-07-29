@@ -424,7 +424,6 @@ dash) transpose chunks around that. Otherwise transpose sexps."
       )
     (forward-line 5)))
 
-(require 'dash)
 (defun start-of-week ()
   "Return a date triple of (MONTH DAY YEAR) for the Sunday that starts the current week."
   (-find (-compose #'zerop #'calendar-day-of-week)
