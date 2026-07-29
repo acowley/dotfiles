@@ -3045,16 +3045,6 @@ under the current project's root directory."
 ;; (helm-mode 1)
 ;; (ido-mode -1)
 
-;;; helm-notmuch
-(use-package helm-notmuch
-  :commands (helm-notmuch))
-
-;;; helm-org-rifle
-(use-package helm-org-rifle
-  :defer t
-  :commands (helm-org-rifle helm-org-rifle-agenda-files)
-  ;; :bind (("C-c r" . helm-org-rifle-agenda-files))
-  )
 
 ;;; god-mode
 
@@ -4071,7 +4061,6 @@ sorted block."
   (require 'lsp-ui-flycheck)
   (flycheck-mode)
   (yas-minor-mode)
-  (helm-gtags-mode -1)
   ;(setq ccls-extra-args '("--log-file=/tmp/cc.log"))
   (when (file-exists-p "/etc/lsb-release")
     (setq ccls-executable "/home/acowley/src/ccls/Release/ccls"))
@@ -4192,18 +4181,6 @@ sorted block."
   :commands (cmake-mode)
   :mode "CMakeLists.txt\\'")
 
-(use-package helm-gtags
-  :defer t
-  ;; :diminish helm-gtags-mode
-  :commands (helm-gtags-mode)
-  :bind (:map helm-gtags-mode-map
-         ("M-." . helm-gtags-find-tag)
-         ("M-*" . helm-gtags-pop-stack))
-  :config
-  (setq helm-gtags-direct-helm-completing t
-        helm-gtags-auto-update t
-        helm-gtags-ignore-case t))
-
 (use-package clang-format
   :commands (clang-format-buffer clang-format-region))
 
@@ -4308,21 +4285,6 @@ sorted block."
 (add-to-list 'auto-mode-alist '("\\.machine\\'" . nxml-mode))
 (add-to-list 'auto-mode-alist '("\\.chs\\'" . haskell-mode))
 
-;;; imaxima
-;; imaxima installation
-;; (autoload 'imaxima "imaxima" "Image support for Maxima." t)
-;; (autoload 'imath-mode "imath" "Interactive Math minor mode." t)
-(use-package maxima
-  :load-path "~/.nix-profile/share/emacs/site-lisp"
-  :mode (rx ".ma" (or ?c ?x) eos)
-  :defer t
-  :commands (maxima-mode imaxima maxima imath-mode)
-  ;; :custom
-  ;; (imaxima-latex-preamble "\usepackage{pagecolor}")
-  :config
-  (require 'imaxima)
-  (setq imaxima-use-maxima-mode-flag t))
-
 ;;; QML mode
 (use-package qml-mode
   :defer t
@@ -4396,24 +4358,6 @@ sorted block."
      'znc-servers
      `(("raspberrypi.local" 1234 t ((rasznc "acowley/libera" ,password)))
        ("irc.libera.chat" 6697 t ((libera "acowley" "foo")))))))
-
-;;; twittering-mode
-(use-package twittering-mode
-  :defer t
-  :commands (twittering-mode twit)
-  :config
-  (add-hook 'twittering-mode-hook
-            (lambda ()
-              (variable-pitch-mode)
-              (turn-on-visual-line-mode)
-              (setq buffer-face-mode-face (if (memq window-system '(mac ns))
-                                              '(:family "Avenir Next")
-                                            '(:family "Cantarell")))
-              (buffer-face-mode)
-              (text-scale-adjust 1)))
-  (add-hook 'twittering-edit-mode-hook 'flyspell-mode)
-
-  (set-variable 'twittering-use-master-password t))
 
 ;;; corral
 (use-package corral
@@ -4852,9 +4796,6 @@ sorted block."
   :config
   (setq clip2org-clippings-file "~/Documents/My Clippings.txt"))
 
-(use-package lean4-mode
-  :mode "\\.lean\\'")
-
 ;;; Private Configuration
 ;; Set up paths for org files, etc.
 (when (file-exists-p "~/.emacsPrivate.el")
@@ -5152,26 +5093,6 @@ sorted block."
 (use-package pikchr-mode
   :mode ("\\.pikchr\\'" . pikchr-mode)
   :commands (pikchr-mode org-babel-execute:pikchr))
-;;; casual
-(use-package casual-calc
-  :after calc
-  :commands (casual-calc-tmenu)
-  :bind (:map calc-mode-map ("C-o" . casual-calc-tmenu)))
-;;; macro-slides
-(use-package macro-slides
-  :commands (ms-start)
-  ;; :custom (ms-breadcrumb-separator " ⊢ ")
-  :custom (ms-breadcrumb-separator " ⮑ "))
-(use-package master-of-ceremonies
-  :after macro-slides
-  :commands (mc-live-present-mode mc-present-mode)
-  :config
-  (defun my/macro-slides-start-hook ()
-    (mc-hide-markup-mode))
-  (defun my/macro-slides-narrow-hook ()
-    (mc-hide-refresh))
-  (add-hook 'ms-start-hook #'my/macro-slides-start-hook)
-  (add-hook 'ms-narrow-hook #'my/macro-slides-narrow-hook))
 ;;; ultra-scroll
 (use-package ultra-scroll
   :defer nil
