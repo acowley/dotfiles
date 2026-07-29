@@ -3857,10 +3857,12 @@ sorted block."
   )
 
 ;;; python
-(defun ac/python-hook ()
-  (setq python-indent-offset 4))
-
-(add-hook 'python-mode-hook #'ac/python-hook)
+;; `python-mode' guesses `python-indent-offset' by looking for the first
+;; indented line, and complains in the echo area when it can't find one.
+;; Org fontifies src blocks by running the language mode in a temp
+;; buffer, so every flat little python block in an org file triggers it.
+;; The default is 4, and we just stick with that; no guessing needed.
+(setq python-indent-guess-indent-offset nil)
 
 ;;; nxml
 (use-package nxml-mode
