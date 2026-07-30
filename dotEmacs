@@ -1,10 +1,15 @@
 ;; -*- lexical-binding: t; -*-
-(require 'package)
-;; Quickstart caches absolute /nix/store paths, which every rebuild
-;; invalidates -- and `package-activate-all' prefers the cache file whenever
-;; it exists (errors swallowed by `with-demoted-errors'), so a stale one
-;; silently suppresses every autoload. nil also makes package.el delete the
-;; files itself via `package--quickstart-maybe-refresh'.
+;; package.el is deliberately not `require'd: nix manages every package and
+;; `package-enable-at-startup' is nil in early-init.el, so nothing here needs
+;; it. Loading it cost ~230ms, mostly url-handlers/browse-url/url. Keep this
+;; file free of `:ensure' -- use-package-ensure.el `require's package.el.
+;;
+;; The setq below is a no-op unless something else drags package.el in, but
+;; it's free insurance: quickstart caches absolute /nix/store paths, which
+;; every rebuild invalidates -- and `package-activate-all' prefers the cache
+;; file whenever it exists (errors swallowed by `with-demoted-errors'), so a
+;; stale one silently suppresses every autoload. nil also makes package.el
+;; delete the files itself via `package--quickstart-maybe-refresh'.
 (setq package-quickstart nil)
 
 ;; This can fix some troubles with native compilation
@@ -1302,7 +1307,6 @@ minibuffer, even without explicitly focusing it."
   :commands (consult-flycheck))
 
 (use-package consult-dir
-  :ensure t
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
@@ -2627,8 +2631,8 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
    org-ref-pdf-directory "~/org/roam/references"))
 ;;;; bibtex-completion
 (use-package bibtex-completion
-  ;; :after org-ref
-  :config
+  :defer t
+  :init
   (setq bibtex-completion-bibliography '("~/Documents/MyPapers/mybib/mybib.bib")))
 
 ;;;; doi-utils
@@ -4691,6 +4695,8 @@ sorted block."
 ;; window with shortcuts to copy any individual piece of metadata to
 ;; the clipboard.
 (use-package file-info
+  :defer t
+  :commands (file-info-show)
   ;; (setq hydra-hint-display-type 'posframe)
   ;; (setq hydra-posframe-show-params `(:poshandler posframe-poshandler-frame-center
   ;;                                                :internal-border-width 2
