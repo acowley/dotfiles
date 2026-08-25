@@ -245,9 +245,10 @@ in {
     enable = true;
     enableBashIntegration = false;
     package = unstable.atuin;
+    daemon.enable = true;
     settings = {
       auto_sync = false;
-      search_mode = "skim";
+      search_mode = "daemon-fuzzy";
       update_check = false;
       filter_mode_shell_up_key_binding = "session";
       show_preview = true;
