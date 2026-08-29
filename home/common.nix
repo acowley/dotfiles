@@ -213,7 +213,8 @@ in {
   programs.gpg.enable = true;
   services.gpg-agent = {
     enable = true;
-    pinentry.package = pkgs.pinentry-curses;
+    pinentry.package = pkgs.pinentry-emacs;
+    extraConfig = "allow-emacs-pinentry";
   };
 
   # Emacs has problems with GnuPG 2.4.1 and 2.4.2
