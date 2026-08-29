@@ -4654,6 +4654,17 @@ sorted block."
    'org-babel-load-languages
    (append org-babel-load-languages '((jq . t)))))
 
+;;; ob-qalc
+;; org-babel support for qalc blocks, with variables persisted
+;; per :session name across blocks and across Emacs restarts.
+(use-package ob-qalc
+  :load-path "~/dotfiles/elisp"
+  :commands (org-babel-execute:qalc org-babel-expand-body:qalc qalc-reset-session)
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   (append org-babel-load-languages '((qalc . t)))))
+
 ;;; qalc
 ;; Wrap qalc's CLI and manages hiding and showing the *qalc* buffer
 ;; From https://leon_plickat.srht.site/writing/custom-emacs-qalc-repl-popup/article.html
