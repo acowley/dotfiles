@@ -407,6 +407,147 @@ Uses existing buffer if file is open, otherwise reads from disk."
                   (string-join (nreverse matches) "\n")
                 (format "No headings matching '%s'" pattern)))))))))
 
+(defun my-claude-org--call-with-file-for-edit (filepath fn)
+  "Call FN in a buffer visiting FILEPATH, saving afterward.
+Uses the existing buffer if the file is already open; otherwise
+visits the file, runs FN, and kills the buffer afterward. Either way,
+the buffer is saved after FN runs."
+  (let* ((full-path (expand-file-name filepath))
+         (existing-buf (find-buffer-visiting full-path)))
+    (if existing-buf
+        (with-current-buffer existing-buf
+          (unwind-protect
+              (funcall fn)
+            (save-buffer)))
+      (let ((buf (find-file-noselect full-path)))
+        (with-current-buffer buf
+          (unwind-protect
+              (funcall fn)
+            (save-buffer)
+            (kill-buffer buf)))))))
+
+(defun my-claude-org--goto-heading (pattern)
+  "Move point to the first heading matching PATTERN, or return nil."
+  (goto-char (point-min))
+  (let (found)
+    (org-map-entries
+     (lambda ()
+       (when (and (not found)
+                  (string-match-p pattern (org-get-heading t t t t)))
+         (setq found (point)))))
+    (when found (goto-char found))
+    found))
+
+(defun my-claude-org-insert-heading (filepath title &optional body level parent-pattern)
+  "Insert a new heading TITLE (with optional BODY text) into FILEPATH.
+LEVEL is the heading depth (1-based, default 1). If PARENT-PATTERN is
+given, the new heading is inserted as the last child of the first
+heading matching that regex, at LEVEL relative to it (default: one
+level deeper than the parent); otherwise it is appended at the end of
+the file at LEVEL (default 1)."
+  (when (equal body "") (setq body nil))
+  (when (equal level "") (setq level nil))
+  (when (equal parent-pattern "") (setq parent-pattern nil))
+  (claude-code-ide-mcp-server-with-session-context nil
+    (let ((full-path (expand-file-name filepath default-directory)))
+      (if (not (file-exists-p full-path))
+          (format "Error: File not found: %s" full-path)
+        (my-claude-org--call-with-file-for-edit full-path
+          (lambda ()
+            (if (and parent-pattern (not (string-empty-p parent-pattern)))
+                (if (not (my-claude-org--goto-heading parent-pattern))
+                    (format "No heading matching '%s' found" parent-pattern)
+                  (let* ((parent-level (org-current-level))
+                         (child-level (or level (1+ parent-level))))
+                    (org-end-of-subtree t t)
+                    (unless (bolp) (insert "\n"))
+                    (insert (make-string child-level ?*) " " title "\n")
+                    (when (and body (not (string-empty-p body)))
+                      (insert body)
+                      (unless (string-suffix-p "\n" body) (insert "\n")))
+                    (format "Inserted heading %S at level %d under '%s' in %s"
+                            title child-level parent-pattern
+                            (file-name-nondirectory full-path))))
+              (goto-char (point-max))
+              (unless (bolp) (insert "\n"))
+              (insert (make-string (or level 1) ?*) " " title "\n")
+              (when (and body (not (string-empty-p body)))
+                (insert body)
+                (unless (string-suffix-p "\n" body) (insert "\n")))
+              (format "Inserted heading %S at level %d (end of file) in %s"
+                      title (or level 1) (file-name-nondirectory full-path)))))))))
+
+(defun my-claude-org-set-property (filepath heading-pattern property value)
+  "Set PROPERTY to VALUE in the property drawer of the heading matching
+HEADING-PATTERN in FILEPATH. Creates the drawer/property if needed."
+  (claude-code-ide-mcp-server-with-session-context nil
+    (let ((full-path (expand-file-name filepath default-directory)))
+      (if (not (file-exists-p full-path))
+          (format "Error: File not found: %s" full-path)
+        (my-claude-org--call-with-file-for-edit full-path
+          (lambda ()
+            (if (not (my-claude-org--goto-heading heading-pattern))
+                (format "No heading matching '%s' found" heading-pattern)
+              (org-entry-put (point) property value)
+              (format "Set %s=%s on heading matching '%s' in %s"
+                      property value heading-pattern
+                      (file-name-nondirectory full-path)))))))))
+
+(defun my-claude-org--truthy-p (value)
+  "Coerce VALUE (as received from a string-only CLI/MCP bridge) to a boolean.
+Nil, the empty string, and \"false\"/\"nil\"/\"no\" (case-insensitively) are
+false; anything else — including a real non-nil non-string Lisp value — is
+true. This exists because callers like `eclisp' marshal every argument as a
+quoted elisp string, so a boolean parameter's \"off\" value often arrives as
+the *string* \"false\" rather than as nil, and a bare `(when value ...)'
+check would treat that string as truthy."
+  (and value
+       (not (and (stringp value)
+                 (member (downcase value) '("" "false" "nil" "no"))))))
+
+(defun my-claude-org-append-to-heading (filepath heading-pattern text &optional replace)
+  "Append TEXT to the body of the heading matching HEADING-PATTERN in
+FILEPATH, without touching its subheadings. If REPLACE is non-nil,
+overwrite the existing body instead of appending to it."
+  (claude-code-ide-mcp-server-with-session-context nil
+    (let ((full-path (expand-file-name filepath default-directory))
+          (replace (my-claude-org--truthy-p replace)))
+      (if (not (file-exists-p full-path))
+          (format "Error: File not found: %s" full-path)
+        (my-claude-org--call-with-file-for-edit full-path
+          (lambda ()
+            (if (not (my-claude-org--goto-heading heading-pattern))
+                (format "No heading matching '%s' found" heading-pattern)
+              (let ((element (org-element-at-point)))
+                (org-end-of-meta-data t))
+              (let ((body-start (point))
+                    (body-end (save-excursion (outline-next-heading) (point))))
+                (when replace
+                  (delete-region body-start body-end))
+                (goto-char (if replace body-start body-end))
+                (unless (bolp) (insert "\n"))
+                (insert text)
+                (unless (string-suffix-p "\n" text) (insert "\n")))
+              (format "%s body of heading matching '%s' in %s"
+                      (if replace "Replaced" "Appended to")
+                      heading-pattern (file-name-nondirectory full-path)))))))))
+
+(defun my-claude-org-set-todo-state (filepath heading-pattern state)
+  "Set the TODO/state keyword of the heading matching HEADING-PATTERN in
+FILEPATH to STATE (e.g. \"TODO\", \"DONE\", \"CANCELLED\", or \"\" to clear)."
+  (claude-code-ide-mcp-server-with-session-context nil
+    (let ((full-path (expand-file-name filepath default-directory)))
+      (if (not (file-exists-p full-path))
+          (format "Error: File not found: %s" full-path)
+        (my-claude-org--call-with-file-for-edit full-path
+          (lambda ()
+            (if (not (my-claude-org--goto-heading heading-pattern))
+                (format "No heading matching '%s' found" heading-pattern)
+              (org-todo (if (string-empty-p state) 'none state))
+              (format "Set state to %s on heading matching '%s' in %s"
+                      (if (string-empty-p state) "(none)" state)
+                      heading-pattern (file-name-nondirectory full-path)))))))))
+
 (defun my-claude-org-get-heading-at-line (filepath line-number)
   "Get the subtree at LINE-NUMBER in FILEPATH."
   (claude-code-ide-mcp-server-with-session-context nil
@@ -491,6 +632,78 @@ Uses existing buffer if file is open, otherwise reads from disk."
          (:name "line_number"
           :type integer
           :description "Line number where the heading starts")))
+
+(claude-code-ide-make-tool
+ :function #'my-claude-org-insert-heading
+ :name "org_insert_heading"
+ :description "Insert a new heading (with optional body text) into an org file. Without parent_pattern, appends at the end of the file. With parent_pattern, inserts as the last child of the first matching heading."
+ :args '((:name "filepath"
+          :type string
+          :description "Path to the org file")
+         (:name "title"
+          :type string
+          :description "Title text of the new heading (without leading asterisks)")
+         (:name "body"
+          :type string
+          :description "Optional body text to insert under the new heading"
+          :optional t)
+         (:name "level"
+          :type integer
+          :description "Heading depth, 1-based. Defaults to 1 at top level, or one deeper than the parent when parent_pattern is given."
+          :optional t)
+         (:name "parent_pattern"
+          :type string
+          :description "Regex matching a heading to insert this one under, as its last child (optional)"
+          :optional t)))
+
+(claude-code-ide-make-tool
+ :function #'my-claude-org-set-property
+ :name "org_set_property"
+ :description "Set a property (in the property drawer) of a heading matching a pattern. Creates the drawer or property if it doesn't already exist."
+ :args '((:name "filepath"
+          :type string
+          :description "Path to the org file")
+         (:name "heading_pattern"
+          :type string
+          :description "Regex pattern to match the heading title")
+         (:name "property"
+          :type string
+          :description "Property name, e.g. STATUS or DEADLINE")
+         (:name "value"
+          :type string
+          :description "Value to set the property to")))
+
+(claude-code-ide-make-tool
+ :function #'my-claude-org-append-to-heading
+ :name "org_append_to_heading"
+ :description "Append text to (or replace) the body of a heading matching a pattern, without touching its subheadings."
+ :args '((:name "filepath"
+          :type string
+          :description "Path to the org file")
+         (:name "heading_pattern"
+          :type string
+          :description "Regex pattern to match the heading title")
+         (:name "text"
+          :type string
+          :description "Text to append to (or replace) the heading's body")
+         (:name "replace"
+          :type boolean
+          :description "If true, replace the existing body instead of appending. Pass \"\" or \"false\" (or omit) for the default append behavior."
+          :optional t)))
+
+(claude-code-ide-make-tool
+ :function #'my-claude-org-set-todo-state
+ :name "org_set_todo_state"
+ :description "Set the TODO/state keyword (e.g. TODO, DONE, CANCELLED) of a heading matching a pattern. Pass an empty string to clear the state."
+ :args '((:name "filepath"
+          :type string
+          :description "Path to the org file")
+         (:name "heading_pattern"
+          :type string
+          :description "Regex pattern to match the heading title")
+         (:name "state"
+          :type string
+          :description "New TODO state keyword, or empty string to clear")))
 
 (defun my-claude-get-cursor-position ()
   "Return the current cursor position in the active Emacs buffer.
