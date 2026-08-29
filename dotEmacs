@@ -4782,7 +4782,7 @@ sorted block."
 (let ((dotfiles-dir (file-name-directory
                      (file-truename
                       (or load-file-name buffer-file-name)))))
-  (add-to-list 'load-path dotfiles-dir))
+  (add-to-list 'load-path (expand-file-name "elisp" dotfiles-dir)))
 
 (use-package claude-code-ide
   :bind ("C-c C-'" . claude-code-ide-menu)
