@@ -69,6 +69,7 @@ in
     mmdc-wrapped
     devenv
     pass-git-helper
+    omp
   ];
 
   programs.mpv = {
