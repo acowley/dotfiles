@@ -67,6 +67,8 @@ in
     firefox-delayed
     gh
     mmdc-wrapped
+    devenv
+    pass-git-helper
   ];
 
   programs.mpv = {
