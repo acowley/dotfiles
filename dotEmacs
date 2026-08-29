@@ -4579,7 +4579,10 @@ sorted block."
   (require 'agent-shell-omp)
   (add-hook 'agent-shell-mode-hook
           (lambda ()
-            (setq-local corfu-auto t)
+            ;; agent-shell already triggers `completion-at-point' itself
+            ;; on `/' and `@'; corfu-auto would additionally fire on
+            ;; every keystroke, so keep it off here.
+            (setq-local corfu-auto nil)
             (corfu-mode 1)))
   (defun agent-shell--cursor-context ()
     "Return cursor position info for the last file-visiting buffer before this one."
