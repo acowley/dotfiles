@@ -3907,10 +3907,9 @@ sorted block."
 
 
 ;;; gpg
-(defun pinentry-emacs (desc prompt ok error)
-  "Interface for entering a password into gpg-agent."
-  (let ((str (read-passwd (concat (replace-regexp-in-string "%22" "\"" (replace-regexp-in-string "%0A" "\n" desc)) prompt ": "))))
-    str))
+(use-package pinentry
+  :config
+  (pinentry-start))
 ;;; erc (IRC)
 (use-package erc
   :defer t
