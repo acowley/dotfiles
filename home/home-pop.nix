@@ -77,6 +77,8 @@ in
     };
   };
 
+  programs.git.settings.credential.helper = "${pkgs.pass-git-helper}/bin/pass-git-helper";
+
   home.sessionPath = [
     "$HOME/.local/bin"
   ];
