@@ -2722,6 +2722,10 @@ entire source file is loaded."
 (use-package org-bookmark-heading
   :after org
   :defer nil)
+;;;; org-table-widget
+(use-package org-table-widget
+  :after org
+  :hook (org-mode . org-table-widget-mode))
 ;;; alert
 (use-package alert
   :commands alert
