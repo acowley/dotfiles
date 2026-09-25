@@ -99,6 +99,21 @@
     '';
   };
 
+  # The atuin daemon refuses to start if a socket from a previous run
+  # is left behind (e.g. after an unclean shutdown). Remove it unless
+  # the process named in the pid file is still a running atuin (pids
+  # get reused across reboots, so liveness alone is not enough).
+  launchd.agents.atuin-daemon.config.ProgramArguments = pkgs.lib.mkForce [
+    "${pkgs.writeShellScript "atuin-daemon-start" ''
+      dir="${config.xdg.dataHome}/atuin"
+      pid=$(head -n1 "$dir/atuin-daemon.pid" 2>/dev/null)
+      if [ -S "$dir/daemon.sock" ] && ! ps -p "''${pid:-0}" -o comm= 2>/dev/null | grep -q atuin; then
+        rm -f "$dir/daemon.sock"
+      fi
+      exec ${pkgs.lib.getExe config.programs.atuin.package} daemon start
+    ''}"
+  ];
+
   home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /Users/acowley/dotfiles/dotEmacs;
   home.file.".emacs.d/early-init.el".source = config.lib.file.mkOutOfStoreSymlink /Users/acowley/dotfiles/early-init.el;
 }
