@@ -20,7 +20,6 @@
     pinentry_mac
     wget
     bashInteractive
-    terminal-notifier
     ledger
     mosh
     tarsnap
@@ -32,6 +31,7 @@
     # unstable.goose-cli
     claude-code
     omp
+    pass-git-helper
   ];
   home.homeDirectory = "/Users/acowley";
   home.sessionPath = [
