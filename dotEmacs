@@ -4926,6 +4926,7 @@ KEEP-PERCENT is how much to keep (default 50)."
   )
 ;;; fussy
 (use-package fussy
+  :disabled t
   :config
   (fussy-setup-fzf)
   (fussy-eglot-setup)
