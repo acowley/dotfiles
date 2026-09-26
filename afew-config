@@ -28,7 +28,7 @@ tags = +orgmode
 [HeaderMatchingFilter.2]
 header = List-Id
 pattern = (haskell-cafe.haskell.org|ghc-devs.haskell.org|libraries.haskell.org)
-tags = +Haskell
+tags = +haskell
 [HeaderMatchingFilter.3]
 header = List-ID
 pattern = ~sircmpwn/sr.ht-discuss
@@ -60,7 +60,7 @@ tags = +serve
 [HeaderMatchingFilter.10]
 header = From
 pattern = (Chartwell|Bear Paddle Swim)
-tags = +Owen
+tags = +owen
 [InboxFilter]
 tags = -new;-important;
 # tags = +inbox;-new;-important;-account;
