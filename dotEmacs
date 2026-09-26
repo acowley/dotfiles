@@ -665,6 +665,26 @@ Haskell programs as it may be applied to all numbers in region."
                     vc-ignore-dir-regexp
                     tramp-file-name-regexp))
 
+;; Let tramp find programs installed by nix. `getconf PATH' (tramp's
+;; `tramp-default-remote-path') never mentions the nix profiles, and macOS's
+;; path_helper pushes them behind /usr/bin in the login shell's $PATH, so
+;; `tramp-own-remote-path' does not help either. Without this, remote commands
+;; -- e.g. the git that magit runs over tramp -- resolve to the system version
+;; rather than the one home-manager installed.
+;; Two caveats: these must be absolute ("~" entries are dropped by tramp's
+;; remote existence check), and connections cache this list, so run
+;; `M-x tramp-cleanup-all-connections' after editing it.
+;; Directories that don't exist on a given host are pruned automatically, so
+;; listing several platforms' layouts here is harmless.
+(with-eval-after-load 'tramp
+  (dolist (dir '("/run/current-system/sw/bin"           ; NixOS system profile
+                 "/nix/var/nix/profiles/default/bin"    ; nix daemon profile
+                 "/etc/profiles/per-user/acowley/bin"   ; home-manager as a NixOS module
+                 "/home/acowley/.nix-profile/bin"       ; home-manager on Linux
+                 "/Users/acowley/.nix-profile/bin"))    ; home-manager on macOS
+    ;; `add-to-list' prepends, so the last entry ends up highest priority.
+    (add-to-list 'tramp-remote-path dir)))
+
 ;; Display PDFs inline
 (add-to-list 'image-type-file-name-regexps '("\\.pdf\\'" . imagemagick))
 (add-to-list 'image-file-name-extensions "pdf")
