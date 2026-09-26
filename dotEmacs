@@ -1215,7 +1215,8 @@ minibuffer, even without explicitly focusing it."
   ;; (setq corfu-prescient-override-sorting t)
   :config
   (corfu-prescient-mode 1)
-  (setq completion-styles '(prescient partial-completion basic)))
+  ;; (setq completion-styles '(prescient partial-completion basic))
+  )
 ;;; vertico
 (use-package vertico
   :config
