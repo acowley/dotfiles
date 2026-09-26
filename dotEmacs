@@ -685,6 +685,56 @@ Haskell programs as it may be applied to all numbers in region."
     ;; `add-to-list' prepends, so the last entry ends up highest priority.
     (add-to-list 'tramp-remote-path dir)))
 
+;; Tramp opens its remote shell as an interactive ssh session (no remote command
+;; on the ssh command line), so ssh allocates a pty on the remote host. On
+;; macOS/BSD the tty line discipline silently discards any input line longer
+;; than MAX_CANON, which is 1024 bytes there (Linux allows 4095, hence this only
+;; bites on Darwin hosts). Tramp's command line can easily exceed that: `git
+;; commit' from magit measures ~1260 bytes and `git rebase -i' ~1276, because
+;; with-editor's sleeping editor gets exported in both GIT_EDITOR and
+;; MAGIT_HOOK_EDITOR. The command never reaches the remote shell, so git never
+;; runs, the process sits there forever, and the commit buffer never appears.
+;; The fix is to keep ssh from allocating a remote pty (-T) and to name the
+;; remote shell explicitly instead (%l, i.e. "/bin/sh -i", which still prints
+;; the prompt tramp's handshake waits for). With no tty in the way there is no
+;; line-length limit. Note that -T only suppresses the *remote* pty; ssh's own
+;; stdin is still tramp's local pty, so ssh's own password prompts still work.
+;; The one casualty is sudo on the remote host, which insists on a terminal to
+;; read a password ("sudo: a terminal is required to read the password"), so we
+;; also hand the sudo method -S, which makes it read the password from stdin --
+;; the pipe tramp sends it down anyway. That keeps /ssh:host|sudo:host: working.
+(defvar my/tramp-no-pty-hosts '("bruno.local")
+  "Remote hosts whose tramp connections should not allocate a remote pty.
+Needed for macOS and BSD hosts, where command lines longer than 1024
+bytes are otherwise silently truncated.")
+
+(defun my/tramp-login-args (method target replacement)
+  "METHOD's `tramp-login-args' with TARGET replaced by REPLACEMENT.
+Deriving the arguments from `tramp-methods' rather than spelling them out
+keeps whatever else tramp passes; if TARGET is ever not found we splice in
+nothing and get tramp's own behavior back."
+  (mapcan (lambda (arg)
+            (if (equal arg target) (copy-sequence replacement) (list arg)))
+          (cadr (assq 'tramp-login-args (assoc method tramp-methods)))))
+
+(defun my/tramp-no-pty-setup ()
+  "Connect to `my/tramp-no-pty-hosts' without allocating a remote pty."
+  (let ((ssh (my/tramp-login-args "ssh" '("%h") '(("-T") ("%h") ("%l"))))
+        (sudo (my/tramp-login-args "sudo" '("%l") '(("-S") ("%l")))))
+    (dolist (host my/tramp-no-pty-hosts)
+      ;; These regexps are matched against the *per-hop* connection name, e.g.
+      ;; "/ssh:acowley@bruno.local:" or "/sudo:root@bruno.local:", so they have
+      ;; to be anchored per method: an unanchored host name would also match the
+      ;; sudo hop and hand it the ssh arguments.
+      (add-to-list 'tramp-connection-properties
+                   (list (format "ssh:\\(?:[^|]*@\\)?%s:\\'" (regexp-quote host))
+                         "login-args" ssh))
+      (add-to-list 'tramp-connection-properties
+                   (list (format "sudo:\\(?:[^|]*@\\)?%s:\\'" (regexp-quote host))
+                         "login-args" sudo)))))
+
+(with-eval-after-load 'tramp (my/tramp-no-pty-setup))
+
 ;; Display PDFs inline
 (add-to-list 'image-type-file-name-regexps '("\\.pdf\\'" . imagemagick))
 (add-to-list 'image-file-name-extensions "pdf")
