@@ -1928,8 +1928,12 @@ project's type."
     (yas-minor-mode)
     (org-superstar-mode 1)
 
-    (add-hook 'post-command-hook
-              'org-show-emphasis-markers-at-point nil t)
+    (setq-local my-org-emphasis-marker-timer
+                (run-with-idle-timer 0.2 t #'org-show-emphasis-markers-at-point))
+    (add-hook 'kill-buffer-hook
+              (lambda () (when (timerp my-org-emphasis-marker-timer)
+                           (cancel-timer my-org-emphasis-marker-timer)))
+              nil t)
 
     ;; (org-table-sticky-header-mode)
     ;; (org-sticky-header-mode)
