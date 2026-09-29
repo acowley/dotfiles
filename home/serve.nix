@@ -18,6 +18,22 @@ let nixGL = fetchTarball {
     btop = pkgs.btop.override {
       cudaSupport = true;
     };
+    # Build only the git-credential-libsecret helper from git's source
+    # tarball, rather than pkgs.git.override { withLibsecret = true; },
+    # which produces a differently-hashed git derivation that misses the
+    # binary cache and rebuilds all of git from source on every update.
+    git-credential-libsecret = pkgs.stdenv.mkDerivation {
+      pname = "git-credential-libsecret";
+      version = pkgs.git.version;
+      src = pkgs.git.src;
+      sourceRoot = "git-${pkgs.git.version}/contrib/credential/libsecret";
+      nativeBuildInputs = [ pkgs.pkg-config ];
+      buildInputs = [ pkgs.libsecret pkgs.glib ];
+      installPhase = ''
+        mkdir -p $out/bin
+        cp git-credential-libsecret $out/bin/
+      '';
+    };
     mpv-wrapped = pkgs.writeShellScriptBin "mpv" ''
       exec ${nix-gl-host.defaultPackage.x86_64-linux}/bin/nixglhost ${pkgs.mpv}/bin/mpv "$@"
     '';
@@ -76,6 +92,8 @@ in
     enable = true;
     package = pkgs.myemacsPgtk;
   };
+
+  programs.git.settings.credential.helper = "${git-credential-libsecret}/bin/git-credential-libsecret";
 
   home.packages = with pkgs; [
     google-cloud-sdk
