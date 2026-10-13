@@ -103,6 +103,10 @@ in {
     roboto-mono
     roboto-slab
     nixfmt
+
+    # These two file system utilities are used by the vulpea emacs package
+    fd
+    fswatch
   ];
 
   programs.zsh = {
