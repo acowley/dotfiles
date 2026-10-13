@@ -4008,6 +4008,7 @@ sorted block."
   (pinentry-start))
 ;;; erc (IRC)
 (use-package erc
+  :disabled t
   :defer t
   :config
   (setq erc-fill-function 'erc-fill-static
@@ -4015,11 +4016,11 @@ sorted block."
         erc-fill-column 71)
   ;; (setq erc-fill-function 'erc-fill-variable)
 
-  (use-package erc-terminal-notifier
-    :if (memq window-system '(mac ns))
-    :config
-    (setq erc-terminal-notifier-command "~/.nix-profile/bin/terminal-notifier")
-    (add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier))))
+  ;; (use-package erc-terminal-notifier
+  ;;   :if (memq window-system '(mac ns))
+  ;;   :config
+  ;;   (setq erc-terminal-notifier-command "~/.nix-profile/bin/terminal-notifier")
+  ;;   (add-hook 'erc-mode-hook (lambda() (require 'erc-terminal-notifier))))
   (use-package ercn
     :if (not (memq window-system '(mac ns)))
     :config
@@ -4041,6 +4042,7 @@ sorted block."
     (add-to-list 'erc-modules 'hl-nicks)))
 ;;; znc
 (use-package znc
+  :disabled t
   :defer t
   :commands (znc-all znc-erc)
   :config
