@@ -5022,6 +5022,15 @@ KEEP-PERCENT is how much to keep (default 50)."
 (use-package fussy
   :disabled t
   :config
+  ;; fussy wraps minibuffer completion in `while-no-input', which
+  ;; breaks the Tramp password prompt: keystrokes abort the prompt
+  ;; instead of being read. Vertico avoids interruptible completion
+  ;; for remote paths for the same reason (gh:minad/vertico#23).
+  (defun my/fussy-cancel-on-input-p ()
+    (and (minibufferp)
+         (not (or (file-remote-p default-directory)
+                  (file-remote-p (minibuffer-contents-no-properties))))))
+  (setq fussy-cancel-on-input-fn #'my/fussy-cancel-on-input-p)
   (fussy-setup-fzf)
   (fussy-eglot-setup)
   (fussy-company-setup))
