@@ -2523,7 +2523,6 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
          "* TODO %?\n:PROPERTIES:\n:opened: %U\n:END:\n"))))
 ;;;; org-roam
 (use-package org-roam
-  :defer 1
   :after org
   :commands (org-roam-node-find)
   :custom
@@ -2563,7 +2562,9 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
   ;;               (emacsql-with-transaction (org-roam-db)
   ;;                 (apply fn args))))
 
-  (run-with-idle-timer 1 nil #'org-roam-db-autosync-mode)
+  ;; Not from a timer: the sync loads org-ref and friends, and a `message'
+  ;; during that load from a timer can hang the NS build at startup.
+  (org-roam-db-autosync-mode)
   ;; (org-roam-setup)
 
 
