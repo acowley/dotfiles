@@ -2523,6 +2523,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
          "* TODO %?\n:PROPERTIES:\n:opened: %U\n:END:\n"))))
 ;;;; org-roam
 (use-package org-roam
+  :disabled t
   :after org
   :commands (org-roam-node-find)
   :custom
@@ -2662,6 +2663,7 @@ http://emacs.stackexchange.com/questions/8228/remove-task-state-keywords-todo-do
 
 ;;;; org-roam-bibtex
 (use-package org-roam-bibtex
+  :disabled t
   ;; :hook (org-roam-mode . org-roam-bibtex-mode)
   :commands (org-roam-bibtex-notes-fn
              org-roam-bibtex-edit-notes-ad
@@ -5054,6 +5056,8 @@ KEEP-PERCENT is how much to keep (default 50)."
 ;;; vulpea
 (use-package vulpea
   :commands (vulpea-find vulpea-insert)
+  :bind (("C-c v f" . vulpea-find)
+         ("C-c v i" . vulpea-insert))
   :config
   (setq vulpea-db-sync-directories '("~/org/roam")
         vulpea-db-async-extraction 'full
@@ -5063,7 +5067,8 @@ KEEP-PERCENT is how much to keep (default 50)."
 
   (use-package vulpea-ui
     :after vulpea
-    :commands (vulpea-ui-sidebar-open vulpea-ui-sidebar-toggle ))
+    :commands (vulpea-ui-sidebar-open vulpea-ui-sidebar-toggle)
+    :bind (("C-c v s" . vulpea-ui-sidebar-toggle)))
 
   (use-package consult-vulpea
     :after vulpea
