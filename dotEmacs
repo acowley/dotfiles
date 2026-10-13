@@ -39,7 +39,9 @@
 ;; (require 'bind-key)
 
 ;; Show a message whenever a package takes longer than 0.1s to load
-(setq use-package-verbose t)
+;; Disabled: the extra `message' calls this adds to deferred :config blocks
+;; can hang the macOS (NS) build when they run from a timer during startup.
+(setq use-package-verbose nil)
 (setq use-package-compute-statistics t)
 
 ;;; benchmark-init
@@ -664,6 +666,9 @@ Haskell programs as it may be applied to all numbers in region."
       (format "%s\\|%s"
                     vc-ignore-dir-regexp
                     tramp-file-name-regexp))
+
+;; Delete remote directories without moving them to trash
+(setq remote-file-name-inhibit-delete-by-moving-to-trash t)
 
 ;; Let tramp find programs installed by nix. `getconf PATH' (tramp's
 ;; `tramp-default-remote-path') never mentions the nix profiles, and macOS's
