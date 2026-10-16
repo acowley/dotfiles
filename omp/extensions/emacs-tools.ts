@@ -15,7 +15,7 @@ function elispEscape(s: string): string {
 }
 
 function ensureLoaded(): string {
-  return `(unless (featurep 'omp-emacs-tools) (load "${elispEscape(ELISP_PATH)}"))`;
+  return `(unless (featurep 'emacs-tools) (load "${elispEscape(ELISP_PATH)}"))`;
 }
 
 /** Evaluate an Elisp form via emacsclient, return the result string. */

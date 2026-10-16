@@ -4673,17 +4673,23 @@ sorted block."
 
 ;;; agent-shell
 (use-package agent-shell
-  :commands (agent-shell-omp-start)
-  :bind ("C-c o" . agent-shell-omp-start)
+  :commands (agent-shell-omp-start agent-shell-opencode-start-agent)
+  :bind (("C-c O" . agent-shell-omp-start)
+         ("C-c o" . agent-shell-opencode-start-agent))
   :config
   (require 'agent-shell-omp)
+  (require 'agent-shell-opencode)
+  ;; This system installs OpenCode V2 as opencode2.
+  (setq agent-shell-opencode-acp-command '("opencode2" "acp"))
+  (setopt agent-shell-opencode-default-model-id "openrouter/openai/gpt-6-luna"
+          agent-shell-show-cost-indicator t)
   (add-hook 'agent-shell-mode-hook
-          (lambda ()
-            ;; agent-shell already triggers `completion-at-point' itself
-            ;; on `/' and `@'; corfu-auto would additionally fire on
-            ;; every keystroke, so keep it off here.
-            (setq-local corfu-auto nil)
-            (corfu-mode 1)))
+            (lambda ()
+              ;; agent-shell already triggers `completion-at-point' itself
+              ;; on `/' and `@'; corfu-auto would additionally fire on
+              ;; every keystroke, so keep it off here.
+              (setq-local corfu-auto nil)
+              (corfu-mode 1)))
   (defun agent-shell--cursor-context ()
     "Return cursor position info for the last file-visiting buffer before this one."
     (let ((prev-buf (other-buffer (current-buffer) t)))

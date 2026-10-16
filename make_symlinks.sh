@@ -32,3 +32,10 @@ fi
 ln -s ${DIR}/afew-config "${HOME}/.config/afew/config"
 
 ln -s ${DIR}/mailcap "${HOME}/.mailcap"
+
+# OpenCode V2 discovers global plugin packages in its config directory.
+OPENCODE_PLUGINS="${XDG_CONFIG_HOME:-$HOME/.config}/opencode/plugins"
+mkdir -p "${OPENCODE_PLUGINS}"
+if [ ! -e "${OPENCODE_PLUGINS}/emacs-tools" ] && [ ! -L "${OPENCODE_PLUGINS}/emacs-tools" ]; then
+  ln -s "${DIR}/opencode/emacs-tools" "${OPENCODE_PLUGINS}/emacs-tools"
+fi
