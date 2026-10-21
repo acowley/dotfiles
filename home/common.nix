@@ -218,8 +218,8 @@ in {
   services.gpg-agent = {
     enable = true;
     pinentry.package = pkgs.pinentry-emacs;
-    defaultCacheTtl = 3600;
-    maxCacheTtl = 28800;
+    defaultCacheTtl = 14400;
+    maxCacheTtl = 43200;
     extraConfig = "allow-emacs-pinentry";
   };
 
