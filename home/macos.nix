@@ -1,5 +1,5 @@
 {unstable}:
-{ config, pkgs, nixpkgs, unstable, ... }:
+{ config, pkgs, lib, nixpkgs, unstable, ... }:
 {
   # Add a flake named "n" to the registry for use with, e.g., `nix run n#package`
   # https://discourse.nixos.org/t/how-to-make-nix-shell-use-my-home-manager-flake-input/29957/6
@@ -116,4 +116,23 @@
 
   home.file.".emacs".source = config.lib.file.mkOutOfStoreSymlink /Users/acowley/dotfiles/dotEmacs;
   home.file.".emacs.d/early-init.el".source = config.lib.file.mkOutOfStoreSymlink /Users/acowley/dotfiles/early-init.el;
+
+  # Install mermaidx as a uv tool (idempotent; no-op when already installed).
+  home.activation.mermaidx = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    run ${pkgs.uv}/bin/uv tool install mermaidx
+  '';
+
+  # md-render calls the Mermaid CLI with mmdc's options; translate the one
+  # that differs (--backgroundColor -> -b) before running mermaidx.
+  home.file.".local/bin/mmdc-mermaidx" = {
+    executable = true;
+    source = pkgs.writers.writePython3 "mmdc-mermaidx" { } ''
+      import os
+      import sys
+
+      exe = "${config.home.homeDirectory}/.local/bin/mermaidx"
+      args = ["-b" if a == "--backgroundColor" else a for a in sys.argv[1:]]
+      os.execv(exe, [exe, *args])
+    '';
+  };
 }
