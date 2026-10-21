@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, ... }:
+{ config, pkgs, lib, unstable, ... }:
 let
   btop = pkgs.btop.override {
     cudaSupport = true;
@@ -103,5 +103,24 @@ in
   home.file.".mime.types" = {
     enable = true;
     text = "text/html shtml";
+  };
+
+  # Install mermaidx as a uv tool (idempotent; no-op when already installed).
+  home.activation.mermaidx = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    run ${pkgs.uv}/bin/uv tool install mermaidx
+  '';
+
+  # md-render calls the Mermaid CLI with mmdc's options; translate the one
+  # that differs (--backgroundColor -> -b) before running mermaidx.
+  home.file.".local/bin/mmdc-mermaidx" = {
+    executable = true;
+    source = pkgs.writers.writePython3 "mmdc-mermaidx" { } ''
+      import os
+      import sys
+
+      exe = "${config.home.homeDirectory}/.local/bin/mermaidx"
+      args = ["-b" if a == "--backgroundColor" else a for a in sys.argv[1:]]
+      os.execv(exe, [exe, *args])
+    '';
   };
 }
