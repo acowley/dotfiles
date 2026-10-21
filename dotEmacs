@@ -740,6 +740,14 @@ nothing and get tramp's own behavior back."
 
 (with-eval-after-load 'tramp (my/tramp-no-pty-setup))
 
+;; Configure tramp to use more universal rsync arguments to improve compatibility
+(with-eval-after-load 'tramp
+  (let ((rsync-entry (assoc "rsync" tramp-methods)))
+    (when rsync-entry
+      ;; View or change the arguments passed to rsync
+      (setf (cadr (assoc 'tramp-copy-args rsync-entry))
+            '(("-a" "-v" "-z"))))))
+
 ;; Display PDFs inline
 (add-to-list 'image-type-file-name-regexps '("\\.pdf\\'" . imagemagick))
 (add-to-list 'image-file-name-extensions "pdf")
