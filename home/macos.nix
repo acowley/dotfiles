@@ -31,6 +31,7 @@
     # unstable.goose-cli
     claude-code
     omp
+    opencode2
     pass-git-helper
   ];
   home.homeDirectory = "/Users/acowley";

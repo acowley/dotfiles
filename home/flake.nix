@@ -62,7 +62,7 @@
                   nix-gl-host.overlays.default
                   claude-code.overlays.default
                   (final: prev: {
-                    inherit (llm-agents.packages.${prev.stdenv.hostPlatform.system}) omp;
+                    inherit (llm-agents.packages.${prev.stdenv.hostPlatform.system}) omp opencode2;
                   })
                 ];
             };
