@@ -33,3 +33,7 @@
 
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
 (setenv "LSP_USE_PLISTS" "1")
+
+;; Preset these so ffap doesn't run gcc/g++/clang probes at load time, which
+;; trigger the Xcode command line tools prompt on macOS.
+(setq ffap-c-path nil ffap-c++-path nil)
