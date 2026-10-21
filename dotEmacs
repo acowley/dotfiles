@@ -5101,7 +5101,28 @@ KEEP-PERCENT is how much to keep (default 50)."
                 (cons (cons 'god-local-mode god-local-mode-map)
                       (assq-delete-all 'god-local-mode
                                        minor-mode-overriding-map-alist))))
-  (add-hook 'md-mode-hook #'my/md-mode-god-precedence))
+  (add-hook 'md-mode-hook #'my/md-mode-god-precedence)
+  (defun my/md-mode-open-preview-at-point ()
+    "Open the rendered preview at point (Mermaid, math, etc.) in image-mode."
+    (interactive)
+    (let ((file (get-text-property (point) 'md-render-media-file)))
+      (if file
+          (find-file file)
+        (user-error "No rendered preview at point"))))
+  (define-key md-mode-map (kbd "C-c p") #'my/md-mode-open-preview-at-point)
+  ;; projectile-mode's minor-mode map binds C-c p and shadows md-mode-map.
+  (defun my/md-mode-preview-precedence ()
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "C-c p") #'my/md-mode-open-preview-at-point)
+      (set-keymap-parent map (and (boundp 'projectile-mode-map) projectile-mode-map))
+      (setq-local minor-mode-overriding-map-alist
+                  (cons (cons 'projectile-mode map)
+                        (assq-delete-all 'projectile-mode
+                                         minor-mode-overriding-map-alist)))))
+  (add-hook 'md-mode-hook #'my/md-mode-preview-precedence)
+  ;; Mermaid previews are rendered by mermaidx (installed via home-manager).
+  (setq md-render-mermaid-command
+        (expand-file-name "~/.local/bin/mmdc-mermaidx")))
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
