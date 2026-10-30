@@ -52,6 +52,8 @@ in {
     };
   };
 
+  nixpkgs.config.allowUnfreePredicate = pkg: true;
+
   home.packages = with pkgs; [
     cmake-scaffold
     cachix
@@ -141,11 +143,17 @@ in {
     # the store path of the `lib` output xoof the `gcc.cc.lib`
     # derivation.
     bashrcExtra = ''
+      # Nix and home-manager session variables for every shell, including
+      # non-login ones such as `ssh host cmd`. Both scripts guard against
+      # being sourced twice.
+      if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      fi
+      if [ -e "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+        . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      fi
       if [[ $TERM = dumb ]]; then
         return
-      fi
-      if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
-        source $HOME/.nix-profile/etc/profile.d/nix.sh
       fi
 
       function nb() {
