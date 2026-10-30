@@ -10,8 +10,10 @@ let
   firefox-delayed = pkgs.writeShellScriptBin "firefox-delayed" ''
     persistent="$HOME/Downloads/.email-html-$$.html"
     cp "$1" "$persistent"
-    firefox "$persistent" &
-    (sleep 300 && rm -f "$persistent") &
+    # setsid detaches from Emacs's pty, whose SIGHUP would otherwise kill
+    # these background jobs as soon as this script exits.
+    setsid -f firefox "$persistent" >/dev/null 2>&1
+    setsid -f sh -c "sleep 300 && rm -f '$persistent'" >/dev/null 2>&1
   '';
 
   puppeteerConfig = pkgs.writeText "mmdc-puppeteer-config.json" (builtins.toJSON {
